@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers — Secrets of the University</title>
+<meta name="description" content="The race is not to the swift. Career lessons, résumé forge, and the things no advisor mentioned.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/scroll/simplescrollbars.css">
+<style>
+  :root {
+    --bg: #070713;
+    --bg2: #0d0d24;
+    --ink: #e8e6f5;
+    --muted: #9b97b8;
+    --gold: #f0c96c;
+    --violet: #8b7cf7;
+    --card: rgba(139,124,247,0.07);
+    --border: rgba(139,124,247,0.22);
+  }
+  /* ── Light Mode ──────────────────────────────── */
+  html.light {
+    --bg: #f5f3f0;
+    --bg2: #eae8e4;
+    --ink: #1a1a2e;
+    --muted: #6b6889;
+    --gold: #b8860b;
+    --violet: #6b5ce7;
+    --card: rgba(107,92,231,0.05);
+    --border: rgba(107,92,231,0.13);
+  }
+  html.light .nav-full { background:rgba(245,243,240,0.88); }
+  html.light .site-footer { background:var(--bg2); }
+  html.light .footer-legal, html.light .footer-legal a { color:rgba(107,104,137,0.5); }
+  html.light .footer-subscribe input { background:rgba(0,0,0,0.04); }
+  html.light .field input, html.light .field textarea, html.light .field select { background:rgba(0,0,0,0.03); }
+  html.light .form-panel { background:rgba(107,92,231,0.04); }
+  html.light .exp-block { background:rgba(107,92,231,0.03); }
+  html.light .CodeMirror { background:#faf9fc !important; color:#1a1a2e !important; }
+  html.light .CodeMirror-gutters { background:#f0eff5 !important; border-right:1px solid rgba(107,92,231,0.13) !important; }
+  html.light .CodeMirror-linenumber { color:#6b6889 !important; }
+  html.light .job-search-bar input { background:rgba(0,0,0,0.03); }
+  html.light .job-paste-area textarea { background:rgba(0,0,0,0.03); }
+  html.light .letter-fields input { background:rgba(0,0,0,0.03); }
+  .theme-toggle {
+    background:none; border:1px solid var(--border); border-radius:50%;
+    width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center;
+    color:var(--muted); font-size:1rem; cursor:pointer; transition:all .3s;
+    line-height:1; padding:0;
+  }
+  .theme-toggle:hover { border-color:var(--gold); color:var(--gold); }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; transition:background .8s ease, color .8s ease; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+    transition: background .8s ease, color .8s ease;
+  }
+  .wrap { position:relative; z-index:1; max-width:1000px; margin:0 auto; padding:0 24px; }
+
+  /* Full-width nav bar */
+  .nav-full {
+    position:relative; z-index:1; width:100%;
+    border-bottom:1px solid var(--border);
+    background:rgba(7,7,19,0.7); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  }
+  .nav-inner {
+    max-width:1000px; margin:0 auto; padding:20px 24px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .brand { font-size:1.05rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); text-decoration:none; }
+  .brand span { color:var(--muted); }
+  .nav-links { display:flex; gap:22px; align-items:center; }
+  .nav-links a {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--muted); text-decoration:none; transition:color .3s;
+  }
+  .nav-links a:hover { color:var(--gold); }
+  .nav-links a.cta-small {
+    color:var(--ink); border:1px solid var(--border); padding:8px 18px; border-radius:100px;
+    transition:all .3s;
+  }
+  .nav-links a.cta-small:hover { border-color:var(--gold); color:var(--gold); }
+  canvas#stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+  /* ── Palantir-style Footer ──────────────────────── */
+  .site-footer {
+    position:relative; z-index:1; width:100%;
+    background:var(--bg2); border-top:1px solid var(--border);
+    font-family:Helvetica,Arial,sans-serif;
+  }
+  .footer-inner { max-width:1000px; margin:0 auto; padding:60px 24px 0; }
+  .footer-grid {
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:40px;
+    padding-bottom:48px; border-bottom:1px solid var(--border);
+  }
+  .footer-col-title {
+    font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:18px; font-weight:700;
+  }
+  .footer-col a, .footer-col span {
+    display:block; font-size:0.82rem; color:var(--muted); text-decoration:none;
+    padding:4px 0; transition:color .3s; line-height:1.7;
+  }
+  .footer-col a:hover { color:var(--ink); }
+  .footer-subscribe p {
+    font-size:0.82rem; color:var(--muted); margin-bottom:14px; line-height:1.5;
+  }
+  .footer-subscribe form { display:flex; gap:8px; }
+  .footer-subscribe input {
+    flex:1; background:rgba(255,255,255,0.05); border:1px solid var(--border);
+    border-radius:8px; padding:10px 14px; color:var(--ink); font-size:0.82rem;
+    font-family:Helvetica,Arial,sans-serif; outline:none; transition:border .3s;
+  }
+  .footer-subscribe input:focus { border-color:var(--gold); }
+  .footer-subscribe button {
+    background:var(--gold); color:#1a1305; border:none; border-radius:8px;
+    padding:10px 18px; font-size:0.72rem; font-weight:700; letter-spacing:0.08em;
+    text-transform:uppercase; cursor:pointer; transition:transform .2s, opacity .3s;
+    font-family:Helvetica,Arial,sans-serif; white-space:nowrap;
+  }
+  .footer-subscribe button:hover { transform:translateY(-1px); opacity:0.9; }
+  .footer-subscribe .sub-msg {
+    font-size:0.75rem; color:var(--gold); font-style:italic; margin-top:8px; display:none;
+  }
+  .footer-bottom {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 0; flex-wrap:wrap; gap:12px;
+  }
+  .footer-legal { font-size:0.7rem; color:rgba(155,151,184,0.6); }
+  .footer-legal a { color:rgba(155,151,184,0.6); text-decoration:none; transition:color .3s; }
+  .footer-legal a:hover { color:var(--muted); }
+  .footer-socials { display:flex; gap:16px; }
+  .footer-socials a {
+    font-size:0.72rem; color:var(--muted); text-decoration:none; letter-spacing:0.06em;
+    transition:color .3s;
+  }
+  .footer-socials a:hover { color:var(--gold); }
+
+  /* Hero */
+  header { text-align:center; padding:70px 0 50px; }
+  .eyebrow {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; letter-spacing:0.35em; text-transform:uppercase;
+    color:var(--violet); margin-bottom:24px;
+  }
+  h1 { font-size:clamp(2rem,5vw,3.4rem); font-weight:400; line-height:1.15; margin-bottom:22px; }
+  h1 em { font-style:italic; color:var(--gold); }
+  .sub { font-size:1.1rem; color:var(--muted); max-width:540px; margin:0 auto; }
+
+  section { padding:30px 0 70px; }
+  .section-label {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.72rem; letter-spacing:0.35em; text-transform:uppercase;
+    color:var(--violet); text-align:center; margin-bottom:14px;
+  }
+  h2 { text-align:center; font-weight:400; font-size:clamp(1.5rem,4vw,2.1rem); margin-bottom:48px; }
+  h2.mb-sm { margin-bottom:24px; }
+
+  .lessons { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
+  .lesson {
+    background:var(--card); border:1px solid var(--border); border-radius:16px; padding:30px 26px;
+    transition:transform .3s, border-color .3s;
+  }
+  .lesson:hover { transform:translateY(-6px); border-color:var(--gold); }
+  .lesson small {
+    display:block; font-family:Helvetica,Arial,sans-serif; font-size:0.68rem; letter-spacing:0.22em;
+    text-transform:uppercase; color:var(--violet); margin-bottom:12px;
+  }
+  .lesson h3 { font-weight:400; font-size:1.12rem; margin-bottom:10px; font-style:italic; }
+  .lesson p { font-size:0.92rem; color:var(--muted); }
+
+  /* ── Template Gallery ───────────────────────────── */
+  .lab-intro {
+    text-align:center; font-size:1.05rem; color:var(--muted); font-style:italic;
+    max-width:540px; margin:0 auto 36px;
+  }
+  .tmpl-gallery {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:14px;
+    margin-bottom:36px;
+  }
+  .tmpl-card {
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:20px 18px; cursor:pointer; transition:transform .3s, border-color .3s, box-shadow .3s;
+    text-align:center; position:relative; overflow:hidden;
+  }
+  .tmpl-card::before {
+    content:''; position:absolute; inset:0; border-radius:14px;
+    background:linear-gradient(135deg, rgba(240,201,108,0.08), transparent);
+    opacity:0; transition:opacity .3s;
+  }
+  .tmpl-card:hover { transform:translateY(-4px); border-color:rgba(240,201,108,0.5); }
+  .tmpl-card:hover::before { opacity:1; }
+  .tmpl-card.active { border-color:var(--gold); box-shadow:0 0 24px rgba(240,201,108,0.15); }
+  .tmpl-card.active::before { opacity:1; }
+  .tmpl-card .tmpl-icon { display:block; margin:0 auto 10px; }
+  .tmpl-card .tmpl-icon svg { width:60px; height:78px; }
+  .tmpl-card .tmpl-name {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.72rem; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--gold); margin-bottom:4px; position:relative;
+  }
+  .tmpl-card .tmpl-desc {
+    font-size:0.78rem; color:var(--muted); line-height:1.35; position:relative;
+  }
+  .tmpl-card .tmpl-badge {
+    position:absolute; top:8px; right:8px;
+    font-family:Helvetica,Arial,sans-serif; font-size:0.52rem; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--bg); background:var(--gold);
+    padding:2px 8px; border-radius:100px; opacity:0; transition:opacity .3s;
+  }
+  .tmpl-card.active .tmpl-badge { opacity:1; }
+
+  /* ── Form Fields ────────────────────────────────── */
+  .form-panel {
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:32px 28px;
+  }
+  .form-section { margin-bottom:28px; }
+  .form-section:last-child { margin-bottom:0; }
+  .form-section-title {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.68rem; letter-spacing:0.28em;
+    text-transform:uppercase; color:var(--violet); margin-bottom:16px;
+    padding-bottom:8px; border-bottom:1px solid var(--border);
+  }
+  .field-row { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+  .field-row:last-child { margin-bottom:0; }
+  .field { flex:1; min-width:140px; }
+  .field.full { flex:1 0 100%; }
+  .field label {
+    display:block; font-family:Helvetica,Arial,sans-serif; font-size:0.65rem;
+    letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:5px;
+  }
+  .field input, .field textarea, .field select {
+    width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border);
+    border-radius:10px; padding:12px 14px; color:var(--ink); font-size:0.9rem;
+    font-family:Georgia,'Times New Roman',serif; outline:none; transition:border .3s;
+    resize:vertical;
+  }
+  .field input:focus, .field textarea:focus { border-color:var(--gold); }
+  .field textarea { min-height:70px; line-height:1.5; }
+  .field input::placeholder, .field textarea::placeholder { color:rgba(155,151,184,0.5); }
+
+  /* Experience block */
+  .exp-block {
+    background:rgba(139,124,247,0.04); border:1px solid rgba(139,124,247,0.12);
+    border-radius:12px; padding:20px 18px; margin-bottom:14px; position:relative;
+  }
+  .exp-block .remove-exp {
+    position:absolute; top:12px; right:14px; background:none; border:none;
+    color:var(--muted); cursor:pointer; font-size:1.1rem; line-height:1; transition:color .3s;
+    font-family:Helvetica,Arial,sans-serif;
+  }
+  .exp-block .remove-exp:hover { color:#e2708a; }
+  .btn-add {
+    display:inline-flex; align-items:center; gap:6px; background:none;
+    border:1px dashed var(--border); border-radius:100px; padding:10px 20px;
+    color:var(--muted); font-family:Helvetica,Arial,sans-serif; font-size:0.78rem;
+    letter-spacing:0.08em; cursor:pointer; transition:all .3s;
+  }
+  .btn-add:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* Skills pills */
+  .skills-display { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+  .skill-pill {
+    background:rgba(240,201,108,0.12); border:1px solid rgba(240,201,108,0.3);
+    border-radius:100px; padding:4px 14px; font-family:Helvetica,Arial,sans-serif;
+    font-size:0.75rem; color:var(--gold); letter-spacing:0.05em;
+  }
+
+  /* Toggle for conditional sections */
+  .form-section[data-show] { display:none; }
+  .form-section.visible { display:block; }
+
+  /* Photo toggle */
+  .toggle-row { display:flex; align-items:center; gap:10px; }
+  .toggle-switch {
+    width:40px; height:22px; background:var(--border); border-radius:11px;
+    position:relative; cursor:pointer; transition:background .3s;
+  }
+  .toggle-switch.on { background:var(--gold); }
+  .toggle-switch::after {
+    content:''; position:absolute; top:2px; left:2px; width:18px; height:18px;
+    background:#fff; border-radius:50%; transition:transform .3s;
+  }
+  .toggle-switch.on::after { transform:translateX(18px); }
+  .toggle-label {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.72rem; color:var(--muted);
+    letter-spacing:0.1em; text-transform:uppercase;
+  }
+
+  /* ── Job Search ─────────────────────────────────── */
+  .job-search-bar { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; justify-content:center; }
+  .job-search-bar input {
+    flex:1; min-width:200px; max-width:360px;
+    background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:100px;
+    padding:14px 22px; color:var(--ink); font-size:0.9rem;
+    font-family:Helvetica,Arial,sans-serif; outline:none; transition:border .3s;
+  }
+  .job-search-bar input:focus { border-color:var(--gold); }
+  .job-sites { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:16px; }
+  .job-site-btn {
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--card); border:1px solid var(--border); border-radius:100px;
+    padding:10px 20px; color:var(--ink); font-family:Helvetica,Arial,sans-serif;
+    font-size:0.78rem; letter-spacing:0.06em; text-decoration:none;
+    transition:all .3s; cursor:pointer;
+  }
+  .job-site-btn:hover { border-color:var(--gold); color:var(--gold); transform:translateY(-2px); }
+  .job-site-btn .site-dot {
+    width:8px; height:8px; border-radius:50%; display:inline-block;
+  }
+  .job-paste-area {
+    max-width:680px; margin:28px auto 0;
+  }
+  .job-paste-area textarea {
+    width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border);
+    border-radius:12px; padding:16px 18px; color:var(--ink); font-size:0.88rem;
+    font-family:Georgia,'Times New Roman',serif; outline:none; resize:vertical;
+    min-height:100px; transition:border .3s; line-height:1.5;
+  }
+  .job-paste-area textarea:focus { border-color:var(--gold); }
+  .job-paste-area label {
+    display:block; font-family:Helvetica,Arial,sans-serif; font-size:0.65rem;
+    letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;
+    text-align:center;
+  }
+
+  /* ── Cover Letter ───────────────────────────────── */
+  .letter-container {
+    max-width:680px; margin:0 auto;
+  }
+  .letter-fields { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; justify-content:center; }
+  .letter-fields input {
+    flex:1; min-width:180px;
+    background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:10px;
+    padding:12px 14px; color:var(--ink); font-size:0.9rem;
+    font-family:Georgia,'Times New Roman',serif; outline:none; transition:border .3s;
+  }
+  .letter-fields input:focus { border-color:var(--gold); }
+  .letter-preview {
+    background:linear-gradient(135deg, #faf8f3, #f5f0e8);
+    border-radius:12px; padding:40px 36px; color:#2b2b3d;
+    font-family:Georgia,'Times New Roman',serif; font-size:0.92rem; line-height:1.7;
+    box-shadow:0 8px 40px rgba(0,0,0,0.4); position:relative; min-height:240px;
+  }
+  .letter-preview .letter-date {
+    font-size:0.82rem; color:#777; margin-bottom:18px;
+  }
+  .letter-preview .letter-greeting {
+    margin-bottom:14px; font-weight:600;
+  }
+  .letter-preview .letter-body p { margin-bottom:12px; }
+  .letter-preview .letter-closing { margin-top:18px; }
+  .letter-preview .letter-sig { margin-top:6px; font-weight:600; }
+  .letter-preview .letter-placeholder {
+    color:#aaa; font-style:italic; text-align:center; padding:40px 0;
+  }
+  .letter-actions {
+    display:flex; justify-content:center; gap:12px; margin-top:20px;
+  }
+
+  /* ── Resume Preview ─────────────────────────────── */
+  .preview-frame {
+    background:#fff; border-radius:8px; padding:44px 40px; color:#2b2b3d;
+    max-width:720px; margin:0 auto;
+    box-shadow:0 12px 60px rgba(0,0,0,0.5);
+    font-family:Georgia,'Times New Roman',serif; font-size:0.88rem; line-height:1.55;
+    min-height:600px; position:relative;
+  }
+  .preview-frame .pv-header { margin-bottom:18px; }
+  .preview-frame .pv-name { font-size:1.6rem; font-weight:700; color:#2b2b3d; margin-bottom:4px; }
+  .preview-frame .pv-title-line { font-size:0.92rem; color:#555; margin-bottom:4px; }
+  .preview-frame .pv-contact { font-size:0.75rem; color:#888; }
+  .preview-frame .pv-contact a { color:#8b7cf7; text-decoration:none; }
+  .preview-frame .pv-section-head {
+    font-size:0.88rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;
+    color:#f0c96c; border-bottom:1.5px solid #f0c96c; padding-bottom:3px;
+    margin:18px 0 10px;
+  }
+  .preview-frame .pv-section-head.navy { color:#1A1A3E; border-color:#8b7cf7; }
+  .preview-frame .pv-section-head.minimal { color:#222; border:none; font-weight:700; }
+  .preview-frame .pv-section-head.exec { border-bottom:2px solid #f0c96c; }
+  .preview-frame .pv-exp-title { font-weight:700; font-size:0.86rem; }
+  .preview-frame .pv-exp-meta { font-size:0.78rem; color:#888; font-style:italic; }
+  .preview-frame .pv-exp-bullets { padding-left:18px; margin:6px 0 12px; }
+  .preview-frame .pv-exp-bullets li { font-size:0.82rem; color:#444; margin-bottom:3px; }
+  .preview-frame .pv-skills-pills { display:flex; flex-wrap:wrap; gap:6px; }
+  .preview-frame .pv-skill {
+    background:rgba(240,201,108,0.15); border:1px solid rgba(240,201,108,0.3);
+    border-radius:100px; padding:2px 12px; font-size:0.72rem; color:#b8940a;
+    font-family:Helvetica,Arial,sans-serif;
+  }
+  .preview-frame .pv-photo {
+    width:64px; height:64px; border-radius:50%; background:#e8e6f5;
+    display:flex; align-items:center; justify-content:center; font-size:0.6rem; color:#999;
+  }
+  .preview-frame .pv-placeholder {
+    color:#ccc; font-style:italic; text-align:center; padding:80px 0; font-size:1rem;
+  }
+  /* Architect two-column */
+  .preview-frame.arch-layout { display:flex; gap:0; padding:0; overflow:hidden; }
+  .preview-frame.arch-layout .pv-sidebar {
+    width:35%; background:#1A1A2E; color:#f5f5f5; padding:28px 18px;
+    font-size:0.78rem;
+  }
+  .preview-frame.arch-layout .pv-sidebar .pv-section-head { color:#f0c96c; border-color:#f0c96c; }
+  .preview-frame.arch-layout .pv-main { flex:1; padding:28px 24px; }
+  /* Minimalist */
+  .preview-frame.mini-layout { font-family:Helvetica,Arial,sans-serif; }
+  .preview-frame.mini-layout .pv-name { font-weight:400; letter-spacing:0.02em; }
+  .preview-frame.mini-layout .pv-section-head { color:#222; border:none; font-weight:700; font-size:0.82rem; }
+  .preview-frame.mini-layout .pv-exp-bullets { list-style:none; padding-left:0; }
+  /* Executive header bar */
+  .preview-frame.exec-layout .pv-header-bar {
+    background:#1A1A2E; color:#fff; margin:-44px -40px 24px; padding:28px 40px;
+    border-radius:8px 8px 0 0;
+  }
+  .preview-frame.exec-layout .pv-header-bar .pv-name { color:#fff; }
+  .preview-frame.exec-layout .pv-header-bar .pv-title-line { color:#f0c96c; }
+  .preview-frame.exec-layout .pv-header-bar .pv-contact { color:rgba(255,255,255,0.7); }
+
+  /* ── Buttons ────────────────────────────────────── */
+  .btn-gold {
+    background:linear-gradient(135deg, var(--gold), #d9a63f);
+    color:#1a1305; border:none; border-radius:100px; padding:14px 28px; font-size:0.85rem;
+    font-family:Helvetica,Arial,sans-serif; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    cursor:pointer; transition:transform .2s, box-shadow .3s; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-gold:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(240,201,108,0.35); }
+  .btn-outline {
+    background:none; border:1px solid var(--border); border-radius:100px;
+    padding:12px 24px; color:var(--ink); font-family:Helvetica,Arial,sans-serif;
+    font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
+    cursor:pointer; transition:all .3s;
+  }
+  .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* ── Source Toggle ──────────────────────────────── */
+  .source-toggle {
+    text-align:center; margin:24px 0 16px;
+  }
+  .source-toggle button {
+    background:none; border:1px solid var(--border); border-radius:100px;
+    padding:10px 22px; color:var(--muted); font-family:Helvetica,Arial,sans-serif;
+    font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase;
+    cursor:pointer; transition:all .3s;
+  }
+  .source-toggle button:hover { border-color:var(--violet); color:var(--violet); }
+  .source-panel { display:none; margin-top:16px; }
+  .source-panel.open { display:block; }
+  .lab-container {
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:24px; overflow:hidden;
+  }
+
+  /* CodeMirror theme overrides */
+  .CodeMirror {
+    background: var(--bg2) !important; color: var(--ink) !important;
+    border-radius: 10px; font-family: 'SF Mono','Fira Code','Consolas',monospace;
+    font-size: 0.85rem; line-height: 1.5; height: 420px;
+    border: 1px solid var(--border);
+  }
+  .CodeMirror-gutters { background: rgba(13,13,36,0.8) !important; border-right: 1px solid var(--border) !important; }
+  .CodeMirror-linenumber { color: var(--muted) !important; }
+  .CodeMirror-cursor { border-left-color: var(--gold) !important; }
+  .CodeMirror-selected { background: rgba(139,124,247,0.2) !important; }
+  .cm-keyword { color: var(--violet) !important; }
+  .cm-tag { color: var(--gold) !important; }
+  .cm-bracket { color: var(--muted) !important; }
+  .cm-atom { color: #5fd08a !important; }
+  .cm-comment { color: #6b6889 !important; font-style:italic; }
+  .cm-string { color: #e2708a !important; }
+  .cm-builtin { color: var(--gold) !important; }
+
+  /* ── Signup & Footer ────────────────────────────── */
+  .signup { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .signup input {
+    background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:100px;
+    padding:16px 24px; color:var(--ink); font-size:1rem; width:320px; max-width:100%;
+    font-family:Helvetica,Arial,sans-serif; outline:none; transition:border .3s;
+  }
+  .signup input:focus { border-color:var(--violet); }
+  .signup button {
+    background:linear-gradient(135deg, var(--gold), #d9a63f);
+    color:#1a1305; border:none; border-radius:100px; padding:16px 32px; font-size:0.9rem;
+    font-family:Helvetica,Arial,sans-serif; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    cursor:pointer; transition:transform .2s, box-shadow .3s;
+  }
+  .signup button:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(240,201,108,0.35); }
+  #signup-msg { color:var(--gold); margin-top:16px; font-style:italic; display:none; text-align:center; }
+  footer {
+    border-top:1px solid var(--border); padding:32px 0; text-align:center;
+    font-family:Helvetica,Arial,sans-serif; font-size:0.78rem; color:var(--muted);
+  }
+  footer a { color:var(--muted); text-decoration:none; margin:0 12px; transition:color .3s; }
+  footer a:hover { color:var(--gold); }
+  .forge-bar { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin:28px 0; }
+  .section-note { text-align:center; font-size:0.88rem; color:var(--muted); font-style:italic; max-width:500px; margin:0 auto 28px; }
+
+  @media (max-width:700px) {
+    .footer-grid { grid-template-columns:1fr 1fr; gap:28px; }
+    .footer-subscribe { grid-column:span 2; }
+    .footer-subscribe form { flex-direction:column; }
+  }
+
+  /* ── Responsive ─────────────────────────────────── */
+  @media (max-width:600px) {
+    header { padding:50px 0 40px; }
+    .signup input, .signup button { width:100%; }
+    .CodeMirror { height:320px; font-size:0.78rem; }
+    .lab-container { padding:14px; }
+    .tmpl-gallery { grid-template-columns:1fr 1fr; gap:10px; }
+    .tmpl-card { padding:14px 10px; }
+    .tmpl-card .tmpl-icon svg { width:44px; height:57px; }
+    .form-panel { padding:20px 16px; }
+    .field-row { flex-direction:column; }
+    .field { min-width:100%; }
+    .preview-frame { padding:24px 20px; font-size:0.8rem; min-height:400px; }
+    .preview-frame.arch-layout { flex-direction:column; }
+    .preview-frame.arch-layout .pv-sidebar { width:100%; }
+    .preview-frame.exec-layout .pv-header-bar { margin:-24px -20px 18px; padding:20px; border-radius:8px 8px 0 0; }
+    .letter-preview { padding:24px 20px; }
+    .job-search-bar input { min-width:100%; }
+    .letter-fields input { min-width:100%; }
+    .footer-grid { grid-template-columns:1fr; gap:24px; }
+    .footer-subscribe { grid-column:span 1; }
+    .footer-bottom { flex-direction:column; text-align:center; }
+  }
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+
+<div class="nav-full">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">Secrets <span>of the</span> University</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="finance.html">Finance</a>
+      <a href="health.html">Health</a>
+      <a class="cta-small" href="#enroll">Enroll</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light mode">☾</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Department of Careers</div>
+    <h1>The résumé is a <em>door</em>,<br>not a mirror.</h1>
+    <p class="sub">Most write what they did. Few write what they solved. Fewer still know the gatekeepers read fifteen seconds — then decide.</p>
+  </header>
+
+  <!-- ════ COURSE CATALOG ════ -->
+  <section>
+    <div class="section-label">Course Catalog</div>
+    <h2>Career lessons in session</h2>
+    <div class="lessons">
+      <div class="lesson">
+        <small>CAR 101</small>
+        <h3>"The résumé that survives the machine"</h3>
+        <p>Applicant tracking systems discard 75% of submissions before a human sees them. Format is doctrine.</p>
+      </div>
+      <div class="lesson">
+        <small>CAR 102</small>
+        <h3>"Interview answers they actually remember"</h3>
+        <p>The STAR method is known. The version that lands — situation, tension, resolution — is not taught.</p>
+      </div>
+      <div class="lesson">
+        <small>CAR 103</small>
+        <h3>"Salary negotiation: the silence after the number"</h3>
+        <p>Name a number and stop talking. The discomfort is the negotiation. Most people fill it — and lose.</p>
+      </div>
+      <div class="lesson">
+        <small>CAR 104</small>
+        <h3>"The network no one tells you to build"</h3>
+        <p>Not LinkedIn connections. Not coffee chats. The five-person board of advisors you assemble quietly.</p>
+      </div>
+      <div class="lesson">
+        <small>CAR 105</small>
+        <h3>"Cover letters that open doors"</h3>
+        <p>Three sentences. The problem they have. The proof you've solved it. The ask. Everything else is noise.</p>
+      </div>
+      <div class="lesson">
+        <small>CAR 106</small>
+        <h3>"The 90-day rule no manager explains"</h3>
+        <p>Reputation is set in the first quarter. What you do before you're asked determines what you're trusted with after.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ RESUME LAB ════ -->
+  <section id="lab">
+    <div class="section-label">Resume Lab</div>
+    <h2>Write yourself into the record</h2>
+    <p class="lab-intro">Choose a form. Fill the fields. The forge compiles.</p>
+
+    <!-- Template Gallery -->
+    <div class="tmpl-gallery" id="tmpl-gallery">
+      <div class="tmpl-card active" data-tmpl="classic">
+        <span class="tmpl-badge">Active</span>
+        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#f0c96c" stroke-width="1.2" fill="rgba(240,201,108,0.06)"/><circle cx="15" cy="16" r="7" stroke="#9b97b8" stroke-width="0.8" fill="none"/><line x1="28" y1="12" x2="50" y2="12" stroke="#e8e6f5" stroke-width="1.5"/><line x1="28" y1="17" x2="44" y2="17" stroke="#9b97b8" stroke-width="0.8"/><line x1="28" y1="21" x2="50" y2="21" stroke="#9b97b8" stroke-width="0.6"/><line x1="8" y1="32" x2="52" y2="32" stroke="#f0c96c" stroke-width="1"/><line x1="8" y1="38" x2="50" y2="38" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="42" x2="48" y2="42" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="50" x2="52" y2="50" stroke="#f0c96c" stroke-width="1"/><line x1="8" y1="56" x2="50" y2="56" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="60" x2="46" y2="60" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="64" x2="48" y2="64" stroke="#9b97b8" stroke-width="0.5"/></svg></span>
+        <div class="tmpl-name">The Classic</div>
+        <div class="tmpl-desc">Photo, gold accents, clean sections</div>
+      </div>
+      <div class="tmpl-card" data-tmpl="architect">
+        <span class="tmpl-badge">Active</span>
+        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#8b7cf7" stroke-width="1.2" fill="rgba(139,124,247,0.06)"/><rect x="1" y="1" width="20" height="76" rx="3" fill="rgba(26,26,46,0.7)" stroke="none"/><circle cx="11" cy="16" r="6" stroke="#f0c96c" stroke-width="0.8" fill="none"/><line x1="5" y1="28" x2="17" y2="28" stroke="#f0c96c" stroke-width="0.7"/><line x1="5" y1="33" x2="17" y2="33" stroke="#9b97b8" stroke-width="0.4"/><line x1="5" y1="36" x2="15" y2="36" stroke="#9b97b8" stroke-width="0.4"/><line x1="5" y1="44" x2="17" y2="44" stroke="#f0c96c" stroke-width="0.7"/><line x1="5" y1="49" x2="16" y2="49" stroke="#9b97b8" stroke-width="0.4"/><line x1="5" y1="52" x2="14" y2="52" stroke="#9b97b8" stroke-width="0.4"/><line x1="26" y1="10" x2="52" y2="10" stroke="#f0c96c" stroke-width="1"/><line x1="26" y1="17" x2="54" y2="17" stroke="#9b97b8" stroke-width="0.5"/><line x1="26" y1="21" x2="50" y2="21" stroke="#9b97b8" stroke-width="0.5"/><line x1="26" y1="30" x2="52" y2="30" stroke="#f0c96c" stroke-width="1"/><line x1="26" y1="37" x2="54" y2="37" stroke="#9b97b8" stroke-width="0.5"/><line x1="26" y1="41" x2="50" y2="41" stroke="#9b97b8" stroke-width="0.5"/><line x1="26" y1="45" x2="52" y2="45" stroke="#9b97b8" stroke-width="0.5"/><line x1="26" y1="53" x2="52" y2="53" stroke="#f0c96c" stroke-width="1"/><line x1="26" y1="60" x2="54" y2="60" stroke="#9b97b8" stroke-width="0.5"/></svg></span>
+        <div class="tmpl-name">The Architect</div>
+        <div class="tmpl-desc">Two-column sidebar layout</div>
+      </div>
+      <div class="tmpl-card" data-tmpl="minimalist">
+        <span class="tmpl-badge">Active</span>
+        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#9b97b8" stroke-width="1.2" fill="rgba(155,151,184,0.04)"/><line x1="16" y1="14" x2="44" y2="14" stroke="#e8e6f5" stroke-width="1.5"/><line x1="12" y1="20" x2="48" y2="20" stroke="#9b97b8" stroke-width="0.5"/><line x1="20" y1="26" x2="40" y2="26" stroke="#9b97b8" stroke-width="0.3"/><line x1="8" y1="36" x2="24" y2="36" stroke="#e8e6f5" stroke-width="0.8"/><line x1="8" y1="42" x2="50" y2="42" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="46" x2="48" y2="46" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="54" x2="24" y2="54" stroke="#e8e6f5" stroke-width="0.8"/><line x1="8" y1="60" x2="50" y2="60" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="64" x2="46" y2="64" stroke="#9b97b8" stroke-width="0.4"/></svg></span>
+        <div class="tmpl-name">The Minimalist</div>
+        <div class="tmpl-desc">Sans-serif, whitespace, pure type</div>
+      </div>
+      <div class="tmpl-card" data-tmpl="scholar">
+        <span class="tmpl-badge">Active</span>
+        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#8b7cf7" stroke-width="1.2" fill="rgba(139,124,247,0.04)"/><line x1="14" y1="12" x2="46" y2="12" stroke="#e8e6f5" stroke-width="1.5"/><line x1="18" y1="17" x2="42" y2="17" stroke="#8b7cf7" stroke-width="0.6"/><line x1="14" y1="22" x2="46" y2="22" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="30" x2="52" y2="30" stroke="#8b7cf7" stroke-width="1"/><line x1="8" y1="36" x2="50" y2="36" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="40" x2="48" y2="40" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="48" x2="52" y2="48" stroke="#8b7cf7" stroke-width="1"/><line x1="12" y1="54" x2="50" y2="54" stroke="#9b97b8" stroke-width="0.4"/><line x1="12" y1="58" x2="48" y2="58" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="66" x2="52" y2="66" stroke="#8b7cf7" stroke-width="1"/><line x1="8" y1="71" x2="46" y2="71" stroke="#9b97b8" stroke-width="0.4"/></svg></span>
+        <div class="tmpl-name">The Scholar</div>
+        <div class="tmpl-desc">Academic CV, publications, grants</div>
+      </div>
+      <div class="tmpl-card" data-tmpl="executive">
+        <span class="tmpl-badge">Active</span>
+        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#f0c96c" stroke-width="1.2" fill="rgba(240,201,108,0.04)"/><rect x="1" y="1" width="58" height="20" rx="3" fill="rgba(26,26,46,0.7)" stroke="none"/><line x1="8" y1="8" x2="36" y2="8" stroke="#fff" stroke-width="1.5"/><line x1="8" y1="13" x2="30" y2="13" stroke="#f0c96c" stroke-width="0.7"/><line x1="8" y1="17" x2="42" y2="17" stroke="rgba(255,255,255,0.4)" stroke-width="0.4"/><line x1="8" y1="28" x2="52" y2="28" stroke="#f0c96c" stroke-width="1"/><line x1="8" y1="34" x2="50" y2="34" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="38" x2="48" y2="38" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="46" x2="52" y2="46" stroke="#f0c96c" stroke-width="1"/><line x1="8" y1="52" x2="50" y2="52" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="56" x2="46" y2="56" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="60" x2="48" y2="60" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="68" x2="52" y2="68" stroke="#f0c96c" stroke-width="1"/></svg></span>
+        <div class="tmpl-name">The Executive</div>
+        <div class="tmpl-desc">Bold header, summary-first</div>
+      </div>
+    </div>
+
+    <!-- ── Resume Builder Form ── -->
+    <div class="form-panel" id="resume-form">
+
+      <div class="form-section">
+        <div class="form-section-title">✦ Contact</div>
+        <div class="field-row">
+          <div class="field"><label>Full Name</label><input type="text" id="f-name" placeholder="Jane Doe"></div>
+          <div class="field"><label>Title</label><input type="text" id="f-title" placeholder="Software Engineer"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Email</label><input type="email" id="f-email" placeholder="jane@example.com"></div>
+          <div class="field"><label>Phone</label><input type="text" id="f-phone" placeholder="(555) 123-4567"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>City, State</label><input type="text" id="f-location" placeholder="New York, NY"></div>
+          <div class="field"><label>LinkedIn</label><input type="text" id="f-linkedin" placeholder="linkedin.com/in/janedoe"></div>
+          <div class="field"><label>GitHub / Portfolio</label><input type="text" id="f-github" placeholder="github.com/janedoe"></div>
+        </div>
+        <div class="field-row" id="photo-toggle-row">
+          <div class="field">
+            <div class="toggle-row">
+              <div class="toggle-switch" id="photo-toggle" onclick="this.classList.toggle('on'); updateAll()"></div>
+              <span class="toggle-label">Include photo placeholder</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">✦ Profile</div>
+        <div class="field-row">
+          <div class="field full"><textarea id="f-profile" rows="3" placeholder="Two to three sentences. What you do, what you are known for, and what you seek."></textarea></div>
+        </div>
+      </div>
+
+      <div class="form-section visible" id="sec-highlights" data-show="classic,executive">
+        <div class="form-section-title">✦ Highlights</div>
+        <div class="field-row"><div class="field full"><input type="text" id="f-hl1" placeholder="e.g., Reduced API latency 40% across 12 microservices"></div></div>
+        <div class="field-row"><div class="field full"><input type="text" id="f-hl2" placeholder="e.g., Led 5-person team shipping $2M product feature"></div></div>
+        <div class="field-row"><div class="field full"><input type="text" id="f-hl3" placeholder="e.g., Published 3 peer-reviewed papers in NLP"></div></div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">✦ Experience</div>
+        <div id="exp-list">
+          <div class="exp-block" data-idx="0">
+            <button class="remove-exp" onclick="removeExp(this)" title="Remove">×</button>
+            <div class="field-row">
+              <div class="field"><label>Job Title</label><input type="text" class="exp-title" placeholder="Senior Engineer"></div>
+              <div class="field"><label>Company</label><input type="text" class="exp-company" placeholder="Acme Corp"></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label>Location</label><input type="text" class="exp-loc" placeholder="San Francisco, CA"></div>
+              <div class="field"><label>Start</label><input type="text" class="exp-start" placeholder="Jan 2022"></div>
+              <div class="field"><label>End</label><input type="text" class="exp-end" placeholder="Present"></div>
+            </div>
+            <div class="field-row"><div class="field full"><input type="text" class="exp-b1" placeholder="Achievement or responsibility #1"></div></div>
+            <div class="field-row"><div class="field full"><input type="text" class="exp-b2" placeholder="Achievement or responsibility #2"></div></div>
+            <div class="field-row"><div class="field full"><input type="text" class="exp-b3" placeholder="Achievement or responsibility #3"></div></div>
+          </div>
+        </div>
+        <button class="btn-add" onclick="addExp()">+ Add Role</button>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">✦ Skills</div>
+        <div class="field-row">
+          <div class="field full">
+            <input type="text" id="f-skills" placeholder="Python, React, AWS, Docker, SQL, TensorFlow (comma-separated)">
+            <div class="skills-display" id="skills-display"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">✦ Education</div>
+        <div class="field-row">
+          <div class="field"><label>Degree</label><input type="text" id="f-degree" placeholder="B.S. Computer Science"></div>
+          <div class="field"><label>University</label><input type="text" id="f-uni" placeholder="MIT"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Location</label><input type="text" id="f-edu-loc" placeholder="Cambridge, MA"></div>
+          <div class="field"><label>Year</label><input type="text" id="f-edu-year" placeholder="2020"></div>
+          <div class="field"><label>Honors / Notes</label><input type="text" id="f-honors" placeholder="Magna Cum Laude, Dean's List"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ JOB SEARCH ════ -->
+  <section id="seek">
+    <div class="section-label">Seek</div>
+    <h2 class="mb-sm">The gate opens for those who knock</h2>
+    <p class="section-note">Your title and skills become the search. Choose a gate.</p>
+
+    <div class="job-search-bar">
+      <input type="text" id="job-keywords" placeholder="Keywords (auto-filled from your resume)">
+      <input type="text" id="job-location" placeholder="Location (optional)">
+    </div>
+    <div class="job-sites" id="job-sites">
+      <a class="job-site-btn" data-site="indeed" href="#" target="_blank"><span class="site-dot" style="background:#2164f3"></span> Indeed</a>
+      <a class="job-site-btn" data-site="linkedin" href="#" target="_blank"><span class="site-dot" style="background:#0a66c2"></span> LinkedIn</a>
+      <a class="job-site-btn" data-site="glassdoor" href="#" target="_blank"><span class="site-dot" style="background:#0caa41"></span> Glassdoor</a>
+      <a class="job-site-btn" data-site="google" href="#" target="_blank"><span class="site-dot" style="background:#ea4335"></span> Google Jobs</a>
+      <a class="job-site-btn" data-site="ziprecruiter" href="#" target="_blank"><span class="site-dot" style="background:#5ba727"></span> ZipRecruiter</a>
+    </div>
+
+    <div class="job-paste-area">
+      <label>Found a listing? Paste the job description below for your cover letter.</label>
+      <textarea id="job-desc" placeholder="Paste the full job description here..."></textarea>
+    </div>
+  </section>
+
+  <!-- ════ COVER LETTER ════ -->
+  <section id="letter">
+    <div class="section-label">The Letter</div>
+    <h2 class="mb-sm">Every door has a knock</h2>
+    <p class="section-note">Fill in the company and role. The letter writes from your record.</p>
+
+    <div class="letter-container">
+      <div class="letter-fields">
+        <input type="text" id="cl-company" placeholder="Company name">
+        <input type="text" id="cl-position" placeholder="Position title">
+      </div>
+      <div class="letter-preview" id="letter-output">
+        <div class="letter-placeholder">Fill your resume, paste a job description, and enter the company above. The letter appears.</div>
+      </div>
+      <div class="letter-actions">
+        <form id="letter-overleaf" action="https://www.overleaf.com/docs" method="post" target="_blank">
+          <input type="hidden" name="encoded_snip" id="letter-snip" value="">
+          <button type="submit" class="btn-gold" onclick="document.getElementById('letter-snip').value=encodeURIComponent(generateCoverLetterLaTeX())">Forge Letter</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ RESUME PREVIEW ════ -->
+  <section id="preview">
+    <div class="section-label">The Record</div>
+    <h2 class="mb-sm">Your resume, rendered</h2>
+    <p class="section-note">A live preview. What you type above appears below.</p>
+
+    <div id="preview-output" class="preview-frame">
+      <div class="pv-placeholder">Begin filling the form above. The record materializes here.</div>
+    </div>
+
+    <!-- Forge + View Source -->
+    <div class="forge-bar">
+      <form id="overleaf-form" action="https://www.overleaf.com/docs" method="post" target="_blank">
+        <input type="hidden" name="encoded_snip" id="encoded-snip" value="">
+        <button type="submit" class="btn-gold" id="forge-btn">✦ Forge Resume</button>
+      </form>
+    </div>
+    <div class="source-toggle">
+      <button onclick="toggleSource()">View LaTeX Source</button>
+    </div>
+    <div class="source-panel" id="source-panel">
+      <div class="lab-container">
+        <textarea id="latex-editor"></textarea>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer" id="enroll">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-col-title">Departments</div>
+        <a href="finance.html">Finance</a>
+        <a href="health.html">Health</a>
+        <a href="careers.html">Careers</a>
+        <span style="opacity:0.4;">Systems — coming</span>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Resources</div>
+        <a href="#lab">Resume Lab</a>
+        <a href="#seek">Job Search</a>
+        <a href="#letter">Cover Letter</a>
+        <a href="finance.html#feed">The Wire</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Connect</div>
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">YouTube</a>
+      </div>
+      <div class="footer-col footer-subscribe">
+        <div class="footer-col-title">Stay Informed</div>
+        <p>One career secret a week. No noise.</p>
+        <!-- Signup (front-end only — connect a form service to make it live) -->
+        <form onsubmit="return footerJoin(event)">
+          <input type="email" placeholder="your@email.com" required>
+          <button type="submit">Enter</button>
+        </form>
+        <div class="sub-msg" id="footer-msg">You are enrolled. Watch your inbox. ✦</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        © 2026 Secrets of the University · <a href="#">Privacy</a> · <a href="#">Terms</a>
+      </div>
+      <div class="footer-socials">
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">YouTube</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/stex/stex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/scroll/simplescrollbars.min.js"></script>
+<script>
+// ══════════════════════════════════════════════════════
+// STARFIELD
+// ══════════════════════════════════════════════════════
+const c = document.getElementById('stars'), ctx = c.getContext('2d');
+let stars = [];
+function resize(){
+  c.width = innerWidth; c.height = innerHeight;
+  stars = Array.from({length: Math.min(180, innerWidth/6)}, () => ({
+    x: Math.random()*c.width, y: Math.random()*c.height,
+    r: Math.random()*1.4+0.3, p: Math.random()*Math.PI*2, s: Math.random()*0.02+0.005
+  }));
+}
+resize(); addEventListener('resize', resize);
+(function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  const isLight = document.documentElement.classList.contains('light');
+  const SOLAR = [[240,201,108],[232,163,48],[245,208,160],[255,180,100]];
+  for (const st of stars){
+    st.p += st.s;
+    const a = 0.25 + Math.abs(Math.sin(st.p))*0.6;
+    if (isLight) {
+      const col = SOLAR[Math.floor((st.x+st.y)*7) % SOLAR.length];
+      const sz = st.r * 3.5 + 1.5;
+      const glow = ctx.createRadialGradient(st.x,st.y,0, st.x,st.y, sz*3);
+      glow.addColorStop(0, `rgba(${col[0]},${col[1]},${col[2]},${a*0.55})`);
+      glow.addColorStop(0.35, `rgba(${col[0]},${col[1]},${col[2]},${a*0.18})`);
+      glow.addColorStop(1, `rgba(${col[0]},${col[1]},${col[2]},0)`);
+      ctx.beginPath(); ctx.arc(st.x,st.y, sz*3, 0, Math.PI*2);
+      ctx.fillStyle = glow; ctx.fill();
+      ctx.beginPath(); ctx.arc(st.x,st.y, sz*0.5, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,248,230,${a*0.7})`; ctx.fill();
+    } else {
+      ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(232,230,245,${a})`; ctx.fill();
+    }
+  }
+  requestAnimationFrame(draw);
+})();
+
+// Theme toggle — persists across pages via cookie
+if (document.cookie.includes('theme=light')) {
+  document.documentElement.classList.add('light');
+  document.querySelector('.theme-toggle').textContent = '☀';
+}
+function toggleTheme() {
+  const isLight = document.documentElement.classList.toggle('light');
+  document.querySelector('.theme-toggle').textContent = isLight ? '☀' : '☾';
+  document.cookie = 'theme=' + (isLight ? 'light' : 'dark') + ';path=/;SameSite=Lax';
+}
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let currentTemplate = 'classic';
+let expCount = 1;
+
+// ══════════════════════════════════════════════════════
+// CODEMIRROR
+// ══════════════════════════════════════════════════════
+const editor = CodeMirror.fromTextArea(document.getElementById('latex-editor'), {
+  mode: 'stex', lineNumbers: true, matchBrackets: true, autoCloseBrackets: true,
+  styleActiveLine: true, scrollbarStyle: 'simple', tabSize: 2, indentWithTabs: false, lineWrapping: true
+});
+
+// ══════════════════════════════════════════════════════
+// FORM DATA READER
+// ══════════════════════════════════════════════════════
+function getFormData() {
+  const exps = [];
+  document.querySelectorAll('.exp-block').forEach(block => {
+    exps.push({
+      title: block.querySelector('.exp-title')?.value || '',
+      company: block.querySelector('.exp-company')?.value || '',
+      location: block.querySelector('.exp-loc')?.value || '',
+      start: block.querySelector('.exp-start')?.value || '',
+      end: block.querySelector('.exp-end')?.value || '',
+      bullets: [
+        block.querySelector('.exp-b1')?.value || '',
+        block.querySelector('.exp-b2')?.value || '',
+        block.querySelector('.exp-b3')?.value || ''
+      ].filter(b => b.trim())
+    });
+  });
+  const skillsRaw = document.getElementById('f-skills').value;
+  const skills = skillsRaw.split(',').map(s => s.trim()).filter(s => s);
+
+  return {
+    name: document.getElementById('f-name').value,
+    title: document.getElementById('f-title').value,
+    email: document.getElementById('f-email').value,
+    phone: document.getElementById('f-phone').value,
+    location: document.getElementById('f-location').value,
+    linkedin: document.getElementById('f-linkedin').value,
+    github: document.getElementById('f-github').value,
+    photo: document.getElementById('photo-toggle').classList.contains('on'),
+    profile: document.getElementById('f-profile').value,
+    hl1: document.getElementById('f-hl1').value,
+    hl2: document.getElementById('f-hl2').value,
+    hl3: document.getElementById('f-hl3').value,
+    experience: exps,
+    skills,
+    degree: document.getElementById('f-degree').value,
+    university: document.getElementById('f-uni').value,
+    eduLocation: document.getElementById('f-edu-loc').value,
+    eduYear: document.getElementById('f-edu-year').value,
+    honors: document.getElementById('f-honors').value
+  };
+}
+
+// ══════════════════════════════════════════════════════
+// EXPERIENCE MANAGEMENT
+// ══════════════════════════════════════════════════════
+function addExp() {
+  expCount++;
+  const list = document.getElementById('exp-list');
+  const block = document.createElement('div');
+  block.className = 'exp-block';
+  block.innerHTML = `
+    <button class="remove-exp" onclick="removeExp(this)" title="Remove">×</button>
+    <div class="field-row">
+      <div class="field"><label>Job Title</label><input type="text" class="exp-title" placeholder="Job Title"></div>
+      <div class="field"><label>Company</label><input type="text" class="exp-company" placeholder="Company"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Location</label><input type="text" class="exp-loc" placeholder="Location"></div>
+      <div class="field"><label>Start</label><input type="text" class="exp-start" placeholder="Start"></div>
+      <div class="field"><label>End</label><input type="text" class="exp-end" placeholder="End"></div>
+    </div>
+    <div class="field-row"><div class="field full"><input type="text" class="exp-b1" placeholder="Achievement #1"></div></div>
+    <div class="field-row"><div class="field full"><input type="text" class="exp-b2" placeholder="Achievement #2"></div></div>
+    <div class="field-row"><div class="field full"><input type="text" class="exp-b3" placeholder="Achievement #3"></div></div>`;
+  list.appendChild(block);
+  block.querySelectorAll('input').forEach(i => i.addEventListener('input', updateAll));
+}
+function removeExp(btn) {
+  const blocks = document.querySelectorAll('.exp-block');
+  if (blocks.length <= 1) return;
+  btn.closest('.exp-block').remove();
+  updateAll();
+}
+
+// ══════════════════════════════════════════════════════
+// SKILLS DISPLAY
+// ══════════════════════════════════════════════════════
+function updateSkillsPills() {
+  const raw = document.getElementById('f-skills').value;
+  const display = document.getElementById('skills-display');
+  const skills = raw.split(',').map(s => s.trim()).filter(s => s);
+  display.innerHTML = skills.map(s => `<span class="skill-pill">${s}</span>`).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// TEMPLATE GALLERY
+// ══════════════════════════════════════════════════════
+const TMPL_SECTIONS = {
+  classic: ['sec-highlights'],
+  architect: [],
+  minimalist: [],
+  scholar: [],
+  executive: ['sec-highlights']
+};
+const PHOTO_TEMPLATES = ['classic', 'architect'];
+
+document.getElementById('tmpl-gallery').addEventListener('click', function(e) {
+  const card = e.target.closest('.tmpl-card');
+  if (!card) return;
+  const key = card.dataset.tmpl;
+  currentTemplate = key;
+
+  this.querySelectorAll('.tmpl-card').forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+
+  // Show/hide conditional sections
+  document.querySelectorAll('[data-show]').forEach(sec => {
+    const showFor = sec.dataset.show.split(',');
+    sec.classList.toggle('visible', showFor.includes(key));
+  });
+
+  // Photo toggle visibility
+  document.getElementById('photo-toggle-row').style.display = PHOTO_TEMPLATES.includes(key) ? '' : 'none';
+
+  updateAll();
+});
+
+// ══════════════════════════════════════════════════════
+// LaTeX ESCAPE
+// ══════════════════════════════════════════════════════
+function tex(s) {
+  return s.replace(/\\/g,'\\textbackslash{}')
+    .replace(/[&%$#_{}]/g, m => '\\' + m)
+    .replace(/~/g,'\\textasciitilde{}')
+    .replace(/\^/g,'\\textasciicircum{}');
+}
+
+// ══════════════════════════════════════════════════════
+// FORM → LaTeX GENERATOR
+// ══════════════════════════════════════════════════════
+function generateLaTeX() {
+  const d = getFormData();
+  const n = d.name || '[YOUR NAME]';
+  const t = d.title || '[YOUR TITLE]';
+  const e = d.email || '[EMAIL]';
+
+  if (currentTemplate === 'classic') return genClassic(d);
+  if (currentTemplate === 'architect') return genArchitect(d);
+  if (currentTemplate === 'minimalist') return genMinimalist(d);
+  if (currentTemplate === 'scholar') return genScholar(d);
+  if (currentTemplate === 'executive') return genExecutive(d);
+  return genClassic(d);
+}
+
+function genExpBlock(exps) {
+  return exps.filter(e => e.title || e.company).map(e => {
+    let s = `\\textbf{${tex(e.title || '[TITLE]')}} \\hfill ${tex(e.start || '[START]')} -- ${tex(e.end || '[END]')}\\\\
+\\textit{${tex(e.company || '[COMPANY]')}} \\hfill ${tex(e.location || '[LOCATION]')}`;
+    if (e.bullets.length) {
+      s += `\n\\begin{itemize}[leftmargin=1.2em, itemsep=2pt]\n` +
+        e.bullets.map(b => `  \\item ${tex(b)}`).join('\n') +
+        `\n\\end{itemize}`;
+    }
+    return s;
+  }).join('\n\n\\vspace{6pt}\n');
+}
+
+function genSkillsLine(skills) {
+  return skills.length ? skills.map(s => tex(s)).join(' \\enspace\\textbar{}\\enspace ') : '[Skills]';
+}
+
+function genClassic(d) {
+  let photo = '';
+  if (d.photo) {
+    photo = `\\begin{minipage}[t]{0.22\\textwidth}
+  \\vspace{0pt}
+  \\begin{tikzpicture}
+    \\clip (0,0) circle (1.4cm);
+    \\fill[gray!20] (-1.4,-1.4) rectangle (2.8,2.8);
+    \\node at (1.4,1.4) {\\footnotesize Photo};
+  \\end{tikzpicture}
+\\end{minipage}%
+\\hfill
+\\begin{minipage}[t]{0.74\\textwidth}
+  \\vspace{0pt}`;
+  }
+  let header = `{\\LARGE\\bfseries ${tex(d.name || '[YOUR NAME]')}}\\\\[6pt]
+${tex(d.title || '[YOUR TITLE]')}\\\\[4pt]
+\\small
+\\href{mailto:${d.email || '[EMAIL]'}}{${tex(d.email || '[EMAIL]')}} \\quad
+${tex(d.phone || '[PHONE]')} \\quad
+\\href{https://${d.linkedin || 'linkedin.com/in/handle'}}{LinkedIn} \\quad
+\\href{https://${d.github || 'github.com/handle'}}{GitHub} \\quad
+${tex(d.location || '[CITY, STATE]')}`;
+  if (d.photo) header += `\n\\end{minipage}`;
+
+  const highlights = (d.hl1 || d.hl2 || d.hl3) ?
+    `\\section{Highlights}\n\\begin{itemize}[leftmargin=1.2em, itemsep=2pt]\n` +
+    [d.hl1,d.hl2,d.hl3].filter(h=>h).map(h => `  \\item ${tex(h)}`).join('\n') +
+    `\n\\end{itemize}` : '';
+
+  return `\\documentclass[11pt,a4paper]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage[margin=0.75in]{geometry}
+\\usepackage{titlesec}
+\\usepackage{enumitem}
+\\usepackage{xcolor}
+\\usepackage{hyperref}
+\\usepackage{tikz}
+\\usepackage{parskip}
+
+\\definecolor{gold}{HTML}{F0C96C}
+\\definecolor{ink}{HTML}{2B2B3D}
+\\hypersetup{colorlinks=true, urlcolor=gold}
+\\pagecolor{white}
+\\color{ink}
+\\titleformat{\\section}{\\large\\bfseries\\color{gold}}{}{0em}{}[\\titlerule]
+\\titlespacing{\\section}{0pt}{14pt}{6pt}
+\\pagestyle{empty}
+
+\\begin{document}
+
+${photo}
+${header}
+
+\\vspace{10pt}
+
+\\section{Profile}
+${tex(d.profile || '[Your profile summary]')}
+
+${highlights}
+
+\\section{Experience}
+${genExpBlock(d.experience)}
+
+\\section{Skills}
+${genSkillsLine(d.skills)}
+
+\\section{Education}
+\\textbf{${tex(d.degree || '[DEGREE]')}} \\hfill ${tex(d.eduYear || '[YEAR]')}\\\\
+\\textit{${tex(d.university || '[UNIVERSITY]')}} \\hfill ${tex(d.eduLocation || '[LOCATION]')}\\\\
+\\small ${tex(d.honors || '[Honors]')}
+
+\\end{document}`;
+}
+
+function genArchitect(d) {
+  return `\\documentclass[11pt,a4paper]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage[margin=0.5in]{geometry}
+\\usepackage{titlesec}
+\\usepackage{enumitem}
+\\usepackage{xcolor}
+\\usepackage{hyperref}
+\\usepackage{tikz}
+\\usepackage{parskip}
+
+\\definecolor{sidebar}{HTML}{1A1A2E}
+\\definecolor{gold}{HTML}{F0C96C}
+\\definecolor{ink}{HTML}{2B2B3D}
+\\definecolor{light}{HTML}{F5F5F5}
+\\hypersetup{colorlinks=true, urlcolor=gold}
+\\pagestyle{empty}
+\\titleformat{\\section}{\\normalsize\\bfseries\\color{gold}\\uppercase}{}{0em}{}[\\titlerule]
+\\titlespacing{\\section}{0pt}{12pt}{6pt}
+
+\\begin{document}
+\\noindent
+\\begin{minipage}[t]{0.30\\textwidth}
+\\colorbox{sidebar}{%
+\\begin{minipage}[t][\\textheight]{\\linewidth}
+\\color{light}
+\\vspace{16pt}
+\\centering
+${d.photo ? `\\begin{tikzpicture}
+  \\clip (0,0) circle (1.6cm);
+  \\fill[gray!30] (-1.6,-1.6) rectangle (3.2,3.2);
+  \\node at (1.6,1.6) {\\footnotesize Photo};
+\\end{tikzpicture}
+\\vspace{12pt}` : ''}
+{\\large\\bfseries ${tex(d.name || '[NAME]')}}
+\\vspace{4pt}
+{\\small\\color{gold} ${tex(d.title || '[TITLE]')}}
+\\vspace{16pt}
+\\raggedright\\small
+\\textbf{\\color{gold} CONTACT}\\\\[6pt]
+${tex(d.email || '[EMAIL]')}\\\\[3pt]
+${tex(d.phone || '[PHONE]')}\\\\[3pt]
+${tex(d.location || '[CITY, STATE]')}\\\\[3pt]
+${tex(d.linkedin || '[LinkedIn]')}\\\\[3pt]
+${tex(d.github || '[GitHub]')}
+\\vspace{14pt}
+\\textbf{\\color{gold} SKILLS}\\\\[6pt]
+${d.skills.length ? d.skills.map(s => tex(s)).join('\\\\[2pt]\n') : '[Skills]'}
+\\vspace{14pt}
+\\textbf{\\color{gold} EDUCATION}\\\\[6pt]
+\\textbf{${tex(d.degree || '[DEGREE]')}}\\\\[2pt]
+${tex(d.university || '[University]')}\\\\[2pt]
+{\\footnotesize ${tex(d.eduYear || '[YEAR]')}}
+\\vspace{\\fill}
+\\end{minipage}}
+\\end{minipage}%
+\\hfill
+\\begin{minipage}[t]{0.66\\textwidth}
+\\color{ink}
+\\vspace{8pt}
+\\section{Profile}
+${tex(d.profile || '[Profile summary]')}
+\\section{Experience}
+${genExpBlock(d.experience)}
+\\end{minipage}
+\\end{document}`;
+}
+
+function genMinimalist(d) {
+  return `\\documentclass[11pt,a4paper]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage[margin=1in]{geometry}
+\\usepackage{titlesec}
+\\usepackage{enumitem}
+\\usepackage{xcolor}
+\\usepackage{hyperref}
+\\usepackage{parskip}
+
+\\definecolor{ink}{HTML}{222222}
+\\definecolor{mid}{HTML}{666666}
+\\definecolor{rule}{HTML}{CCCCCC}
+\\hypersetup{colorlinks=true, urlcolor=ink}
+\\pagestyle{empty}
+\\renewcommand{\\familydefault}{\\sfdefault}
+\\color{ink}
+\\titleformat{\\section}{\\normalsize\\bfseries\\uppercase}{}{0em}{}
+\\titlespacing{\\section}{0pt}{20pt}{8pt}
+
+\\begin{document}
+\\begin{center}
+  {\\LARGE ${tex(d.name || '[YOUR NAME]')}}\\\\[8pt]
+  {\\small\\color{mid}
+    ${tex(d.email || '[EMAIL]')} \\enspace\\textbar{}\\enspace
+    ${tex(d.phone || '[PHONE]')} \\enspace\\textbar{}\\enspace
+    ${tex(d.location || '[LOCATION]')} \\enspace\\textbar{}\\enspace
+    \\href{https://${d.linkedin || 'linkedin.com'}}{LinkedIn}
+  }
+\\end{center}
+\\vspace{6pt}
+\\noindent\\textcolor{rule}{\\rule{\\textwidth}{0.4pt}}
+
+\\section{About}
+${tex(d.profile || '[About you]')}
+
+\\section{Experience}
+${d.experience.filter(e=>e.title||e.company).map(e => `{\\textbf{${tex(e.title||'[TITLE]')}}} \\hfill {\\small\\color{mid} ${tex(e.start||'')} -- ${tex(e.end||'')}}\\\\
+{\\color{mid} ${tex(e.company||'')} \\enspace\\textbar{}\\enspace ${tex(e.location||'')}}
+\\begin{itemize}[leftmargin=1em, itemsep=3pt, topsep=6pt, label={}]
+${e.bullets.map(b => `  \\item ${tex(b)}`).join('\n')}
+\\end{itemize}`).join('\n\n\\vspace{8pt}\n')}
+
+\\section{Education}
+{\\textbf{${tex(d.degree || '[DEGREE]')}}} \\hfill {\\small\\color{mid} ${tex(d.eduYear || '[YEAR]')}}\\\\
+{\\color{mid} ${tex(d.university || '[University]')}}
+
+\\section{Skills}
+{\\small ${genSkillsLine(d.skills)}}
+
+\\end{document}`;
+}
+
+function genScholar(d) {
+  return `\\documentclass[11pt,a4paper]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage[margin=0.8in]{geometry}
+\\usepackage{titlesec}
+\\usepackage{enumitem}
+\\usepackage{xcolor}
+\\usepackage{hyperref}
+\\usepackage{parskip}
+
+\\definecolor{navy}{HTML}{1A1A3E}
+\\definecolor{accent}{HTML}{8B7CF7}
+\\hypersetup{colorlinks=true, urlcolor=accent, linkcolor=navy}
+\\color{navy}
+\\pagestyle{empty}
+\\titleformat{\\section}{\\large\\bfseries\\color{navy}}{}{0em}{}[{\\color{accent}\\titlerule}]
+\\titlespacing{\\section}{0pt}{16pt}{6pt}
+
+\\begin{document}
+\\begin{center}
+  {\\LARGE\\bfseries ${tex(d.name || '[YOUR NAME]')}}\\\\[6pt]
+  {\\large ${tex(d.title || '[Department / Field]')}}\\\\[4pt]
+  {\\small
+    \\href{mailto:${d.email || ''}}{${tex(d.email || '[EMAIL]')}} \\quad|\\quad
+    ${tex(d.phone || '[PHONE]')} \\quad|\\quad
+    ${tex(d.linkedin || '[website]')}
+  }
+\\end{center}
+
+\\section{Research Interests}
+${tex(d.profile || '[Your research focus and methodology]')}
+
+\\section{Education}
+\\textbf{${tex(d.degree || '[DEGREE]')}} \\hfill ${tex(d.eduYear || '[YEAR]')}\\\\
+\\textit{${tex(d.university || '[UNIVERSITY]')}} \\hfill ${tex(d.eduLocation || '[LOCATION]')}\\\\
+${d.honors ? `{\\small ${tex(d.honors)}}` : ''}
+
+\\section{Academic Appointments}
+${genExpBlock(d.experience)}
+
+\\section{Publications}
+\\begin{enumerate}[leftmargin=1.4em, itemsep=4pt]
+  \\item [Add your publications here]
+\\end{enumerate}
+
+\\section{Technical Skills}
+${genSkillsLine(d.skills)}
+
+\\end{document}`;
+}
+
+function genExecutive(d) {
+  const highlights = [d.hl1,d.hl2,d.hl3].filter(h=>h);
+  return `\\documentclass[11pt,a4paper]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage[margin=0.65in]{geometry}
+\\usepackage{titlesec}
+\\usepackage{enumitem}
+\\usepackage{xcolor}
+\\usepackage{hyperref}
+\\usepackage{tikz}
+\\usepackage{parskip}
+
+\\definecolor{header}{HTML}{1A1A2E}
+\\definecolor{gold}{HTML}{F0C96C}
+\\definecolor{ink}{HTML}{2B2B3D}
+\\definecolor{mid}{HTML}{555555}
+\\hypersetup{colorlinks=true, urlcolor=ink}
+\\pagestyle{empty}
+\\color{ink}
+\\titleformat{\\section}{\\normalsize\\bfseries\\uppercase}{}{0em}{}[{\\color{gold}\\titlerule[1.2pt]}]
+\\titlespacing{\\section}{0pt}{16pt}{6pt}
+
+\\begin{document}
+\\noindent
+\\begin{tikzpicture}[remember picture, overlay]
+  \\fill[header] (current page.north west) rectangle ([yshift=-3.2cm]current page.north east);
+\\end{tikzpicture}
+\\vspace*{-20pt}
+
+\\noindent
+{\\color{white}\\LARGE\\bfseries ${tex(d.name || '[YOUR NAME]')}}\\\\[6pt]
+{\\color{gold}\\large ${tex(d.title || '[TITLE]')}}\\\\[6pt]
+{\\color{white}\\small
+  \\href{mailto:${d.email || ''}}{${tex(d.email || '[EMAIL]')}} \\quad\\textbar{}\\quad
+  ${tex(d.phone || '[PHONE]')} \\quad\\textbar{}\\quad
+  ${tex(d.location || '[LOCATION]')} \\quad\\textbar{}\\quad
+  \\href{https://${d.linkedin || 'linkedin.com'}}{LinkedIn}
+}
+
+\\vspace{24pt}
+
+\\section{Executive Summary}
+${tex(d.profile || '[Your executive summary]')}
+
+${highlights.length ? `\\section{Key Achievements}
+\\begin{itemize}[leftmargin=1.2em, itemsep=4pt]
+${highlights.map(h => `  \\item \\textbf{${tex(h)}}`).join('\n')}
+\\end{itemize}` : ''}
+
+\\section{Experience}
+${genExpBlock(d.experience)}
+
+\\section{Education}
+\\textbf{${tex(d.degree || '[DEGREE]')}} --- \\textit{${tex(d.university || '[UNIVERSITY]')}} \\hfill {\\small ${tex(d.eduYear || '[YEAR]')}}
+
+\\section{Skills \\& Expertise}
+{\\small ${genSkillsLine(d.skills)}}
+
+\\end{document}`;
+}
+
+// ══════════════════════════════════════════════════════
+// LIVE PREVIEW RENDERER
+// ══════════════════════════════════════════════════════
+function renderPreview() {
+  const d = getFormData();
+  const el = document.getElementById('preview-output');
+
+  if (!d.name && !d.title && !d.email && !d.profile) {
+    el.className = 'preview-frame';
+    el.innerHTML = '<div class="pv-placeholder">Begin filling the form above. The record materializes here.</div>';
+    return;
+  }
+
+  const contact = [d.email, d.phone, d.location, d.linkedin, d.github].filter(x=>x);
+  const contactHtml = contact.map(c => {
+    if (c.includes('@')) return `<a href="mailto:${c}">${c}</a>`;
+    if (c.includes('linkedin') || c.includes('github')) return `<a href="https://${c}" target="_blank">${c}</a>`;
+    return c;
+  }).join(' · ');
+
+  const expHtml = d.experience.filter(e => e.title || e.company).map(e => `
+    <div style="margin-bottom:12px;">
+      <div class="pv-exp-title">${e.title || ''} <span style="float:right;font-weight:400;font-size:0.78rem;color:#888;">${e.start||''} – ${e.end||''}</span></div>
+      <div class="pv-exp-meta">${e.company || ''} ${e.location ? '· '+e.location : ''}</div>
+      ${e.bullets.length ? '<ul class="pv-exp-bullets">' + e.bullets.map(b => `<li>${b}</li>`).join('') + '</ul>' : ''}
+    </div>`).join('');
+
+  const skillsHtml = d.skills.length ?
+    '<div class="pv-skills-pills">' + d.skills.map(s => `<span class="pv-skill">${s}</span>`).join('') + '</div>' : '';
+
+  const eduHtml = (d.degree || d.university) ? `
+    <div><strong>${d.degree||''}</strong> <span style="float:right;font-size:0.78rem;color:#888;">${d.eduYear||''}</span></div>
+    <div class="pv-exp-meta">${d.university||''} ${d.eduLocation ? '· '+d.eduLocation : ''}</div>
+    ${d.honors ? '<div style="font-size:0.78rem;color:#888;margin-top:2px;">' + d.honors + '</div>' : ''}` : '';
+
+  const hlItems = [d.hl1,d.hl2,d.hl3].filter(h=>h);
+  const hlHtml = hlItems.length ? '<ul class="pv-exp-bullets">' + hlItems.map(h => `<li>${h}</li>`).join('') + '</ul>' : '';
+
+  const sectionHead = (label, cls) => `<div class="pv-section-head ${cls||''}">${label}</div>`;
+
+  if (currentTemplate === 'architect') {
+    el.className = 'preview-frame arch-layout';
+    el.innerHTML = `
+      <div class="pv-sidebar">
+        ${d.photo ? '<div style="text-align:center;margin-bottom:12px;"><div class="pv-photo" style="margin:0 auto;">Photo</div></div>' : ''}
+        <div style="text-align:center;margin-bottom:14px;">
+          <div style="font-size:1.1rem;font-weight:700;">${d.name||'Your Name'}</div>
+          <div style="font-size:0.78rem;color:#f0c96c;margin-top:4px;">${d.title||''}</div>
+        </div>
+        ${sectionHead('Contact','')}<div style="font-size:0.72rem;line-height:1.8;margin-bottom:14px;">${[d.email,d.phone,d.location,d.linkedin,d.github].filter(x=>x).join('<br>')}</div>
+        ${sectionHead('Skills','')}<div style="font-size:0.72rem;line-height:1.8;">${d.skills.join('<br>')||'Skills'}</div>
+        ${sectionHead('Education','')}<div style="font-size:0.72rem;line-height:1.6;"><strong>${d.degree||''}</strong><br>${d.university||''}<br>${d.eduYear||''}</div>
+      </div>
+      <div class="pv-main">
+        ${sectionHead('Profile','')}
+        <p style="font-size:0.84rem;color:#555;margin-bottom:14px;">${d.profile||''}</p>
+        ${sectionHead('Experience','')}
+        ${expHtml}
+      </div>`;
+  } else if (currentTemplate === 'minimalist') {
+    el.className = 'preview-frame mini-layout';
+    el.innerHTML = `
+      <div style="text-align:center;margin-bottom:18px;">
+        <div class="pv-name">${d.name||'Your Name'}</div>
+        <div class="pv-contact">${contactHtml}</div>
+      </div>
+      <hr style="border:none;border-top:1px solid #ccc;margin-bottom:18px;">
+      ${d.profile ? sectionHead('About','minimal') + '<p style="font-size:0.84rem;color:#444;margin-bottom:14px;">' + d.profile + '</p>' : ''}
+      ${sectionHead('Experience','minimal')}${expHtml}
+      ${sectionHead('Education','minimal')}${eduHtml}
+      ${sectionHead('Skills','minimal')}${skillsHtml}`;
+  } else if (currentTemplate === 'scholar') {
+    el.className = 'preview-frame';
+    el.innerHTML = `
+      <div style="text-align:center;margin-bottom:18px;">
+        <div class="pv-name" style="color:#1A1A3E;">${d.name||'Your Name'}</div>
+        <div class="pv-title-line" style="color:#8b7cf7;">${d.title||''}</div>
+        <div class="pv-contact">${contactHtml}</div>
+      </div>
+      ${d.profile ? sectionHead('Research Interests','navy') + '<p style="font-size:0.84rem;color:#444;margin-bottom:14px;">' + d.profile + '</p>' : ''}
+      ${sectionHead('Education','navy')}${eduHtml}
+      ${sectionHead('Academic Appointments','navy')}${expHtml}
+      ${sectionHead('Publications','navy')}<p style="font-size:0.82rem;color:#999;font-style:italic;">[Add publications in the LaTeX source]</p>
+      ${sectionHead('Technical Skills','navy')}${skillsHtml}`;
+  } else if (currentTemplate === 'executive') {
+    el.className = 'preview-frame exec-layout';
+    el.innerHTML = `
+      <div class="pv-header-bar">
+        <div class="pv-name">${d.name||'Your Name'}</div>
+        <div class="pv-title-line">${d.title||''}</div>
+        <div class="pv-contact">${contactHtml}</div>
+      </div>
+      ${d.profile ? sectionHead('Executive Summary','exec') + '<p style="font-size:0.84rem;color:#444;margin-bottom:14px;">' + d.profile + '</p>' : ''}
+      ${hlHtml ? sectionHead('Key Achievements','exec') + hlHtml : ''}
+      ${sectionHead('Experience','exec')}${expHtml}
+      ${sectionHead('Education','exec')}${eduHtml}
+      ${sectionHead('Skills & Expertise','exec')}${skillsHtml}`;
+  } else {
+    // Classic
+    el.className = 'preview-frame';
+    el.innerHTML = `
+      <div class="pv-header" style="display:flex;gap:16px;align-items:flex-start;">
+        ${d.photo ? '<div class="pv-photo">Photo</div>' : ''}
+        <div>
+          <div class="pv-name">${d.name||'Your Name'}</div>
+          <div class="pv-title-line">${d.title||''}</div>
+          <div class="pv-contact">${contactHtml}</div>
+        </div>
+      </div>
+      ${d.profile ? sectionHead('Profile','') + '<p style="font-size:0.84rem;color:#444;margin-bottom:14px;">' + d.profile + '</p>' : ''}
+      ${hlHtml ? sectionHead('Highlights','') + hlHtml : ''}
+      ${sectionHead('Experience','')}${expHtml}
+      ${sectionHead('Skills','')}${skillsHtml}
+      ${sectionHead('Education','')}${eduHtml}`;
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// COVER LETTER GENERATOR
+// ══════════════════════════════════════════════════════
+function generateCoverLetter() {
+  const d = getFormData();
+  const company = document.getElementById('cl-company').value;
+  const position = document.getElementById('cl-position').value;
+  const jobDesc = document.getElementById('job-desc').value;
+  const el = document.getElementById('letter-output');
+
+  if (!company && !position && !d.name) {
+    el.innerHTML = '<div class="letter-placeholder">Fill your resume, paste a job description, and enter the company above. The letter appears.</div>';
+    return;
+  }
+
+  const today = new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+  const name = d.name || '[Your Name]';
+  const title = d.title || '[Your Title]';
+  const topSkills = d.skills.slice(0, 4).join(', ') || '[your skills]';
+  const topExp = d.experience[0];
+  const expLine = topExp && topExp.title ? `${topExp.title} at ${topExp.company||'[Company]'}` : 'my previous roles';
+  const topBullet = topExp && topExp.bullets[0] ? topExp.bullets[0] : '';
+
+  // Extract keywords from job description for targeted paragraph
+  let jobMatch = '';
+  if (jobDesc) {
+    const lines = jobDesc.split('\n').filter(l => l.trim()).slice(0, 3);
+    jobMatch = `The role's emphasis on ${lines[0] ? lines[0].substring(0, 60).trim() + '...' : 'the described responsibilities'} aligns directly with my background.`;
+  }
+
+  el.innerHTML = `
+    <div class="letter-date">${today}</div>
+    <div class="letter-greeting">Dear Hiring Manager,</div>
+    <div class="letter-body">
+      <p>I am writing to express my interest in the ${position || '[Position]'} role at ${company || '[Company]'}. As a ${title} with expertise in ${topSkills}, I am confident I can contribute to your team's objectives.</p>
+      <p>In my role as ${expLine}, I ${topBullet ? topBullet.charAt(0).toLowerCase() + topBullet.slice(1) : 'delivered measurable results aligned with organizational goals'}. ${jobMatch || 'I bring a track record of solving complex problems and delivering results under deadline.'}</p>
+      <p>I welcome the opportunity to discuss how my background aligns with your needs. I am available at your convenience and look forward to the possibility of contributing to ${company || 'your organization'}.</p>
+    </div>
+    <div class="letter-closing">Respectfully,</div>
+    <div class="letter-sig">${name}</div>
+    <div style="font-size:0.78rem;color:#888;margin-top:4px;">${d.email || ''} ${d.phone ? '· ' + d.phone : ''}</div>`;
+}
+
+function generateCoverLetterLaTeX() {
+  const d = getFormData();
+  const company = document.getElementById('cl-company').value || '[Company]';
+  const position = document.getElementById('cl-position').value || '[Position]';
+  const topSkills = d.skills.slice(0, 4).join(', ') || '[your skills]';
+  const topExp = d.experience[0];
+  const expLine = topExp && topExp.title ? `${topExp.title} at ${topExp.company||'[Company]'}` : 'my previous roles';
+  const topBullet = topExp && topExp.bullets[0] ? topExp.bullets[0] : 'delivered measurable results';
+
+  return `\\documentclass[11pt,a4paper]{letter}
+\\usepackage[margin=1in]{geometry}
+\\usepackage{parskip}
+\\usepackage{xcolor}
+\\definecolor{ink}{HTML}{2B2B3D}
+\\color{ink}
+\\pagestyle{empty}
+
+\\begin{document}
+\\begin{letter}{${tex(company)}\\\\Hiring Manager}
+
+\\opening{Dear Hiring Manager,}
+
+I am writing to express my interest in the ${tex(position)} role at ${tex(company)}. As a ${tex(d.title || '[Title]')} with expertise in ${tex(topSkills)}, I am confident I can contribute to your team's objectives.
+
+In my role as ${tex(expLine)}, I ${tex(topBullet.charAt(0).toLowerCase() + topBullet.slice(1))}. I bring a track record of solving complex problems and delivering results.
+
+I welcome the opportunity to discuss how my background aligns with your needs. I look forward to contributing to ${tex(company)}.
+
+\\closing{Respectfully,\\\\${tex(d.name || '[Your Name]')}\\\\{\\small ${tex(d.email || '')} ${d.phone ? '\\\\textbar{} ' + tex(d.phone) : ''}}}
+
+\\end{letter}
+\\end{document}`;
+}
+
+// ══════════════════════════════════════════════════════
+// JOB SEARCH URL BUILDER
+// ══════════════════════════════════════════════════════
+function updateJobLinks() {
+  const kw = document.getElementById('job-keywords').value;
+  const loc = document.getElementById('job-location').value;
+  const kwEnc = encodeURIComponent(kw);
+  const locEnc = encodeURIComponent(loc);
+
+  const urls = {
+    indeed: `https://www.indeed.com/jobs?q=${kwEnc}${loc ? '&l='+locEnc : ''}`,
+    linkedin: `https://www.linkedin.com/jobs/search/?keywords=${kwEnc}${loc ? '&location='+locEnc : ''}`,
+    glassdoor: `https://www.glassdoor.com/Job/jobs.htm?sc.keyword=${kwEnc}`,
+    google: `https://www.google.com/search?q=${kwEnc}+jobs${loc ? '+in+'+locEnc : ''}&ibp=htl;jobs`,
+    ziprecruiter: `https://www.ziprecruiter.com/jobs-search?search=${kwEnc}${loc ? '&location='+locEnc : ''}`
+  };
+
+  document.querySelectorAll('.job-site-btn').forEach(btn => {
+    const site = btn.dataset.site;
+    if (urls[site]) btn.href = urls[site];
+  });
+}
+
+// Auto-fill job keywords from resume
+function syncJobKeywords() {
+  const title = document.getElementById('f-title').value;
+  const skills = document.getElementById('f-skills').value;
+  let kw = title;
+  if (skills) {
+    const topSkills = skills.split(',').map(s=>s.trim()).filter(s=>s).slice(0, 3).join(', ');
+    if (topSkills) kw += (kw ? ' ' : '') + topSkills;
+  }
+  const kwField = document.getElementById('job-keywords');
+  if (!kwField._userEdited) kwField.value = kw;
+  const locField = document.getElementById('job-location');
+  if (!locField._userEdited) locField.value = document.getElementById('f-location').value;
+  updateJobLinks();
+}
+
+document.getElementById('job-keywords').addEventListener('input', function() { this._userEdited = true; updateJobLinks(); });
+document.getElementById('job-location').addEventListener('input', function() { this._userEdited = true; updateJobLinks(); });
+
+// ══════════════════════════════════════════════════════
+// UPDATE ALL — master function
+// ══════════════════════════════════════════════════════
+function updateAll() {
+  updateSkillsPills();
+  renderPreview();
+  generateCoverLetter();
+  syncJobKeywords();
+
+  // Sync LaTeX source
+  const latex = generateLaTeX();
+  editor.setValue(latex);
+}
+
+// Bind all form fields
+document.querySelectorAll('#resume-form input, #resume-form textarea').forEach(el => {
+  el.addEventListener('input', updateAll);
+});
+document.getElementById('cl-company').addEventListener('input', generateCoverLetter);
+document.getElementById('cl-position').addEventListener('input', generateCoverLetter);
+document.getElementById('job-desc').addEventListener('input', generateCoverLetter);
+
+// Overleaf form: encode the editor contents before submit
+document.getElementById('overleaf-form').addEventListener('submit', function() {
+  const latex = generateLaTeX();
+  document.getElementById('encoded-snip').value = encodeURIComponent(latex);
+});
+
+// ══════════════════════════════════════════════════════
+// VIEW SOURCE TOGGLE
+// ══════════════════════════════════════════════════════
+function toggleSource() {
+  const panel = document.getElementById('source-panel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    editor.setValue(generateLaTeX());
+    setTimeout(() => editor.refresh(), 50);
+  }
+}
+
+// Footer signup (front-end only — connect a form service to make it live)
+function footerJoin(e){
+  e.preventDefault();
+  document.getElementById('footer-msg').style.display = 'block';
+  e.target.reset();
+  return false;
+}
+
+// Init
+updateAll();
+</script>
+</body>
+</html>

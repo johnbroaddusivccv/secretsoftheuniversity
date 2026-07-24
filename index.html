@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secrets of the University — The heavens declare what the university withheld</title>
+<meta name="description" content="Practical knowledge about money, health, careers, and how systems really work. The curriculum school skipped.">
+<style>
+  :root {
+    --bg: #070713;
+    --bg2: #0d0d24;
+    --ink: #e8e6f5;
+    --muted: #9b97b8;
+    --gold: #f0c96c;
+    --violet: #8b7cf7;
+    --card: rgba(139,124,247,0.07);
+    --border: rgba(139,124,247,0.22);
+  }
+  /* ── Light Mode ──────────────────────────────── */
+  html.light {
+    --bg: #f5f3f0;
+    --bg2: #eae8e4;
+    --ink: #1a1a2e;
+    --muted: #6b6889;
+    --gold: #b8860b;
+    --violet: #6b5ce7;
+    --card: rgba(107,92,231,0.05);
+    --border: rgba(107,92,231,0.13);
+  }
+  html.light .nav-full { background:rgba(245,243,240,0.88); }
+  html.light .site-footer { background:var(--bg2); }
+  html.light .footer-legal, html.light .footer-legal a { color:rgba(107,104,137,0.5); }
+  html.light .redact { background:var(--gold); }
+  html.light .teaser:hover .redact { background:transparent; color:var(--gold); }
+  html.light .footer-subscribe input { background:rgba(0,0,0,0.04); }
+  .theme-toggle {
+    background:none; border:1px solid var(--border); border-radius:50%;
+    width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center;
+    color:var(--muted); font-size:1rem; cursor:pointer; transition:all .3s;
+    line-height:1; padding:0;
+  }
+  .theme-toggle:hover { border-color:var(--gold); color:var(--gold); }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; transition:background .8s ease, color .8s ease; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+    transition: background .8s ease, color .8s ease;
+  }
+  canvas#stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .wrap { position:relative; z-index:1; max-width:1000px; margin:0 auto; padding:0 24px; }
+
+  /* Full-width nav bar */
+  .nav-full {
+    position:relative; z-index:1; width:100%;
+    border-bottom:1px solid var(--border);
+    background:rgba(7,7,19,0.7); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  }
+  .nav-inner {
+    max-width:1000px; margin:0 auto; padding:0 24px;
+    display:flex; justify-content:space-between; align-items:center; padding-top:20px; padding-bottom:20px;
+  }
+
+  /* Nav */
+  .brand { font-size:1.05rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); text-decoration:none; }
+  .brand span { color:var(--muted); }
+  .nav-links { display:flex; gap:24px; align-items:center; }
+  .nav-links a {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--muted); text-decoration:none; transition:color .3s;
+  }
+  .nav-links a:hover { color:var(--gold); }
+  .nav-links a.cta-small {
+    color:var(--ink); border:1px solid var(--border); padding:8px 18px; border-radius:100px;
+    transition:all .3s;
+  }
+  .nav-links a.cta-small:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* Hero */
+  header { text-align:center; padding:110px 0 90px; }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif; font-size:0.75rem; letter-spacing:0.35em; text-transform:uppercase;
+    color:var(--violet); margin-bottom:28px;
+  }
+  h1 {
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 400; line-height:1.15; margin-bottom:26px;
+  }
+  h1 em { font-style:italic; color:var(--gold); }
+  .sub { font-size:1.15rem; color:var(--muted); max-width:560px; margin:0 auto 44px; }
+
+  /* Signup */
+  .signup { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .signup input {
+    background: rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:100px;
+    padding:16px 24px; color:var(--ink); font-size:1rem; width:320px; max-width:100%;
+    font-family: Helvetica, Arial, sans-serif; outline:none; transition:border .3s;
+  }
+  .signup input:focus { border-color:var(--violet); }
+  .signup button {
+    background: linear-gradient(135deg, var(--gold), #d9a63f);
+    color:#1a1305; border:none; border-radius:100px; padding:16px 32px; font-size:0.9rem;
+    font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    cursor:pointer; transition: transform .2s, box-shadow .3s;
+  }
+  .signup button:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(240,201,108,0.35); }
+  .signup-note { font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; color:var(--muted); margin-top:16px; }
+  #signup-msg { color:var(--gold); margin-top:16px; font-style:italic; display:none; }
+
+  /* Divider */
+  .divider { text-align:center; color:var(--violet); font-size:1.4rem; letter-spacing:1em; padding:10px 0 60px; opacity:.6; }
+
+  /* Pillars */
+  section { padding:40px 0 80px; }
+  .section-label {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.72rem; letter-spacing:0.35em; text-transform:uppercase;
+    color:var(--violet); text-align:center; margin-bottom:14px;
+  }
+  h2 { text-align:center; font-weight:400; font-size:clamp(1.6rem,4vw,2.3rem); margin-bottom:56px; }
+  .pillars { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+  .pillar {
+    background:var(--card); border:1px solid var(--border); border-radius:16px; padding:32px 26px;
+    transition: transform .3s, border-color .3s;
+  }
+  .pillar:hover { transform:translateY(-6px); border-color:var(--gold); }
+  .pillar .glyph { font-size:1.6rem; margin-bottom:16px; color:var(--gold); }
+  .pillar h3 { font-weight:400; font-size:1.15rem; margin-bottom:10px; letter-spacing:0.04em; }
+  .pillar p { font-size:0.92rem; color:var(--muted); }
+
+  /* Teasers */
+  .teasers { display:flex; flex-direction:column; gap:16px; max-width:680px; margin:0 auto; }
+  .teaser {
+    border-left:2px solid var(--gold); padding:18px 26px; background:linear-gradient(90deg, rgba(240,201,108,0.06), transparent);
+    font-size:1.08rem; font-style:italic; color:var(--ink);
+  }
+  .teaser small { display:block; font-style:normal; font-family:Helvetica,Arial,sans-serif; font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--violet); margin-top:8px; }
+  .redact {
+    background: var(--gold); color: transparent; border-radius:2px; padding:0 4px;
+    transition: background .8s ease, color .8s ease; cursor: help; user-select:none;
+  }
+  .teaser:hover .redact { background: transparent; color: var(--gold); }
+  .teasers-hint { text-align:center; font-family:Helvetica,Arial,sans-serif; font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-top:24px; }
+
+  /* Manifesto */
+  .manifesto { text-align:center; max-width:640px; margin:0 auto; }
+  .manifesto p { font-size:1.25rem; font-style:italic; color:var(--ink); margin-bottom:20px; }
+  .manifesto .sig { color:var(--gold); letter-spacing:0.2em; font-style:normal; font-size:0.85rem; text-transform:uppercase; font-family:Helvetica,Arial,sans-serif; }
+
+  .pillar a.pillar-link {
+    display:inline-block; margin-top:12px; color:var(--gold); text-decoration:none;
+    font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase;
+  }
+  .pillar a.pillar-link:hover { text-decoration:underline; }
+
+  /* ── Palantir-style Footer ──────────────────────── */
+  .site-footer {
+    position:relative; z-index:1; width:100%;
+    background:var(--bg2); border-top:1px solid var(--border);
+    font-family:Helvetica,Arial,sans-serif;
+  }
+  .footer-inner { max-width:1000px; margin:0 auto; padding:60px 24px 0; }
+  .footer-grid {
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:40px;
+    padding-bottom:48px; border-bottom:1px solid var(--border);
+  }
+  .footer-col-title {
+    font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:18px; font-weight:700;
+  }
+  .footer-col a, .footer-col span {
+    display:block; font-size:0.82rem; color:var(--muted); text-decoration:none;
+    padding:4px 0; transition:color .3s; line-height:1.7;
+  }
+  .footer-col a:hover { color:var(--ink); }
+  .footer-subscribe {
+    grid-column:span 1;
+  }
+  .footer-subscribe p {
+    font-size:0.82rem; color:var(--muted); margin-bottom:14px; line-height:1.5;
+  }
+  .footer-subscribe form { display:flex; gap:8px; }
+  .footer-subscribe input {
+    flex:1; background:rgba(255,255,255,0.05); border:1px solid var(--border);
+    border-radius:8px; padding:10px 14px; color:var(--ink); font-size:0.82rem;
+    font-family:Helvetica,Arial,sans-serif; outline:none; transition:border .3s;
+  }
+  .footer-subscribe input:focus { border-color:var(--gold); }
+  .footer-subscribe button {
+    background:var(--gold); color:#1a1305; border:none; border-radius:8px;
+    padding:10px 18px; font-size:0.72rem; font-weight:700; letter-spacing:0.08em;
+    text-transform:uppercase; cursor:pointer; transition:transform .2s, opacity .3s;
+    font-family:Helvetica,Arial,sans-serif; white-space:nowrap;
+  }
+  .footer-subscribe button:hover { transform:translateY(-1px); opacity:0.9; }
+  .footer-subscribe .sub-msg {
+    font-size:0.75rem; color:var(--gold); font-style:italic; margin-top:8px; display:none;
+  }
+  .footer-bottom {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 0; flex-wrap:wrap; gap:12px;
+  }
+  .footer-legal { font-size:0.7rem; color:rgba(155,151,184,0.6); }
+  .footer-legal a { color:rgba(155,151,184,0.6); text-decoration:none; transition:color .3s; }
+  .footer-legal a:hover { color:var(--muted); }
+  .footer-socials { display:flex; gap:16px; }
+  .footer-socials a {
+    font-size:0.72rem; color:var(--muted); text-decoration:none; letter-spacing:0.06em;
+    transition:color .3s;
+  }
+  .footer-socials a:hover { color:var(--gold); }
+
+  @media (max-width:700px) {
+    .footer-grid { grid-template-columns:1fr 1fr; gap:28px; }
+    .footer-subscribe { grid-column:span 2; }
+    .footer-subscribe form { flex-direction:column; }
+  }
+  @media (max-width:600px) {
+    header { padding:70px 0 60px; }
+    .signup input { width:100%; }
+    .signup button { width:100%; }
+    .footer-grid { grid-template-columns:1fr; gap:24px; }
+    .footer-subscribe { grid-column:span 1; }
+    .footer-bottom { flex-direction:column; text-align:center; }
+  }
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="nav-full">
+  <div class="nav-inner">
+    <div class="brand">Secrets <span>of the</span> University</div>
+    <div class="nav-links">
+      <a href="finance.html">Finance</a>
+      <a href="health.html">Health</a>
+      <a href="careers.html">Careers</a>
+      <a class="cta-small" href="#join">Join</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light mode">☾</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Ask · Seek · Knock</div>
+    <h1>The heavens declare<br>what the university <em>withheld</em>.</h1>
+    <p class="sub">It is glory to conceal a matter, and honor to search it out. There is no catalog. There is a door — and it opens from the inside.</p>
+    <form class="signup" id="join" onsubmit="return joinList(event)">
+      <input type="email" id="email" placeholder="your@email.com" required>
+      <button type="submit">Knock</button>
+    </form>
+    <div class="signup-note">No cost. No noise. Ask, and the first lesson is given.</div>
+    <div id="signup-msg">Knock, and it is opened. Watch your inbox. ✦</div>
+  </header>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <section>
+    <div class="section-label">The Four Departments</div>
+    <h2>Get wisdom. Get understanding.</h2>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="glyph">✦</div>
+        <h3>Finance</h3>
+        <p>Money answers everything, said the Preacher. We teach the questions.</p>
+        <a class="pillar-link" href="finance.html">Enter →</a>
+      </div>
+      <div class="pillar">
+        <div class="glyph">✦</div>
+        <h3>Health</h3>
+        <p>A merry heart is medicine. Knowing your own body is more.</p>
+        <a class="pillar-link" href="health.html">Enter →</a>
+      </div>
+      <div class="pillar">
+        <div class="glyph">✦</div>
+        <h3>Careers</h3>
+        <p>The race is not to the swift — nor the job to the best résumé.</p>
+        <a class="pillar-link" href="careers.html">Enter →</a>
+      </div>
+      <div class="pillar">
+        <div class="glyph">✦</div>
+        <h3>Systems</h3>
+        <p>Nothing is new under the sun. Every system runs on old rules. Learn them.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">Recovered Fragments</div>
+    <h2>From the restricted archive</h2>
+    <div class="teasers">
+      <div class="teaser">
+        "The single phone call that can cut your bills by 20% — <span class="redact">and the exact script to use</span>."
+        <small>Fragment 001 · Finance · Declassified for members</small>
+      </div>
+      <div class="teaser">
+        "Why the best candidate rarely gets the job — <span class="redact">and what gets hired instead</span>."
+        <small>Fragment 002 · Careers · Declassified for members</small>
+      </div>
+      <div class="teaser">
+        "The 5 questions to ask any doctor <span class="redact">before you say yes to anything</span>."
+        <small>Fragment 003 · Health · Declassified for members</small>
+      </div>
+    </div>
+    <div class="teasers-hint">Some redactions lift on closer inspection. The rest require enrollment.</div>
+  </section>
+
+  <section>
+    <div class="manifesto">
+      <div class="section-label">The Only Answer We Give</div>
+      <p>"It is the glory of God to conceal a matter, but the glory of kings is to search out a matter. Twelve years of school, and no one handed you the search."</p>
+      <div class="sig">— The Registrar, citing Proverbs 25:2</div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-col-title">Departments</div>
+        <a href="finance.html">Finance</a>
+        <a href="health.html">Health</a>
+        <a href="careers.html">Careers</a>
+        <span style="opacity:0.4;">Systems — coming</span>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Resources</div>
+        <a href="careers.html#lab">Resume Lab</a>
+        <a href="finance.html#feed">The Wire</a>
+        <a href="index.html#join">Enroll</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Connect</div>
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">YouTube</a>
+      </div>
+      <div class="footer-col footer-subscribe">
+        <div class="footer-col-title">Stay Informed</div>
+        <p>One secret a week. No noise.</p>
+        <form onsubmit="return footerJoin(event)">
+          <input type="email" placeholder="your@email.com" required>
+          <button type="submit">Knock</button>
+        </form>
+        <div class="sub-msg" id="footer-msg">You are in. Watch your inbox. ✦</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        © 2026 Secrets of the University · <a href="#">Privacy</a> · <a href="#">Terms</a>
+      </div>
+      <div class="footer-socials">
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">YouTube</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Starfield
+  const c = document.getElementById('stars'), ctx = c.getContext('2d');
+  let stars = [];
+  function resize(){
+    c.width = innerWidth; c.height = innerHeight;
+    stars = Array.from({length: Math.min(180, innerWidth/6)}, () => ({
+      x: Math.random()*c.width, y: Math.random()*c.height,
+      r: Math.random()*1.4+0.3, p: Math.random()*Math.PI*2, s: Math.random()*0.02+0.005
+    }));
+  }
+  resize(); addEventListener('resize', resize);
+  (function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    const isLight = document.documentElement.classList.contains('light');
+    const SOLAR = [[240,201,108],[232,163,48],[245,208,160],[255,180,100]];
+    for (const st of stars){
+      st.p += st.s;
+      const a = 0.25 + Math.abs(Math.sin(st.p))*0.6;
+      if (isLight) {
+        // Solar flare mode — warm glowing orbs
+        const col = SOLAR[Math.floor((st.x+st.y)*7) % SOLAR.length];
+        const sz = st.r * 3.5 + 1.5;
+        const glow = ctx.createRadialGradient(st.x,st.y,0, st.x,st.y, sz*3);
+        glow.addColorStop(0, `rgba(${col[0]},${col[1]},${col[2]},${a*0.55})`);
+        glow.addColorStop(0.35, `rgba(${col[0]},${col[1]},${col[2]},${a*0.18})`);
+        glow.addColorStop(1, `rgba(${col[0]},${col[1]},${col[2]},0)`);
+        ctx.beginPath(); ctx.arc(st.x,st.y, sz*3, 0, Math.PI*2);
+        ctx.fillStyle = glow; ctx.fill();
+        ctx.beginPath(); ctx.arc(st.x,st.y, sz*0.5, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(255,248,230,${a*0.7})`; ctx.fill();
+      } else {
+        ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(232,230,245,${a})`; ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  })();
+
+  // Theme toggle — persists across pages via cookie
+  if (document.cookie.includes('theme=light')) {
+    document.documentElement.classList.add('light');
+    document.querySelector('.theme-toggle').textContent = '☀';
+  }
+  function toggleTheme() {
+    const isLight = document.documentElement.classList.toggle('light');
+    document.querySelector('.theme-toggle').textContent = isLight ? '☀' : '☾';
+    document.cookie = 'theme=' + (isLight ? 'light' : 'dark') + ';path=/;SameSite=Lax';
+  }
+
+  // Signup (front-end only — connect a form service to make it live)
+  function joinList(e){
+    e.preventDefault();
+    const msg = document.getElementById('signup-msg');
+    msg.style.display = 'block';
+    e.target.reset();
+    msg.scrollIntoView({behavior:'smooth', block:'center'});
+    return false;
+  }
+  function footerJoin(e){
+    e.preventDefault();
+    document.getElementById('footer-msg').style.display = 'block';
+    e.target.reset();
+    return false;
+  }
+</script>
+</body>
+</html>

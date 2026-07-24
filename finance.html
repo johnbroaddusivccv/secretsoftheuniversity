@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance — Secrets of the University</title>
+<meta name="description" content="Live markets and the money lessons school skipped — credit, taxes, negotiation, investing.">
+<style>
+  :root {
+    --bg: #070713;
+    --bg2: #0d0d24;
+    --ink: #e8e6f5;
+    --muted: #9b97b8;
+    --gold: #f0c96c;
+    --violet: #8b7cf7;
+    --card: rgba(139,124,247,0.07);
+    --border: rgba(139,124,247,0.22);
+  }
+  /* ── Light Mode ──────────────────────────────── */
+  html.light {
+    --bg: #f5f3f0;
+    --bg2: #eae8e4;
+    --ink: #1a1a2e;
+    --muted: #6b6889;
+    --gold: #b8860b;
+    --violet: #6b5ce7;
+    --card: rgba(107,92,231,0.05);
+    --border: rgba(107,92,231,0.13);
+  }
+  html.light .nav-full { background:rgba(245,243,240,0.88); }
+  html.light .site-footer { background:var(--bg2); }
+  html.light .footer-legal, html.light .footer-legal a { color:rgba(107,104,137,0.5); }
+  html.light .footer-subscribe input { background:rgba(0,0,0,0.04); }
+  html.light #crypto-ticker { background:linear-gradient(180deg, rgba(234,232,228,0.95), rgba(245,243,240,0.95)); }
+  html.light .angel-overlay { pointer-events:none; }
+  html.light .gate { background:rgba(107,92,231,0.04); }
+  .theme-toggle {
+    background:none; border:1px solid var(--border); border-radius:50%;
+    width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center;
+    color:var(--muted); font-size:1rem; cursor:pointer; transition:all .3s;
+    line-height:1; padding:0;
+  }
+  .theme-toggle:hover { border-color:var(--gold); color:var(--gold); }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; transition:background .8s ease, color .8s ease; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+    transition: background .8s ease, color .8s ease;
+  }
+  canvas#stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .wrap { position:relative; z-index:1; max-width:1000px; margin:0 auto; padding:0 24px; }
+  @media (min-width:901px) { .wrap { padding-right:140px; } }
+
+  /* Full-width nav bar */
+  .nav-full {
+    position:relative; z-index:3; width:100%;
+    border-bottom:1px solid var(--border);
+    background:rgba(7,7,19,0.7); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  }
+  .nav-inner {
+    max-width:1000px; margin:0 auto; padding:20px 24px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  @media (min-width:901px) { .nav-inner { padding-right:140px; } }
+  .brand { font-size:1.05rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); text-decoration:none; }
+  .brand span { color:var(--muted); }
+  .nav-links { display:flex; gap:22px; align-items:center; }
+  .nav-links a {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--muted); text-decoration:none; transition:color .3s;
+  }
+  .nav-links a:hover { color:var(--gold); }
+  .nav-links a.cta-small {
+    color:var(--ink); border:1px solid var(--border); padding:8px 18px; border-radius:100px;
+    transition:all .3s;
+  }
+  .nav-links a.cta-small:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* Stock ticker (horizontal) */
+  .stock-ticker-band {
+    border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+    background: rgba(13,13,36,0.6); position:relative; z-index:1; margin:0 -24px;
+  }
+
+  /* Crypto ticker (vertical, right edge) */
+  #crypto-ticker {
+    position:fixed; top:0; right:0; bottom:0; width:110px; z-index:2;
+    border-left:1px solid var(--border);
+    background: linear-gradient(180deg, rgba(13,13,36,0.85), rgba(7,7,19,0.85));
+    overflow:hidden; font-family:Helvetica,Arial,sans-serif;
+  }
+  #crypto-ticker .ct-label {
+    position:absolute; top:0; left:0; right:0; padding:10px 0; text-align:center;
+    font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--violet);
+    background:var(--bg2); border-bottom:1px solid var(--border); z-index:2;
+  }
+  .ct-scroll { position:absolute; top:36px; left:0; right:0; animation: ctScroll 30s linear infinite; }
+  @keyframes ctScroll { from { transform:translateY(0); } to { transform:translateY(-50%); } }
+  .ct-item { padding:14px 10px; text-align:center; border-bottom:1px solid rgba(139,124,247,0.1); }
+  .ct-item .sym { font-size:0.72rem; letter-spacing:0.12em; color:var(--ink); font-weight:700; }
+  .ct-item .price { font-size:0.78rem; color:var(--gold); margin-top:2px; }
+  .ct-item .chg { font-size:0.68rem; margin-top:2px; }
+  .chg.up { color:#5fd08a; } .chg.down { color:#e2708a; }
+  @media (max-width:900px) { #crypto-ticker { display:none; } }
+
+  /* ── Angel Numbers — full-viewport ambient layer ── */
+  .angel-overlay {
+    position:fixed; inset:0; z-index:0;
+    pointer-events:none; overflow:hidden;
+  }
+  .angel-num {
+    position:absolute;
+    font-family:Georgia,'Times New Roman',serif;
+    font-weight:400; font-style:italic;
+    pointer-events:none; user-select:none;
+    white-space:nowrap;
+    will-change:transform, opacity;
+  }
+  @keyframes angelDriftR {
+    0%   { transform:translate(-140px, 0); }
+    100% { transform:translate(calc(100vw + 140px), 0); }
+  }
+  @keyframes angelDriftL {
+    0%   { transform:translate(calc(100vw + 140px), 0); }
+    100% { transform:translate(-140px, 0); }
+  }
+  @keyframes angelDriftD {
+    0%   { transform:translate(0, -60px); }
+    100% { transform:translate(0, calc(100vh + 60px)); }
+  }
+  @keyframes angelFade {
+    0%, 100% { opacity:0; }
+    35%, 65% { opacity:var(--angel-peak, 0.12); }
+  }
+  /* Each number gets unique speed/size/color via inline styles in JS */
+
+  /* Hero */
+  header { text-align:center; padding:70px 0 50px; }
+  .eyebrow {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; letter-spacing:0.35em; text-transform:uppercase;
+    color:var(--violet); margin-bottom:24px;
+  }
+  h1 { font-size:clamp(2rem,5vw,3.4rem); font-weight:400; line-height:1.15; margin-bottom:22px; }
+  h1 em { font-style:italic; color:var(--gold); }
+  .sub { font-size:1.1rem; color:var(--muted); max-width:540px; margin:0 auto; }
+
+  section { padding:30px 0 70px; }
+  .section-label {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.72rem; letter-spacing:0.35em; text-transform:uppercase;
+    color:var(--violet); text-align:center; margin-bottom:14px;
+  }
+  h2 { text-align:center; font-weight:400; font-size:clamp(1.5rem,4vw,2.1rem); margin-bottom:48px; }
+  h2.mb-sm { margin-bottom:20px; }
+
+  .lessons { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
+  .lesson {
+    background:var(--card); border:1px solid var(--border); border-radius:16px; padding:30px 26px;
+    transition:transform .3s, border-color .3s;
+  }
+  .lesson:hover { transform:translateY(-6px); border-color:var(--gold); }
+  .lesson small {
+    display:block; font-family:Helvetica,Arial,sans-serif; font-size:0.68rem; letter-spacing:0.22em;
+    text-transform:uppercase; color:var(--violet); margin-bottom:12px;
+  }
+  .lesson h3 { font-weight:400; font-size:1.12rem; margin-bottom:10px; font-style:italic; }
+  .lesson p { font-size:0.92rem; color:var(--muted); }
+
+  /* ── Market Overview Widget ─────────────────────── */
+  .market-widget-wrap {
+    border-radius:16px; overflow:hidden; border:1px solid var(--border);
+    background:var(--card); margin-bottom:0;
+  }
+  .market-widget-wrap iframe { display:block; }
+
+  /* ── News Feed ──────────────────────────────────── */
+  .feed-tabs {
+    display:flex; gap:0; justify-content:center; margin-bottom:28px;
+    border:1px solid var(--border); border-radius:100px; overflow:hidden;
+    display:inline-flex; margin:0 auto 28px; width:auto;
+  }
+  .feed-tabs-wrap { text-align:center; }
+  .feed-tab {
+    background:none; border:none; padding:10px 22px; color:var(--muted);
+    font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; letter-spacing:0.1em;
+    text-transform:uppercase; cursor:pointer; transition:all .3s;
+  }
+  .feed-tab:hover { color:var(--ink); }
+  .feed-tab.active { background:rgba(240,201,108,0.15); color:var(--gold); }
+
+  .feed-list { max-width:700px; margin:0 auto; }
+  .feed-item {
+    display:flex; gap:14px; align-items:flex-start; padding:18px 0;
+    border-bottom:1px solid rgba(139,124,247,0.08);
+    transition:background .3s;
+  }
+  .feed-item:last-child { border-bottom:none; }
+  .feed-item:hover { background:rgba(139,124,247,0.03); }
+  .feed-rank {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.68rem; color:var(--violet);
+    min-width:24px; text-align:right; padding-top:3px; font-weight:700;
+  }
+  .feed-content { flex:1; }
+  .feed-title {
+    font-size:0.95rem; color:var(--ink); text-decoration:none; display:block;
+    margin-bottom:4px; transition:color .3s; line-height:1.4;
+  }
+  .feed-title:hover { color:var(--gold); }
+  .feed-meta {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.68rem; color:var(--muted);
+    display:flex; gap:12px; flex-wrap:wrap;
+  }
+  .feed-meta .pts { color:var(--gold); }
+  .feed-meta a { color:var(--muted); text-decoration:none; transition:color .3s; }
+  .feed-meta a:hover { color:var(--violet); }
+  .feed-domain {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.62rem; color:var(--muted);
+    opacity:0.7; margin-left:6px;
+  }
+  .feed-loading {
+    text-align:center; padding:40px 0; color:var(--muted); font-style:italic;
+  }
+  .feed-error {
+    text-align:center; padding:30px 0; color:var(--muted); font-style:italic; font-size:0.9rem;
+  }
+
+  /* ── Investor Gates (curated links) ─────────────── */
+  .gates { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; max-width:700px; margin:0 auto; }
+  .gate {
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:18px 16px; text-decoration:none; color:var(--ink);
+    transition:transform .3s, border-color .3s;
+    display:flex; align-items:center; gap:12px;
+  }
+  .gate:hover { transform:translateY(-4px); border-color:var(--gold); }
+  .gate .gate-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .gate .gate-info { flex:1; }
+  .gate .gate-name {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--gold); margin-bottom:2px;
+  }
+  .gate .gate-desc { font-size:0.78rem; color:var(--muted); line-height:1.35; }
+
+  .section-note { text-align:center; font-size:0.92rem; color:var(--muted); font-style:italic; max-width:520px; margin:0 auto 32px; }
+
+  /* ── Palantir-style Footer ──────────────────────── */
+  .site-footer {
+    position:relative; z-index:1; width:100%;
+    background:var(--bg2); border-top:1px solid var(--border);
+    font-family:Helvetica,Arial,sans-serif;
+  }
+  .footer-inner { max-width:1000px; margin:0 auto; padding:60px 24px 0; }
+  .footer-grid {
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:40px;
+    padding-bottom:48px; border-bottom:1px solid var(--border);
+  }
+  .footer-col-title {
+    font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:18px; font-weight:700;
+  }
+  .footer-col a, .footer-col span {
+    display:block; font-size:0.82rem; color:var(--muted); text-decoration:none;
+    padding:4px 0; transition:color .3s; line-height:1.7;
+  }
+  .footer-col a:hover { color:var(--ink); }
+  .footer-subscribe p {
+    font-size:0.82rem; color:var(--muted); margin-bottom:14px; line-height:1.5;
+  }
+  .footer-subscribe form { display:flex; gap:8px; }
+  .footer-subscribe input {
+    flex:1; background:rgba(255,255,255,0.05); border:1px solid var(--border);
+    border-radius:8px; padding:10px 14px; color:var(--ink); font-size:0.82rem;
+    font-family:Helvetica,Arial,sans-serif; outline:none; transition:border .3s;
+  }
+  .footer-subscribe input:focus { border-color:var(--gold); }
+  .footer-subscribe button {
+    background:var(--gold); color:#1a1305; border:none; border-radius:8px;
+    padding:10px 18px; font-size:0.72rem; font-weight:700; letter-spacing:0.08em;
+    text-transform:uppercase; cursor:pointer; transition:transform .2s, opacity .3s;
+    font-family:Helvetica,Arial,sans-serif; white-space:nowrap;
+  }
+  .footer-subscribe button:hover { transform:translateY(-1px); opacity:0.9; }
+  .footer-subscribe .sub-msg {
+    font-size:0.75rem; color:var(--gold); font-style:italic; margin-top:8px; display:none;
+  }
+  .footer-bottom {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 0; flex-wrap:wrap; gap:12px;
+  }
+  .footer-legal { font-size:0.7rem; color:rgba(155,151,184,0.6); }
+  .footer-legal a { color:rgba(155,151,184,0.6); text-decoration:none; transition:color .3s; }
+  .footer-legal a:hover { color:var(--muted); }
+  .footer-disclaimer {
+    font-size:0.68rem; color:rgba(155,151,184,0.5); max-width:620px;
+    text-align:center; margin:0 auto; padding:16px 24px 0; line-height:1.5;
+  }
+  .footer-socials { display:flex; gap:16px; }
+  .footer-socials a {
+    font-size:0.72rem; color:var(--muted); text-decoration:none; letter-spacing:0.06em;
+    transition:color .3s;
+  }
+  .footer-socials a:hover { color:var(--gold); }
+
+  @media (max-width:700px) {
+    .footer-grid { grid-template-columns:1fr 1fr; gap:28px; }
+    .footer-subscribe { grid-column:span 2; }
+    .footer-subscribe form { flex-direction:column; }
+  }
+  @media (max-width:600px) {
+    header { padding:50px 0 40px; }
+
+    .gates { grid-template-columns:1fr; }
+    .footer-grid { grid-template-columns:1fr; gap:24px; }
+    .footer-subscribe { grid-column:span 1; }
+    .footer-bottom { flex-direction:column; text-align:center; }
+  }
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+
+<!-- Live crypto ticker (vertical, CoinGecko) -->
+<aside id="crypto-ticker" aria-label="Live crypto prices">
+  <div class="ct-label">Crypto · Live</div>
+  <div class="ct-scroll" id="ct-scroll"></div>
+</aside>
+
+<div class="nav-full">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">Secrets <span>of the</span> University</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="health.html">Health</a>
+      <a href="careers.html">Careers</a>
+      <a class="cta-small" href="#enroll">Enroll</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light mode">☾</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- Live stock market ticker (horizontal, TradingView) -->
+  <div class="stock-ticker-band">
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+      {
+        "symbols": [
+          {"proName": "FOREXCOM:SPXUSD", "title": "S&P 500"},
+          {"proName": "FOREXCOM:NSXUSD", "title": "Nasdaq 100"},
+          {"proName": "FOREXCOM:DJI", "title": "Dow Jones"},
+          {"proName": "NASDAQ:AAPL", "title": "Apple"},
+          {"proName": "NASDAQ:NVDA", "title": "Nvidia"},
+          {"proName": "NASDAQ:TSLA", "title": "Tesla"},
+          {"proName": "NASDAQ:MSFT", "title": "Microsoft"},
+          {"proName": "NASDAQ:AMZN", "title": "Amazon"}
+        ],
+        "showSymbolLogo": true,
+        "isTransparent": true,
+        "displayMode": "adaptive",
+        "colorTheme": "dark",
+        "locale": "en"
+      }
+      </script>
+    </div>
+  </div>
+
+  <!-- ═══ ANGEL NUMBERS BAND ═══ -->
+  <div class="angel-overlay" id="angel-overlay" aria-hidden="true"></div>
+
+  <header>
+    <div class="eyebrow">Department of Finance</div>
+    <h1>The market doesn't care<br>what you didn't <em>learn</em>.</h1>
+    <p class="sub">Live markets above and beside you. Below — the lessons that make sense of them: credit, taxes, negotiation, and investing without the jargon.</p>
+  </header>
+
+  <!-- ═══ MARKET OVERVIEW ═══ -->
+  <section>
+    <div class="section-label">The Board</div>
+    <h2 class="mb-sm">Top performers, in motion</h2>
+    <p class="section-note">Benchmarks and movers. The numbers the world watches.</p>
+
+    <div class="market-widget-wrap">
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-hotlists.js" async>
+        {
+          "colorTheme": "dark",
+          "dateRange": "1D",
+          "exchange": "US",
+          "showChart": true,
+          "locale": "en",
+          "largeChartUrl": "",
+          "isTransparent": true,
+          "showSymbolLogo": true,
+          "showFloatingTooltip": true,
+          "width": "100%",
+          "height": "550",
+          "plotLineColorGrowing": "rgba(240,201,108, 1)",
+          "plotLineColorFalling": "rgba(226,112,138, 1)",
+          "gridLineColor": "rgba(139,124,247, 0.06)",
+          "scaleFontColor": "rgba(155,151,184, 1)",
+          "belowLineFillColorGrowing": "rgba(240,201,108, 0.06)",
+          "belowLineFillColorFalling": "rgba(226,112,138, 0.06)",
+          "belowLineFillColorGrowingBottom": "rgba(240,201,108, 0)",
+          "belowLineFillColorFallingBottom": "rgba(226,112,138, 0)",
+          "symbolActiveColor": "rgba(139,124,247, 0.12)"
+        }
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COURSE CATALOG ═══ -->
+  <section>
+    <div class="section-label">Course Catalog</div>
+    <h2>Finance lessons in session</h2>
+    <div class="lessons">
+      <div class="lesson">
+        <small>FIN 101</small>
+        <h3>"The credit score algorithm, decoded"</h3>
+        <p>The five inputs, what actually moves them, and the 30-day fixes most people never try.</p>
+      </div>
+      <div class="lesson">
+        <small>FIN 102</small>
+        <h3>"Why your first index fund beats your best stock pick"</h3>
+        <p>The math of diversification, in plain English — and how to start with $50.</p>
+      </div>
+      <div class="lesson">
+        <small>FIN 103</small>
+        <h3>"Negotiation scripts that survive contact with HR"</h3>
+        <p>Word-for-word scripts for salary, bills, and rent — and the silence that does the heavy lifting.</p>
+      </div>
+      <div class="lesson">
+        <small>FIN 104</small>
+        <h3>"Crypto without the cult"</h3>
+        <p>What blockchains actually do, what the tickers mean, and how to size risk you can live with.</p>
+      </div>
+      <div class="lesson">
+        <small>FIN 105</small>
+        <h3>"The tax moves hiding in plain sight"</h3>
+        <p>Deductions, retirement accounts, and timing tricks the form instructions won't explain.</p>
+      </div>
+      <div class="lesson">
+        <small>FIN 106</small>
+        <h3>"Reading a market ticker like a native"</h3>
+        <p>Indexes vs. stocks, what 24h change really tells you, and why red days aren't emergencies.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ INTELLECTUAL FEED ═══ -->
+  <section id="feed">
+    <div class="section-label">The Wire</div>
+    <h2 class="mb-sm">What the informed are reading</h2>
+    <p class="section-note">Live from the rooms where founders, engineers, and allocators gather.</p>
+
+    <div class="feed-tabs-wrap">
+      <div class="feed-tabs" id="feed-tabs">
+        <button class="feed-tab active" data-feed="top">Top</button>
+        <button class="feed-tab" data-feed="new">New</button>
+        <button class="feed-tab" data-feed="best">Best</button>
+        <button class="feed-tab" data-feed="ask">Ask</button>
+        <button class="feed-tab" data-feed="show">Show</button>
+      </div>
+    </div>
+
+    <div class="feed-list" id="feed-list">
+      <div class="feed-loading">Fetching dispatches from Hacker News...</div>
+    </div>
+  </section>
+
+  <!-- ═══ INVESTOR GATES ═══ -->
+  <section>
+    <div class="section-label">Gates</div>
+    <h2 class="mb-sm">Where the informed reside</h2>
+    <p class="section-note">Curated rooms. Each one a door to a different kind of intelligence.</p>
+
+    <div class="gates">
+      <a class="gate" href="https://news.ycombinator.com" target="_blank">
+        <span class="gate-dot" style="background:#f60"></span>
+        <div class="gate-info">
+          <div class="gate-name">Hacker News</div>
+          <div class="gate-desc">Y Combinator's forum. Where founders and engineers think aloud.</div>
+        </div>
+      </a>
+      <a class="gate" href="https://www.bloomberg.com/markets" target="_blank">
+        <span class="gate-dot" style="background:#1e1e1e"></span>
+        <div class="gate-info">
+          <div class="gate-name">Bloomberg</div>
+          <div class="gate-desc">Global markets, macro, and the stories that move capital.</div>
+        </div>
+      </a>
+      <a class="gate" href="https://www.reuters.com/business/finance/" target="_blank">
+        <span class="gate-dot" style="background:#ff8000"></span>
+        <div class="gate-info">
+          <div class="gate-name">Reuters</div>
+          <div class="gate-desc">Wire service. Facts before opinion. The source of sources.</div>
+        </div>
+      </a>
+      <a class="gate" href="https://seekingalpha.com" target="_blank">
+        <span class="gate-dot" style="background:#f68a1e"></span>
+        <div class="gate-info">
+          <div class="gate-name">Seeking Alpha</div>
+          <div class="gate-desc">Crowd-sourced equity research. Retail conviction, measured.</div>
+        </div>
+      </a>
+      <a class="gate" href="https://www.wsj.com/news/markets" target="_blank">
+        <span class="gate-dot" style="background:#0274b6"></span>
+        <div class="gate-info">
+          <div class="gate-name">WSJ Markets</div>
+          <div class="gate-desc">The broadsheet of record for American finance.</div>
+        </div>
+      </a>
+      <a class="gate" href="https://finance.yahoo.com" target="_blank">
+        <span class="gate-dot" style="background:#6001d2"></span>
+        <div class="gate-info">
+          <div class="gate-name">Yahoo Finance</div>
+          <div class="gate-desc">Free charts, screeners, and earnings data. The people's terminal.</div>
+        </div>
+      </a>
+      <a class="gate" href="https://www.ft.com/markets" target="_blank">
+        <span class="gate-dot" style="background:#f2c7a7"></span>
+        <div class="gate-info">
+          <div class="gate-name">Financial Times</div>
+          <div class="gate-desc">Global perspective. Where policy meets capital.</div>
+        </div>
+      </a>
+      <a class="gate" href="https://ark-invest.com/articles" target="_blank">
+        <span class="gate-dot" style="background:#00c2ff"></span>
+        <div class="gate-info">
+          <div class="gate-name">ARK Invest</div>
+          <div class="gate-desc">Cathie Wood's research. Disruptive innovation, quantified.</div>
+        </div>
+      </a>
+      <a class="gate" href="https://www.reddit.com/r/wallstreetbets/" target="_blank">
+        <span class="gate-dot" style="background:#ff4500"></span>
+        <div class="gate-info">
+          <div class="gate-name">r/wallstreetbets</div>
+          <div class="gate-desc">The mob. Sometimes wrong, always first to feel the shift.</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer" id="enroll">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-col-title">Departments</div>
+        <a href="finance.html">Finance</a>
+        <a href="health.html">Health</a>
+        <a href="careers.html">Careers</a>
+        <span style="opacity:0.4;">Systems — coming</span>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Resources</div>
+        <a href="careers.html#lab">Resume Lab</a>
+        <a href="#feed">The Wire</a>
+        <a href="index.html">Home</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Connect</div>
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">YouTube</a>
+      </div>
+      <div class="footer-col footer-subscribe">
+        <div class="footer-col-title">Stay Informed</div>
+        <p>One finance secret a week. No noise.</p>
+        <!-- Signup (front-end only — connect a form service to make it live) -->
+        <form onsubmit="return footerJoin(event)">
+          <input type="email" placeholder="your@email.com" required>
+          <button type="submit">Enroll</button>
+        </form>
+        <div class="sub-msg" id="footer-msg">Welcome in. Your first secret is on its way. ✦</div>
+      </div>
+    </div>
+    <div class="footer-disclaimer">Market data is provided for education and information only and may be delayed. Nothing on this page is financial advice — always do your own research or consult a licensed advisor.</div>
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        © 2026 Secrets of the University · <a href="#">Privacy</a> · <a href="#">Terms</a>
+      </div>
+      <div class="footer-socials">
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">YouTube</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ══════════════════════════════════════════════════
+  // STARFIELD
+  // ══════════════════════════════════════════════════
+  const c = document.getElementById('stars'), ctx = c.getContext('2d');
+  let stars = [];
+  function resize(){
+    c.width = innerWidth; c.height = innerHeight;
+    stars = Array.from({length: Math.min(180, innerWidth/6)}, () => ({
+      x: Math.random()*c.width, y: Math.random()*c.height,
+      r: Math.random()*1.4+0.3, p: Math.random()*Math.PI*2, s: Math.random()*0.02+0.005
+    }));
+  }
+  resize(); addEventListener('resize', resize);
+  (function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    const isLight = document.documentElement.classList.contains('light');
+    const SOLAR = [[240,201,108],[232,163,48],[245,208,160],[255,180,100]];
+    for (const st of stars){
+      st.p += st.s;
+      const a = 0.25 + Math.abs(Math.sin(st.p))*0.6;
+      if (isLight) {
+        const col = SOLAR[Math.floor((st.x+st.y)*7) % SOLAR.length];
+        const sz = st.r * 3.5 + 1.5;
+        const glow = ctx.createRadialGradient(st.x,st.y,0, st.x,st.y, sz*3);
+        glow.addColorStop(0, `rgba(${col[0]},${col[1]},${col[2]},${a*0.55})`);
+        glow.addColorStop(0.35, `rgba(${col[0]},${col[1]},${col[2]},${a*0.18})`);
+        glow.addColorStop(1, `rgba(${col[0]},${col[1]},${col[2]},0)`);
+        ctx.beginPath(); ctx.arc(st.x,st.y, sz*3, 0, Math.PI*2);
+        ctx.fillStyle = glow; ctx.fill();
+        ctx.beginPath(); ctx.arc(st.x,st.y, sz*0.5, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(255,248,230,${a*0.7})`; ctx.fill();
+      } else {
+        ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(232,230,245,${a})`; ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  })();
+
+  // Theme toggle — persists across pages via cookie
+  if (document.cookie.includes('theme=light')) {
+    document.documentElement.classList.add('light');
+    document.querySelector('.theme-toggle').textContent = '☀';
+  }
+  function toggleTheme() {
+    const isLight = document.documentElement.classList.toggle('light');
+    document.querySelector('.theme-toggle').textContent = isLight ? '☀' : '☾';
+    document.cookie = 'theme=' + (isLight ? 'light' : 'dark') + ';path=/;SameSite=Lax';
+  }
+
+  // ══════════════════════════════════════════════════
+  // ANGEL NUMBERS — full-viewport ambient layer
+  // ══════════════════════════════════════════════════
+  (function initAngels(){
+    const overlay = document.getElementById('angel-overlay');
+    const ANGELS = ['111','222','333','444','555','666','777','888','999',
+      '1111','1212','1010','1234','2222','3333','4444','5555','7777','1001','808'];
+    const COLORS = [
+      'rgba(240,201,108,',  // gold
+      'rgba(139,124,247,',  // violet
+      'rgba(232,230,245,',  // ink/white
+      'rgba(95,208,138,',   // green
+      'rgba(226,112,138,',  // rose
+      'rgba(180,160,255,',  // lavender
+    ];
+    const DRIFTS = ['angelDriftR','angelDriftL','angelDriftD'];
+
+    // 45 numbers scattered across the full viewport, fading into near-nothingness
+    for (let i = 0; i < 45; i++) {
+      const el = document.createElement('span');
+      el.className = 'angel-num';
+      el.textContent = ANGELS[Math.floor(Math.random() * ANGELS.length)];
+
+      const size = 14 + Math.random() * 58;          // 14px – 72px
+      const duration = 25 + Math.random() * 70;      // 25s – 95s (slow, meditative)
+      const delay = -(Math.random() * duration);      // stagger across timeline
+      const fadeDur = 6 + Math.random() * 14;         // fade cycle 6–20s
+      const fadeDelay = -(Math.random() * fadeDur);
+      const top = Math.random() * 100;                // random vertical %
+      const left = Math.random() * 100;               // random horizontal %
+      const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      const peak = 0.04 + Math.random() * 0.14;       // peak opacity: 0.04–0.18 (ghostly)
+      const drift = DRIFTS[Math.floor(Math.random() * DRIFTS.length)];
+
+      el.style.cssText = `
+        font-size:${size}px;
+        top:${top}%; left:${left}%;
+        color:${color}1);
+        --angel-peak:${peak};
+        animation:
+          ${drift} ${duration}s linear ${delay}s infinite,
+          angelFade ${fadeDur}s ease-in-out ${fadeDelay}s infinite;
+      `;
+      overlay.appendChild(el);
+    }
+  })();
+
+  // ══════════════════════════════════════════════════
+  // CRYPTO TICKER — live CoinGecko, 60s refresh
+  // ══════════════════════════════════════════════════
+  const COINS = [
+    {id:'bitcoin', sym:'BTC'}, {id:'ethereum', sym:'ETH'}, {id:'solana', sym:'SOL'},
+    {id:'ripple', sym:'XRP'}, {id:'cardano', sym:'ADA'}, {id:'dogecoin', sym:'DOGE'},
+    {id:'chainlink', sym:'LINK'}, {id:'litecoin', sym:'LTC'}
+  ];
+  function fmtPrice(p){
+    if (p >= 1000) return '$' + p.toLocaleString('en-US', {maximumFractionDigits:0});
+    if (p >= 1) return '$' + p.toFixed(2);
+    return '$' + p.toFixed(4);
+  }
+  async function loadCrypto(){
+    const el = document.getElementById('ct-scroll');
+    try {
+      const ids = COINS.map(c2 => c2.id).join(',');
+      const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
+      if (!res.ok) throw new Error(res.status);
+      const data = await res.json();
+      const items = COINS.filter(c2 => data[c2.id]).map(c2 => {
+        const p = data[c2.id].usd, ch = data[c2.id].usd_24h_change || 0;
+        return `<div class="ct-item">
+          <div class="sym">${c2.sym}</div>
+          <div class="price">${fmtPrice(p)}</div>
+          <div class="chg ${ch >= 0 ? 'up' : 'down'}">${ch >= 0 ? '▲' : '▼'} ${Math.abs(ch).toFixed(1)}%</div>
+        </div>`;
+      }).join('');
+      el.innerHTML = items + items;
+    } catch(e) {
+      el.innerHTML = '<div class="ct-item"><div class="sym" style="color:var(--muted)">Prices unavailable</div></div>';
+    }
+  }
+  loadCrypto();
+  setInterval(loadCrypto, 60000);
+
+  // ══════════════════════════════════════════════════
+  // HACKER NEWS FEED — free API, no auth, CORS-OK
+  // ══════════════════════════════════════════════════
+  const HN_BASE = 'https://hacker-news.firebaseio.com/v0';
+  const FEED_ENDPOINTS = {
+    top: 'topstories',
+    new: 'newstories',
+    best: 'beststories',
+    ask: 'askstories',
+    show: 'showstories'
+  };
+  let currentFeed = 'top';
+
+  async function loadFeed(type) {
+    currentFeed = type;
+    const list = document.getElementById('feed-list');
+    list.innerHTML = '<div class="feed-loading">Fetching dispatches...</div>';
+
+    // Update active tab
+    document.querySelectorAll('.feed-tab').forEach(t => t.classList.toggle('active', t.dataset.feed === type));
+
+    try {
+      const endpoint = FEED_ENDPOINTS[type] || 'topstories';
+      const res = await fetch(`${HN_BASE}/${endpoint}.json`);
+      if (!res.ok) throw new Error(res.status);
+      const ids = await res.json();
+
+      // Fetch top 20 stories in parallel
+      const stories = await Promise.all(
+        ids.slice(0, 7).map(id =>
+          fetch(`${HN_BASE}/item/${id}.json`).then(r => r.json())
+        )
+      );
+
+      list.innerHTML = stories.filter(s => s && s.title).map((s, i) => {
+        const domain = s.url ? new URL(s.url).hostname.replace('www.','') : 'news.ycombinator.com';
+        const timeAgo = formatTimeAgo(s.time * 1000);
+        const url = s.url || `https://news.ycombinator.com/item?id=${s.id}`;
+        return `<div class="feed-item">
+          <span class="feed-rank">${i + 1}</span>
+          <div class="feed-content">
+            <a class="feed-title" href="${url}" target="_blank" rel="noopener">
+              ${escHtml(s.title)}
+              <span class="feed-domain">(${domain})</span>
+            </a>
+            <div class="feed-meta">
+              <span class="pts">▲ ${s.score || 0}</span>
+              <span>by ${escHtml(s.by || 'anon')}</span>
+              <span>${timeAgo}</span>
+              <a href="https://news.ycombinator.com/item?id=${s.id}" target="_blank" rel="noopener">${s.descendants || 0} comments</a>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+
+      if (!stories.filter(s => s && s.title).length) {
+        list.innerHTML = '<div class="feed-error">No stories found. The wire is quiet.</div>';
+      }
+    } catch(e) {
+      list.innerHTML = '<div class="feed-error">The wire is down. Refresh to try again.</div>';
+    }
+  }
+
+  function formatTimeAgo(ts) {
+    const diff = (Date.now() - ts) / 1000;
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+    return Math.floor(diff / 86400) + 'd ago';
+  }
+
+  function escHtml(s) {
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  // Tab switching
+  document.getElementById('feed-tabs').addEventListener('click', function(e) {
+    const tab = e.target.closest('.feed-tab');
+    if (tab) loadFeed(tab.dataset.feed);
+  });
+
+  // Initial load
+  loadFeed('top');
+
+  // Footer signup (front-end only — connect a form service to make it live)
+  function footerJoin(e){
+    e.preventDefault();
+    document.getElementById('footer-msg').style.display = 'block';
+    e.target.reset();
+    return false;
+  }
+</script>
+</body>
+</html>
