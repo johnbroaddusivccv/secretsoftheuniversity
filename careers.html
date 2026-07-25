@@ -85,6 +85,11 @@
     transition:all .3s;
   }
   .nav-links a.cta-small:hover { border-color:var(--gold); color:var(--gold); }
+  @media (max-width:700px) {
+    .nav-links a { display:none; }
+    .nav-links .theme-toggle { display:inline-flex; }
+    .nav-links { gap:12px; }
+  }
   canvas#stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
 
   /* ── Palantir-style Footer ──────────────────────── */
@@ -823,9 +828,9 @@
       <div class="footer-col footer-subscribe">
         <div class="footer-col-title">Stay Informed</div>
         <p>One career secret a week. No noise.</p>
-        <!-- Signup (front-end only — connect a form service to make it live) -->
-        <form onsubmit="return footerJoin(event)">
-          <input type="email" placeholder="your@email.com" required>
+        <form name="newsletter-careers" method="POST" data-netlify="true" onsubmit="return footerJoin(event)">
+          <input type="hidden" name="form-name" value="newsletter-careers">
+          <input type="email" name="email" placeholder="your@email.com" required>
           <button type="submit">Enter</button>
         </form>
         <div class="sub-msg" id="footer-msg">You are enrolled. Watch your inbox. ✦</div>
@@ -1668,11 +1673,18 @@ function toggleSource() {
   }
 }
 
-// Footer signup (front-end only — connect a form service to make it live)
+// Footer signup — wired to Netlify Forms
 function footerJoin(e){
   e.preventDefault();
-  document.getElementById('footer-msg').style.display = 'block';
-  e.target.reset();
+  const fd = new FormData(e.target);
+  fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(fd).toString() })
+    .then(() => {
+      document.getElementById('footer-msg').style.display = 'block';
+      e.target.reset();
+    }).catch(() => {
+      document.getElementById('footer-msg').style.display = 'block';
+      e.target.reset();
+    });
   return false;
 }
 

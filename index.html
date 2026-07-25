@@ -79,6 +79,11 @@
     transition:all .3s;
   }
   .nav-links a.cta-small:hover { border-color:var(--gold); color:var(--gold); }
+  @media (max-width:700px) {
+    .nav-links a { display:none; }
+    .nav-links .theme-toggle { display:inline-flex; }
+    .nav-links { gap:12px; }
+  }
 
   /* Hero */
   header { text-align:center; padding:110px 0 90px; }
@@ -249,8 +254,9 @@
     <div class="eyebrow">Ask · Seek · Knock</div>
     <h1>The heavens declare<br>what the university <em>withheld</em>.</h1>
     <p class="sub">It is glory to conceal a matter, and honor to search it out. There is no catalog. There is a door — and it opens from the inside.</p>
-    <form class="signup" id="join" onsubmit="return joinList(event)">
-      <input type="email" id="email" placeholder="your@email.com" required>
+    <form class="signup" id="join" name="signup" method="POST" data-netlify="true" onsubmit="return joinList(event)">
+      <input type="hidden" name="form-name" value="signup">
+      <input type="email" name="email" id="email" placeholder="your@email.com" required>
       <button type="submit">Knock</button>
     </form>
     <div class="signup-note">No cost. No noise. Ask, and the first lesson is given.</div>
@@ -344,8 +350,9 @@
       <div class="footer-col footer-subscribe">
         <div class="footer-col-title">Stay Informed</div>
         <p>One secret a week. No noise.</p>
-        <form onsubmit="return footerJoin(event)">
-          <input type="email" placeholder="your@email.com" required>
+        <form name="newsletter" method="POST" data-netlify="true" onsubmit="return footerJoin(event)">
+          <input type="hidden" name="form-name" value="newsletter">
+          <input type="email" name="email" placeholder="your@email.com" required>
           <button type="submit">Knock</button>
         </form>
         <div class="sub-msg" id="footer-msg">You are in. Watch your inbox. ✦</div>
@@ -414,19 +421,31 @@
     document.cookie = 'theme=' + (isLight ? 'light' : 'dark') + ';path=/;SameSite=Lax';
   }
 
-  // Signup (front-end only — connect a form service to make it live)
+  // Signup — wired to Netlify Forms
   function joinList(e){
     e.preventDefault();
-    const msg = document.getElementById('signup-msg');
-    msg.style.display = 'block';
-    e.target.reset();
-    msg.scrollIntoView({behavior:'smooth', block:'center'});
+    const fd = new FormData(e.target);
+    fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(fd).toString() })
+      .then(() => {
+        document.getElementById('signup-msg').style.display = 'block';
+        e.target.reset();
+      }).catch(() => {
+        document.getElementById('signup-msg').style.display = 'block';
+        e.target.reset();
+      });
     return false;
   }
   function footerJoin(e){
     e.preventDefault();
-    document.getElementById('footer-msg').style.display = 'block';
-    e.target.reset();
+    const fd = new FormData(e.target);
+    fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(fd).toString() })
+      .then(() => {
+        document.getElementById('footer-msg').style.display = 'block';
+        e.target.reset();
+      }).catch(() => {
+        document.getElementById('footer-msg').style.display = 'block';
+        e.target.reset();
+      });
     return false;
   }
 </script>
