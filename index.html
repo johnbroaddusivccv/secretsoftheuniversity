@@ -31,7 +31,8 @@
   html.light .site-footer { background:var(--bg2); }
   html.light .footer-legal, html.light .footer-legal a { color:rgba(107,104,137,0.5); }
   html.light .redact { background:var(--gold); }
-  html.light .teaser:hover .redact { background:transparent; color:var(--gold); }
+  html.light .teaser:hover .redact,
+  html.light .teaser.revealed .redact { background:transparent; color:var(--gold); }
   html.light .footer-subscribe input { background:rgba(0,0,0,0.04); }
   .theme-toggle {
     background:none; border:1px solid var(--border); border-radius:50%;
@@ -40,6 +41,45 @@
     line-height:1; padding:0;
   }
   .theme-toggle:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* Hamburger button — hidden on desktop */
+  .hamburger {
+    display:none; background:none; border:1px solid var(--border); border-radius:8px;
+    width:40px; height:40px; align-items:center; justify-content:center;
+    color:var(--gold); font-size:1.3rem; cursor:pointer; transition:all .3s;
+    padding:0; line-height:1;
+  }
+  .hamburger:hover { border-color:var(--gold); }
+
+  /* Mobile nav overlay */
+  .mobile-nav {
+    display:none; position:fixed; inset:0; z-index:1000;
+    background:rgba(7,7,19,0.96); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    flex-direction:column; align-items:center; justify-content:center; gap:28px;
+  }
+  html.light .mobile-nav { background:rgba(245,243,240,0.96); }
+  .mobile-nav.open { display:flex; }
+  .mobile-nav a {
+    font-family:Helvetica,Arial,sans-serif; font-size:1.1rem; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--ink); text-decoration:none; transition:color .3s;
+    padding:10px 0;
+  }
+  .mobile-nav a:hover { color:var(--gold); }
+  .mobile-nav .mobile-close {
+    position:absolute; top:20px; right:24px;
+    background:none; border:1px solid var(--border); border-radius:50%;
+    width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center;
+    color:var(--ink); font-size:1.4rem; cursor:pointer; transition:all .3s;
+    padding:0; line-height:1;
+  }
+  .mobile-nav .mobile-close:hover { border-color:var(--gold); color:var(--gold); }
+  .mobile-nav .mobile-theme {
+    background:none; border:1px solid var(--border); border-radius:100px;
+    padding:12px 28px; color:var(--gold); font-family:Helvetica,Arial,sans-serif;
+    font-size:0.82rem; letter-spacing:0.15em; text-transform:uppercase;
+    cursor:pointer; transition:all .3s; margin-top:8px;
+  }
+  .mobile-nav .mobile-theme:hover { border-color:var(--gold); }
 
   * { margin:0; padding:0; box-sizing:border-box; }
   html { scroll-behavior:smooth; transition:background .8s ease, color .8s ease; }
@@ -80,8 +120,11 @@
   }
   .nav-links a.cta-small:hover { border-color:var(--gold); color:var(--gold); }
   @media (max-width:700px) {
+    .nav-inner { flex-direction:column; gap:10px; }
+    .brand { text-align:center; width:100%; }
     .nav-links a { display:none; }
-    .nav-links .theme-toggle { display:inline-flex; }
+    .nav-links .theme-toggle { display:none; }
+    .hamburger { display:inline-flex; }
     .nav-links { gap:12px; }
   }
 
@@ -99,13 +142,19 @@
   .sub { font-size:1.15rem; color:var(--muted); max-width:560px; margin:0 auto 44px; }
 
   /* Signup */
-  .signup { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .signup { display:flex; flex-direction:column; gap:12px; align-items:center; max-width:440px; margin:0 auto; }
   .signup input {
-    background: rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:100px;
-    padding:16px 24px; color:var(--ink); font-size:1rem; width:320px; max-width:100%;
+    background: rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:14px;
+    padding:16px 24px; color:var(--ink); font-size:1rem; width:100%;
     font-family: Helvetica, Arial, sans-serif; outline:none; transition:border .3s;
   }
-  .signup input:focus { border-color:var(--violet); }
+  .signup input:focus, .signup textarea:focus { border-color:var(--violet); }
+  .signup textarea {
+    background: rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:14px;
+    padding:16px 24px; color:var(--ink); font-size:0.95rem; width:100%;
+    font-family: Georgia, 'Times New Roman', serif; outline:none; transition:border .3s;
+    resize:vertical; min-height:80px; max-height:200px;
+  }
   .signup button {
     background: linear-gradient(135deg, var(--gold), #d9a63f);
     color:#1a1305; border:none; border-radius:100px; padding:16px 32px; font-size:0.9rem;
@@ -115,6 +164,7 @@
   .signup button:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(240,201,108,0.35); }
   .signup-note { font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; color:var(--muted); margin-top:16px; }
   #signup-msg { color:var(--gold); margin-top:16px; font-style:italic; display:none; }
+  html.light .signup textarea { background:rgba(0,0,0,0.04); }
 
   /* Divider */
   .divider { text-align:center; color:var(--violet); font-size:1.4rem; letter-spacing:1em; padding:10px 0 60px; opacity:.6; }
@@ -147,7 +197,8 @@
     background: var(--gold); color: transparent; border-radius:2px; padding:0 4px;
     transition: background .8s ease, color .8s ease; cursor: help; user-select:none;
   }
-  .teaser:hover .redact { background: transparent; color: var(--gold); }
+  .teaser:hover .redact,
+  .teaser.revealed .redact { background: transparent; color: var(--gold); }
   .teasers-hint { text-align:center; font-family:Helvetica,Arial,sans-serif; font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-top:24px; }
 
   /* Manifesto */
@@ -160,6 +211,50 @@
     font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase;
   }
   .pillar a.pillar-link:hover { text-decoration:underline; }
+
+  /* Daily Revelation — NASA + Verse */
+  .daily-revelation {
+    max-width:800px; margin:0 auto;
+    display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:center;
+  }
+  .daily-img-wrap {
+    border-radius:16px; overflow:hidden; border:1px solid var(--border);
+    background:var(--card); position:relative; aspect-ratio:4/3;
+  }
+  .daily-img-wrap img {
+    width:100%; height:100%; object-fit:cover; display:block;
+    transition:opacity .6s;
+  }
+  .daily-img-wrap .img-caption {
+    position:absolute; bottom:0; left:0; right:0;
+    background:linear-gradient(transparent, rgba(7,7,19,0.85));
+    padding:16px 14px 12px; font-size:0.7rem; color:rgba(232,230,245,0.8);
+    font-family:Helvetica,Arial,sans-serif; letter-spacing:0.06em;
+  }
+  .daily-img-wrap .img-caption a { color:var(--gold); text-decoration:none; }
+  .daily-img-wrap .img-caption a:hover { text-decoration:underline; }
+  .daily-verse-card {
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:32px 28px; display:flex; flex-direction:column; justify-content:center;
+  }
+  .daily-verse-card .verse-text {
+    font-size:1.1rem; font-style:italic; color:var(--ink); line-height:1.7;
+    margin-bottom:16px;
+  }
+  .daily-verse-card .verse-ref {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.72rem;
+    letter-spacing:0.2em; text-transform:uppercase; color:var(--gold);
+  }
+  .daily-verse-card .verse-source {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.62rem;
+    letter-spacing:0.1em; color:var(--muted); margin-top:10px;
+  }
+  .daily-verse-card .verse-source a { color:var(--violet); text-decoration:none; }
+  .daily-verse-card .verse-source a:hover { color:var(--gold); }
+  @media (max-width:700px) {
+    .daily-revelation { grid-template-columns:1fr; gap:20px; }
+    .daily-img-wrap { aspect-ratio:16/10; }
+  }
 
   /* ── Palantir-style Footer ──────────────────────── */
   .site-footer {
@@ -187,13 +282,20 @@
   .footer-subscribe p {
     font-size:0.82rem; color:var(--muted); margin-bottom:14px; line-height:1.5;
   }
-  .footer-subscribe form { display:flex; gap:8px; }
+  .footer-subscribe form { display:flex; flex-direction:column; gap:8px; }
   .footer-subscribe input {
-    flex:1; background:rgba(255,255,255,0.05); border:1px solid var(--border);
+    background:rgba(255,255,255,0.05); border:1px solid var(--border);
     border-radius:8px; padding:10px 14px; color:var(--ink); font-size:0.82rem;
     font-family:Helvetica,Arial,sans-serif; outline:none; transition:border .3s;
+    width:100%; box-sizing:border-box;
   }
-  .footer-subscribe input:focus { border-color:var(--gold); }
+  .footer-subscribe input:focus, .footer-subscribe textarea:focus { border-color:var(--gold); }
+  .footer-subscribe textarea {
+    background:rgba(255,255,255,0.05); border:1px solid var(--border);
+    border-radius:8px; padding:10px 14px; color:var(--ink); font-size:0.82rem;
+    font-family:Georgia,serif; outline:none; transition:border .3s;
+    width:100%; box-sizing:border-box; resize:vertical; min-height:50px; max-height:140px;
+  }
   .footer-subscribe button {
     background:var(--gold); color:#1a1305; border:none; border-radius:8px;
     padding:10px 18px; font-size:0.72rem; font-weight:700; letter-spacing:0.08em;
@@ -221,7 +323,6 @@
   @media (max-width:700px) {
     .footer-grid { grid-template-columns:1fr 1fr; gap:28px; }
     .footer-subscribe { grid-column:span 2; }
-    .footer-subscribe form { flex-direction:column; }
   }
   @media (max-width:600px) {
     header { padding:70px 0 60px; }
@@ -244,8 +345,19 @@
       <a href="careers.html">Careers</a>
       <a class="cta-small" href="#join">Join</a>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light mode">☾</button>
+      <button class="hamburger" onclick="document.getElementById('mobile-nav').classList.add('open')" aria-label="Open menu">☰</button>
     </div>
   </div>
+</div>
+
+<div class="mobile-nav" id="mobile-nav">
+  <button class="mobile-close" onclick="this.parentElement.classList.remove('open')" aria-label="Close menu">✕</button>
+  <a href="index.html" onclick="this.parentElement.classList.remove('open')">Home</a>
+  <a href="finance.html">Finance</a>
+  <a href="health.html">Health</a>
+  <a href="careers.html">Careers</a>
+  <a href="#join" onclick="this.parentElement.classList.remove('open')">Join</a>
+  <button class="mobile-theme" onclick="toggleTheme(); this.textContent = document.documentElement.classList.contains('light') ? '☀ Light Mode' : '☾ Dark Mode';">☾ Dark Mode</button>
 </div>
 
 <div class="wrap">
@@ -254,14 +366,35 @@
     <div class="eyebrow">Ask · Seek · Knock</div>
     <h1>The heavens declare<br>what the university <em>withheld</em>.</h1>
     <p class="sub">It is glory to conceal a matter, and honor to search it out. There is no catalog. There is a door — and it opens from the inside.</p>
-    <form class="signup" id="join" name="signup" method="POST" data-netlify="true" onsubmit="return joinList(event)">
-      <input type="hidden" name="form-name" value="signup">
+    <form class="signup" id="join" onsubmit="return joinList(event)">
       <input type="email" name="email" id="email" placeholder="your@email.com" required>
+      <textarea name="message" id="hero-message" placeholder="Your message" rows="3"></textarea>
       <button type="submit">Knock</button>
     </form>
     <div class="signup-note">No cost. No noise. Ask, and the first lesson is given.</div>
     <div id="signup-msg">Knock, and it is opened. Watch your inbox. ✦</div>
   </header>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <section>
+    <div class="section-label">Daily Revelation</div>
+    <h2>The heavens declare his handiwork</h2>
+    <div class="daily-revelation">
+      <div class="daily-img-wrap" id="apod-wrap">
+        <img id="apod-img" src="" alt="NASA Astronomy Picture of the Day" style="opacity:0;">
+        <div class="img-caption">
+          <span id="apod-title">Loading…</span><br>
+          <a id="apod-link" href="https://apod.nasa.gov" target="_blank" rel="noopener">NASA APOD</a>
+        </div>
+      </div>
+      <div class="daily-verse-card">
+        <div class="verse-text" id="votd-text"></div>
+        <div class="verse-ref" id="votd-ref"></div>
+        <div class="verse-source">Verse of the Day · <a href="https://www.bible.com/verse-of-the-day" target="_blank" rel="noopener">YouVersion</a></div>
+      </div>
+    </div>
+  </section>
 
   <div class="divider">✦ ✦ ✦</div>
 
@@ -291,6 +424,7 @@
         <div class="glyph">✦</div>
         <h3>Systems</h3>
         <p>Nothing is new under the sun. Every system runs on old rules. Learn them.</p>
+        <a class="pillar-link" href="systems.html">Enter →</a>
       </div>
     </div>
   </section>
@@ -333,7 +467,7 @@
         <a href="finance.html">Finance</a>
         <a href="health.html">Health</a>
         <a href="careers.html">Careers</a>
-        <span style="opacity:0.4;">Systems — coming</span>
+        <a href="systems.html">Systems</a>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">Resources</div>
@@ -350,9 +484,9 @@
       <div class="footer-col footer-subscribe">
         <div class="footer-col-title">Stay Informed</div>
         <p>One secret a week. No noise.</p>
-        <form name="newsletter" method="POST" data-netlify="true" onsubmit="return footerJoin(event)">
-          <input type="hidden" name="form-name" value="newsletter">
-          <input type="email" name="email" placeholder="your@email.com" required>
+        <form onsubmit="return footerJoin(event)">
+          <input type="email" name="email" id="footer-email" placeholder="your@email.com" required>
+          <textarea name="message" id="footer-message" placeholder="Message (optional)" rows="2"></textarea>
           <button type="submit">Knock</button>
         </form>
         <div class="sub-msg" id="footer-msg">You are in. Watch your inbox. ✦</div>
@@ -411,43 +545,125 @@
   })();
 
   // Theme toggle — persists across pages via cookie
+  function syncThemeUI(isLight) {
+    const dt = document.querySelector('.theme-toggle');
+    const mt = document.querySelector('.mobile-theme');
+    if (dt) dt.textContent = isLight ? '☀' : '☾';
+    if (mt) mt.textContent = isLight ? '☀ Light Mode' : '☾ Dark Mode';
+  }
   if (document.cookie.includes('theme=light')) {
     document.documentElement.classList.add('light');
-    document.querySelector('.theme-toggle').textContent = '☀';
+    syncThemeUI(true);
   }
   function toggleTheme() {
     const isLight = document.documentElement.classList.toggle('light');
-    document.querySelector('.theme-toggle').textContent = isLight ? '☀' : '☾';
+    syncThemeUI(isLight);
     document.cookie = 'theme=' + (isLight ? 'light' : 'dark') + ';path=/;SameSite=Lax';
   }
 
-  // Signup — wired to Netlify Forms
+  // Hero form — sends via mailto: to john@secretsoftheuniversity.com
   function joinList(e){
     e.preventDefault();
-    const fd = new FormData(e.target);
-    fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(fd).toString() })
-      .then(() => {
-        document.getElementById('signup-msg').style.display = 'block';
-        e.target.reset();
-      }).catch(() => {
-        document.getElementById('signup-msg').style.display = 'block';
-        e.target.reset();
-      });
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('hero-message').value.trim();
+    const subject = encodeURIComponent('Inquiry from ' + email);
+    const body = encodeURIComponent('From: ' + email + '\n\n' + (message || 'I would like to learn more.'));
+    window.location.href = 'mailto:john@secretsoftheuniversity.com?subject=' + subject + '&body=' + body;
+    document.getElementById('signup-msg').style.display = 'block';
+    e.target.reset();
     return false;
   }
+  // Footer form — sends via mailto: to john@secretsoftheuniversity.com
   function footerJoin(e){
     e.preventDefault();
-    const fd = new FormData(e.target);
-    fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(fd).toString() })
-      .then(() => {
-        document.getElementById('footer-msg').style.display = 'block';
-        e.target.reset();
-      }).catch(() => {
-        document.getElementById('footer-msg').style.display = 'block';
-        e.target.reset();
-      });
+    const email = document.getElementById('footer-email').value.trim();
+    const message = document.getElementById('footer-message').value.trim();
+    const subject = encodeURIComponent('Newsletter signup from ' + email);
+    const body = encodeURIComponent('From: ' + email + '\n\n' + (message || 'Please add me to the list.'));
+    window.location.href = 'mailto:john@secretsoftheuniversity.com?subject=' + subject + '&body=' + body;
+    document.getElementById('footer-msg').style.display = 'block';
+    e.target.reset();
     return false;
   }
+
+  // Tap-to-reveal for redacted fragments (mobile)
+  document.querySelectorAll('.teaser').forEach(t => {
+    t.addEventListener('click', () => t.classList.toggle('revealed'));
+  });
+
+  // ══════════════════════════════════════════════════
+  // DAILY REVELATION — NASA APOD + Verse of the Day
+  // ══════════════════════════════════════════════════
+
+  // NASA Astronomy Picture of the Day
+  (function loadAPOD() {
+    fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY')
+      .then(r => r.json())
+      .then(d => {
+        const img = document.getElementById('apod-img');
+        if (d.media_type === 'image') {
+          img.src = d.url;
+          img.onload = () => img.style.opacity = '1';
+        } else {
+          // Video day — use thumbnail or fallback
+          img.src = d.thumbnail_url || 'https://apod.nasa.gov/apod/image/2301/M1_HST_SN.jpg';
+          img.onload = () => img.style.opacity = '1';
+        }
+        document.getElementById('apod-title').textContent = d.title || 'Astronomy Picture of the Day';
+        const link = document.getElementById('apod-link');
+        link.href = d.hdurl || d.url || 'https://apod.nasa.gov';
+        link.textContent = 'NASA APOD · ' + (d.date || '');
+      })
+      .catch(() => {
+        // Fallback if API is down
+        const img = document.getElementById('apod-img');
+        img.src = 'https://apod.nasa.gov/apod/image/2301/M1_HST_SN.jpg';
+        img.onload = () => img.style.opacity = '1';
+        document.getElementById('apod-title').textContent = 'Crab Nebula — Hubble Space Telescope';
+      });
+  })();
+
+  // Verse of the Day — curated rotation linked to YouVersion
+  (function loadVOTD() {
+    const verses = [
+      { t: "The heavens declare the glory of God; the skies proclaim the work of his hands.", r: "Psalm 19:1" },
+      { t: "It is the glory of God to conceal a matter; to search out a matter is the glory of kings.", r: "Proverbs 25:2" },
+      { t: "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.", r: "Jeremiah 29:11" },
+      { t: "Trust in the Lord with all your heart and lean not on your own understanding.", r: "Proverbs 3:5" },
+      { t: "The fear of the Lord is the beginning of knowledge, but fools despise wisdom and instruction.", r: "Proverbs 1:7" },
+      { t: "Ask and it will be given to you; seek and you will find; knock and the door will be opened to you.", r: "Matthew 7:7" },
+      { t: "Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.", r: "Joshua 1:9" },
+      { t: "I can do all things through Christ who strengthens me.", r: "Philippians 4:13" },
+      { t: "The Lord is my shepherd; I shall not want.", r: "Psalm 23:1" },
+      { t: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.", r: "John 3:16" },
+      { t: "And we know that in all things God works for the good of those who love him, who have been called according to his purpose.", r: "Romans 8:28" },
+      { t: "The Lord is my light and my salvation — whom shall I fear?", r: "Psalm 27:1" },
+      { t: "He has made everything beautiful in its time. He has also set eternity in the human heart.", r: "Ecclesiastes 3:11" },
+      { t: "Commit to the Lord whatever you do, and he will establish your plans.", r: "Proverbs 16:3" },
+      { t: "But those who hope in the Lord will renew their strength. They will soar on wings like eagles.", r: "Isaiah 40:31" },
+      { t: "The name of the Lord is a fortified tower; the righteous run to it and are safe.", r: "Proverbs 18:10" },
+      { t: "Delight yourself in the Lord, and he will give you the desires of your heart.", r: "Psalm 37:4" },
+      { t: "Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.", r: "Philippians 4:6" },
+      { t: "The Lord your God is in your midst, a mighty one who will save; he will rejoice over you with gladness.", r: "Zephaniah 3:17" },
+      { t: "For where your treasure is, there your heart will be also.", r: "Matthew 6:21" },
+      { t: "A generous person will prosper; whoever refreshes others will be refreshed.", r: "Proverbs 11:25" },
+      { t: "The earth is the Lord's, and everything in it, the world, and all who live in it.", r: "Psalm 24:1" },
+      { t: "Whatever you do, work at it with all your heart, as working for the Lord.", r: "Colossians 3:23" },
+      { t: "Be still, and know that I am God.", r: "Psalm 46:10" },
+      { t: "The tongue has the power of life and death, and those who love it will eat its fruit.", r: "Proverbs 18:21" },
+      { t: "He who walks with wise men will be wise, but the companion of fools will suffer harm.", r: "Proverbs 13:20" },
+      { t: "For nothing will be impossible with God.", r: "Luke 1:37" },
+      { t: "The light shines in the darkness, and the darkness has not overcome it.", r: "John 1:5" },
+      { t: "Blessed is the one who perseveres under trial because, having stood the test, that person will receive the crown of life.", r: "James 1:12" },
+      { t: "The Lord makes firm the steps of the one who delights in him.", r: "Psalm 37:23" },
+      { t: "Iron sharpens iron, and one man sharpens another.", r: "Proverbs 27:17" }
+    ];
+    const today = new Date();
+    const dayOfYear = Math.floor((today - new Date(today.getFullYear(),0,0)) / 86400000);
+    const v = verses[dayOfYear % verses.length];
+    document.getElementById('votd-text').textContent = '\u201C' + v.t + '\u201D';
+    document.getElementById('votd-ref').textContent = '\u2014 ' + v.r;
+  })();
 </script>
 </body>
 </html>

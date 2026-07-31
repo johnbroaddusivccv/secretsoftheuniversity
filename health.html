@@ -52,6 +52,45 @@
   }
   .theme-toggle:hover { border-color:var(--gold); color:var(--gold); }
 
+  /* Hamburger button — hidden on desktop */
+  .hamburger {
+    display:none; background:none; border:1px solid var(--border); border-radius:8px;
+    width:40px; height:40px; align-items:center; justify-content:center;
+    color:var(--gold); font-size:1.3rem; cursor:pointer; transition:all .3s;
+    padding:0; line-height:1;
+  }
+  .hamburger:hover { border-color:var(--gold); }
+
+  /* Mobile nav overlay */
+  .mobile-nav {
+    display:none; position:fixed; inset:0; z-index:1000;
+    background:rgba(7,7,19,0.96); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    flex-direction:column; align-items:center; justify-content:center; gap:28px;
+  }
+  html.light .mobile-nav { background:rgba(245,243,240,0.96); }
+  .mobile-nav.open { display:flex; }
+  .mobile-nav a {
+    font-family:Helvetica,Arial,sans-serif; font-size:1.1rem; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--ink); text-decoration:none; transition:color .3s;
+    padding:10px 0;
+  }
+  .mobile-nav a:hover { color:var(--gold); }
+  .mobile-nav .mobile-close {
+    position:absolute; top:20px; right:24px;
+    background:none; border:1px solid var(--border); border-radius:50%;
+    width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center;
+    color:var(--ink); font-size:1.4rem; cursor:pointer; transition:all .3s;
+    padding:0; line-height:1;
+  }
+  .mobile-nav .mobile-close:hover { border-color:var(--gold); color:var(--gold); }
+  .mobile-nav .mobile-theme {
+    background:none; border:1px solid var(--border); border-radius:100px;
+    padding:12px 28px; color:var(--gold); font-family:Helvetica,Arial,sans-serif;
+    font-size:0.82rem; letter-spacing:0.15em; text-transform:uppercase;
+    cursor:pointer; transition:all .3s; margin-top:8px;
+  }
+  .mobile-nav .mobile-theme:hover { border-color:var(--gold); }
+
   * { margin:0; padding:0; box-sizing:border-box; }
   html { scroll-behavior:smooth; transition:background .8s ease, color .8s ease; }
   body {
@@ -89,8 +128,11 @@
   }
   .nav-links a.cta-small:hover { border-color:var(--gold); color:var(--gold); }
   @media (max-width:700px) {
+    .nav-inner { flex-direction:column; gap:10px; }
+    .brand { text-align:center; width:100%; }
     .nav-links a { display:none; }
-    .nav-links .theme-toggle { display:inline-flex; }
+    .nav-links .theme-toggle { display:none; }
+    .hamburger { display:inline-flex; }
     .nav-links { gap:12px; }
   }
 
@@ -370,13 +412,20 @@
   }
   .footer-col a:hover { color:var(--ink); }
   .footer-subscribe p { font-size:0.82rem; color:var(--muted); margin-bottom:14px; line-height:1.5; }
-  .footer-subscribe form { display:flex; gap:8px; }
+  .footer-subscribe form { display:flex; flex-direction:column; gap:8px; }
   .footer-subscribe input {
-    flex:1; background:rgba(255,255,255,0.05); border:1px solid var(--border);
+    background:rgba(255,255,255,0.05); border:1px solid var(--border);
     border-radius:8px; padding:10px 14px; color:var(--ink); font-size:0.82rem;
     font-family:Helvetica,Arial,sans-serif; outline:none; transition:border .3s;
+    width:100%; box-sizing:border-box;
   }
-  .footer-subscribe input:focus { border-color:var(--gold); }
+  .footer-subscribe input:focus, .footer-subscribe textarea:focus { border-color:var(--gold); }
+  .footer-subscribe textarea {
+    background:rgba(255,255,255,0.05); border:1px solid var(--border);
+    border-radius:8px; padding:10px 14px; color:var(--ink); font-size:0.82rem;
+    font-family:Georgia,serif; outline:none; transition:border .3s;
+    width:100%; box-sizing:border-box; resize:vertical; min-height:50px; max-height:140px;
+  }
   .footer-subscribe button {
     background:var(--gold); color:#1a1305; border:none; border-radius:8px;
     padding:10px 18px; font-size:0.72rem; font-weight:700; letter-spacing:0.08em;
@@ -418,6 +467,40 @@
   }
   .partner-cta:hover { background:rgba(240,201,108,0.12); }
 
+  /* ── Contact Form ─────────────────────────── */
+  .contact-form {
+    max-width:520px; margin:32px auto 0;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .contact-form input,
+  .contact-form textarea {
+    background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:12px;
+    padding:14px 18px; color:var(--ink); font-size:0.95rem;
+    font-family:Georgia,'Times New Roman',serif; outline:none; transition:border .3s;
+    width:100%;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus { border-color:var(--gold); }
+  .contact-form textarea {
+    resize:vertical; min-height:100px; max-height:260px;
+  }
+  .contact-form button {
+    background:linear-gradient(135deg, var(--gold), #d9a63f);
+    color:#1a1305; border:none; border-radius:100px; padding:14px 32px;
+    font-size:0.85rem; font-family:Helvetica,Arial,sans-serif; font-weight:700;
+    letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;
+    transition:transform .2s, box-shadow .3s; align-self:center;
+  }
+  .contact-form button:hover {
+    transform:translateY(-2px); box-shadow:0 8px 30px rgba(240,201,108,0.35);
+  }
+  #contact-msg {
+    text-align:center; color:var(--gold); font-style:italic;
+    font-size:0.92rem; margin-top:8px; display:none;
+  }
+  html.light .contact-form input,
+  html.light .contact-form textarea { background:rgba(0,0,0,0.04); }
+
   /* ── Timeline ───────────────────────────── */
   .timeline { max-width:600px; margin:32px auto 0; position:relative; padding-left:28px; }
   .timeline::before {
@@ -448,7 +531,6 @@
   @media (max-width:700px) {
     .footer-grid { grid-template-columns:1fr 1fr; gap:28px; }
     .footer-subscribe { grid-column:span 2; }
-    .footer-subscribe form { flex-direction:column; }
     .range-row { grid-template-columns:1fr 1fr; gap:4px; font-size:0.8rem; padding:10px 16px; }
     .range-row.head { display:none; }
     .pep-body { grid-template-columns:1fr; gap:22px; }
@@ -480,8 +562,19 @@
       <a href="careers.html">Careers</a>
       <a class="cta-small" href="#contact">Seek</a>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light mode">☾</button>
+      <button class="hamburger" onclick="document.getElementById('mobile-nav').classList.add('open')" aria-label="Open menu">☰</button>
     </div>
   </div>
+</div>
+
+<div class="mobile-nav" id="mobile-nav">
+  <button class="mobile-close" onclick="this.parentElement.classList.remove('open')" aria-label="Close menu">✕</button>
+  <a href="index.html">Home</a>
+  <a href="finance.html">Finance</a>
+  <a href="health.html" onclick="this.parentElement.classList.remove('open')">Health</a>
+  <a href="careers.html">Careers</a>
+  <a href="#contact" onclick="this.parentElement.classList.remove('open')">Seek</a>
+  <button class="mobile-theme" onclick="toggleTheme(); this.textContent = document.documentElement.classList.contains('light') ? '☀ Light Mode' : '☾ Dark Mode';">☾ Dark Mode</button>
 </div>
 
 <div class="wrap">
@@ -768,8 +861,8 @@
   <!-- ═══ ABOUT / CONTACT ═══ -->
   <section id="contact">
     <div class="section-label">The Practice</div>
-    <h2 class="mb-sm">Reach out</h2>
-    <p class="section-note">Questions on products, protocols, or pricing. By email, text, or call.</p>
+    <h2 class="mb-sm">Seek, and it shall be given</h2>
+    <p class="section-note">Questions on products, protocols, or next steps. By email, text, or call.</p>
     <div class="about-grid">
       <div>
         <div class="about-row"><b>Email</b> john@secretsoftheuniversity.com</div>
@@ -789,6 +882,14 @@
         <small>Wire &amp; crypto wallet details are provided on your invoice or upon request.</small>
       </div>
     </div>
+
+    <!-- Contact form — sends via mailto: to john@secretsoftheuniversity.com -->
+    <form class="contact-form" id="contact-form" onsubmit="return handleContact(event)">
+      <input type="email" name="email" id="contact-email" placeholder="Your email" required>
+      <textarea name="message" id="contact-message" placeholder="Your message" rows="4" required></textarea>
+      <button type="submit">Knock</button>
+    </form>
+    <div id="contact-msg">Your message is on its way. ✦</div>
   </section>
 
   <!-- ═══ CALENDLY ═══ -->
@@ -836,7 +937,7 @@
         <a href="finance.html">Finance</a>
         <a href="health.html">Health</a>
         <a href="careers.html">Careers</a>
-        <span style="opacity:0.4;">Systems — coming</span>
+        <a href="systems.html">Systems</a>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">Resources</div>
@@ -855,9 +956,9 @@
       <div class="footer-col footer-subscribe">
         <div class="footer-col-title">Stay Informed</div>
         <p>One health secret a week. No noise.</p>
-        <form name="newsletter-health" method="POST" data-netlify="true" onsubmit="return footerJoin(event)">
-          <input type="hidden" name="form-name" value="newsletter-health">
-          <input type="email" name="email" placeholder="your@email.com" required>
+        <form onsubmit="return footerJoin(event)">
+          <input type="email" name="email" id="footer-email" placeholder="your@email.com" required>
+          <textarea name="message" id="footer-message" placeholder="Message (optional)" rows="2"></textarea>
           <button type="submit">Enter</button>
         </form>
         <div class="sub-msg" id="footer-msg">You are in. Watch your inbox. ✦</div>
@@ -920,13 +1021,19 @@
   })();
 
   // Theme toggle — persists across pages via cookie
+  function syncThemeUI(isLight) {
+    const dt = document.querySelector('.theme-toggle');
+    const mt = document.querySelector('.mobile-theme');
+    if (dt) dt.textContent = isLight ? '☀' : '☾';
+    if (mt) mt.textContent = isLight ? '☀ Light Mode' : '☾ Dark Mode';
+  }
   if (document.cookie.includes('theme=light')) {
     document.documentElement.classList.add('light');
-    document.querySelector('.theme-toggle').textContent = '☀';
+    syncThemeUI(true);
   }
   function toggleTheme() {
     const isLight = document.documentElement.classList.toggle('light');
-    document.querySelector('.theme-toggle').textContent = isLight ? '☀' : '☾';
+    syncThemeUI(isLight);
     document.cookie = 'theme=' + (isLight ? 'light' : 'dark') + ';path=/;SameSite=Lax';
   }
 
@@ -975,18 +1082,29 @@
   }
   updateBars();
 
-  // Footer signup — wired to Netlify Forms
+  // Footer form — sends via mailto: to john@secretsoftheuniversity.com
   function footerJoin(e){
     e.preventDefault();
-    const fd = new FormData(e.target);
-    fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(fd).toString() })
-      .then(() => {
-        document.getElementById('footer-msg').style.display = 'block';
-        e.target.reset();
-      }).catch(() => {
-        document.getElementById('footer-msg').style.display = 'block';
-        e.target.reset();
-      });
+    const email = document.getElementById('footer-email').value.trim();
+    const message = document.getElementById('footer-message').value.trim();
+    const subject = encodeURIComponent('Health signup from ' + email);
+    const body = encodeURIComponent('From: ' + email + '\n\n' + (message || 'Please add me to the list.'));
+    window.location.href = 'mailto:john@secretsoftheuniversity.com?subject=' + subject + '&body=' + body;
+    document.getElementById('footer-msg').style.display = 'block';
+    e.target.reset();
+    return false;
+  }
+
+  // Contact form — opens visitor's email client to john@secretsoftheuniversity.com
+  function handleContact(e) {
+    e.preventDefault();
+    const email = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    const subject = encodeURIComponent('Inquiry from ' + email);
+    const body = encodeURIComponent('From: ' + email + '\n\n' + message);
+    window.location.href = 'mailto:john@secretsoftheuniversity.com?subject=' + subject + '&body=' + body;
+    document.getElementById('contact-msg').style.display = 'block';
+    document.getElementById('contact-form').reset();
     return false;
   }
 </script>

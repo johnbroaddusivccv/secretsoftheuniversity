@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Finance — Secrets of the University</title>
-<meta name="description" content="Live markets and the money lessons school skipped — credit, taxes, negotiation, investing.">
+<title>Systems — Secrets of the University</title>
+<meta name="description" content="How institutions, bureaucracies, and power structures actually work — the operating manual school never issued.">
 <style>
   :root {
     --bg: #070713;
@@ -31,9 +31,8 @@
   html.light .site-footer { background:var(--bg2); }
   html.light .footer-legal, html.light .footer-legal a { color:rgba(107,104,137,0.5); }
   html.light .footer-subscribe input { background:rgba(0,0,0,0.04); }
-  html.light #crypto-ticker { background:linear-gradient(180deg, rgba(234,232,228,0.95), rgba(245,243,240,0.95)); }
-  html.light .angel-overlay { pointer-events:none; }
   html.light .gate { background:rgba(107,92,231,0.04); }
+  html.light .node-overlay { pointer-events:none; }
   .theme-toggle {
     background:none; border:1px solid var(--border); border-radius:50%;
     width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center;
@@ -93,7 +92,6 @@
   }
   canvas#stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
   .wrap { position:relative; z-index:1; max-width:1000px; margin:0 auto; padding:0 24px; }
-  @media (min-width:901px) { .wrap { padding-right:140px; } }
 
   /* Full-width nav bar */
   .nav-full {
@@ -105,7 +103,6 @@
     max-width:1000px; margin:0 auto; padding:20px 24px;
     display:flex; justify-content:space-between; align-items:center;
   }
-  @media (min-width:901px) { .nav-inner { padding-right:140px; } }
   .brand { font-size:1.05rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); text-decoration:none; }
   .brand span { color:var(--muted); }
   .nav-links { display:flex; gap:22px; align-items:center; }
@@ -128,66 +125,38 @@
     .nav-links { gap:12px; }
   }
 
-  /* Stock ticker (horizontal) */
-  .stock-ticker-band {
-    border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-    background: rgba(13,13,36,0.6); position:relative; z-index:1; margin:0 -24px;
-  }
-
-  /* Crypto ticker (vertical, right edge) */
-  #crypto-ticker {
-    position:fixed; top:0; right:0; bottom:0; width:110px; z-index:2;
-    border-left:1px solid var(--border);
-    background: linear-gradient(180deg, rgba(13,13,36,0.85), rgba(7,7,19,0.85));
-    overflow:hidden; font-family:Helvetica,Arial,sans-serif;
-  }
-  #crypto-ticker .ct-label {
-    position:absolute; top:0; left:0; right:0; padding:10px 0; text-align:center;
-    font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--violet);
-    background:var(--bg2); border-bottom:1px solid var(--border); z-index:2;
-  }
-  .ct-scroll { position:absolute; top:36px; left:0; right:0; animation: ctScroll 30s linear infinite; }
-  @keyframes ctScroll { from { transform:translateY(0); } to { transform:translateY(-50%); } }
-  .ct-item { padding:14px 10px; text-align:center; border-bottom:1px solid rgba(139,124,247,0.1); }
-  .ct-item .sym { font-size:0.72rem; letter-spacing:0.12em; color:var(--ink); font-weight:700; }
-  .ct-item .price { font-size:0.78rem; color:var(--gold); margin-top:2px; }
-  .ct-item .chg { font-size:0.68rem; margin-top:2px; }
-  .chg.up { color:#5fd08a; } .chg.down { color:#e2708a; }
-  @media (max-width:900px) { #crypto-ticker { display:none; } }
-
-  /* ── Angel Numbers — full-viewport ambient layer ── */
-  .angel-overlay {
+  /* ── Network Nodes — ambient bg layer ─────── */
+  .node-overlay {
     position:fixed; inset:0; z-index:0;
     pointer-events:none; overflow:hidden;
   }
-  .angel-num {
+  .node-glyph {
     position:absolute;
-    font-family:Georgia,'Times New Roman',serif;
-    font-weight:400; font-style:italic;
+    font-family:Helvetica,Arial,sans-serif;
+    font-weight:700; letter-spacing:0.1em;
     pointer-events:none; user-select:none;
     white-space:nowrap;
     will-change:transform, opacity;
   }
-  @keyframes angelDriftR {
-    0%   { transform:translate(-140px, 0); }
-    100% { transform:translate(calc(100vw + 140px), 0); }
+  @keyframes nodeDriftR {
+    0%   { transform:translate(-120px, 0); }
+    100% { transform:translate(calc(100vw + 120px), 0); }
   }
-  @keyframes angelDriftL {
-    0%   { transform:translate(calc(100vw + 140px), 0); }
-    100% { transform:translate(-140px, 0); }
+  @keyframes nodeDriftL {
+    0%   { transform:translate(calc(100vw + 120px), 0); }
+    100% { transform:translate(-120px, 0); }
   }
-  @keyframes angelDriftD {
-    0%   { transform:translate(0, -60px); }
-    100% { transform:translate(0, calc(100vh + 60px)); }
+  @keyframes nodeDriftD {
+    0%   { transform:translate(0, -50px); }
+    100% { transform:translate(0, calc(100vh + 50px)); }
   }
-  @keyframes angelFade {
+  @keyframes nodeFade {
     0%, 100% { opacity:0; }
-    35%, 65% { opacity:var(--angel-peak, 0.12); }
+    35%, 65% { opacity:var(--node-peak, 0.08); }
   }
-  /* Each number gets unique speed/size/color via inline styles in JS */
 
   /* Hero */
-  header { text-align:center; padding:70px 0 50px; }
+  header { text-align:center; padding:90px 0 60px; }
   .eyebrow {
     font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; letter-spacing:0.35em; text-transform:uppercase;
     color:var(--violet); margin-bottom:24px;
@@ -204,6 +173,46 @@
   h2 { text-align:center; font-weight:400; font-size:clamp(1.5rem,4vw,2.1rem); margin-bottom:48px; }
   h2.mb-sm { margin-bottom:20px; }
 
+  /* ── Diagram: How a System Works ────────────── */
+  .system-diagram {
+    max-width:700px; margin:0 auto 60px; padding:36px 28px;
+    border:1px solid var(--border); border-radius:16px;
+    background:var(--card); position:relative; overflow:hidden;
+  }
+  .system-diagram::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--violet), var(--gold), var(--violet));
+    opacity:0.6;
+  }
+  .diagram-title {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.68rem; letter-spacing:0.3em;
+    text-transform:uppercase; color:var(--violet); margin-bottom:20px; text-align:center;
+  }
+  .diagram-flow {
+    display:flex; align-items:center; justify-content:center; gap:0;
+    flex-wrap:wrap;
+  }
+  .diagram-node {
+    text-align:center; padding:14px 18px; border:1px solid var(--border);
+    border-radius:12px; background:rgba(139,124,247,0.04);
+    transition:border-color .3s, transform .3s; min-width:110px;
+  }
+  .diagram-node:hover { border-color:var(--gold); transform:translateY(-3px); }
+  .diagram-node .dn-label {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.65rem; letter-spacing:0.15em;
+    text-transform:uppercase; color:var(--gold); margin-bottom:4px;
+  }
+  .diagram-node .dn-desc { font-size:0.82rem; color:var(--muted); line-height:1.35; }
+  .diagram-arrow {
+    color:var(--violet); font-size:1.2rem; padding:0 10px; opacity:0.5;
+    flex-shrink:0;
+  }
+  @media (max-width:600px) {
+    .diagram-flow { flex-direction:column; gap:4px; }
+    .diagram-arrow { transform:rotate(90deg); padding:4px 0; }
+  }
+
+  /* Lessons */
   .lessons { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
   .lesson {
     background:var(--card); border:1px solid var(--border); border-radius:16px; padding:30px 26px;
@@ -217,18 +226,10 @@
   .lesson h3 { font-weight:400; font-size:1.12rem; margin-bottom:10px; font-style:italic; }
   .lesson p { font-size:0.92rem; color:var(--muted); }
 
-  /* ── Market Overview Widget ─────────────────────── */
-  .market-widget-wrap {
-    border-radius:16px; overflow:hidden; border:1px solid var(--border);
-    background:var(--card); margin-bottom:0;
-  }
-  .market-widget-wrap iframe { display:block; }
-
-  /* ── News Feed ──────────────────────────────────── */
+  /* ── Feed (mirrors finance.html) ───────────── */
   .feed-tabs {
-    display:flex; gap:0; justify-content:center; margin-bottom:28px;
+    display:inline-flex; gap:0; justify-content:center; margin:0 auto 28px;
     border:1px solid var(--border); border-radius:100px; overflow:hidden;
-    display:inline-flex; margin:0 auto 28px; width:auto;
   }
   .feed-tabs-wrap { text-align:center; }
   .feed-tab {
@@ -275,7 +276,7 @@
     text-align:center; padding:30px 0; color:var(--muted); font-style:italic; font-size:0.9rem;
   }
 
-  /* ── Investor Gates (curated links) ─────────────── */
+  /* ── Gates (curated links) ─────────────────── */
   .gates { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; max-width:700px; margin:0 auto; }
   .gate {
     background:var(--card); border:1px solid var(--border); border-radius:14px;
@@ -294,7 +295,7 @@
 
   .section-note { text-align:center; font-size:0.92rem; color:var(--muted); font-style:italic; max-width:520px; margin:0 auto 32px; }
 
-  /* ── Palantir-style Footer ──────────────────────── */
+  /* ── Palantir-style Footer ──────────────────── */
   .site-footer {
     position:relative; z-index:1; width:100%;
     background:var(--bg2); border-top:1px solid var(--border);
@@ -348,10 +349,6 @@
   .footer-legal { font-size:0.7rem; color:rgba(155,151,184,0.6); }
   .footer-legal a { color:rgba(155,151,184,0.6); text-decoration:none; transition:color .3s; }
   .footer-legal a:hover { color:var(--muted); }
-  .footer-disclaimer {
-    font-size:0.68rem; color:rgba(155,151,184,0.5); max-width:620px;
-    text-align:center; margin:0 auto; padding:16px 24px 0; line-height:1.5;
-  }
   .footer-socials { display:flex; gap:16px; }
   .footer-socials a {
     font-size:0.72rem; color:var(--muted); text-decoration:none; letter-spacing:0.06em;
@@ -364,8 +361,7 @@
     .footer-subscribe { grid-column:span 2; }
   }
   @media (max-width:600px) {
-    header { padding:50px 0 40px; }
-
+    header { padding:60px 0 40px; }
     .gates { grid-template-columns:1fr; }
     .footer-grid { grid-template-columns:1fr; gap:24px; }
     .footer-subscribe { grid-column:span 1; }
@@ -376,17 +372,15 @@
 <body>
 <canvas id="stars"></canvas>
 
-<!-- Live crypto ticker (vertical, CoinGecko) -->
-<aside id="crypto-ticker" aria-label="Live crypto prices">
-  <div class="ct-label">Crypto · Live</div>
-  <div class="ct-scroll" id="ct-scroll"></div>
-</aside>
+<!-- ── Network node ambient layer ── -->
+<div class="node-overlay" id="node-overlay" aria-hidden="true"></div>
 
 <div class="nav-full">
   <div class="nav-inner">
     <a class="brand" href="index.html">Secrets <span>of the</span> University</a>
     <div class="nav-links">
       <a href="index.html">Home</a>
+      <a href="finance.html">Finance</a>
       <a href="health.html">Health</a>
       <a href="careers.html">Careers</a>
       <a class="cta-small" href="#enroll">Enroll</a>
@@ -399,83 +393,50 @@
 <div class="mobile-nav" id="mobile-nav">
   <button class="mobile-close" onclick="this.parentElement.classList.remove('open')" aria-label="Close menu">✕</button>
   <a href="index.html">Home</a>
-  <a href="finance.html" onclick="this.parentElement.classList.remove('open')">Finance</a>
+  <a href="finance.html">Finance</a>
   <a href="health.html">Health</a>
   <a href="careers.html">Careers</a>
+  <a href="systems.html" onclick="this.parentElement.classList.remove('open')">Systems</a>
   <a href="#enroll" onclick="this.parentElement.classList.remove('open')">Enroll</a>
   <button class="mobile-theme" onclick="toggleTheme(); this.textContent = document.documentElement.classList.contains('light') ? '☀ Light Mode' : '☾ Dark Mode';">☾ Dark Mode</button>
 </div>
 
 <div class="wrap">
 
-  <!-- Live stock market ticker (horizontal, TradingView) -->
-  <div class="stock-ticker-band">
-    <div class="tradingview-widget-container">
-      <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-      {
-        "symbols": [
-          {"proName": "FOREXCOM:SPXUSD", "title": "S&P 500"},
-          {"proName": "FOREXCOM:NSXUSD", "title": "Nasdaq 100"},
-          {"proName": "FOREXCOM:DJI", "title": "Dow Jones"},
-          {"proName": "NASDAQ:AAPL", "title": "Apple"},
-          {"proName": "NASDAQ:NVDA", "title": "Nvidia"},
-          {"proName": "NASDAQ:TSLA", "title": "Tesla"},
-          {"proName": "NASDAQ:MSFT", "title": "Microsoft"},
-          {"proName": "NASDAQ:AMZN", "title": "Amazon"}
-        ],
-        "showSymbolLogo": true,
-        "isTransparent": true,
-        "displayMode": "adaptive",
-        "colorTheme": "dark",
-        "locale": "en"
-      }
-      </script>
-    </div>
-  </div>
-
-  <!-- ═══ ANGEL NUMBERS BAND ═══ -->
-  <div class="angel-overlay" id="angel-overlay" aria-hidden="true"></div>
-
   <header>
-    <div class="eyebrow">Department of Finance</div>
-    <h1>The market doesn't care<br>what you didn't <em>learn</em>.</h1>
-    <p class="sub">Live markets above and beside you. Below — the lessons that make sense of them: credit, taxes, negotiation, and investing without the jargon.</p>
+    <div class="eyebrow">Department of Systems</div>
+    <h1>Every institution runs<br>on rules it never <em>published</em>.</h1>
+    <p class="sub">Government, corporate, legal, academic — every system has a manual. It was never distributed. These are the pages.</p>
   </header>
 
-  <!-- ═══ MARKET OVERVIEW ═══ -->
+  <!-- ═══ HOW A SYSTEM WORKS — interactive diagram ═══ -->
   <section>
-    <div class="section-label">The Board</div>
-    <h2 class="mb-sm">Top performers, in motion</h2>
-    <p class="section-note">Benchmarks and movers. The numbers the world watches.</p>
+    <div class="section-label">Anatomy</div>
+    <h2 class="mb-sm">The shape of every system</h2>
+    <p class="section-note">Every bureaucracy, market, or institution follows the same skeleton. Learn the bones.</p>
 
-    <div class="market-widget-wrap">
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-hotlists.js" async>
-        {
-          "colorTheme": "dark",
-          "dateRange": "1D",
-          "exchange": "US",
-          "showChart": true,
-          "locale": "en",
-          "largeChartUrl": "",
-          "isTransparent": true,
-          "showSymbolLogo": true,
-          "showFloatingTooltip": true,
-          "width": "100%",
-          "height": "550",
-          "plotLineColorGrowing": "rgba(240,201,108, 1)",
-          "plotLineColorFalling": "rgba(226,112,138, 1)",
-          "gridLineColor": "rgba(139,124,247, 0.06)",
-          "scaleFontColor": "rgba(155,151,184, 1)",
-          "belowLineFillColorGrowing": "rgba(240,201,108, 0.06)",
-          "belowLineFillColorFalling": "rgba(226,112,138, 0.06)",
-          "belowLineFillColorGrowingBottom": "rgba(240,201,108, 0)",
-          "belowLineFillColorFallingBottom": "rgba(226,112,138, 0)",
-          "symbolActiveColor": "rgba(139,124,247, 0.12)"
-        }
-        </script>
+    <div class="system-diagram">
+      <div class="diagram-title">The Universal Loop</div>
+      <div class="diagram-flow">
+        <div class="diagram-node">
+          <div class="dn-label">Inputs</div>
+          <div class="dn-desc">Money, attention, applications, votes</div>
+        </div>
+        <div class="diagram-arrow">→</div>
+        <div class="diagram-node">
+          <div class="dn-label">Rules</div>
+          <div class="dn-desc">Written policy, unwritten norms, incentives</div>
+        </div>
+        <div class="diagram-arrow">→</div>
+        <div class="diagram-node">
+          <div class="dn-label">Gatekeepers</div>
+          <div class="dn-desc">The people who decide what passes through</div>
+        </div>
+        <div class="diagram-arrow">→</div>
+        <div class="diagram-node">
+          <div class="dn-label">Outputs</div>
+          <div class="dn-desc">Permits, degrees, funding, access, denial</div>
+        </div>
       </div>
     </div>
   </section>
@@ -483,46 +444,46 @@
   <!-- ═══ COURSE CATALOG ═══ -->
   <section>
     <div class="section-label">Course Catalog</div>
-    <h2>Finance lessons in session</h2>
+    <h2>Systems lessons in session</h2>
     <div class="lessons">
       <div class="lesson">
-        <small>FIN 101</small>
-        <h3>"The credit score algorithm, decoded"</h3>
-        <p>The five inputs, what actually moves them, and the 30-day fixes most people never try.</p>
+        <small>SYS 101</small>
+        <h3>"How a bill actually becomes a law — the unabridged version"</h3>
+        <p>Committees, markups, lobbyists, and the calendar tricks that kill legislation quietly.</p>
       </div>
       <div class="lesson">
-        <small>FIN 102</small>
-        <h3>"Why your first index fund beats your best stock pick"</h3>
-        <p>The math of diversification, in plain English — and how to start with $50.</p>
+        <small>SYS 102</small>
+        <h3>"Reading a contract like the party who wrote it"</h3>
+        <p>Indemnity, arbitration clauses, and the three sentences that cost you the most.</p>
       </div>
       <div class="lesson">
-        <small>FIN 103</small>
-        <h3>"Negotiation scripts that survive contact with HR"</h3>
-        <p>Word-for-word scripts for salary, bills, and rent — and the silence that does the heavy lifting.</p>
+        <small>SYS 103</small>
+        <h3>"The org chart is a lie — mapping real power"</h3>
+        <p>Who actually decides. Budget holders, executive assistants, and the people cc'd on every email.</p>
       </div>
       <div class="lesson">
-        <small>FIN 104</small>
-        <h3>"Crypto without the cult"</h3>
-        <p>What blockchains actually do, what the tickers mean, and how to size risk you can live with.</p>
+        <small>SYS 104</small>
+        <h3>"How to file anything with the government and have it work"</h3>
+        <p>LLCs, permits, FOIA requests, small-claims court — the forms and the order that matters.</p>
       </div>
       <div class="lesson">
-        <small>FIN 105</small>
-        <h3>"The tax moves hiding in plain sight"</h3>
-        <p>Deductions, retirement accounts, and timing tricks the form instructions won't explain.</p>
+        <small>SYS 105</small>
+        <h3>"Insurance is a language — here is the dictionary"</h3>
+        <p>Deductibles, co-insurance, exclusions, riders. What the summary of benefits is designed to obscure.</p>
       </div>
       <div class="lesson">
-        <small>FIN 106</small>
-        <h3>"Reading a market ticker like a native"</h3>
-        <p>Indexes vs. stocks, what 24h change really tells you, and why red days aren't emergencies.</p>
+        <small>SYS 106</small>
+        <h3>"How algorithms decide what you see, buy, and believe"</h3>
+        <p>Recommendation engines, engagement metrics, and the feedback loops that shape consensus.</p>
       </div>
     </div>
   </section>
 
-  <!-- ═══ INTELLECTUAL FEED ═══ -->
+  <!-- ═══ THE WIRE — HN feed ═══ -->
   <section id="feed">
     <div class="section-label">The Wire</div>
-    <h2 class="mb-sm">What the informed are reading</h2>
-    <p class="section-note">Live from the rooms where founders, engineers, and allocators gather.</p>
+    <h2 class="mb-sm">How systems are discussed, live</h2>
+    <p class="section-note">From the forums where builders, policy minds, and engineers think aloud.</p>
 
     <div class="feed-tabs-wrap">
       <div class="feed-tabs" id="feed-tabs">
@@ -539,74 +500,74 @@
     </div>
   </section>
 
-  <!-- ═══ INVESTOR GATES ═══ -->
+  <!-- ═══ GATES — curated links ═══ -->
   <section>
     <div class="section-label">Gates</div>
-    <h2 class="mb-sm">Where the informed reside</h2>
-    <p class="section-note">Curated rooms. Each one a door to a different kind of intelligence.</p>
+    <h2 class="mb-sm">Where the systems-literate gather</h2>
+    <p class="section-note">Primary sources. Each one a window into how the machine runs.</p>
 
     <div class="gates">
-      <a class="gate" href="https://news.ycombinator.com" target="_blank">
-        <span class="gate-dot" style="background:#f60"></span>
+      <a class="gate" href="https://www.govtrack.us" target="_blank">
+        <span class="gate-dot" style="background:#4a90d9"></span>
         <div class="gate-info">
-          <div class="gate-name">Hacker News</div>
-          <div class="gate-desc">Y Combinator's forum. Where founders and engineers think aloud.</div>
+          <div class="gate-name">GovTrack</div>
+          <div class="gate-desc">Every bill in Congress, tracked in real time. The actual legislative record.</div>
         </div>
       </a>
-      <a class="gate" href="https://www.bloomberg.com/markets" target="_blank">
-        <span class="gate-dot" style="background:#1e1e1e"></span>
+      <a class="gate" href="https://www.courtlistener.com" target="_blank">
+        <span class="gate-dot" style="background:#8b7cf7"></span>
         <div class="gate-info">
-          <div class="gate-name">Bloomberg</div>
-          <div class="gate-desc">Global markets, macro, and the stories that move capital.</div>
+          <div class="gate-name">CourtListener</div>
+          <div class="gate-desc">Free case law and oral arguments. The judiciary, searchable.</div>
         </div>
       </a>
-      <a class="gate" href="https://www.reuters.com/business/finance/" target="_blank">
-        <span class="gate-dot" style="background:#ff8000"></span>
+      <a class="gate" href="https://www.regulations.gov" target="_blank">
+        <span class="gate-dot" style="background:#2e8b57"></span>
         <div class="gate-info">
-          <div class="gate-name">Reuters</div>
-          <div class="gate-desc">Wire service. Facts before opinion. The source of sources.</div>
+          <div class="gate-name">Regulations.gov</div>
+          <div class="gate-desc">Federal rulemaking. Comment periods. Where policy is written before it becomes law.</div>
         </div>
       </a>
-      <a class="gate" href="https://seekingalpha.com" target="_blank">
-        <span class="gate-dot" style="background:#f68a1e"></span>
+      <a class="gate" href="https://www.opensecrets.org" target="_blank">
+        <span class="gate-dot" style="background:#c0392b"></span>
         <div class="gate-info">
-          <div class="gate-name">Seeking Alpha</div>
-          <div class="gate-desc">Crowd-sourced equity research. Retail conviction, measured.</div>
+          <div class="gate-name">OpenSecrets</div>
+          <div class="gate-desc">Campaign finance data. Who funds whom. Follow the money.</div>
         </div>
       </a>
-      <a class="gate" href="https://www.wsj.com/news/markets" target="_blank">
-        <span class="gate-dot" style="background:#0274b6"></span>
+      <a class="gate" href="https://usaspending.gov" target="_blank">
+        <span class="gate-dot" style="background:#f0c96c"></span>
         <div class="gate-info">
-          <div class="gate-name">WSJ Markets</div>
-          <div class="gate-desc">The broadsheet of record for American finance.</div>
+          <div class="gate-name">USASpending</div>
+          <div class="gate-desc">Every federal dollar, tracked. Contracts, grants, loans — the spending graph.</div>
         </div>
       </a>
-      <a class="gate" href="https://finance.yahoo.com" target="_blank">
-        <span class="gate-dot" style="background:#6001d2"></span>
+      <a class="gate" href="https://www.pacer.gov" target="_blank">
+        <span class="gate-dot" style="background:#e67e22"></span>
         <div class="gate-info">
-          <div class="gate-name">Yahoo Finance</div>
-          <div class="gate-desc">Free charts, screeners, and earnings data. The people's terminal.</div>
+          <div class="gate-name">PACER</div>
+          <div class="gate-desc">Federal court filings. The raw documents behind every headline case.</div>
         </div>
       </a>
-      <a class="gate" href="https://www.ft.com/markets" target="_blank">
-        <span class="gate-dot" style="background:#f2c7a7"></span>
+      <a class="gate" href="https://www.sec.gov/cgi-bin/browse-edgar" target="_blank">
+        <span class="gate-dot" style="background:#3498db"></span>
         <div class="gate-info">
-          <div class="gate-name">Financial Times</div>
-          <div class="gate-desc">Global perspective. Where policy meets capital.</div>
+          <div class="gate-name">SEC EDGAR</div>
+          <div class="gate-desc">Corporate filings. 10-Ks, proxy statements, insider trades — the paper trail.</div>
         </div>
       </a>
-      <a class="gate" href="https://ark-invest.com/articles" target="_blank">
-        <span class="gate-dot" style="background:#00c2ff"></span>
+      <a class="gate" href="https://fred.stlouisfed.org" target="_blank">
+        <span class="gate-dot" style="background:#1a5276"></span>
         <div class="gate-info">
-          <div class="gate-name">ARK Invest</div>
-          <div class="gate-desc">Cathie Wood's research. Disruptive innovation, quantified.</div>
+          <div class="gate-name">FRED</div>
+          <div class="gate-desc">Federal Reserve data. 800,000+ economic time series. The macroeconomic dashboard.</div>
         </div>
       </a>
-      <a class="gate" href="https://www.reddit.com/r/wallstreetbets/" target="_blank">
-        <span class="gate-dot" style="background:#ff4500"></span>
+      <a class="gate" href="https://scholar.google.com" target="_blank">
+        <span class="gate-dot" style="background:#4285f4"></span>
         <div class="gate-info">
-          <div class="gate-name">r/wallstreetbets</div>
-          <div class="gate-desc">The mob. Sometimes wrong, always first to feel the shift.</div>
+          <div class="gate-name">Google Scholar</div>
+          <div class="gate-desc">The academic record. Peer-reviewed research on every system ever studied.</div>
         </div>
       </a>
     </div>
@@ -622,12 +583,12 @@
         <a href="finance.html">Finance</a>
         <a href="health.html">Health</a>
         <a href="careers.html">Careers</a>
-        <a href="systems.html">Systems</a>
+        <a href="systems.html" style="color:var(--gold);">Systems</a>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">Resources</div>
         <a href="careers.html#lab">Resume Lab</a>
-        <a href="#feed">The Wire</a>
+        <a href="finance.html#feed">The Wire</a>
         <a href="index.html">Home</a>
       </div>
       <div class="footer-col">
@@ -638,16 +599,16 @@
       </div>
       <div class="footer-col footer-subscribe">
         <div class="footer-col-title">Stay Informed</div>
-        <p>One finance secret a week. No noise.</p>
+        <p>One system decoded per week. No noise.</p>
+        <!-- Contact form — sends via mailto: to john@secretsoftheuniversity.com -->
         <form onsubmit="return footerJoin(event)">
           <input type="email" name="email" id="footer-email" placeholder="your@email.com" required>
           <textarea name="message" id="footer-message" placeholder="Message (optional)" rows="2"></textarea>
           <button type="submit">Enroll</button>
         </form>
-        <div class="sub-msg" id="footer-msg">Welcome in. Your first secret is on its way. ✦</div>
+        <div class="sub-msg" id="footer-msg">Access granted. Your first briefing is on its way. ✦</div>
       </div>
     </div>
-    <div class="footer-disclaimer">Market data is provided for education and information only and may be delayed. Nothing on this page is financial advice — always do your own research or consult a licensed advisor.</div>
     <div class="footer-bottom">
       <div class="footer-legal">
         © 2026 Secrets of the University · <a href="#">Privacy</a> · <a href="#">Terms</a>
@@ -719,87 +680,47 @@
   }
 
   // ══════════════════════════════════════════════════
-  // ANGEL NUMBERS — full-viewport ambient layer
+  // NETWORK NODES — ambient floating system glyphs
   // ══════════════════════════════════════════════════
-  (function initAngels(){
-    const overlay = document.getElementById('angel-overlay');
-    const ANGELS = ['111','222','333','444','555','666','777','888','999',
-      '1111','1212','1010','1234','2222','3333','4444','5555','7777','1001','808'];
+  (function initNodes(){
+    const overlay = document.getElementById('node-overlay');
+    const GLYPHS = ['§','¶','⌘','⎈','⚙','⟁','⊞','⟐','⬡','⊶','⋔','⊕','⩕','⊗','⟡','⧫','⊘'];
     const COLORS = [
       'rgba(240,201,108,',  // gold
       'rgba(139,124,247,',  // violet
-      'rgba(232,230,245,',  // ink/white
-      'rgba(95,208,138,',   // green
-      'rgba(226,112,138,',  // rose
-      'rgba(180,160,255,',  // lavender
+      'rgba(232,230,245,',  // ink
+      'rgba(155,151,184,',  // muted
     ];
-    const DRIFTS = ['angelDriftR','angelDriftL','angelDriftD'];
+    const DRIFTS = ['nodeDriftR','nodeDriftL','nodeDriftD'];
 
-    // 45 numbers scattered across the full viewport, fading into near-nothingness
-    for (let i = 0; i < 45; i++) {
+    for (let i = 0; i < 30; i++) {
       const el = document.createElement('span');
-      el.className = 'angel-num';
-      el.textContent = ANGELS[Math.floor(Math.random() * ANGELS.length)];
+      el.className = 'node-glyph';
+      el.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
 
-      const size = 14 + Math.random() * 58;          // 14px – 72px
-      const duration = 25 + Math.random() * 70;      // 25s – 95s (slow, meditative)
-      const delay = -(Math.random() * duration);      // stagger across timeline
-      const fadeDur = 6 + Math.random() * 14;         // fade cycle 6–20s
+      const size = 12 + Math.random() * 36;
+      const duration = 30 + Math.random() * 60;
+      const delay = -(Math.random() * duration);
+      const fadeDur = 8 + Math.random() * 16;
       const fadeDelay = -(Math.random() * fadeDur);
-      const top = Math.random() * 100;                // random vertical %
-      const left = Math.random() * 100;               // random horizontal %
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
       const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-      const peak = 0.04 + Math.random() * 0.14;       // peak opacity: 0.04–0.18 (ghostly)
+      const peak = 0.03 + Math.random() * 0.09;
       const drift = DRIFTS[Math.floor(Math.random() * DRIFTS.length)];
 
       el.style.cssText = `
         font-size:${size}px;
         top:${top}%; left:${left}%;
         color:${color}1);
-        --angel-peak:${peak};
+        --node-peak:${peak};
         animation:
           ${drift} ${duration}s linear ${delay}s infinite,
-          angelFade ${fadeDur}s ease-in-out ${fadeDelay}s infinite;
+          nodeFade ${fadeDur}s ease-in-out ${fadeDelay}s infinite;
       `;
       overlay.appendChild(el);
     }
   })();
-
-  // ══════════════════════════════════════════════════
-  // CRYPTO TICKER — live CoinGecko, 60s refresh
-  // ══════════════════════════════════════════════════
-  const COINS = [
-    {id:'bitcoin', sym:'BTC'}, {id:'ethereum', sym:'ETH'}, {id:'solana', sym:'SOL'},
-    {id:'ripple', sym:'XRP'}, {id:'cardano', sym:'ADA'}, {id:'dogecoin', sym:'DOGE'},
-    {id:'chainlink', sym:'LINK'}, {id:'litecoin', sym:'LTC'}
-  ];
-  function fmtPrice(p){
-    if (p >= 1000) return '$' + p.toLocaleString('en-US', {maximumFractionDigits:0});
-    if (p >= 1) return '$' + p.toFixed(2);
-    return '$' + p.toFixed(4);
-  }
-  async function loadCrypto(){
-    const el = document.getElementById('ct-scroll');
-    try {
-      const ids = COINS.map(c2 => c2.id).join(',');
-      const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
-      if (!res.ok) throw new Error(res.status);
-      const data = await res.json();
-      const items = COINS.filter(c2 => data[c2.id]).map(c2 => {
-        const p = data[c2.id].usd, ch = data[c2.id].usd_24h_change || 0;
-        return `<div class="ct-item">
-          <div class="sym">${c2.sym}</div>
-          <div class="price">${fmtPrice(p)}</div>
-          <div class="chg ${ch >= 0 ? 'up' : 'down'}">${ch >= 0 ? '▲' : '▼'} ${Math.abs(ch).toFixed(1)}%</div>
-        </div>`;
-      }).join('');
-      el.innerHTML = items + items;
-    } catch(e) {
-      el.innerHTML = '<div class="ct-item"><div class="sym" style="color:var(--muted)">Prices unavailable</div></div>';
-    }
-  }
-  loadCrypto();
-  setInterval(loadCrypto, 60000);
 
   // ══════════════════════════════════════════════════
   // HACKER NEWS FEED — free API, no auth, CORS-OK
@@ -819,7 +740,6 @@
     const list = document.getElementById('feed-list');
     list.innerHTML = '<div class="feed-loading">Fetching dispatches...</div>';
 
-    // Update active tab
     document.querySelectorAll('.feed-tab').forEach(t => t.classList.toggle('active', t.dataset.feed === type));
 
     try {
@@ -828,7 +748,6 @@
       if (!res.ok) throw new Error(res.status);
       const ids = await res.json();
 
-      // Fetch top 20 stories in parallel
       const stories = await Promise.all(
         ids.slice(0, 7).map(id =>
           fetch(`${HN_BASE}/item/${id}.json`).then(r => r.json())
@@ -892,7 +811,7 @@
     e.preventDefault();
     const email = document.getElementById('footer-email').value.trim();
     const message = document.getElementById('footer-message').value.trim();
-    const subject = encodeURIComponent('Finance signup from ' + email);
+    const subject = encodeURIComponent('Systems signup from ' + email);
     const body = encodeURIComponent('From: ' + email + '\n\n' + (message || 'Please add me to the list.'));
     window.location.href = 'mailto:john@secretsoftheuniversity.com?subject=' + subject + '&body=' + body;
     document.getElementById('footer-msg').style.display = 'block';
