@@ -13,11 +13,14 @@ Static website for secretsoftheuniversity.com — an education/insight brand: "t
 - `finance.html` — Department of Finance. TradingView ticker tape + hotlist widget (top gainers/losers/active), custom vertical crypto ticker (CoinGecko API, 60s refresh), full-viewport angel numbers ambient layer (45 numbers, multi-directional drift, ghostly opacity), live Hacker News feed (Top/New/Best/Ask/Show tabs, top 7, free API), nine curated investor gates, six lesson-teaser cards, Palantir-style footer, disclaimer.
 - `health.html` — Department of Health. Animated vital signs strip (HR, BP, glucose, SpO₂), six health lesson cards, Skydell Medical partnership section (Declared Interest — factual disclosure, timeline, compliance rails, mailto CTA), interactive lab reference ranges (Metabolic/Lipids/Thyroid tabs), peptide overview + three featured compounds (Retatrutide, BPC-157, NAD+), full product catalog (3-column), interactive price comparison tool, Who We Serve cards, responsible use callout, contact/about section with payment methods, Calendly embed (placeholder), nine curated health links. Includes sales partner disclosure and FDA compliance language throughout. Palantir-style footer.
 - `careers.html` — Department of Careers. Six career-lesson cards, embedded Resume Lab (CodeMirror 5 LaTeX editor with Overleaf `encoded_snip` handoff via POST form), Palantir-style footer.
+- `systems.html` — Department of Systems. How institutions, bureaucracies, and power structures work. Animated network-node background, light/dark theme toggle, mobile hamburger nav, "Anatomy" section (six system-skeleton tiles), six systems-lesson cards, live Hacker News feed ("The Wire" — same pattern as finance), nine curated gates (GovTrack, CourtListener, Regulations.gov, OpenSecrets, USASpending, PACER, SEC EDGAR, FRED, Google Scholar), Palantir-style footer.
+- `sba-guide-texas.html` — empty placeholder (not yet built).
+- `serve.py` — local dev server (Python `http.server` on port 8080, no-cache headers).
 
 ## Known TODOs
 - Email signup is front-end only — needs a form service (Mailchimp/Buttondown) wired to the forms
 - Social links in footers are placeholder `#`
-- Department pages for Systems not yet built (Finance, Health, Careers are live)
+- `sba-guide-texas.html` needs content
 - Hosting: static — Netlify / Cloudflare Pages / GitHub Pages all work as-is
 
 ## Conventions

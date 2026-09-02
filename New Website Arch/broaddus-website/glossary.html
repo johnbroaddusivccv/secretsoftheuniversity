@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peptide Glossary — Broaddus Scientific Group</title>
+<meta name="description" content="An educational glossary of research peptides: mechanisms, sequences, structural data, and research areas. Research use only.">
+<link rel="stylesheet" href="assets/css/style.css?v=5">
+</head>
+<body data-page="glossary">
+<div id="chrome-top"></div>
+
+<section class="page-hero"><div class="container">
+  <div class="eyebrow">Reference Library</div>
+  <h1>Peptide Glossary</h1>
+  <p class="muted" style="max-width:64ch">An educational reference for research peptides — mechanism of interest, amino-acid sequence, structural data, and studied research areas. Each entry links to the corresponding product for purchase.</p>
+</div></section>
+
+<section class="section"><div class="container">
+  <div class="glossary-search">
+    <input type="search" id="gloss-q" placeholder="Search by name, use, or research area…" autocomplete="off">
+    <select id="gloss-cat" class="pill" style="padding:0 16px">
+      <option value="all">All categories</option>
+    </select>
+  </div>
+  <p class="small muted" id="gloss-count" style="margin-bottom:18px"></p>
+  <div id="gloss-list"></div>
+  <p id="gloss-empty" class="muted" style="display:none">No entries match your search.</p>
+</div></section>
+
+<div id="chrome-bottom"></div>
+<script src="assets/js/data.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
+<script>
+  const sel = document.getElementById("gloss-cat");
+  sel.innerHTML += CATEGORIES.map(c=>`<option value="${c.id}">${c.name}</option>`).join("");
+
+  function itemHTML(p){
+    return `<div class="gloss-item">
+      <div style="display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:1;min-width:260px">
+          <h3>${p.name} <span class="muted" style="font-weight:500;font-size:.95rem">/ ${p.aka}</span></h3>
+          <div class="card__cat" style="margin:6px 0 10px">${catName(p.category)}</div>
+          <p class="muted" style="margin:0;max-width:70ch">${p.overview}</p>
+          <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}
+            <span class="tag">CAS ${p.cas}</span><span class="tag">${p.molWeight}</span></div>
+        </div>
+        <div style="text-align:right;min-width:150px">
+          <div class="price" style="margin-bottom:10px">${money(lowestPrice(p))} <small class="muted">from</small></div>
+          <a href="product.html?id=${p.id}" class="btn btn--sm btn--solid">View / Buy</a>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function render(){
+    const q = document.getElementById("gloss-q").value.trim().toLowerCase();
+    const cat = sel.value;
+    let list = PRODUCTS.filter(p=>{
+      if(cat!=="all" && p.category!==cat) return false;
+      if(!q) return true;
+      const hay = (p.name+" "+p.aka+" "+p.summary+" "+p.overview+" "+p.tags.join(" ")+" "+catName(p.category)).toLowerCase();
+      return hay.includes(q);
+    }).sort((a,b)=>a.name.localeCompare(b.name));
+    document.getElementById("gloss-list").innerHTML = list.map(itemHTML).join("");
+    document.getElementById("gloss-empty").style.display = list.length? "none":"block";
+    document.getElementById("gloss-count").textContent = `${list.length} of ${PRODUCTS.length} entries`;
+  }
+  document.getElementById("gloss-q").addEventListener("input", render);
+  sel.addEventListener("change", render);
+  render();
+</script>
+</body>
+</html>

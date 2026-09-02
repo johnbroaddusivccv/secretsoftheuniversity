@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saved Items — Broaddus Scientific Group</title>
+<link rel="stylesheet" href="assets/css/style.css?v=5">
+</head>
+<body data-page="">
+<div id="chrome-top"></div>
+
+<section class="page-hero"><div class="container">
+  <div class="eyebrow">Wishlist</div>
+  <h1>Saved Items</h1>
+  <p class="muted" style="max-width:60ch">Compounds you've saved for later. Stored in this browser — tap the heart on any product to add or remove.</p>
+</div></section>
+
+<section class="section"><div class="container">
+  <div id="fav-actions" style="display:none;margin-bottom:20px">
+    <span class="small muted" id="fav-count-txt"></span>
+    <button class="btn btn--sm" id="clear-favs" style="margin-left:12px">Clear all</button>
+  </div>
+  <div class="grid grid--4" id="fav-grid"></div>
+  <div id="fav-empty" style="display:none" class="center" style="padding:20px 0">
+    <p class="muted">No saved items yet.</p>
+    <a href="shop.html" class="btn">Browse peptides</a>
+  </div>
+</div></section>
+
+<div id="chrome-bottom"></div>
+<script src="assets/js/data.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
+<script>
+  function render(){
+    const favs = getFavs().map(id=>productById(id)).filter(Boolean);
+    document.getElementById("fav-grid").innerHTML = favs.map(cardHTML).join("");
+    document.getElementById("fav-empty").style.display = favs.length ? "none" : "block";
+    document.getElementById("fav-actions").style.display = favs.length ? "block" : "none";
+    document.getElementById("fav-count-txt").textContent = `${favs.length} saved`;
+  }
+  document.getElementById("clear-favs").onclick = ()=>{ saveFavs([]); render(); };
+  // removing a favorite via a card heart should drop it from this page
+  document.getElementById("fav-grid").addEventListener("click", e=>{ if(e.target.closest(".fav-btn")) setTimeout(render, 20); });
+  render();
+</script>
+</body>
+</html>

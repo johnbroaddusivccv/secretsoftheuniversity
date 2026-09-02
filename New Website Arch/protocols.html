@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Protocols & Stacks — Broaddus Scientific Group</title>
+<meta name="description" content="Curated multi-peptide research stacks and a quick-reference dosing chart. For research and educational reference only — verify against the product COA.">
+<link rel="stylesheet" href="assets/css/style.css?v=5">
+<style>
+  .stack-card{border:1px solid var(--line-soft);padding:24px;display:flex;flex-direction:column;height:100%}
+  .stack-card:hover{border-color:var(--black)}
+  .stack-card h3{font-size:1.3rem;margin-bottom:6px}
+  .stack-goal{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-2);font-weight:700;margin-bottom:14px}
+  .stack-comp{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .stack-comp a{border:1px solid var(--black);padding:5px 11px;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.02em}
+  .stack-comp a:hover{background:var(--black);color:var(--white)}
+  .stack-meta{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line-soft);padding-top:14px;margin-top:auto}
+  .stack-meta div{padding:3px 0}
+  .stack-meta b{color:var(--ink)}
+  .stack-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px}
+  .table-wrap{overflow-x:auto;border:1px solid var(--line)}
+  .ref-table{width:100%;border-collapse:collapse;min-width:720px;font-size:.88rem}
+  .ref-table th,.ref-table td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+  .ref-table thead th{background:var(--black);color:var(--white);text-transform:uppercase;font-size:.72rem;letter-spacing:.06em}
+  .ref-table tbody tr:hover{background:var(--paper)}
+  .ref-table td.wrap{white-space:normal}
+  .ref-table a{font-weight:700}
+  .ref-table a:hover{text-decoration:underline}
+  .check{font-weight:800}
+</style>
+</head>
+<body data-page="protocols">
+<div id="chrome-top"></div>
+
+<section class="page-hero"><div class="container">
+  <div class="eyebrow">Research Reference</div>
+  <h1>Protocols & Stacks</h1>
+  <p class="muted" style="max-width:66ch">Curated multi-peptide research stacks and a quick-reference chart of study parameters. Every figure below is a research and educational reference only — not a prescription or compounding instruction. Always verify against the product Certificate of Analysis.</p>
+</div></section>
+
+<!-- CURATED STACKS -->
+<section class="section"><div class="container">
+  <div class="section__head">
+    <div>
+      <div class="eyebrow">Curated combinations</div>
+      <h2>Research stacks</h2>
+      <p>Pre-planned multi-compound combinations. Add an entire stack to your cart in one click.</p>
+    </div>
+  </div>
+  <div class="grid grid--3" id="stacks-grid"></div>
+</div></section>
+
+<!-- QUICK REFERENCE CHART -->
+<section class="section" style="padding-top:0"><div class="container">
+  <div class="section__head">
+    <div>
+      <div class="eyebrow">Quick reference</div>
+      <h2>Compound protocol chart</h2>
+      <p>Common research parameters by compound. "Vial lasts" is an approximate estimate at the listed research amount.</p>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table class="ref-table">
+      <thead><tr>
+        <th>Compound</th><th>Research goal</th><th>Reference dosing</th><th>Cycle</th><th>Vial lasts</th><th>COA</th>
+      </tr></thead>
+      <tbody id="ref-body"></tbody>
+    </table>
+  </div>
+</div></section>
+
+<!-- RECON FORMULA -->
+<section class="section" style="padding-top:0"><div class="container">
+  <div style="border:1px solid #000;padding:32px">
+    <div class="eyebrow">Reconstitution reference</div>
+    <h2 style="margin-bottom:12px">The dosing math</h2>
+    <p class="muted" style="margin:0 0 8px"><b>Concentration (mcg/mL)</b> = total peptide in vial (mcg) ÷ BAC water added (mL)</p>
+    <p class="muted" style="margin:0"><b>Dose volume (mL)</b> = target dose (mcg) ÷ concentration (mcg/mL)</p>
+  </div>
+</div></section>
+
+<!-- DISCLAIMER -->
+<section class="section" style="padding-top:0"><div class="container">
+  <div class="notice">
+    <span class="ruo-flag">RUO</span>
+    <div><b>Research & educational reference only.</b> The protocols and stacks on this page are compiled from published research and community references. They are not a prescription, medical advice, or a compounding instruction, and nothing here is intended for human or veterinary use. All products are sold strictly for in-vitro laboratory research. Always confirm compound identity and purity against the batch Certificate of Analysis.</div>
+  </div>
+</div></section>
+
+<div id="chrome-bottom"></div>
+<script src="assets/js/data.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
+<script>
+  // ---- Stacks ----
+  function stackCard(s){
+    const comps = s.components.map(c=>{
+      const p = productById(c.id);
+      return p ? `<a href="product.html?id=${p.id}">${p.name}</a>` : "";
+    }).join("");
+    return `<div class="stack-card">
+      <h3>${s.name}</h3>
+      <div class="stack-goal">${s.goal}</div>
+      <div class="stack-comp">${comps}</div>
+      <p class="muted small" style="margin:0 0 14px">${s.note||""}</p>
+      <div class="stack-meta">
+        <div><b>Reference dosing:</b> ${s.dosing}</div>
+        <div><b>Cycle:</b> ${s.cycle}</div>
+      </div>
+      <div class="stack-foot">
+        <span class="price">${money(stackPrice(s))} <small class="muted">stack</small></span>
+        <button class="btn btn--sm btn--solid" onclick="addStackToCart('${s.id}')">Add stack</button>
+      </div>
+    </div>`;
+  }
+  document.getElementById("stacks-grid").innerHTML = STACKS.map(stackCard).join("");
+
+  // ---- Reference chart ----
+  document.getElementById("ref-body").innerHTML = PROTOCOLS.map(r=>{
+    const p = productById(r.id);
+    const name = p ? `<a href="product.html?id=${p.id}">${p.name}</a>` : r.id;
+    return `<tr>
+      <td>${name}</td>
+      <td class="wrap">${r.goal}</td>
+      <td class="wrap">${r.dosing}</td>
+      <td>${r.cycle}</td>
+      <td>${r.vialLasts}</td>
+      <td class="check">✓</td>
+    </tr>`;
+  }).join("");
+</script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product — Broaddus Scientific Group</title>
+<link rel="stylesheet" href="assets/css/style.css?v=5">
+</head>
+<body data-page="shop">
+<div id="chrome-top"></div>
+
+<div class="container" style="padding-top:18px">
+  <p class="small muted"><a href="shop.html">Shop</a> / <span id="crumb-cat"></span> / <span id="crumb-name"></span></p>
+</div>
+
+<main class="container" id="pdp-mount"></main>
+
+<!-- RELATED -->
+<section class="section" style="padding-top:0"><div class="container">
+  <div class="section__head"><div><div class="eyebrow">Related</div><h2>More in this category</h2></div></div>
+  <div class="grid grid--4" id="related"></div>
+</div></section>
+
+<!-- RECENTLY VIEWED -->
+<section class="section" id="rv-section" style="padding-top:0;display:none"><div class="container">
+  <div class="section__head"><div><div class="eyebrow">Recently viewed</div><h2>Pick up where you left off</h2></div></div>
+  <div class="grid grid--4" id="recently-viewed"></div>
+</div></section>
+
+<div id="chrome-bottom"></div>
+<script src="assets/js/data.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
+<script>
+  const p = productById(qs("id"));
+  const mount = document.getElementById("pdp-mount");
+  const priorRecent = getRecent();      // capture before recording this view
+  if(p) pushRecent(p.id);
+
+  if(!p){
+    mount.innerHTML = `<div class="section center"><h2>Product not found</h2><p class="muted">This item may have been moved.</p><a href="shop.html" class="btn">Back to shop</a></div>`;
+  } else {
+    document.title = `${p.name} — Broaddus Scientific Group`;
+    document.getElementById("crumb-cat").innerHTML = `<a href="shop.html?cat=${p.category}">${catName(p.category)}</a>`;
+    document.getElementById("crumb-name").textContent = p.name;
+
+    let sizeIndex = 0;
+
+    const proto = protocolById(p.id);
+    const related = stacksWith(p.id);
+    const protoSnippet = (proto || related.length) ? `
+        <div style="border:1px solid #000;margin-top:22px;padding:18px 20px">
+          <div class="eyebrow" style="margin-bottom:12px">Research Protocol · Reference</div>
+          ${proto ? `<table class="spec" style="margin:0">
+            <tr><th>Research goal</th><td>${proto.goal}</td></tr>
+            <tr><th>Reference dosing</th><td>${proto.dosing}</td></tr>
+            <tr><th>Cycle</th><td>${proto.cycle}</td></tr>
+            <tr><th>Vial lasts</th><td>${proto.vialLasts}</td></tr>
+          </table>` : `<p class="small muted" style="margin:0">No standardized reference protocol is listed for this compound.</p>`}
+          ${related.length ? `<div style="margin-top:14px"><div class="small" style="text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:8px">Featured in stacks</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">${related.map(s=>`<a class="tag" style="padding:7px 12px" href="protocols.html">${s.name}</a>`).join("")}</div></div>` : ""}
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="protocols.html" class="btn btn--sm">All protocols &amp; stacks</a>
+          </div>
+          <p class="small muted" style="margin:12px 0 0">Research & educational reference only — not dosing guidance. Verify against the batch COA.</p>
+        </div>` : "";
+
+    mount.innerHTML = `
+    <div class="pdp">
+      <div>
+        <div class="card__cat">${catName(p.category)}</div>
+        <h1>${p.name}</h1>
+        <div class="pdp__aka">${p.aka}</div>
+        <p class="muted">${p.summary}</p>
+
+        <div class="pdp__price" id="pdp-price"></div>
+        <div class="small muted">SKU: <span id="pdp-sku"></span> · Purity ${p.purity}</div>
+        <div class="small pdp-stock pdp-stock--${stockOf(p)}" id="pdp-stock" style="margin-top:8px"></div>
+
+        <div style="margin-top:20px"><b class="small" style="text-transform:uppercase;letter-spacing:.05em">Size / Quantity</b></div>
+        <div class="sizes" id="sizes"></div>
+
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0">
+          <div class="qty">
+            <button id="q-minus" aria-label="decrease">−</button>
+            <input id="qty" type="number" value="1" min="1" inputmode="numeric">
+            <button id="q-plus" aria-label="increase">+</button>
+          </div>
+          <button class="btn btn--solid" id="add" style="flex:1;min-width:200px">Add to Cart</button>
+          <button class="btn" id="save-fav" type="button" aria-label="Save to favorites">♥ Save</button>
+        </div>
+
+        <div id="notify-box" style="margin:0 0 6px"></div>
+
+        <div class="notice" style="margin-top:6px">
+          <span class="ruo-flag">RUO</span>
+          <div><b>For laboratory research use only.</b> Not for human or animal consumption. A batch-specific certificate of analysis is included with every order.</div>
+        </div>
+
+        <div class="strip" style="margin-top:22px;border-left:1px solid #000;border-right:1px solid #000">
+          <div><b>≥99%</b><span>Purity</span></div>
+          <div><b>COA</b><span>Per batch</span></div>
+          <div><b>3rd-Party</b><span>HPLC + MS</span></div>
+        </div>
+        ${protoSnippet}
+      </div>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <button class="active" data-t="overview">Overview</button>
+      <button data-t="research">Research Areas</button>
+      <button data-t="specs">Specifications</button>
+      <button data-t="handling">Handling</button>
+    </div>
+    <div id="tab-body" style="max-width:820px;padding-bottom:20px"></div>
+    `;
+
+    // Sizes
+    const sizesEl = document.getElementById("sizes");
+    sizesEl.innerHTML = p.sizes.map((s,i)=>
+      `<div class="size-opt ${i===0?'active':''}" data-i="${i}">${s.label}<div class="small muted" style="text-transform:none;letter-spacing:0">${money(s.price)}</div></div>`).join("");
+
+    function refresh(){
+      const s = p.sizes[sizeIndex];
+      document.getElementById("pdp-price").textContent = money(s.price);
+      document.getElementById("pdp-sku").textContent = s.sku;
+      $$("#sizes .size-opt").forEach(el=> el.classList.toggle("active", +el.dataset.i===sizeIndex));
+    }
+    $$("#sizes .size-opt").forEach(el=> el.addEventListener("click", ()=>{ sizeIndex=+el.dataset.i; refresh(); }));
+    refresh();
+
+    // Qty
+    const qtyEl = document.getElementById("qty");
+    document.getElementById("q-minus").onclick = ()=> qtyEl.value = Math.max(1, (+qtyEl.value||1)-1);
+    document.getElementById("q-plus").onclick  = ()=> qtyEl.value = (+qtyEl.value||1)+1;
+    document.getElementById("add").onclick = ()=> addToCart(p.id, sizeIndex, Math.max(1,+qtyEl.value||1));
+
+    // Stock status
+    (function(){
+      const st = stockOf(p);
+      document.getElementById("pdp-stock").innerHTML =
+        st==="out" ? "<b>Sold out</b> — currently unavailable" :
+        st==="low" ? "<b>Low stock</b> — order soon" :
+                     "<b>In stock</b> — ships fast";
+      if(st==="out"){
+        const ab=document.getElementById("add"); ab.disabled=true; ab.textContent="Sold out";
+        const box=document.getElementById("notify-box");
+        box.innerHTML = `<div style="border:1px solid #000;padding:16px 18px">
+          <b class="small" style="text-transform:uppercase;letter-spacing:.05em">Notify me when back in stock</b>
+          <form id="notify-form" style="display:flex;gap:8px;margin-top:10px">
+            <input type="email" required placeholder="you@lab.edu" aria-label="Email" style="flex:1;border:1px solid #000;padding:10px 12px;font-family:var(--font);font-size:.9rem">
+            <button class="btn btn--sm btn--solid" type="submit">Notify me</button>
+          </form></div>`;
+        document.getElementById("notify-form").addEventListener("submit", ev=>{
+          ev.preventDefault();
+          const email = ev.target.querySelector("input").value.trim();
+          if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ toast("Enter a valid email"); return; }
+          saveNotify(p.id, email);
+          box.innerHTML = `<div style="border:1px solid #000;padding:16px 18px"><b>✓ You're on the list.</b><p class="small muted" style="margin:6px 0 0">We'll email ${email} when ${p.name} is back in stock.</p></div>`;
+        });
+      }
+    })();
+
+    // Save / favorite
+    const saveBtn = document.getElementById("save-fav");
+    function refreshFav(){ const on=isFav(p.id); saveBtn.classList.toggle("on", on); saveBtn.textContent = on ? "♥ Saved" : "♥ Save"; }
+    saveBtn.onclick = ()=>{ toggleFav(p.id); refreshFav(); };
+    refreshFav();
+
+    // Tabs
+    const tabBody = document.getElementById("tab-body");
+    const tabs = {
+      overview: `<p>${p.overview}</p>` + (window.RESEARCH_NOTES && RESEARCH_NOTES[p.id] ? `<p>${RESEARCH_NOTES[p.id]}</p>` : ""),
+      research: `<p class="muted">Documented research areas of interest for this compound:</p><ul style="line-height:2;padding-left:1.1rem">${p.research.map(r=>`<li>${r}</li>`).join("")}</ul>`,
+      specs: `<table class="spec">
+        <tr><th>CAS Number</th><td>${p.cas}</td></tr>
+        <tr><th>Sequence</th><td style="word-break:break-word">${p.sequence}</td></tr>
+        <tr><th>Molecular Formula</th><td>${p.molFormula}</td></tr>
+        <tr><th>Molecular Weight</th><td>${p.molWeight}</td></tr>
+        <tr><th>Half-life (model)</th><td>${p.halfLife}</td></tr>
+        <tr><th>Purity</th><td>${p.purity}</td></tr>
+      </table>`,
+      handling: `<table class="spec">
+        <tr><th>Storage</th><td>${p.storage}</td></tr>
+        <tr><th>Reconstitution</th><td>Reconstitute with bacteriostatic water; draw volume depends on your target research concentration.</td></tr>
+        <tr><th>Certificate of Analysis</th><td>Batch-specific COA included with shipment and available on request.</td></tr>
+      </table>`
+    };
+    function showTab(t){ tabBody.innerHTML = tabs[t]; $$("#tabs button").forEach(b=>b.classList.toggle("active", b.dataset.t===t)); }
+    $$("#tabs button").forEach(b=> b.addEventListener("click", ()=>showTab(b.dataset.t)));
+    showTab("overview");
+
+    // Related
+    const related = PRODUCTS.filter(x=>x.category===p.category && x.id!==p.id).slice(0,4);
+    document.getElementById("related").innerHTML = (related.length?related:PRODUCTS.filter(x=>x.id!==p.id).slice(0,4)).map(cardHTML).join("");
+
+    // Recently viewed (from before this visit)
+    const rv = priorRecent.filter(id=>id!==p.id).map(productById).filter(Boolean).slice(0,4);
+    if(rv.length){
+      document.getElementById("rv-section").style.display = "";
+      document.getElementById("recently-viewed").innerHTML = rv.map(cardHTML).join("");
+    }
+  }
+</script>
+</body>
+</html>

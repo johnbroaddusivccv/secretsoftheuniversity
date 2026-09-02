@@ -36,7 +36,7 @@ Working rules for AI agents on this codebase. Read README.md first for project o
 
 ## Current priorities (in order)
 1. Wire signup forms to an email service
-2. Build systems.html (mirror finance.html structure, no tickers) — health.html and careers.html are live
+2. ~~Build systems.html~~ ✓ Built with network-node animation, light/dark toggle, anatomy tiles, six lesson cards, Hacker News feed, nine curated gates, Palantir-style footer
 3. Real social links in footers
 4. ~~Resume Lab page~~ ✓ Built into careers.html (CodeMirror 5 stex mode + Overleaf `encoded_snip` POST handoff)
 5. ~~health.html~~ ✓ Built with vital signs, lab ranges, peptide protocols, Skydell partnership, and curated links

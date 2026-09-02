@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Secrets of the University — The heavens declare what the university withheld</title>
+<title>Secrets of the University — Practical wisdom the curriculum skipped</title>
 <meta name="description" content="Practical knowledge about money, health, careers, and how systems really work. The curriculum school skipped.">
 <style>
   :root {
@@ -92,6 +92,37 @@
     transition: background .8s ease, color .8s ease;
   }
   canvas#stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+  /* ── Angel Numbers — full-viewport ambient layer ── */
+  .angel-overlay {
+    position:fixed; inset:0; z-index:0;
+    pointer-events:none; overflow:hidden;
+  }
+  .angel-num {
+    position:absolute;
+    font-family:Georgia,'Times New Roman',serif;
+    font-weight:400; font-style:italic;
+    pointer-events:none; user-select:none;
+    white-space:nowrap;
+    will-change:transform, opacity;
+  }
+  @keyframes angelDriftR {
+    0%   { transform:translate(-140px, 0); }
+    100% { transform:translate(calc(100vw + 140px), 0); }
+  }
+  @keyframes angelDriftL {
+    0%   { transform:translate(calc(100vw + 140px), 0); }
+    100% { transform:translate(-140px, 0); }
+  }
+  @keyframes angelDriftD {
+    0%   { transform:translate(0, -60px); }
+    100% { transform:translate(0, calc(100vh + 60px)); }
+  }
+  @keyframes angelFade {
+    0%, 100% { opacity:0; }
+    35%, 65% { opacity:var(--angel-peak, 0.12); }
+  }
+
   .wrap { position:relative; z-index:1; max-width:1000px; margin:0 auto; padding:0 24px; }
 
   /* Full-width nav bar */
@@ -360,26 +391,25 @@
   <button class="mobile-theme" onclick="toggleTheme(); this.textContent = document.documentElement.classList.contains('light') ? '☀ Light Mode' : '☾ Dark Mode';">☾ Dark Mode</button>
 </div>
 
+<div class="angel-overlay" id="angel-overlay" aria-hidden="true"></div>
+
 <div class="wrap">
 
-  <header>
-    <div class="eyebrow">Ask · Seek · Knock</div>
-    <h1>The heavens declare<br>what the university <em>withheld</em>.</h1>
-    <p class="sub">It is glory to conceal a matter, and honor to search it out. There is no catalog. There is a door — and it opens from the inside.</p>
-    <form class="signup" id="join" onsubmit="return joinList(event)">
-      <input type="email" name="email" id="email" placeholder="your@email.com" required>
-      <textarea name="message" id="hero-message" placeholder="Your message" rows="3"></textarea>
-      <button type="submit">Knock</button>
-    </form>
-    <div class="signup-note">No cost. No noise. Ask, and the first lesson is given.</div>
-    <div id="signup-msg">Knock, and it is opened. Watch your inbox. ✦</div>
-  </header>
+  <section style="padding-top:110px;">
+    <!-- ── Broaddus Commerce ── -->
+    <div class="section-label">The Storefront</div>
+    <h2>Every merchant has a gate</h2>
+    <div class="pillars" style="margin-bottom:48px;">
+      <div class="pillar" style="grid-column:1/-1; text-align:center;">
+        <div class="glyph">✦</div>
+        <h3>Broaddus Commerce</h3>
+        <p>The marketplace. Browse products, place orders, and do business.</p>
+        <a class="pillar-link" href="New%20Website%20Arch/">Enter →</a>
+      </div>
+    </div>
 
-  <div class="divider">✦ ✦ ✦</div>
-
-  <section>
+    <!-- ── Daily Revelation ── -->
     <div class="section-label">Daily Revelation</div>
-    <h2>The heavens declare his handiwork</h2>
     <div class="daily-revelation">
       <div class="daily-img-wrap" id="apod-wrap">
         <img id="apod-img" src="" alt="NASA Astronomy Picture of the Day" style="opacity:0;">
@@ -561,18 +591,51 @@
     document.cookie = 'theme=' + (isLight ? 'light' : 'dark') + ';path=/;SameSite=Lax';
   }
 
-  // Hero form — sends via mailto: to john@secretsoftheuniversity.com
-  function joinList(e){
-    e.preventDefault();
-    const email = document.getElementById('email').value.trim();
-    const message = document.getElementById('hero-message').value.trim();
-    const subject = encodeURIComponent('Inquiry from ' + email);
-    const body = encodeURIComponent('From: ' + email + '\n\n' + (message || 'I would like to learn more.'));
-    window.location.href = 'mailto:john@secretsoftheuniversity.com?subject=' + subject + '&body=' + body;
-    document.getElementById('signup-msg').style.display = 'block';
-    e.target.reset();
-    return false;
-  }
+  // ══════════════════════════════════════════════════
+  // ANGEL NUMBERS — full-viewport ambient layer
+  // ══════════════════════════════════════════════════
+  (function initAngels(){
+    const overlay = document.getElementById('angel-overlay');
+    if (!overlay) return;
+    const ANGELS = ['111','222','333','444','555','666','777','888','999',
+      '1111','1212','1010','1234','2222','3333','4444','5555','7777','1001','808'];
+    const COLORS = [
+      'rgba(240,201,108,',  // gold
+      'rgba(139,124,247,',  // violet
+      'rgba(232,230,245,',  // ink/white
+      'rgba(95,208,138,',   // green
+      'rgba(226,112,138,',  // rose
+      'rgba(180,160,255,',  // lavender
+    ];
+    const DRIFTS = ['angelDriftR','angelDriftL','angelDriftD'];
+    for (let i = 0; i < 45; i++) {
+      const el = document.createElement('span');
+      el.className = 'angel-num';
+      el.textContent = ANGELS[Math.floor(Math.random() * ANGELS.length)];
+      const size = 14 + Math.random() * 58;
+      const duration = 25 + Math.random() * 70;
+      const delay = -(Math.random() * duration);
+      const fadeDur = 6 + Math.random() * 14;
+      const fadeDelay = -(Math.random() * fadeDur);
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
+      const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      const peak = 0.04 + Math.random() * 0.14;
+      const drift = DRIFTS[Math.floor(Math.random() * DRIFTS.length)];
+      el.style.cssText = `
+        font-size:${size}px;
+        top:${top}%; left:${left}%;
+        color:${color}1);
+        --angel-peak:${peak};
+        animation:
+          ${drift} ${duration}s linear ${delay}s infinite,
+          angelFade ${fadeDur}s ease-in-out ${fadeDelay}s infinite;
+      `;
+      overlay.appendChild(el);
+    }
+  })();
+
+
   // Footer form — sends via mailto: to john@secretsoftheuniversity.com
   function footerJoin(e){
     e.preventDefault();

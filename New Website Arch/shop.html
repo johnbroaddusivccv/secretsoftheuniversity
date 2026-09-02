@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shop — Broaddus Scientific Group</title>
+<meta name="description" content="Browse research peptides by category. ≥99% purity, COA per batch. Research use only.">
+<link rel="stylesheet" href="assets/css/style.css?v=5">
+</head>
+<body data-page="shop">
+<div id="chrome-top"></div>
+
+<section class="page-hero"><div class="container">
+  <div class="eyebrow">Catalog</div>
+  <h1 id="shop-title">All Research Peptides</h1>
+  <p class="muted" id="shop-sub" style="max-width:60ch">Every listing links to a full glossary entry with structural data, research context, and a batch certificate of analysis.</p>
+</div></section>
+
+<section class="section"><div class="container">
+  <div class="pills" id="pills"></div>
+  <div class="grid grid--4" id="shop-grid"></div>
+  <p id="empty" class="muted" style="display:none">No products in this category yet.</p>
+</div></section>
+
+<div id="chrome-bottom"></div>
+<script src="assets/js/data.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
+<script>
+  let activeCat = qs("cat") || "all";
+  let query = (qs("q") || "").trim();
+
+  function matchQuery(p){
+    const hay = (p.name+" "+p.aka+" "+p.summary+" "+p.tags.join(" ")+" "+catName(p.category)).toLowerCase();
+    return hay.includes(query.toLowerCase());
+  }
+
+  function renderPills(){
+    const cats = [{id:"all",name:"All"}, ...CATEGORIES];
+    document.getElementById("pills").innerHTML = cats.map(c=>
+      `<button class="pill ${!query && c.id===activeCat?'active':''}" data-cat="${c.id}">${c.name}</button>`).join("");
+    $$("#pills .pill").forEach(b=> b.addEventListener("click", ()=>{
+      activeCat = b.dataset.cat; query = "";
+      history.replaceState(null,"", activeCat==="all"?"shop.html":`shop.html?cat=${activeCat}`);
+      renderPills(); renderGrid();
+    }));
+  }
+
+  function renderGrid(){
+    const list = query ? PRODUCTS.filter(matchQuery)
+                       : (activeCat==="all" ? PRODUCTS : PRODUCTS.filter(p=>p.category===activeCat));
+    document.getElementById("shop-grid").innerHTML = list.map(cardHTML).join("");
+    document.getElementById("empty").style.display = list.length ? "none" : "block";
+    const c = categoryById(activeCat);
+    if(query){
+      document.getElementById("shop-title").innerHTML = `Search: “${query}”`;
+      document.getElementById("shop-sub").innerHTML = `${list.length} result${list.length===1?"":"s"} · <a href="shop.html" style="text-decoration:underline">clear search</a>`;
+    } else {
+      document.getElementById("shop-title").textContent = c ? c.name : "All Research Peptides";
+      document.getElementById("shop-sub").textContent = c ? c.blurb :
+        "Every listing links to a full glossary entry with structural data, research context, and a batch certificate of analysis.";
+    }
+  }
+
+  renderPills(); renderGrid();
+</script>
+</body>
+</html>

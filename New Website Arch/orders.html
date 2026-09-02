@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order Lookup — Broaddus Scientific Group</title>
+<link rel="stylesheet" href="assets/css/style.css?v=5">
+</head>
+<body data-page="">
+<div id="chrome-top"></div>
+
+<section class="page-hero"><div class="container">
+  <div class="eyebrow">Orders</div>
+  <h1>Order Lookup</h1>
+  <p class="muted" style="max-width:62ch">Enter an order number to view its status. Orders you placed are also listed below (stored in this browser).</p>
+</div></section>
+
+<section class="section"><div class="container">
+  <form id="lookup-form" class="glossary-search" style="max-width:520px">
+    <input type="text" id="order-id" placeholder="e.g. BSG-XXXXX-1234" aria-label="Order number" autocomplete="off">
+    <button class="btn btn--solid" type="submit">Find order</button>
+  </form>
+  <p id="lookup-msg" class="small" style="margin:-8px 0 24px"></p>
+
+  <div class="eyebrow" style="margin-bottom:12px">Your recent orders</div>
+  <div id="recent"></div>
+</div></section>
+
+<div id="chrome-bottom"></div>
+<script src="assets/js/data.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
+<script>
+  document.getElementById("lookup-form").addEventListener("submit", e=>{
+    e.preventDefault();
+    const id = document.getElementById("order-id").value.trim();
+    if(!id) return;
+    const o = getOrders().find(x => x.id.toUpperCase() === id.toUpperCase());
+    if(o){ location.href = "order.html?id=" + encodeURIComponent(o.id); }
+    else { const m=document.getElementById("lookup-msg"); m.textContent = "No order found with that number in this browser."; m.style.color = "#b00020"; }
+  });
+
+  const orders = getOrders().slice().reverse();
+  const statusLabel = { "awaiting-payment":"Awaiting payment", "paid":"Paid", "shipped":"Shipped" };
+  const recent = document.getElementById("recent");
+  if(!orders.length){
+    recent.innerHTML = `<p class="muted">No orders placed yet. <a href="shop.html" style="text-decoration:underline">Start shopping</a>.</p>`;
+  } else {
+    recent.innerHTML = orders.map(o=>{
+      const d = new Date(o.date).toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"});
+      const items = o.items.reduce((n,i)=>n+i.qty,0);
+      return `<a href="order.html?id=${encodeURIComponent(o.id)}" class="co-item" style="padding:16px 18px;border:1px solid var(--line-soft);margin-bottom:-1px;text-decoration:none">
+        <span><b>${o.id}</b> <span class="muted">· ${d} · ${items} item${items===1?"":"s"}</span></span>
+        <span><span class="ruo-flag" style="background:#555">${statusLabel[o.status]||o.status}</span> &nbsp; <b class="mono">${money(o.total)}</b></span>
+      </a>`;
+    }).join("");
+  }
+</script>
+</body>
+</html>

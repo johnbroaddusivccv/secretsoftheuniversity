@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout — Broaddus Scientific Group</title>
+<link rel="stylesheet" href="assets/css/style.css?v=5">
+</head>
+<body data-page="">
+<div id="chrome-top"></div>
+
+<section class="page-hero"><div class="container">
+  <div class="eyebrow">Checkout</div>
+  <h1>Shipping & Order Details</h1>
+</div></section>
+
+<section class="section"><div class="container">
+  <div id="empty-note" style="display:none" class="center">
+    <p class="muted">Your cart is empty.</p>
+    <a href="shop.html" class="btn">Browse peptides</a>
+  </div>
+
+  <form id="checkout-form" class="checkout" novalidate>
+    <!-- LEFT: details -->
+    <div>
+      <div class="eyebrow" style="margin-bottom:14px">Contact</div>
+      <div class="field-row">
+        <div class="calc-field" style="margin-bottom:14px"><label>First name *</label><input name="firstName" type="text" required></div>
+        <div class="calc-field" style="margin-bottom:14px"><label>Last name *</label><input name="lastName" type="text" required></div>
+      </div>
+      <div class="field-row">
+        <div class="calc-field" style="margin-bottom:14px"><label>Email *</label><input name="email" type="email" required placeholder="lab@institution.edu"></div>
+        <div class="calc-field" style="margin-bottom:14px"><label>Phone</label><input name="phone" type="tel"></div>
+      </div>
+
+      <div class="eyebrow" style="margin:22px 0 14px">Shipping address</div>
+      <div class="calc-field" style="margin-bottom:14px"><label>Address *</label><input name="address" type="text" required placeholder="Street address"></div>
+      <div class="calc-field" style="margin-bottom:14px"><label>Address line 2</label><input name="address2" type="text" placeholder="Apt, suite, lab (optional)"></div>
+      <div class="field-row">
+        <div class="calc-field" style="margin-bottom:14px"><label>City *</label><input name="city" type="text" required></div>
+        <div class="calc-field" style="margin-bottom:14px"><label>State / Region *</label><input name="state" type="text" required></div>
+      </div>
+      <div class="field-row">
+        <div class="calc-field" style="margin-bottom:14px"><label>ZIP / Postal *</label><input name="zip" type="text" required></div>
+        <div class="calc-field" style="margin-bottom:14px"><label>Country *</label>
+          <select name="country"><option value="United States">United States</option><option value="Canada">Canada</option><option value="United Kingdom">United Kingdom</option><option value="Australia">Australia</option><option value="Other">Other</option></select>
+        </div>
+      </div>
+
+      <div class="eyebrow" style="margin:22px 0 14px">Shipping method</div>
+      <div class="ship-methods" id="ship-methods">
+        <label class="opt sel"><input type="radio" name="method" value="standard" checked>
+          <span><span class="opt__t">Standard</span><br><span class="opt__d">3–5 business days · free over $150</span></span>
+          <span class="opt__p" data-ship="standard"></span></label>
+        <label class="opt"><input type="radio" name="method" value="express">
+          <span><span class="opt__t">Express (2-day)</span><br><span class="opt__d">Priority cold-chain, 2 business days</span></span>
+          <span class="opt__p" data-ship="express"></span></label>
+      </div>
+
+      <div class="notice" style="margin-top:8px">
+        <span class="ruo-flag">RUO</span>
+        <div>By placing this order you confirm you are a qualified researcher and that all items are for laboratory research use only — not for human or animal consumption.</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: summary -->
+    <div>
+      <div class="summary">
+        <div class="eyebrow">Order Summary</div>
+        <div id="co-items" style="margin:8px 0 14px"></div>
+        <div style="display:flex;gap:8px;margin:0 0 6px">
+          <input id="promo" placeholder="Discount code" autocomplete="off" style="flex:1;border:1px solid #000;padding:10px 12px;font-family:var(--font);font-size:.85rem">
+          <button type="button" class="btn btn--sm" id="promo-apply">Apply</button>
+        </div>
+        <p id="promo-msg" class="small" style="margin:0 0 12px"></p>
+        <div class="row" style="display:flex;justify-content:space-between;padding:8px 0"><span>Subtotal</span><b id="co-sub">$0.00</b></div>
+        <p id="co-tier" class="small muted" style="margin:0 0 4px"></p>
+        <div class="row" id="co-bulk-row" style="display:none;justify-content:space-between;padding:8px 0"><span id="co-bulk-label">Bulk discount</span><b id="co-bulk">−$0.00</b></div>
+        <div class="row" id="co-disc-row" style="display:none;justify-content:space-between;padding:8px 0"><span id="co-disc-label">Discount</span><b id="co-disc">−$0.00</b></div>
+        <div class="row" style="display:flex;justify-content:space-between;padding:8px 0"><span>Shipping</span><b id="co-ship">—</b></div>
+        <div class="row total" style="display:flex;justify-content:space-between;border-top:1px solid #000;margin-top:8px;padding-top:14px;font-weight:800;font-size:1.15rem"><span>Total</span><b id="co-total">$0.00</b></div>
+        <button type="submit" class="btn btn--solid btn--full" style="margin-top:16px">Place Order</button>
+        <p class="form-note" style="margin-top:12px"><b>No charge today.</b> Card payments are being set up — you'll receive an email with secure payment instructions and a batch COA to finalize your order.</p>
+      </div>
+      <p class="small muted" style="margin-top:14px"><a href="cart.html" style="text-decoration:underline">← Back to cart</a></p>
+    </div>
+  </form>
+</div></section>
+
+<div id="chrome-bottom"></div>
+<script src="assets/js/data.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
+<script>
+  const form = document.getElementById("checkout-form");
+  let codeDiscount = null;
+
+  function currentMethod(){ const r = form.querySelector('input[name="method"]:checked'); return r ? r.value : "standard"; }
+
+  function renderSummary(){
+    const cart = getCart();
+    if(!cart.length){
+      document.getElementById("empty-note").style.display = "block";
+      form.style.display = "none";
+      return;
+    }
+    document.getElementById("co-items").innerHTML = cart.map(i=>
+      `<div class="co-item"><span>${i.name} <span class="muted">· ${i.size} × ${i.qty}</span></span><span class="mono">${money(i.price*i.qty)}</span></div>`).join("");
+    const sub = cartSubtotal();
+    const bulk = bulkDiscount(sub);
+    const discounts = [bulk, codeDiscount].filter(Boolean);
+    let ship = shippingCost(sub, currentMethod());
+    if(discounts.some(d=>d.freeShip)) ship = 0;
+    const discTotal = discounts.reduce((s,d)=>s + (d.amount||0), 0);
+
+    document.getElementById("co-sub").textContent = money(sub);
+    // bulk row + next-tier nudge
+    const bulkRow = document.getElementById("co-bulk-row");
+    if(bulk){ bulkRow.style.display = "flex"; document.getElementById("co-bulk-label").textContent = bulk.label; document.getElementById("co-bulk").textContent = "−" + money(bulk.amount); }
+    else { bulkRow.style.display = "none"; }
+    const nt = nextBulkTier(sub);
+    document.getElementById("co-tier").textContent = nt ? `Add ${money(nt.add)} for ${nt.pct}% bulk discount` : "";
+    // code discount row
+    const discRow = document.getElementById("co-disc-row");
+    if(codeDiscount){
+      discRow.style.display = "flex";
+      document.getElementById("co-disc-label").textContent = "Code (" + codeDiscount.code + ")";
+      document.getElementById("co-disc").textContent = codeDiscount.freeShip && !codeDiscount.amount ? "Free shipping" : ("−" + money(codeDiscount.amount));
+    } else { discRow.style.display = "none"; }
+
+    document.getElementById("co-ship").textContent = ship===0 ? "FREE" : money(ship);
+    document.getElementById("co-total").textContent = money(Math.max(0, sub - discTotal) + ship);
+    document.querySelector('[data-ship="standard"]').textContent = shippingCost(sub,"standard")===0 ? "FREE" : money(shippingCost(sub,"standard"));
+    document.querySelector('[data-ship="express"]').textContent = money(shippingCost(sub,"express"));
+  }
+
+  document.getElementById("promo-apply").onclick = ()=>{
+    const res = applyDiscount(document.getElementById("promo").value, cartSubtotal());
+    const msg = document.getElementById("promo-msg");
+    if(res.error){ codeDiscount = null; msg.textContent = res.error; msg.style.color = "#b00020"; }
+    else { codeDiscount = res; msg.textContent = "✓ Applied: " + res.label; msg.style.color = "var(--ok)"; }
+    renderSummary();
+  };
+
+  // method selection styling + recompute
+  form.querySelectorAll('input[name="method"]').forEach(r => r.addEventListener("change", ()=>{
+    form.querySelectorAll(".ship-methods .opt").forEach(o=>o.classList.remove("sel"));
+    r.closest(".opt").classList.add("sel");
+    renderSummary();
+  }));
+
+  function validate(){
+    let ok = true;
+    form.querySelectorAll("input[required]").forEach(inp=>{
+      const bad = !inp.value.trim() || (inp.type==="email" && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(inp.value.trim()));
+      inp.classList.toggle("err", bad);
+      if(bad) ok = false;
+    });
+    return ok;
+  }
+
+  form.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    if(!getCart().length){ toast("Your cart is empty"); return; }
+    if(!validate()){ toast("Please complete the required fields"); form.querySelector(".err").scrollIntoView({behavior:"smooth",block:"center"}); return; }
+    const d = Object.fromEntries(new FormData(form).entries());
+    const customer = { firstName:d.firstName, lastName:d.lastName, email:d.email, phone:d.phone||"" };
+    const shipDetails = { address:d.address, address2:d.address2||"", city:d.city, state:d.state, zip:d.zip, country:d.country, method:d.method };
+    const order = createOrder(customer, shipDetails, [bulkDiscount(cartSubtotal()), codeDiscount].filter(Boolean));
+    clearCart();
+    location.href = "order.html?id=" + encodeURIComponent(order.id);
+  });
+
+  renderSummary();
+</script>
+</body>
+</html>

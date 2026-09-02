@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cart — Broaddus Scientific Group</title>
+<link rel="stylesheet" href="assets/css/style.css?v=5">
+</head>
+<body data-page="">
+<div id="chrome-top"></div>
+
+<section class="page-hero"><div class="container">
+  <div class="eyebrow">Checkout</div>
+  <h1>Your Cart</h1>
+</div></section>
+
+<section class="section"><div class="container">
+  <div id="cart-wrap" style="display:grid;grid-template-columns:1.6fr .8fr;gap:40px;align-items:start">
+    <div>
+      <div id="cart-items"></div>
+      <div id="cart-empty" style="display:none" class="center" style="padding:40px 0">
+        <p class="muted">Your cart is empty.</p>
+        <a href="shop.html" class="btn">Browse peptides</a>
+      </div>
+    </div>
+    <div>
+      <div class="summary">
+        <div class="eyebrow">Order Summary</div>
+        <div class="row"><span>Subtotal</span><b id="sum-sub">$0.00</b></div>
+        <div class="row" id="bulk-row" style="display:none"><span id="bulk-label">Bulk discount</span><b id="sum-bulk">−$0.00</b></div>
+        <div class="row"><span>Shipping</span><b id="sum-ship">—</b></div>
+        <div class="row" id="free-hint" style="color:var(--muted);font-size:.8rem"></div>
+        <div class="row" id="tier-hint" style="color:var(--muted);font-size:.8rem"></div>
+        <div class="row total"><span>Total</span><b id="sum-total">$0.00</b></div>
+        <button class="btn btn--solid btn--full" id="checkout" style="margin-top:16px">Proceed to Checkout</button>
+        <p class="small muted" style="margin-top:12px">Prices shown are net of New York State sales tax. Complimentary reconstitution solution included with qualifying orders. COA provided per batch.</p>
+      </div>
+      <div class="notice" style="margin-top:16px">
+        <span class="ruo-flag">RUO</span>
+        <div>Items are sold for laboratory research use only.</div>
+      </div>
+    </div>
+  </div>
+
+</div></section>
+
+<div id="chrome-bottom"></div>
+<script src="assets/js/data.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
+<script>
+  function render(){
+    const cart = getCart();
+    const wrap = document.getElementById("cart-items");
+    const emptyEl = document.getElementById("cart-empty");
+    if(!cart.length){
+      wrap.innerHTML=""; emptyEl.style.display="block";
+    } else {
+      emptyEl.style.display="none";
+      wrap.innerHTML = cart.map(i=>`
+        <div class="cart-row" data-key="${i.key}">
+          <div>
+            <a href="product.html?id=${i.id}"><b>${i.name}</b></a>
+            <div class="small muted">${i.size} · SKU ${i.sku}</div>
+          </div>
+          <div class="qty">
+            <button data-act="minus">−</button>
+            <input type="number" value="${i.qty}" min="1" data-act="qty">
+            <button data-act="plus">+</button>
+          </div>
+          <div class="price mono">${money(i.price*i.qty)}</div>
+          <button class="btn btn--sm" data-act="remove">Remove</button>
+        </div>`).join("");
+    }
+
+    // summary
+    const sub = cartSubtotal();
+    const bulk = bulkDiscount(sub);
+    const disc = bulk ? bulk.amount : 0;
+    const ship = sub===0 ? 0 : (sub>=SITE.freeShipThreshold ? 0 : 12);
+    document.getElementById("sum-sub").textContent = money(sub);
+    const bulkRow = document.getElementById("bulk-row");
+    if(bulk){ bulkRow.style.display = "flex"; document.getElementById("bulk-label").textContent = bulk.label; document.getElementById("sum-bulk").textContent = "−" + money(bulk.amount); }
+    else { bulkRow.style.display = "none"; }
+    document.getElementById("sum-ship").textContent = sub===0 ? "—" : (ship===0 ? "FREE" : money(ship));
+    document.getElementById("sum-total").textContent = money(Math.max(0, sub - disc) + ship);
+    const hint = document.getElementById("free-hint");
+    hint.textContent = (sub>0 && sub<SITE.freeShipThreshold) ? `Add ${money(SITE.freeShipThreshold-sub)} for free shipping` : "";
+    const nt = nextBulkTier(sub);
+    document.getElementById("tier-hint").textContent = nt ? `Add ${money(nt.add)} for ${nt.pct}% bulk discount` : "";
+
+    bindRows();
+  }
+
+  function bindRows(){
+    $$(".cart-row").forEach(row=>{
+      const key = row.dataset.key;
+      row.querySelector('[data-act="minus"]').onclick = ()=>{ const it=getCart().find(x=>x.key===key); setQty(key, it.qty-1); render(); };
+      row.querySelector('[data-act="plus"]').onclick  = ()=>{ const it=getCart().find(x=>x.key===key); setQty(key, it.qty+1); render(); };
+      row.querySelector('[data-act="qty"]').onchange = (e)=>{ setQty(key, parseInt(e.target.value)||1); render(); };
+      row.querySelector('[data-act="remove"]').onclick = ()=>{ removeItem(key); render(); };
+    });
+  }
+
+  document.getElementById("checkout").onclick = ()=>{
+    if(!getCart().length){ toast("Your cart is empty"); return; }
+    location.href = "checkout.html";
+  };
+
+  render();
+</script>
+</body>
+</html>

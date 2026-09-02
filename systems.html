@@ -91,6 +91,37 @@
     transition: background .8s ease, color .8s ease;
   }
   canvas#stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+  /* ── Angel Numbers — full-viewport ambient layer ── */
+  .angel-overlay {
+    position:fixed; inset:0; z-index:0;
+    pointer-events:none; overflow:hidden;
+  }
+  .angel-num {
+    position:absolute;
+    font-family:Georgia,'Times New Roman',serif;
+    font-weight:400; font-style:italic;
+    pointer-events:none; user-select:none;
+    white-space:nowrap;
+    will-change:transform, opacity;
+  }
+  @keyframes angelDriftR {
+    0%   { transform:translate(-140px, 0); }
+    100% { transform:translate(calc(100vw + 140px), 0); }
+  }
+  @keyframes angelDriftL {
+    0%   { transform:translate(calc(100vw + 140px), 0); }
+    100% { transform:translate(-140px, 0); }
+  }
+  @keyframes angelDriftD {
+    0%   { transform:translate(0, -60px); }
+    100% { transform:translate(0, calc(100vh + 60px)); }
+  }
+  @keyframes angelFade {
+    0%, 100% { opacity:0; }
+    35%, 65% { opacity:var(--angel-peak, 0.12); }
+  }
+
   .wrap { position:relative; z-index:1; max-width:1000px; margin:0 auto; padding:0 24px; }
 
   /* Full-width nav bar */
@@ -401,6 +432,8 @@
   <button class="mobile-theme" onclick="toggleTheme(); this.textContent = document.documentElement.classList.contains('light') ? '☀ Light Mode' : '☾ Dark Mode';">☾ Dark Mode</button>
 </div>
 
+<div class="angel-overlay" id="angel-overlay" aria-hidden="true"></div>
+
 <div class="wrap">
 
   <header>
@@ -678,6 +711,50 @@
     syncThemeUI(isLight);
     document.cookie = 'theme=' + (isLight ? 'light' : 'dark') + ';path=/;SameSite=Lax';
   }
+
+  // ══════════════════════════════════════════════════
+  // ANGEL NUMBERS — full-viewport ambient layer
+  // ══════════════════════════════════════════════════
+  (function initAngels(){
+    const overlay = document.getElementById('angel-overlay');
+    if (!overlay) return;
+    const ANGELS = ['111','222','333','444','555','666','777','888','999',
+      '1111','1212','1010','1234','2222','3333','4444','5555','7777','1001','808'];
+    const COLORS = [
+      'rgba(240,201,108,',
+      'rgba(139,124,247,',
+      'rgba(232,230,245,',
+      'rgba(95,208,138,',
+      'rgba(226,112,138,',
+      'rgba(180,160,255,',
+    ];
+    const DRIFTS = ['angelDriftR','angelDriftL','angelDriftD'];
+    for (let i = 0; i < 45; i++) {
+      const el = document.createElement('span');
+      el.className = 'angel-num';
+      el.textContent = ANGELS[Math.floor(Math.random() * ANGELS.length)];
+      const size = 14 + Math.random() * 58;
+      const duration = 25 + Math.random() * 70;
+      const delay = -(Math.random() * duration);
+      const fadeDur = 6 + Math.random() * 14;
+      const fadeDelay = -(Math.random() * fadeDur);
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
+      const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      const peak = 0.04 + Math.random() * 0.14;
+      const drift = DRIFTS[Math.floor(Math.random() * DRIFTS.length)];
+      el.style.cssText = `
+        font-size:${size}px;
+        top:${top}%; left:${left}%;
+        color:${color}1);
+        --angel-peak:${peak};
+        animation:
+          ${drift} ${duration}s linear ${delay}s infinite,
+          angelFade ${fadeDur}s ease-in-out ${fadeDelay}s infinite;
+      `;
+      overlay.appendChild(el);
+    }
+  })();
 
   // ══════════════════════════════════════════════════
   // NETWORK NODES — ambient floating system glyphs

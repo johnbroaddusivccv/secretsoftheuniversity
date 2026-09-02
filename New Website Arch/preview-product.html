@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product — Broaddus Scientific Group</title>
+<style>
+/* ============================================================
+   MERIDIAN PEPTIDES — Design System
+   Monochrome, Inter, sharp corners, bordered uppercase controls.
+   (Aesthetic modeled on clean research-chem storefronts.)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --black:#000;
+  --ink:#111;
+  --white:#fff;
+  --paper:#fafafa;
+  --tile:#f2f2f2;
+  --studio:radial-gradient(125% 105% at 50% 30%, #fdfdfe 0%, #f2f3f5 55%, #e6e9ec 100%);
+  --line:#000;
+  --line-soft:#e4e4e4;
+  --muted:#666;
+  --muted-2:#8a8a8a;
+  --accent:#000;      /* monochrome accent */
+  --ok:#137a3f;
+  --warn:#8a6d00;
+  --maxw:1180px;
+  --radius:0px;       /* sharp corners like the reference */
+  --font:"Inter",-apple-system,system-ui,"Helvetica Neue",Helvetica,sans-serif;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;font-family:var(--font);color:var(--ink);background:var(--white);
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+h1,h2,h3,h4{margin:0;letter-spacing:-.02em;line-height:1.1;font-weight:800}
+h1{font-size:clamp(2rem,4.5vw,3.4rem)}
+h2{font-size:clamp(1.5rem,3vw,2.2rem)}
+p{margin:0 0 1rem}
+.container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.center{text-align:center}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+.mono{font-variant-numeric:tabular-nums}
+hr{border:0;border-top:1px solid var(--line-soft);margin:2.5rem 0}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5em;
+  font-family:var(--font);font-weight:600;font-size:.9rem;letter-spacing:.04em;
+  text-transform:uppercase;padding:15px 26px;border:1px solid var(--black);
+  background:var(--white);color:var(--black);border-radius:var(--radius);
+  cursor:pointer;transition:.15s ease;white-space:nowrap;
+}
+.btn:hover{background:var(--black);color:var(--white)}
+.btn--solid{background:var(--black);color:var(--white)}
+.btn--solid:hover{background:var(--white);color:var(--black)}
+.btn--sm{padding:10px 16px;font-size:.78rem}
+.btn--full{width:100%}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.btn.on{background:var(--black);color:var(--white)}
+
+/* ---------- Top announcement + header ---------- */
+.topbar{background:var(--black);color:var(--white);font-size:.76rem;letter-spacing:.06em;
+  text-transform:uppercase;text-align:center;padding:9px 16px}
+.header{border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--white);z-index:50}
+.header__row{display:flex;align-items:center;gap:24px;padding:18px 24px;max-width:var(--maxw);margin:0 auto}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.02em}
+.brand__mark{border:2px solid var(--black);padding:6px 10px;font-size:1.05rem;text-transform:uppercase;line-height:1}
+.brand__tag{font-size:.72rem;color:var(--muted);max-width:230px;line-height:1.3;letter-spacing:0;text-transform:none;font-weight:500}
+.header__spacer{flex:1}
+.header__links{display:flex;align-items:center;gap:22px;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.02em}
+.header__links a:hover{opacity:.6}
+.hsearch{margin:0}
+.hsearch input{border:1px solid var(--black);background:var(--white);padding:9px 14px;font-family:var(--font);font-size:.82rem;width:210px;border-radius:var(--radius)}
+.hsearch input::placeholder{color:var(--muted-2)}
+.hsearch input:focus{outline:2px solid var(--black);outline-offset:-1px}
+.cart-pill{border:1px solid var(--black);padding:6px 11px;display:inline-flex;gap:8px;align-items:center;
+  background:var(--white);color:inherit;font:inherit;font-weight:700;text-transform:uppercase;letter-spacing:.02em;cursor:pointer}
+.cart-pill:hover{background:var(--paper)}
+.fav-pill{border:1px solid var(--black);padding:6px 10px;display:inline-flex;gap:6px;align-items:center;font-weight:700;font-size:.9rem}
+.fav-pill:hover{background:var(--paper)}
+.fav-btn{position:absolute;top:10px;right:10px;width:32px;height:32px;border:1px solid var(--line-soft);
+  background:rgba(255,255,255,.92);cursor:pointer;font-size:15px;line-height:1;color:#c2c2c2;
+  display:flex;align-items:center;justify-content:center;z-index:2;transition:.15s}
+.fav-btn:hover{border-color:#000;color:#000}
+.fav-btn.on{color:#000;border-color:#000}
+.cmp-btn{position:absolute;left:10px;bottom:10px;width:32px;height:32px;border:1px solid var(--line-soft);
+  background:rgba(255,255,255,.92);cursor:pointer;font-size:15px;line-height:1;color:#9a9a9a;
+  display:flex;align-items:center;justify-content:center;z-index:2;transition:.15s}
+.cmp-btn:hover{border-color:#000;color:#000}
+.cmp-btn.on{background:#000;color:#fff;border-color:#000}
+
+/* ---------- Text-only product cards (no image) ---------- */
+.card--text .card__body{padding:22px}
+.card__topline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.card__topline .card__cat{margin:0}
+.card__acts{display:inline-flex;gap:6px;flex:none}
+.card__acts .fav-btn,.card__acts .cmp-btn{position:static;top:auto;left:auto;right:auto;bottom:auto;width:28px;height:28px;font-size:13px}
+.tag-featured{display:inline-block;vertical-align:middle;margin-left:8px;font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:var(--black);color:#fff;padding:3px 7px;position:relative;top:-2px}
+
+/* ---------- Compare bar + table ---------- */
+.compare-bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #000;
+  transform:translateY(110%);transition:transform .25s ease;z-index:140;padding:14px 0}
+.compare-bar.show{transform:translateY(0)}
+body.has-cmp-bar{padding-bottom:66px}
+.cmp-bar__in{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.cmp-bar__items{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cmp-chip{border:1px solid var(--line-soft);padding:5px 8px 5px 11px;display:inline-flex;align-items:center;gap:8px;font-size:.78rem}
+.cmp-chip button{border:0;background:none;cursor:pointer;font-size:1.05rem;line-height:1;color:var(--muted);padding:0}
+.cmp-chip button:hover{color:#000}
+.cmp-bar__act{display:flex;gap:10px}
+.cmp-table{width:100%;border-collapse:collapse;min-width:640px}
+.cmp-table th,.cmp-table td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line-soft);vertical-align:top;font-size:.88rem}
+.cmp-table thead th{background:var(--black);color:#fff;vertical-align:bottom}
+.cmp-table tbody th{width:150px;color:var(--muted);font-weight:600;text-transform:uppercase;font-size:.72rem;letter-spacing:.04em}
+.cmp-table .cmp-media{width:96px;height:96px;background:var(--studio);border:1px solid var(--line-soft);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.cmp-table .cmp-name{font-size:1.05rem;font-weight:800;letter-spacing:-.01em}
+.cart-pill b{background:var(--black);color:var(--white);padding:0 7px;min-width:20px;text-align:center}
+
+/* ---------- Primary nav ---------- */
+.nav{border-bottom:1px solid var(--line)}
+.nav__inner{display:flex;max-width:var(--maxw);margin:0 auto}
+.nav__inner a{flex:1;text-align:center;padding:15px 10px;font-weight:700;font-size:.82rem;
+  text-transform:uppercase;letter-spacing:.03em;border-bottom:3px solid transparent}
+.nav__inner a:hover{background:var(--paper)}
+.nav__inner a.active{border-bottom-color:var(--black)}
+.menu-toggle{display:none}
+
+/* ---------- Hero ---------- */
+.hero{padding:64px 0 48px;border-bottom:1px solid var(--line-soft)}
+.hero__grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.hero h1{margin-bottom:18px}
+.hero p.lead{font-size:1.1rem;color:var(--muted);max-width:46ch;margin-bottom:26px}
+.hero__cta{display:flex;gap:12px;flex-wrap:wrap}
+.hero__panel{border:1px solid var(--line);padding:28px}
+.hero__panel h4{text-transform:uppercase;font-size:.78rem;letter-spacing:.08em;margin-bottom:16px}
+.checklist{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.checklist li{display:flex;gap:12px;align-items:flex-start;font-size:.92rem}
+.checklist li::before{content:"—";font-weight:800}
+
+/* ---------- Section headers ---------- */
+.section{padding:56px 0}
+.section__head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:28px}
+.section__head p{margin:6px 0 0;color:var(--muted);max-width:52ch}
+.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:10px}
+
+/* ---------- Category filter pills ---------- */
+.pills{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+.pill{border:1px solid var(--black);background:var(--white);padding:10px 18px;font-size:.8rem;
+  font-weight:600;text-transform:uppercase;letter-spacing:.02em;cursor:pointer;border-radius:var(--radius)}
+.pill:hover{background:var(--paper)}
+.pill.active{background:var(--black);color:var(--white)}
+
+/* ---------- Product grid + cards ---------- */
+.grid{display:grid;gap:24px}
+.grid--4{grid-template-columns:repeat(4,1fr)}
+.grid--3{grid-template-columns:repeat(3,1fr)}
+.grid--2{grid-template-columns:repeat(2,1fr)}
+.card{border:1px solid var(--line-soft);display:flex;flex-direction:column;background:var(--white);
+  transition:.15s ease}
+.card:hover{border-color:var(--black)}
+.card__media{background:var(--studio);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden}
+.card__badge{position:absolute;top:12px;left:12px;background:var(--black);color:var(--white);
+  font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;font-weight:700}
+.vial{--vc:#111}
+.card__body{padding:18px;display:flex;flex-direction:column;flex:1}
+.card__cat{font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted-2);font-weight:700;margin-bottom:8px}
+.card__title{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+.card__desc{font-size:.85rem;color:var(--muted);flex:1;margin-bottom:12px}
+.card__trust{font-size:.64rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted-2);font-weight:700;margin:0 0 12px}
+.card__foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.price{font-weight:800;font-size:1.05rem}
+.price small{font-weight:500;color:var(--muted);font-size:.72rem}
+
+/* ---------- Categories band ---------- */
+.catband{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line)}
+.catband a{padding:22px 20px;border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.catband a:hover{background:var(--black);color:var(--white)}
+.catband a h4{font-size:1rem;margin-bottom:6px}
+.catband a p{font-size:.78rem;color:var(--muted);margin:0}
+.catband a:hover p{color:#ccc}
+
+/* ---------- Feature strip ---------- */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.strip div{padding:26px 20px;border-right:1px solid var(--line-soft);text-align:center}
+.strip div:last-child{border-right:0}
+.strip b{display:block;text-transform:uppercase;font-size:.8rem;letter-spacing:.06em;margin-bottom:6px}
+.strip span{font-size:.8rem;color:var(--muted)}
+
+/* ---------- Product detail ---------- */
+.pdp{display:block;max-width:720px;padding:40px 0}
+.pdp__media{display:none}
+.pdp h1{margin-bottom:6px}
+.pdp__aka{color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-size:.78rem;font-weight:600;margin-bottom:20px}
+.pdp__price{font-size:1.6rem;font-weight:800;margin:16px 0}
+.pdp-stock{color:var(--muted)}
+.pdp-stock b{color:var(--ink)}
+.pdp-stock--out b{color:#000}
+.sizes{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.size-opt{border:1px solid var(--black);padding:12px 16px;cursor:pointer;font-weight:600;font-size:.85rem;min-width:70px;text-align:center}
+.size-opt.active{background:var(--black);color:var(--white)}
+.qty{display:inline-flex;border:1px solid var(--black);align-items:stretch;margin-right:12px}
+.qty button{border:0;background:var(--white);width:40px;font-size:1.1rem;cursor:pointer}
+.qty button:hover{background:var(--black);color:var(--white)}
+.qty input{width:48px;border:0;text-align:center;font-family:var(--font);font-weight:700;font-size:1rem;border-left:1px solid var(--line-soft);border-right:1px solid var(--line-soft)}
+.spec{width:100%;border-collapse:collapse;margin-top:14px;font-size:.88rem}
+.spec th,.spec td{text-align:left;padding:11px 0;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.spec th{width:38%;color:var(--muted);font-weight:600}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin:36px 0 20px}
+.tabs button{border:0;background:none;padding:14px 20px;font-weight:700;text-transform:uppercase;font-size:.78rem;letter-spacing:.04em;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
+.tabs button.active{border-bottom-color:var(--black)}
+
+/* ---------- Glossary ---------- */
+.glossary-search{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.glossary-search input{flex:1;min-width:220px;border:1px solid var(--black);padding:14px 16px;font-family:var(--font);font-size:.95rem}
+.gloss-item{border:1px solid var(--line-soft);padding:22px;margin-bottom:-1px}
+.gloss-item:hover{border-color:var(--black);position:relative;z-index:1}
+.gloss-item h3{font-size:1.25rem;margin-bottom:4px}
+.gloss-item .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.tag{border:1px solid var(--line-soft);padding:3px 9px;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+
+/* ---------- Calculator ---------- */
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.calc-field{margin-bottom:18px}
+.calc-field label{display:block;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.calc-field input,.calc-field select{width:100%;border:1px solid var(--black);padding:13px 14px;font-family:var(--font);font-size:1rem}
+.calc-out{border:1px solid var(--line);padding:28px}
+.calc-out .big{font-size:2.4rem;font-weight:800;letter-spacing:-.02em}
+.calc-out .row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line-soft);font-size:.92rem}
+.calc-out .row:last-child{border-bottom:0}
+
+/* ---------- Cart ---------- */
+.cart-row{display:grid;grid-template-columns:1fr auto auto auto;gap:18px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line-soft)}
+.summary{border:1px solid var(--line);padding:26px}
+.summary .row{display:flex;justify-content:space-between;padding:10px 0;font-size:.95rem}
+.summary .row.total{border-top:1px solid var(--line);margin-top:10px;padding-top:16px;font-weight:800;font-size:1.15rem}
+
+/* ---------- FAQ accordion ---------- */
+.faq{max-width:820px}
+.faq h3{margin:34px 0 4px;font-size:.74rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.faq details{border-bottom:1px solid var(--line-soft)}
+.faq summary{cursor:pointer;list-style:none;padding:18px 0;font-weight:700;font-size:1.02rem;
+  display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-weight:400;font-size:1.5rem;line-height:1;color:var(--muted)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin:0 0 20px;color:var(--muted);max-width:72ch;line-height:1.65}
+
+/* ---------- Notice / disclaimer ---------- */
+.notice{border:1px solid var(--black);padding:16px 20px;font-size:.82rem;display:flex;gap:12px;align-items:flex-start}
+.notice b{text-transform:uppercase;letter-spacing:.04em}
+.ruo-flag{background:#111;color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;display:inline-block}
+
+/* ---------- Toast ---------- */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120%);
+  background:var(--black);color:var(--white);padding:14px 22px;font-size:.85rem;font-weight:600;
+  letter-spacing:.03em;z-index:200;transition:.3s ease;text-transform:uppercase}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ---------- Cart drawer (mini-cart) ---------- */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.42);opacity:0;visibility:hidden;transition:opacity .25s;z-index:150}
+.drawer-overlay.show{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;height:100%;width:390px;max-width:92vw;background:#fff;border-left:1px solid #000;
+  transform:translateX(100%);transition:transform .28s ease;z-index:160;display:flex;flex-direction:column}
+.drawer.open{transform:translateX(0)}
+.drawer__head{display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid #000}
+.drawer__head b{text-transform:uppercase;letter-spacing:.06em;font-size:.9rem}
+.drawer__close{border:0;background:none;font-size:1.7rem;cursor:pointer;line-height:1;padding:0 4px}
+.drawer__body{flex:1;overflow-y:auto;padding:6px 20px}
+.drawer__foot{border-top:1px solid #000;padding:18px 20px}
+.drawer-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:14px 0;border-bottom:1px solid var(--line-soft)}
+.qty--sm button{width:26px;font-size:.95rem}
+.qty--sm input{width:32px;font-size:.82rem}
+.linkbtn{border:0;background:none;padding:0;cursor:pointer;text-decoration:underline;color:var(--muted);font-family:var(--font);font-size:.78rem}
+.linkbtn:hover{color:#000}
+
+/* ---------- Checkout ---------- */
+.checkout{display:grid;grid-template-columns:1.35fr .85fr;gap:40px;align-items:start}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.opt{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line-soft);padding:14px 16px;margin-bottom:10px;cursor:pointer}
+.opt.sel{border-color:#000}
+.opt input{margin-top:3px}
+.opt .opt__t{font-weight:700}
+.opt .opt__d{font-size:.82rem;color:var(--muted)}
+.opt .opt__p{margin-left:auto;font-weight:700}
+.err{border-color:#b00020 !important}
+.form-note{font-size:.82rem;color:var(--muted)}
+.co-item{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:.9rem;border-bottom:1px solid var(--line-soft)}
+
+/* ---------- Footer ---------- */
+.footer{border-top:1px solid var(--line);margin-top:40px;padding:48px 0 30px;background:var(--paper)}
+.footer__grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
+.footer h5{text-transform:uppercase;font-size:.75rem;letter-spacing:.08em;margin-bottom:14px}
+.footer a{display:block;color:var(--muted);font-size:.86rem;padding:4px 0}
+.footer a:hover{color:var(--black)}
+.footer__bottom{border-top:1px solid var(--line-soft);margin-top:32px;padding-top:20px;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.78rem;color:var(--muted)}
+
+/* ---------- Age gate modal ---------- */
+.gate{position:fixed;inset:0;background:rgba(255,255,255,.97);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px}
+.gate__box{border:1px solid var(--black);max-width:460px;padding:38px;text-align:center;background:#fff}
+.gate__box h3{margin-bottom:12px}
+.gate__box p{color:var(--muted);font-size:.9rem}
+.gate__box .btn{margin-top:10px}
+
+/* ---------- Page hero (inner pages) ---------- */
+.page-hero{border-bottom:1px solid var(--line);padding:44px 0}
+.page-hero .eyebrow{margin-bottom:12px}
+
+/* ---------- Responsive ---------- */
+@media(max-width:960px){
+  .grid--4{grid-template-columns:repeat(2,1fr)}
+  .grid--3{grid-template-columns:repeat(2,1fr)}
+  .hero__grid{grid-template-columns:1fr;gap:32px}
+  .pdp{grid-template-columns:1fr;gap:28px}
+  .pdp__media{position:static}
+  .calc{grid-template-columns:1fr}
+  .catband{grid-template-columns:repeat(2,1fr)}
+  .strip{grid-template-columns:repeat(2,1fr)}
+  .footer__grid{grid-template-columns:1fr 1fr}
+  .brand__tag{display:none}
+}
+@media(max-width:600px){
+  .grid--4,.grid--3,.grid--2{grid-template-columns:1fr}
+  .header__links a span{display:none}
+  .hsearch{display:none}
+  .nav__inner{flex-wrap:wrap}
+  .nav__inner a{flex:1 1 33%}
+  .cart-row{grid-template-columns:1fr auto;grid-auto-rows:auto}
+  .footer__grid{grid-template-columns:1fr}
+  .section{padding:40px 0}
+  .checkout{grid-template-columns:1fr}
+  .field-row{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body data-page="shop">
+<div id="chrome-top"></div>
+<script>localStorage.setItem("broaddus_age_ok","1");</script>
+
+<div class="container" style="padding-top:18px">
+  <p class="small muted"><a href="shop.html">Shop</a> / <span id="crumb-cat"></span> / <span id="crumb-name"></span></p>
+</div>
+
+<main class="container" id="pdp-mount"></main>
+
+<!-- RELATED -->
+<section class="section" style="padding-top:0"><div class="container">
+  <div class="section__head"><div><div class="eyebrow">Related</div><h2>More in this category</h2></div></div>
+  <div class="grid grid--4" id="related"></div>
+</div></section>
+
+<!-- RECENTLY VIEWED -->
+<section class="section" id="rv-section" style="padding-top:0;display:none"><div class="container">
+  <div class="section__head"><div><div class="eyebrow">Recently viewed</div><h2>Pick up where you left off</h2></div></div>
+  <div class="grid grid--4" id="recently-viewed"></div>
+</div></section>
+
+<div id="chrome-bottom"></div>
+<script>
+/* ============================================================
+   MERIDIAN PEPTIDES — Glossary + Product Data
+   ------------------------------------------------------------
+   This single dataset powers the entire site:
+     • The Glossary (educational encyclopedia)
+     • The Shop (purchasable product grid)
+     • Product detail pages
+   To add a product, add an entry here. That's it.
+   ============================================================ */
+
+/* Research categories (structure modeled on common RUO catalogs) */
+const CATEGORIES = [
+  { id: "glp1",         name: "GLP-1 Research",          blurb: "Incretin-mimetic and metabolic signaling peptides studied in glucose regulation models." },
+  { id: "growth",       name: "Growth Hormone Research", blurb: "Secretagogues and releasing peptides studied for GH/IGF-1 axis modulation." },
+  { id: "metabolic",    name: "Metabolic Research",      blurb: "Compounds investigated in energy metabolism, lipolysis, and body-composition models." },
+  { id: "recovery",     name: "Recovery Research",       blurb: "Peptides studied in tissue repair, angiogenesis, and healing pathways." },
+  { id: "neuro",        name: "Neuroscience Research",   blurb: "Nootropic and neuroprotective peptides studied in cognition and CNS models." },
+  { id: "immune",       name: "Immune Research",         blurb: "Immunomodulatory peptides studied in immune-signaling pathways." },
+  { id: "endocrine",    name: "Endocrine Research",      blurb: "Peptides studied in reproductive, hormonal, and neuroendocrine signaling." },
+  { id: "performance",  name: "Performance Research",    blurb: "Peptides investigated in endurance, mitochondrial, and physical-performance models." },
+  { id: "copper",       name: "Copper Peptides",         blurb: "Copper-complex peptides studied in skin, collagen, and regenerative research." },
+  { id: "cosmetic",     name: "Skin & Cosmetic Peptides", blurb: "Peptides studied in dermal, collagen, and cosmetic-science research." },
+  { id: "longevity",    name: "Longevity Research",      blurb: "Peptides studied in cellular aging, telomere, and senescence models." },
+  { id: "blends",       name: "Peptide Blends",          blurb: "Pre-combined research blends for multi-pathway study designs." },
+  { id: "supplies",     name: "Supplies",                blurb: "Reconstitution solutions, bacteriostatic water, and lab consumables." }
+];
+
+/* ---------------------------------------------------------------
+   PRODUCTS / GLOSSARY ENTRIES
+   Fields:
+     id, name, aka, category, tags[], sizes[{label, price, sku}],
+     summary (short, for cards), overview (long, glossary),
+     research (bullet research-area strings),
+     cas, sequence, molFormula, molWeight, halfLife, storage,
+     purity, featured
+   All content is written for Research Use Only context.
+--------------------------------------------------------------- */
+const PRODUCTS = [
+  {
+    id: "bpc-157", name: "BPC-157", aka: "Body Protection Compound-157",
+    category: "recovery", tags: ["healing", "gut", "angiogenesis"], featured: true,
+    sizes: [{label:"5mg", price:39.99, sku:"BPC-5"}, {label:"10mg", price:59.99, sku:"BPC-10"}],
+    summary: "A pentadecapeptide studied extensively in tissue-repair and angiogenesis models.",
+    overview: "BPC-157 is a synthetic peptide derived from a partial sequence of body protection compound found in gastric juice. In preclinical literature it is one of the most-studied peptides for tissue healing, and researchers have examined it in models of tendon, ligament, muscle, and gastrointestinal repair. Reported mechanisms of interest include upregulation of growth-factor receptors and promotion of angiogenesis (new blood-vessel formation).",
+    research: ["Tendon & ligament repair models", "Gastrointestinal mucosal integrity", "Angiogenesis & VEGF pathways", "Nitric-oxide system interaction"],
+    cas: "137525-51-0", sequence: "Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val",
+    molFormula: "C62H98N16O22", molWeight: "1419.5 g/mol", halfLife: "~4 hours (model-dependent)",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C, use within 3–4 weeks.", purity: "≥99%"
+  },
+  {
+    id: "tb-500", name: "TB-500", aka: "Thymosin Beta-4 Fragment",
+    category: "recovery", tags: ["healing", "actin", "flexibility"], featured: true,
+    sizes: [{label:"5mg", price:44.99, sku:"TB5-5"}, {label:"10mg", price:74.99, sku:"TB5-10"}],
+    summary: "A synthetic fragment of Thymosin Beta-4 studied in cell-migration and repair models.",
+    overview: "TB-500 is a synthetic version of the active region of Thymosin Beta-4, a naturally occurring peptide involved in actin regulation. Research literature examines its role in cell migration, wound healing, and flexibility, with particular interest in actin sequestration and its downstream effect on tissue regeneration and angiogenesis.",
+    research: ["Cell migration & actin regulation", "Wound-healing models", "Cardiac tissue repair studies", "Flexibility & fibrosis research"],
+    cas: "77591-33-4", sequence: "Ac-Ser-Asp-Lys-Pro-Asp-Met-Ala-Glu-Ile-Glu-Lys-Phe-Asp-Lys-Ser-Lys-Leu-Lys-Lys-Thr-Glu-Thr-Gln",
+    molFormula: "C212H350N56O78S", molWeight: "4963.4 g/mol", halfLife: "~2–3 hours",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "semaglutide", name: "Semaglutide", aka: "GLP-1 Receptor Agonist",
+    category: "glp1", tags: ["glp-1", "glucose", "metabolic"], featured: true,
+    sizes: [{label:"5mg", price:89.99, sku:"SEMA-5"}, {label:"10mg", price:149.99, sku:"SEMA-10"}],
+    summary: "A long-acting GLP-1 receptor agonist widely studied in glucose-regulation models.",
+    overview: "Semaglutide is a GLP-1 (glucagon-like peptide-1) receptor agonist. In research settings it is studied for its effect on incretin signaling, insulin secretion in glucose-dependent contexts, and gastric-emptying dynamics. Its structure is engineered for extended half-life relative to native GLP-1, making it a common reference compound in metabolic research.",
+    research: ["Incretin & insulin-signaling models", "Glucose-dependent secretion studies", "Appetite/satiety pathway research", "Gastric-emptying dynamics"],
+    cas: "910463-68-2", sequence: "Modified GLP-1(7-37) analog with C18 fatty-diacid chain",
+    molFormula: "C187H291N45O59", molWeight: "4113.6 g/mol", halfLife: "~7 days",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "tirzepatide", name: "Tirzepatide", aka: "GIP/GLP-1 Dual Agonist",
+    category: "glp1", tags: ["glp-1", "gip", "metabolic"], featured: true,
+    sizes: [{label:"5mg", price:99.99, sku:"TIRZ-5"}, {label:"10mg", price:169.99, sku:"TIRZ-10"}, {label:"15mg", price:229.99, sku:"TIRZ-15"}],
+    summary: "A dual GIP and GLP-1 receptor agonist studied in advanced metabolic models.",
+    overview: "Tirzepatide is a dual agonist targeting both the GIP (glucose-dependent insulinotropic polypeptide) and GLP-1 receptors. This dual-incretin mechanism is of significant research interest for its combined effects on glucose regulation and energy metabolism, and it is frequently used as a comparator to single-pathway GLP-1 agonists.",
+    research: ["Dual-incretin receptor signaling", "Glucose & lipid metabolism models", "Energy-expenditure research", "Comparative agonist studies"],
+    cas: "2023788-19-2", sequence: "39-aa synthetic peptide with C20 fatty-diacid moiety",
+    molFormula: "C225H348N48O68", molWeight: "4813.5 g/mol", halfLife: "~5 days",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "ipamorelin", name: "Ipamorelin", aka: "Growth Hormone Secretagogue",
+    category: "growth", tags: ["ghrp", "secretagogue", "selective"], featured: true,
+    sizes: [{label:"5mg", price:42.99, sku:"IPA-5"}, {label:"10mg", price:69.99, sku:"IPA-10"}],
+    summary: "A selective growth-hormone secretagogue studied for clean GH-pulse release.",
+    overview: "Ipamorelin is a pentapeptide and selective growth-hormone secretagogue (GHRP). It is studied for its ability to stimulate GH release with minimal effect on cortisol or prolactin, making it a frequently referenced 'selective' secretagogue in GH-axis research.",
+    research: ["GH-axis stimulation models", "Selectivity vs. cortisol/prolactin", "Body-composition research", "Ghrelin-receptor signaling"],
+    cas: "170851-70-4", sequence: "Aib-His-D-2-Nal-D-Phe-Lys-NH2",
+    molFormula: "C38H49N9O5", molWeight: "711.9 g/mol", halfLife: "~2 hours",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "cjc-1295-dac", name: "CJC-1295 with DAC", aka: "GHRH Analog (DAC)",
+    category: "growth", tags: ["ghrh", "long-acting"], featured: false,
+    sizes: [{label:"2mg", price:44.99, sku:"CJC-2"}, {label:"5mg", price:84.99, sku:"CJC-5"}],
+    summary: "A long-acting GHRH analog studied for sustained GH/IGF-1 elevation.",
+    overview: "CJC-1295 is a synthetic analog of growth-hormone-releasing hormone (GHRH). The DAC (Drug Affinity Complex) variant binds albumin to substantially extend half-life, and it is studied for producing sustained increases in GH and IGF-1 in preclinical models, often alongside a secretagogue such as Ipamorelin.",
+    research: ["GHRH-receptor signaling", "Sustained GH/IGF-1 elevation", "Albumin-binding half-life extension", "Combination secretagogue studies"],
+    cas: "863288-34-0", sequence: "Modified GRF(1-29) with DAC",
+    molFormula: "C152H252N44O42", molWeight: "3367.9 g/mol", halfLife: "~6–8 days",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "tesamorelin", name: "Tesamorelin", aka: "GHRH Analog",
+    category: "growth", tags: ["ghrh", "lipolysis"], featured: false,
+    sizes: [{label:"5mg", price:74.99, sku:"TES-5"}, {label:"10mg", price:129.99, sku:"TES-10"}],
+    summary: "A stabilized GHRH analog studied in visceral-fat and metabolic models.",
+    overview: "Tesamorelin is a synthetic GHRH analog studied for its effect on the GH/IGF-1 axis, with particular research focus on visceral adipose tissue and lipid metabolism. Structural stabilization gives it greater resistance to enzymatic degradation than native GHRH.",
+    research: ["Visceral adipose tissue models", "GH/IGF-1 axis stimulation", "Lipid-metabolism research", "Cognitive-aging studies"],
+    cas: "218949-48-5", sequence: "Trans-3-hexenoyl-GRF(1-44)",
+    molFormula: "C221H366N72O67S", molWeight: "5135.9 g/mol", halfLife: "~30 minutes",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "hexarelin", name: "Hexarelin", aka: "GH Releasing Peptide-6 Analog",
+    category: "growth", tags: ["ghrp", "cardiac"], featured: false,
+    sizes: [{label:"5mg", price:49.99, sku:"HEX-5"}],
+    summary: "A potent hexapeptide secretagogue studied in GH-release and cardiac models.",
+    overview: "Hexarelin is a synthetic hexapeptide and one of the more potent growth-hormone-releasing peptides. Beyond GH release, research literature examines its interaction with cardiac tissue and the CD36 receptor, distinguishing it from other secretagogues.",
+    research: ["Potent GH-release models", "Cardiac-tissue receptor studies", "CD36 pathway research", "Neuroprotection studies"],
+    cas: "140703-51-1", sequence: "His-D-2-methyl-Trp-Ala-Trp-D-Phe-Lys-NH2",
+    molFormula: "C47H58N12O6", molWeight: "887.0 g/mol", halfLife: "~55 minutes",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "mk-677", name: "MK-677", aka: "Ibutamoren",
+    category: "growth", tags: ["oral", "ghrelin", "secretagogue"], featured: false, form: "solution",
+    sizes: [{label:"25mg/mL (30mL)", price:59.99, sku:"MK-30"}],
+    summary: "A non-peptide ghrelin-mimetic studied as an orally active GH secretagogue.",
+    overview: "MK-677 (Ibutamoren) is a non-peptide, orally active growth-hormone secretagogue that mimics ghrelin at its receptor. It is widely studied for sustained elevation of GH and IGF-1 without the injection requirement of peptide secretagogues, making it a common oral reference compound.",
+    research: ["Oral GH-secretagogue models", "Ghrelin-receptor signaling", "IGF-1 elevation studies", "Sleep & body-composition research"],
+    cas: "159752-10-0", sequence: "Non-peptide small molecule",
+    molFormula: "C27H36N4O5S", molWeight: "528.7 g/mol", halfLife: "~24 hours",
+    storage: "Store solution at room temperature away from light.", purity: "≥99%"
+  },
+  {
+    id: "ghk-cu", name: "GHK-Cu", aka: "Copper Peptide",
+    category: "copper", tags: ["copper", "skin", "collagen"], featured: true,
+    sizes: [{label:"50mg", price:39.99, sku:"GHK-50"}, {label:"100mg", price:64.99, sku:"GHK-100"}],
+    summary: "A copper-binding tripeptide studied in skin-remodeling and collagen research.",
+    overview: "GHK-Cu is a naturally occurring copper-complex of the tripeptide glycyl-L-histidyl-L-lysine. Research literature focuses on its role in skin remodeling, collagen and elastin synthesis, wound healing, and antioxidant signaling, with copper delivery central to its studied mechanisms.",
+    research: ["Collagen & elastin synthesis models", "Skin-remodeling research", "Antioxidant & anti-inflammatory pathways", "Hair-follicle studies"],
+    cas: "89030-95-5", sequence: "Gly-His-Lys : Cu(II)",
+    molFormula: "C14H24CuN6O4", molWeight: "403.9 g/mol", halfLife: "model-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "pt-141", name: "PT-141", aka: "Bremelanotide",
+    category: "neuro", tags: ["melanocortin", "cns"], featured: false,
+    sizes: [{label:"10mg", price:44.99, sku:"PT1-10"}],
+    summary: "A melanocortin-receptor agonist studied in CNS and arousal-pathway models.",
+    overview: "PT-141 (Bremelanotide) is a melanocortin-receptor agonist derived from Melanotan II. Unlike its predecessor, research interest centers on central nervous system pathways rather than pigmentation, particularly melanocortin signaling in the brain.",
+    research: ["Melanocortin-receptor signaling", "CNS pathway models", "Arousal & behavior research"],
+    cas: "189691-06-3", sequence: "Ac-Nle-cyclo(-Asp-His-D-Phe-Arg-Trp-Lys)-OH",
+    molFormula: "C50H68N14O10", molWeight: "1025.2 g/mol", halfLife: "~2–3 hours",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "melanotan-2", name: "Melanotan II", aka: "MT-II",
+    category: "metabolic", tags: ["melanocortin", "pigment"], featured: false,
+    sizes: [{label:"10mg", price:39.99, sku:"MT2-10"}],
+    summary: "A synthetic melanocortin analog studied in pigmentation-pathway research.",
+    overview: "Melanotan II is a synthetic analog of alpha-melanocyte-stimulating hormone (α-MSH). It is studied in melanocortin-pathway research, particularly the MC1R receptor and its role in melanogenesis (pigment production).",
+    research: ["MC1R receptor signaling", "Melanogenesis models", "Appetite-pathway research"],
+    cas: "121062-08-6", sequence: "Ac-Nle-cyclo(-Asp-His-D-Phe-Arg-Trp-Lys)-NH2",
+    molFormula: "C50H69N15O9", molWeight: "1024.2 g/mol", halfLife: "~1–2 hours",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "sermorelin", name: "Sermorelin", aka: "GRF(1-29)",
+    category: "growth", tags: ["ghrh", "releasing"], featured: false,
+    sizes: [{label:"5mg", price:49.99, sku:"SER-5"}],
+    summary: "A GHRH(1-29) fragment studied as a growth-hormone-releasing peptide.",
+    overview: "Sermorelin is the 1-29 amino-acid fragment of GHRH — the shortest sequence retaining full GH-releasing activity. It is a long-standing reference compound in GH-axis research and is often compared against longer-acting GHRH analogs.",
+    research: ["GHRH-receptor signaling", "GH-pulse stimulation models", "Aging & GH-axis research"],
+    cas: "86168-78-7", sequence: "GRF(1-29)-NH2",
+    molFormula: "C149H246N44O42S", molWeight: "3357.9 g/mol", halfLife: "~10–20 minutes",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "thymosin-alpha-1", name: "Thymosin Alpha-1", aka: "Tα1",
+    category: "immune", tags: ["immune", "thymus"], featured: false,
+    sizes: [{label:"5mg", price:64.99, sku:"TA1-5"}, {label:"10mg", price:109.99, sku:"TA1-10"}],
+    summary: "A thymus-derived peptide studied in immune-modulation research.",
+    overview: "Thymosin Alpha-1 is a 28-amino-acid peptide originally isolated from the thymus. It is one of the most-studied immunomodulatory peptides, with research focus on T-cell maturation, dendritic-cell function, and broad immune-signaling pathways.",
+    research: ["T-cell maturation models", "Innate & adaptive immune signaling", "Antiviral-response research", "Vaccine-adjuvant studies"],
+    cas: "62304-98-7", sequence: "Ac-Ser-Asp-Ala-Ala-Val-Asp-Thr-Ser-Ser-Glu-Ile-Thr-Thr-Lys-Asp-Leu-Lys-Glu-Lys-Lys-Glu-Val-Val-Glu-Glu-Ala-Glu-Asn",
+    molFormula: "C129H215N33O55", molWeight: "3108.3 g/mol", halfLife: "~2 hours",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "epithalon", name: "Epithalon", aka: "Epitalon / AEDG",
+    category: "longevity", tags: ["telomere", "longevity", "pineal"], featured: true,
+    sizes: [{label:"10mg", price:39.99, sku:"EPI-10"}, {label:"50mg", price:89.99, sku:"EPI-50"}],
+    summary: "A tetrapeptide studied in telomerase and cellular-aging research.",
+    overview: "Epithalon is a synthetic tetrapeptide based on epithalamin, a pineal-gland extract. It is studied in longevity research for its reported effect on telomerase activity, telomere length, and circadian/melatonin regulation in aging models.",
+    research: ["Telomerase-activity models", "Cellular-aging & senescence research", "Circadian/melatonin studies", "Antioxidant pathways"],
+    cas: "307297-39-8", sequence: "Ala-Glu-Asp-Gly",
+    molFormula: "C14H22N4O9", molWeight: "390.3 g/mol", halfLife: "model-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "semax", name: "Semax", aka: "ACTH(4-10) Analog",
+    category: "neuro", tags: ["nootropic", "bdnf", "cns"], featured: false,
+    sizes: [{label:"30mg", price:54.99, sku:"SEMX-30"}],
+    summary: "A nootropic peptide studied for BDNF modulation and neuroprotection.",
+    overview: "Semax is a synthetic peptide derived from a fragment of ACTH (adrenocorticotropic hormone). It is studied primarily in neuroscience for reported effects on BDNF (brain-derived neurotrophic factor) expression, cognition, and neuroprotection in CNS models.",
+    research: ["BDNF & NGF expression models", "Cognitive-function research", "Neuroprotection studies", "Attention & memory pathways"],
+    cas: "80714-61-0", sequence: "Met-Glu-His-Phe-Pro-Gly-Pro",
+    molFormula: "C37H51N9O10S", molWeight: "813.9 g/mol", halfLife: "short (minutes)",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "selank", name: "Selank", aka: "TP-7",
+    category: "neuro", tags: ["anxiolytic", "nootropic"], featured: false,
+    sizes: [{label:"10mg", price:49.99, sku:"SEL-10"}],
+    summary: "A tuftsin-derived peptide studied in anxiolytic and immune-modulation models.",
+    overview: "Selank is a synthetic analog of the immunomodulatory peptide tuftsin. Research literature examines it in anxiolytic (anti-anxiety) models, as well as effects on BDNF, immune signaling, and neurotransmitter balance.",
+    research: ["Anxiolytic-behavior models", "BDNF-expression research", "Immune-modulation studies", "GABA/serotonin pathway research"],
+    cas: "129954-34-3", sequence: "Thr-Lys-Pro-Arg-Pro-Gly-Pro",
+    molFormula: "C33H57N11O9", molWeight: "751.9 g/mol", halfLife: "short (minutes)",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "dsip", name: "DSIP", aka: "Delta Sleep-Inducing Peptide",
+    category: "neuro", tags: ["sleep", "cns"], featured: false,
+    sizes: [{label:"5mg", price:44.99, sku:"DSIP-5"}],
+    summary: "A neuropeptide studied in sleep-regulation and stress-response models.",
+    overview: "DSIP is a naturally occurring nonapeptide studied for its role in sleep architecture and stress modulation. Research interest includes its interaction with circadian rhythms and neuroendocrine stress pathways.",
+    research: ["Sleep-architecture models", "Stress & cortisol research", "Circadian-rhythm studies"],
+    cas: "62568-57-4", sequence: "Trp-Ala-Gly-Gly-Asp-Ala-Ser-Gly-Glu",
+    molFormula: "C35H48N10O15", molWeight: "848.8 g/mol", halfLife: "short (minutes)",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "aod-9604", name: "AOD-9604", aka: "GH Fragment 176-191",
+    category: "metabolic", tags: ["lipolysis", "fragment"], featured: false,
+    sizes: [{label:"5mg", price:49.99, sku:"AOD-5"}],
+    summary: "A modified GH fragment studied in fat-metabolism research.",
+    overview: "AOD-9604 is a modified fragment of the C-terminus of human growth hormone (residues 176-191). It is studied for lipolytic (fat-breakdown) activity without the growth-promoting effects of full GH, making it a targeted metabolic research compound.",
+    research: ["Lipolysis & fat-metabolism models", "Body-composition research", "Cartilage-repair studies"],
+    cas: "221231-10-3", sequence: "Tyr-GH(177-191) fragment",
+    molFormula: "C78H123N23O23S2", molWeight: "1815.1 g/mol", halfLife: "short",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "mots-c", name: "MOTS-c", aka: "Mitochondrial Peptide",
+    category: "performance", tags: ["mitochondrial", "metabolic", "endurance"], featured: true,
+    sizes: [{label:"10mg", price:59.99, sku:"MOTS-10"}],
+    summary: "A mitochondrial-derived peptide studied in metabolic-regulation and exercise models.",
+    overview: "MOTS-c is a mitochondrial-derived peptide encoded within the mitochondrial genome. It is studied for its role as a regulator of metabolic homeostasis, insulin sensitivity, and exercise capacity, and is a leading compound in mitochondrial-signaling research.",
+    research: ["Metabolic-homeostasis models", "AMPK-pathway signaling", "Exercise-capacity & endurance research", "Insulin-sensitivity studies"],
+    cas: "1627580-64-6", sequence: "Met-Arg-Trp-Gln-Glu-Met-Gly-Tyr-Ile-Phe-Tyr-Pro-Arg-Lys-Leu-Arg",
+    molFormula: "C101H152N28O22S2", molWeight: "2174.6 g/mol", halfLife: "model-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "5-amino-1mq", name: "5-Amino-1MQ", aka: "NNMT Inhibitor",
+    category: "metabolic", tags: ["nnmt", "metabolic", "oral"], featured: false, form: "solution",
+    sizes: [{label:"50mg/mL (30mL)", price:69.99, sku:"AMQ-30"}],
+    summary: "A small-molecule NNMT inhibitor studied in metabolic and adipocyte research.",
+    overview: "5-Amino-1MQ is a small-molecule inhibitor of the enzyme NNMT (nicotinamide N-methyltransferase). It is studied in metabolic research for effects on adipocyte metabolism, NAD+ salvage pathways, and body-composition models.",
+    research: ["NNMT-enzyme inhibition models", "Adipocyte-metabolism research", "NAD+ pathway studies"],
+    cas: "42464-96-0", sequence: "Non-peptide small molecule",
+    molFormula: "C10H13N2+", molWeight: "173.2 g/mol", halfLife: "model-dependent",
+    storage: "Store solution at room temperature away from light.", purity: "≥98%"
+  },
+  {
+    id: "kpv", name: "KPV", aka: "α-MSH Fragment",
+    category: "immune", tags: ["anti-inflammatory", "gut"], featured: false,
+    sizes: [{label:"10mg", price:39.99, sku:"KPV-10"}],
+    summary: "A tripeptide α-MSH fragment studied in anti-inflammatory and gut research.",
+    overview: "KPV is the C-terminal tripeptide of alpha-melanocyte-stimulating hormone. It is studied for anti-inflammatory activity, particularly in gastrointestinal and skin-inflammation models, retaining anti-inflammatory effects while lacking pigmentary activity.",
+    research: ["Anti-inflammatory-pathway models", "Gastrointestinal-inflammation research", "Skin-inflammation studies"],
+    cas: "67727-97-3", sequence: "Lys-Pro-Val",
+    molFormula: "C16H30N4O4", molWeight: "342.4 g/mol", halfLife: "short",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "retatrutide", name: "Retatrutide", aka: "GGG Tri-Agonist (LY3437943)",
+    category: "glp1", tags: ["glp-1", "gip", "glucagon", "triple-agonist"], featured: true,
+    sizes: [{label:"5mg", price:109.99, sku:"RETA-5"}, {label:"10mg", price:189.99, sku:"RETA-10"}],
+    summary: "A triple GIP / GLP-1 / glucagon receptor agonist studied in advanced metabolic models.",
+    overview: "Retatrutide is a single-molecule agonist acting on three incretin and energy-metabolism receptors — GIP, GLP-1, and glucagon. This triple-agonist mechanism is a leading area of metabolic research, studied for combined effects on glucose regulation, lipid metabolism, and energy expenditure beyond single- or dual-incretin compounds.",
+    research: ["Triple-receptor incretin signaling", "Energy-expenditure & thermogenesis models", "Glucose & lipid metabolism", "Comparative agonist studies"],
+    cas: "2381089-83-2", sequence: "39-aa synthetic peptide with fatty-diacid moiety",
+    molFormula: "—", molWeight: "≈4731 g/mol", halfLife: "~6 days",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "cagrilintide", name: "Cagrilintide", aka: "Long-Acting Amylin Analog",
+    category: "glp1", tags: ["amylin", "satiety", "metabolic"], featured: false,
+    sizes: [{label:"5mg", price:99.99, sku:"CAGRI-5"}, {label:"10mg", price:169.99, sku:"CAGRI-10"}],
+    summary: "A long-acting amylin analog studied alongside incretins in satiety research.",
+    overview: "Cagrilintide is a long-acting analog of amylin, a pancreatic hormone co-secreted with insulin. It is studied for effects on satiety signaling and gastric emptying, frequently in combination with GLP-1 agonists to model complementary metabolic pathways.",
+    research: ["Amylin-receptor signaling", "Satiety & appetite models", "Gastric-emptying research", "Combination incretin studies"],
+    cas: "N/A (provided per lot)", sequence: "Modified amylin analog, acylated",
+    molFormula: "—", molWeight: "≈3800 g/mol", halfLife: "~7 days",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "mod-grf-1-29", name: "Mod GRF 1-29", aka: "CJC-1295 (no DAC)",
+    category: "growth", tags: ["ghrh", "releasing"], featured: false,
+    sizes: [{label:"2mg", price:39.99, sku:"MGRF-2"}, {label:"5mg", price:74.99, sku:"MGRF-5"}],
+    summary: "A stabilized GHRH(1-29) analog studied for short-acting GH pulses.",
+    overview: "Mod GRF 1-29 (CJC-1295 without DAC) is a tetra-substituted GHRH(1-29) analog engineered for resistance to enzymatic degradation while retaining a short half-life. It is a common reference compound in GH-axis research and is frequently paired with a secretagogue such as Ipamorelin.",
+    research: ["GHRH-receptor signaling", "Short-acting GH-pulse models", "Combination secretagogue studies"],
+    cas: "N/A (research compound)", sequence: "Modified GRF(1-29) — D-Ala2, Gln8, Ala15, Leu27",
+    molFormula: "—", molWeight: "≈3367 g/mol", halfLife: "~30 minutes",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "ghrp-2", name: "GHRP-2", aka: "Pralmorelin",
+    category: "growth", tags: ["ghrp", "secretagogue"], featured: false,
+    sizes: [{label:"5mg", price:39.99, sku:"GHRP2-5"}, {label:"10mg", price:64.99, sku:"GHRP2-10"}],
+    summary: "A growth-hormone-releasing hexapeptide studied for potent GH-pulse release.",
+    overview: "GHRP-2 (Pralmorelin) is a synthetic hexapeptide secretagogue that stimulates GH release via the ghrelin receptor. It is studied for potent GH-pulse induction, with some documented effect on appetite and prolactin relative to more selective secretagogues.",
+    research: ["Ghrelin-receptor signaling", "GH-pulse stimulation models", "Appetite-pathway research"],
+    cas: "158861-67-7", sequence: "D-Ala-D-2-Nal-Ala-Trp-D-Phe-Lys-NH2",
+    molFormula: "C45H55N9O6", molWeight: "817.9 g/mol", halfLife: "~30–60 minutes",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "ghrp-6", name: "GHRP-6", aka: "GH Releasing Peptide-6",
+    category: "growth", tags: ["ghrp", "secretagogue", "appetite"], featured: false,
+    sizes: [{label:"5mg", price:37.99, sku:"GHRP6-5"}, {label:"10mg", price:59.99, sku:"GHRP6-10"}],
+    summary: "A first-generation GH-releasing hexapeptide studied in GH and appetite models.",
+    overview: "GHRP-6 is one of the original growth-hormone-releasing peptides. It stimulates GH secretion through the ghrelin receptor and is notably studied for its pronounced effect on appetite signaling, serving as a reference compound in secretagogue research.",
+    research: ["Ghrelin-receptor signaling", "GH-secretion models", "Appetite & food-intake research", "Cytoprotection studies"],
+    cas: "87616-84-0", sequence: "His-D-Trp-Ala-Trp-D-Phe-Lys-NH2",
+    molFormula: "C46H56N12O6", molWeight: "873.0 g/mol", halfLife: "~15–60 minutes",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "igf-1-lr3", name: "IGF-1 LR3", aka: "Long R3 IGF-1",
+    category: "performance", tags: ["igf-1", "growth-factor", "anabolic"], featured: true,
+    sizes: [{label:"1mg", price:99.99, sku:"IGF-1"}],
+    summary: "A long-acting IGF-1 analog studied in cell growth and hypertrophy models.",
+    overview: "IGF-1 LR3 is an 83-amino-acid analog of insulin-like growth factor 1, modified for reduced binding to IGF-binding proteins and therefore extended half-life. It is studied extensively in cell proliferation, differentiation, and muscle-hypertrophy research.",
+    research: ["IGF-1 receptor signaling", "Cell proliferation & differentiation", "Muscle-hypertrophy models", "Nutrient-partitioning research"],
+    cas: "946870-92-4", sequence: "83-aa IGF-1 analog (Arg3, N-terminal 13-aa extension)",
+    molFormula: "—", molWeight: "≈9111 g/mol", halfLife: "~20–30 hours",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥98%"
+  },
+  {
+    id: "ss-31", name: "SS-31", aka: "Elamipretide",
+    category: "performance", tags: ["mitochondrial", "cardiolipin", "antioxidant"], featured: false,
+    sizes: [{label:"10mg", price:79.99, sku:"SS31-10"}, {label:"50mg", price:279.99, sku:"SS31-50"}],
+    summary: "A mitochondria-targeting tetrapeptide studied in cardiolipin and energy models.",
+    overview: "SS-31 (Elamipretide) is a cell-permeable tetrapeptide that concentrates in the inner mitochondrial membrane and associates with cardiolipin. It is studied for its role in stabilizing mitochondrial structure, supporting electron transport, and reducing reactive oxygen species in energy-metabolism research.",
+    research: ["Cardiolipin-interaction models", "Mitochondrial bioenergetics", "Reactive-oxygen-species research", "Ischemia-reperfusion studies"],
+    cas: "736992-21-5", sequence: "D-Arg-Dmt-Lys-Phe-NH2",
+    molFormula: "C32H49N9O5", molWeight: "639.8 g/mol", halfLife: "model-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "humanin", name: "Humanin", aka: "HN / Mitochondrial Peptide",
+    category: "longevity", tags: ["mitochondrial", "cytoprotection", "longevity"], featured: false,
+    sizes: [{label:"5mg", price:69.99, sku:"HN-5"}],
+    summary: "A mitochondrial-derived peptide studied in cytoprotection and aging models.",
+    overview: "Humanin is a mitochondrial-derived peptide studied for cytoprotective signaling and its role in cellular stress resistance. Research interest spans metabolic regulation, neuroprotection, and cellular-aging pathways, making it a companion compound to MOTS-c in mitochondrial research.",
+    research: ["Cytoprotection & apoptosis models", "Metabolic-regulation research", "Neuroprotection studies", "Cellular-aging pathways"],
+    cas: "N/A (research compound)", sequence: "24-aa mitochondrial-derived peptide",
+    molFormula: "—", molWeight: "≈2687 g/mol", halfLife: "model-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥98%"
+  },
+  {
+    id: "kisspeptin-10", name: "Kisspeptin-10", aka: "KP-10 / Metastin fragment",
+    category: "endocrine", tags: ["endocrine", "reproductive", "gnrh"], featured: false,
+    sizes: [{label:"5mg", price:54.99, sku:"KP10-5"}],
+    summary: "A decapeptide studied in reproductive and neuroendocrine signaling.",
+    overview: "Kisspeptin-10 is the active decapeptide fragment of kisspeptin, a key upstream regulator of GnRH release. It is studied in reproductive-axis and neuroendocrine research for its role in triggering downstream gonadotropin signaling.",
+    research: ["KISS1R receptor signaling", "GnRH-release models", "Reproductive-axis research", "Neuroendocrine studies"],
+    cas: "374675-21-5", sequence: "Tyr-Asn-Trp-Asn-Ser-Phe-Gly-Leu-Arg-Phe-NH2",
+    molFormula: "C63H83N17O14", molWeight: "1302.4 g/mol", halfLife: "short (minutes)",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "gonadorelin", name: "Gonadorelin", aka: "GnRH",
+    category: "endocrine", tags: ["endocrine", "gnrh", "reproductive"], featured: false,
+    sizes: [{label:"2mg", price:39.99, sku:"GONA-2"}, {label:"10mg", price:89.99, sku:"GONA-10"}],
+    summary: "A synthetic GnRH decapeptide studied in gonadotropin-release models.",
+    overview: "Gonadorelin is a synthetic form of gonadotropin-releasing hormone (GnRH). It is studied for its stimulation of pituitary LH and FSH release, serving as a foundational reference compound in reproductive-endocrinology research.",
+    research: ["GnRH-receptor signaling", "LH/FSH-release models", "Pituitary-axis research"],
+    cas: "33515-09-2", sequence: "pGlu-His-Trp-Ser-Tyr-Gly-Leu-Arg-Pro-Gly-NH2",
+    molFormula: "C55H75N17O13", molWeight: "1182.3 g/mol", halfLife: "~2–10 minutes",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "oxytocin", name: "Oxytocin", aka: "OT / Neuropeptide",
+    category: "endocrine", tags: ["endocrine", "neuropeptide", "behavior"], featured: false,
+    sizes: [{label:"5mg", price:49.99, sku:"OXY-5"}],
+    summary: "A nonapeptide hormone studied in social-behavior and neuroendocrine models.",
+    overview: "Oxytocin is a nine-amino-acid neuropeptide hormone studied for its role in social bonding, behavior, and smooth-muscle signaling. It is a widely referenced compound in neuroendocrine and behavioral research.",
+    research: ["Oxytocin-receptor signaling", "Social-behavior models", "Neuroendocrine research", "Smooth-muscle studies"],
+    cas: "50-56-6", sequence: "Cys-Tyr-Ile-Gln-Asn-Cys-Pro-Leu-Gly-NH2 (disulfide)",
+    molFormula: "C43H66N12O12S2", molWeight: "1007.2 g/mol", halfLife: "~3–5 minutes",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "melanotan-1", name: "Melanotan I", aka: "Afamelanotide / MT-I",
+    category: "metabolic", tags: ["melanocortin", "pigment"], featured: false,
+    sizes: [{label:"10mg", price:44.99, sku:"MT1-10"}],
+    summary: "A linear α-MSH analog studied in pigmentation-pathway research.",
+    overview: "Melanotan I (Afamelanotide) is a linear analog of alpha-melanocyte-stimulating hormone. Compared with Melanotan II, it is more selective for the MC1R receptor and is studied specifically in melanogenesis (pigmentation) research.",
+    research: ["MC1R receptor selectivity", "Melanogenesis models", "Photoprotection research"],
+    cas: "75921-69-6", sequence: "Ac-Ser-Tyr-Ser-Nle-Glu-His-D-Phe-Arg-Trp-Gly-Lys-Pro-Val-NH2",
+    molFormula: "C78H111N21O19", molWeight: "1646.9 g/mol", halfLife: "~1 hour",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "ll-37", name: "LL-37", aka: "Cathelicidin (Human)",
+    category: "immune", tags: ["antimicrobial", "immune", "cathelicidin"], featured: false,
+    sizes: [{label:"5mg", price:79.99, sku:"LL37-5"}],
+    summary: "A human cathelicidin peptide studied in antimicrobial and immune research.",
+    overview: "LL-37 is the only human cathelicidin-derived antimicrobial peptide. It is studied for broad antimicrobial activity, immunomodulation, and roles in wound healing and angiogenesis, making it a key compound in innate-immunity research.",
+    research: ["Antimicrobial-activity models", "Innate-immune signaling", "Wound-healing research", "Angiogenesis studies"],
+    cas: "154947-66-7", sequence: "37-aa cathelicidin peptide (LLGDFFRKSKEKIGKEFKRIVQRIKDFLRNLVPRTES)",
+    molFormula: "—", molWeight: "≈4493 g/mol", halfLife: "model-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥95%"
+  },
+  {
+    id: "nad-plus", name: "NAD+", aka: "Nicotinamide Adenine Dinucleotide",
+    category: "longevity", tags: ["nad", "coenzyme", "metabolic"], featured: false, form: "vial",
+    sizes: [{label:"100mg", price:44.99, sku:"NAD-100"}, {label:"500mg", price:129.99, sku:"NAD-500"}],
+    summary: "A central coenzyme studied in cellular energy and aging research.",
+    overview: "NAD+ (nicotinamide adenine dinucleotide) is a coenzyme central to cellular energy metabolism and redox reactions. It is studied in aging, mitochondrial-function, and sirtuin-pathway research as levels decline with cellular age.",
+    research: ["Cellular energy-metabolism models", "Sirtuin-pathway signaling", "Mitochondrial-function research", "Cellular-aging studies"],
+    cas: "53-84-9", sequence: "Dinucleotide coenzyme (non-peptide)",
+    molFormula: "C21H27N7O14P2", molWeight: "663.4 g/mol", halfLife: "model-dependent",
+    storage: "Lyophilized: store at -20°C, protected from light. Reconstituted: refrigerate 2–8°C.", purity: "≥98%"
+  },
+  {
+    id: "peg-mgf", name: "PEG-MGF", aka: "Pegylated Mechano Growth Factor",
+    category: "performance", tags: ["mgf", "growth-factor", "repair"], featured: false,
+    sizes: [{label:"2mg", price:54.99, sku:"PMGF-2"}, {label:"5mg", price:99.99, sku:"PMGF-5"}],
+    summary: "A pegylated IGF-1 splice variant studied in muscle-repair and satellite-cell models.",
+    overview: "PEG-MGF is a pegylated form of Mechano Growth Factor, a splice variant of IGF-1 (IGF-1Ec) expressed in response to mechanical load. Pegylation extends its half-life. It is studied for its role in activating muscle satellite cells and supporting local tissue repair following mechanical stress.",
+    research: ["Satellite-cell activation models", "Local muscle-repair research", "IGF-1 splice-variant signaling"],
+    cas: "N/A (research compound)", sequence: "Pegylated MGF (IGF-1Ec) analog",
+    molFormula: "—", molWeight: "≈2900 g/mol (peptide portion)", halfLife: "extended (pegylated)",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥98%"
+  },
+  {
+    id: "igf-1-des", name: "IGF-1 DES", aka: "DES(1-3) IGF-1",
+    category: "performance", tags: ["igf-1", "growth-factor", "potent"], featured: false,
+    sizes: [{label:"1mg", price:109.99, sku:"IGFD-1"}],
+    summary: "A truncated, highly potent IGF-1 variant studied in localized growth models.",
+    overview: "IGF-1 DES is a naturally occurring, truncated form of IGF-1 lacking the first three N-terminal amino acids. This modification greatly reduces binding-protein affinity, making it substantially more potent than native IGF-1 in localized-action research models.",
+    research: ["IGF-1 receptor signaling", "Localized hypertrophy models", "Cell-proliferation research"],
+    cas: "112603-35-3", sequence: "67-aa DES(1-3) IGF-1 analog",
+    molFormula: "—", molWeight: "≈7649 g/mol", halfLife: "very short",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥98%"
+  },
+  {
+    id: "follistatin-344", name: "Follistatin 344", aka: "FST-344",
+    category: "performance", tags: ["myostatin", "muscle", "protein"], featured: false, stock: "low",
+    sizes: [{label:"1mg", price:189.99, sku:"FST-1"}],
+    summary: "A myostatin-binding protein studied in muscle-regulation research.",
+    overview: "Follistatin 344 is a glycoprotein that binds and inhibits myostatin and other TGF-β family members. It is a key research protein for studying negative regulation of muscle growth and the myostatin pathway.",
+    research: ["Myostatin-inhibition models", "TGF-β family signaling", "Muscle-regulation research"],
+    cas: "N/A (research protein)", sequence: "344-aa follistatin isoform",
+    molFormula: "—", molWeight: "≈38 kDa", halfLife: "model-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C, use promptly.", purity: "≥95%"
+  },
+  {
+    id: "adipotide", name: "Adipotide", aka: "FTPP / Prohibitin-TP",
+    category: "metabolic", tags: ["adipose", "experimental", "metabolic"], featured: false, stock: "out",
+    sizes: [{label:"5mg", price:99.99, sku:"ADIPO-5"}, {label:"10mg", price:169.99, sku:"ADIPO-10"}],
+    summary: "A targeted pro-apoptotic peptide studied in adipose-vasculature models.",
+    overview: "Adipotide (FTPP) is an experimental peptidomimetic designed to target the vasculature supplying white adipose tissue, triggering localized apoptosis. It is studied in metabolic and obesity research models as a targeted anti-adipose approach.",
+    research: ["Adipose-vasculature targeting", "Pro-apoptotic signaling models", "Obesity & metabolic research"],
+    cas: "N/A (research compound)", sequence: "CKGGRAKDC-GG-D(KLAKLAK)2 peptidomimetic",
+    molFormula: "—", molWeight: "≈2620 g/mol", halfLife: "short",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥98%"
+  },
+  {
+    id: "survodutide", name: "Survodutide", aka: "GLP-1 / Glucagon Dual Agonist (BI 456906)",
+    category: "glp1", tags: ["glp-1", "glucagon", "metabolic"], featured: false,
+    sizes: [{label:"5mg", price:109.99, sku:"SURV-5"}, {label:"10mg", price:189.99, sku:"SURV-10"}],
+    summary: "A GLP-1 / glucagon dual receptor agonist studied in metabolic and hepatic models.",
+    overview: "Survodutide is a dual agonist of the GLP-1 and glucagon receptors. The glucagon component adds an energy-expenditure and hepatic dimension to incretin signaling, and it is studied in metabolic, body-composition, and liver-research models.",
+    research: ["GLP-1 + glucagon dual signaling", "Energy-expenditure models", "Hepatic-metabolism research"],
+    cas: "N/A (research compound)", sequence: "Acylated GLP-1/glucagon dual-agonist peptide",
+    molFormula: "—", molWeight: "≈4700 g/mol", halfLife: "~6–7 days",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "mazdutide", name: "Mazdutide", aka: "GLP-1 / Glucagon Dual Agonist (IBI362)",
+    category: "glp1", tags: ["glp-1", "glucagon", "metabolic"], featured: false,
+    sizes: [{label:"5mg", price:104.99, sku:"MAZ-5"}, {label:"10mg", price:179.99, sku:"MAZ-10"}],
+    summary: "An oxyntomodulin-based GLP-1 / glucagon dual agonist studied in metabolic models.",
+    overview: "Mazdutide is a GLP-1 and glucagon receptor dual agonist based on the oxyntomodulin backbone. It is studied for combined effects on glucose regulation, energy expenditure, and body composition in metabolic research.",
+    research: ["Oxyntomodulin-analog signaling", "Dual GLP-1/glucagon models", "Body-composition research"],
+    cas: "N/A (research compound)", sequence: "Oxyntomodulin-based dual-agonist peptide",
+    molFormula: "—", molWeight: "≈4800 g/mol", halfLife: "~5–7 days",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "dihexa", name: "Dihexa", aka: "N-hexanoic-Tyr-Ile-(6) aminohexanoic amide",
+    category: "neuro", tags: ["nootropic", "oral", "hgf"], featured: false, form: "solution",
+    sizes: [{label:"10mg/mL (10mL)", price:79.99, sku:"DIHEXA-10"}],
+    summary: "An orally active angiotensin-derived peptide studied for synaptogenesis.",
+    overview: "Dihexa is a small, orally active peptide derived from angiotensin IV, studied for potent effects on synapse formation (synaptogenesis) via the HGF/c-Met system. It is a leading compound in cognition and neuroplasticity research.",
+    research: ["HGF/c-Met signaling", "Synaptogenesis models", "Cognition & neuroplasticity research"],
+    cas: "1401708-83-5", sequence: "N-hexanoic-Tyr-Ile-(6)-aminohexanoic amide",
+    molFormula: "—", molWeight: "≈442.6 g/mol", halfLife: "model-dependent",
+    storage: "Store solution at room temperature away from light.", purity: "≥98%"
+  },
+  {
+    id: "pinealon", name: "Pinealon", aka: "Ala-Glu-Asp-Gly bioregulator",
+    category: "neuro", tags: ["bioregulator", "neuroprotection", "peptide"], featured: false,
+    sizes: [{label:"20mg", price:49.99, sku:"PIN-20"}],
+    summary: "A short peptide bioregulator studied in neuroprotection and brain-aging models.",
+    overview: "Pinealon is a synthetic tripeptide bioregulator studied for neuroprotective effects and roles in brain cellular function and aging. It belongs to the family of short-peptide bioregulators researched for tissue-specific gene-expression modulation.",
+    research: ["Neuroprotection models", "Brain-aging research", "Peptide-bioregulator signaling"],
+    cas: "N/A (research compound)", sequence: "Glu-Asp-Arg (EDR)",
+    molFormula: "C15H26N6O8", molWeight: "≈418.4 g/mol", halfLife: "short",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥98%"
+  },
+  {
+    id: "thymalin", name: "Thymalin", aka: "Thymus Peptide Bioregulator",
+    category: "immune", tags: ["immune", "thymus", "bioregulator"], featured: false,
+    sizes: [{label:"10mg", price:59.99, sku:"THYM-10"}],
+    summary: "A thymus-derived peptide complex studied in immune-regulation research.",
+    overview: "Thymalin is a peptide bioregulator derived from the thymus, studied for its role in T-cell regulation and restoration of immune balance in aging models. It is a companion compound to Thymosin Alpha-1 in immune research.",
+    research: ["T-cell regulation models", "Immune-senescence research", "Thymic-peptide signaling"],
+    cas: "N/A (research compound)", sequence: "Thymic peptide complex",
+    molFormula: "—", molWeight: "complex", halfLife: "model-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥95%"
+  },
+  {
+    id: "vip", name: "VIP", aka: "Vasoactive Intestinal Peptide",
+    category: "immune", tags: ["immune", "anti-inflammatory", "neuropeptide"], featured: false,
+    sizes: [{label:"5mg", price:74.99, sku:"VIP-5"}],
+    summary: "A 28-amino-acid neuropeptide studied in immune-modulation and inflammation research.",
+    overview: "VIP (Vasoactive Intestinal Peptide) is a 28-amino-acid neuropeptide with broad signaling roles, studied for anti-inflammatory and immunomodulatory activity as well as effects on vasodilation and circadian regulation.",
+    research: ["VPAC-receptor signaling", "Anti-inflammatory models", "Immune-modulation research", "Circadian studies"],
+    cas: "37221-79-7", sequence: "His-Ser-Asp-Ala-Val-Phe-Thr-Asp-Asn-Tyr-Thr-Arg-Leu-Arg-Lys-Gln-Met-Ala-Val-Lys-Lys-Tyr-Leu-Asn-Ser-Ile-Leu-Asn-NH2",
+    molFormula: "C147H237N43O43S", molWeight: "3326.8 g/mol", halfLife: "~1–2 minutes",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥98%"
+  },
+  {
+    id: "argireline", name: "Argireline", aka: "Acetyl Hexapeptide-8",
+    category: "cosmetic", tags: ["cosmetic", "topical", "wrinkle"], featured: true, form: "solution",
+    sizes: [{label:"10mg/mL (30mL)", price:44.99, sku:"ARG-30"}],
+    summary: "A topical hexapeptide studied in expression-line and dermal-cosmetic research.",
+    overview: "Argireline (Acetyl Hexapeptide-8) is a synthetic peptide studied in cosmetic science for its reported effect on reducing the appearance of expression lines by modulating catecholamine release at the neuromuscular junction. It is a widely referenced topical cosmetic peptide.",
+    research: ["Neuromuscular-signaling (topical) models", "Expression-line cosmetic research", "Dermal-formulation studies"],
+    cas: "616204-22-9", sequence: "Ac-Glu-Glu-Met-Gln-Arg-Arg-NH2",
+    molFormula: "C34H60N14O12S", molWeight: "888.98 g/mol", halfLife: "topical",
+    storage: "Store solution refrigerated 2–8°C, away from light.", purity: "≥95%"
+  },
+  {
+    id: "matrixyl", name: "Matrixyl", aka: "Palmitoyl Pentapeptide-4",
+    category: "cosmetic", tags: ["cosmetic", "collagen", "topical"], featured: false, form: "solution",
+    sizes: [{label:"10mg/mL (30mL)", price:49.99, sku:"MTX-30"}],
+    summary: "A palmitoylated peptide studied in collagen and dermal-matrix cosmetic research.",
+    overview: "Matrixyl (Palmitoyl Pentapeptide-4, Pal-KTTKS) is a lipopeptide studied in cosmetic science for stimulating extracellular-matrix and collagen synthesis in dermal-research models. The palmitoyl chain improves skin penetration in topical formulations.",
+    research: ["Collagen & matrix-synthesis models", "Dermal-fibroblast research", "Topical-formulation studies"],
+    cas: "214047-00-4", sequence: "Pal-Lys-Thr-Thr-Lys-Ser",
+    molFormula: "C39H75N7O10", molWeight: "802.06 g/mol", halfLife: "topical",
+    storage: "Store solution refrigerated 2–8°C, away from light.", purity: "≥95%"
+  },
+  {
+    id: "liraglutide", name: "Liraglutide", aka: "GLP-1 Receptor Agonist (daily)",
+    category: "glp1", tags: ["glp-1", "glucose", "metabolic"], featured: false,
+    sizes: [{label:"5mg", price:79.99, sku:"LIRA-5"}, {label:"10mg", price:139.99, sku:"LIRA-10"}],
+    summary: "A once-daily GLP-1 receptor agonist widely used as a reference incretin compound.",
+    overview: "Liraglutide is a GLP-1 receptor agonist with an acylated structure giving it a ~13-hour half-life suited to daily dosing. It is a long-established reference compound in incretin, glucose-regulation, and appetite-pathway research, predating the weekly agonists.",
+    research: ["Incretin & insulin-secretion models", "Glucose-dependent signaling", "Appetite/satiety research", "Gastric-emptying studies"],
+    cas: "204656-20-2", sequence: "Arg34,Lys26-(N-ε-(γ-Glu(N-α-hexadecanoyl)))-GLP-1(7-37)",
+    molFormula: "C172H265N43O51", molWeight: "3751.2 g/mol", halfLife: "~13 hours",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "hgh-191", name: "HGH 191aa", aka: "Somatropin (recombinant)",
+    category: "growth", tags: ["growth-hormone", "igf-1", "recombinant"], featured: false, stock: "low",
+    sizes: [{label:"10 IU", price:79.99, sku:"HGH-10"}, {label:"15 IU", price:109.99, sku:"HGH-15"}],
+    summary: "Recombinant 191-amino-acid human growth hormone, a core GH-axis reference protein.",
+    overview: "HGH 191aa (somatropin) is recombinant human growth hormone with the full native 191-amino-acid sequence. It is the reference standard in GH/IGF-1 axis research, studied for effects on cellular growth, metabolism, and body composition.",
+    research: ["GH-receptor signaling", "IGF-1 axis models", "Metabolism & body-composition research", "Cellular-growth studies"],
+    cas: "12629-01-5", sequence: "191-aa recombinant hGH",
+    molFormula: "C990H1528N262O300S7", molWeight: "≈22124 g/mol", halfLife: "~2–4 hours",
+    storage: "Lyophilized: store at 2–8°C. Reconstituted: refrigerate, use within days.", purity: "≥98%"
+  },
+  {
+    id: "cerebrolysin", name: "Cerebrolysin", aka: "Neuropeptide Preparation",
+    category: "neuro", tags: ["neurotrophic", "cognition", "cns"], featured: false, form: "solution",
+    sizes: [{label:"5mL × 5 amp", price:99.99, sku:"CERE-5"}],
+    summary: "A neuropeptide preparation studied for neurotrophic and neuroprotective activity.",
+    overview: "Cerebrolysin is a standardized preparation of low-molecular-weight neuropeptides and amino acids studied for neurotrophic, neuroprotective, and cognition-supporting effects in CNS research models. It is supplied as a ready-to-use solution.",
+    research: ["Neurotrophic-factor mimetic models", "Neuroprotection research", "Cognition & recovery studies"],
+    cas: "N/A (peptide preparation)", sequence: "Mixture of neuropeptides & free amino acids",
+    molFormula: "Mixture", molWeight: "Mixture (<10 kDa)", halfLife: "preparation-dependent",
+    storage: "Store at room temperature, protected from light.", purity: "Standardized preparation"
+  },
+  {
+    id: "snap-8", name: "SNAP-8", aka: "Acetyl Octapeptide-3",
+    category: "cosmetic", tags: ["cosmetic", "topical", "expression-lines"], featured: false, form: "solution",
+    sizes: [{label:"10mg/mL (30mL)", price:44.99, sku:"SNAP-30"}],
+    summary: "A topical octapeptide studied in expression-line cosmetic research.",
+    overview: "SNAP-8 (Acetyl Octapeptide-3) is an elongation of the Argireline hexapeptide, studied in cosmetic science for modulating neurotransmitter release at the neuromuscular junction to reduce the appearance of expression lines in topical formulations.",
+    research: ["SNARE-complex (topical) models", "Expression-line cosmetic research", "Dermal-formulation studies"],
+    cas: "868844-74-0", sequence: "Ac-Glu-Glu-Met-Gln-Arg-Arg-NH2 (octapeptide analog)",
+    molFormula: "C43H74N16O15S", molWeight: "1075.2 g/mol", halfLife: "topical",
+    storage: "Store solution refrigerated 2–8°C, away from light.", purity: "≥95%"
+  },
+  {
+    id: "glutathione", name: "Glutathione", aka: "Reduced GSH",
+    category: "longevity", tags: ["antioxidant", "detox", "cellular"], featured: false, form: "vial",
+    sizes: [{label:"600mg", price:39.99, sku:"GSH-600"}, {label:"1500mg", price:79.99, sku:"GSH-1500"}],
+    summary: "The primary cellular antioxidant tripeptide, studied in redox and detox research.",
+    overview: "Glutathione (reduced, GSH) is a tripeptide and the body's principal intracellular antioxidant. It is studied in redox-balance, detoxification, and cellular-aging research, central to protecting cells from oxidative stress.",
+    research: ["Redox-balance models", "Oxidative-stress research", "Detoxification pathways", "Cellular-aging studies"],
+    cas: "70-18-8", sequence: "γ-Glu-Cys-Gly",
+    molFormula: "C10H17N3O6S", molWeight: "307.32 g/mol", halfLife: "model-dependent",
+    storage: "Lyophilized: store at -20°C, protected from light. Reconstituted: refrigerate 2–8°C.", purity: "≥98%"
+  },
+  {
+    id: "larazotide", name: "Larazotide", aka: "AT-1001 (oral)",
+    category: "immune", tags: ["gut", "barrier", "oral"], featured: false, form: "solution",
+    sizes: [{label:"10mg/mL (10mL)", price:59.99, sku:"LARA-10"}],
+    summary: "An orally active peptide studied in intestinal tight-junction and gut-barrier research.",
+    overview: "Larazotide (AT-1001) is an orally active octapeptide studied for its effect on intestinal tight junctions and gut-barrier integrity, notably as a zonulin antagonist in permeability ('leaky gut') research models.",
+    research: ["Tight-junction regulation models", "Gut-barrier integrity research", "Zonulin-pathway studies"],
+    cas: "258818-34-7", sequence: "Gly-Gly-Val-Leu-Val-Gln-Pro-Gly",
+    molFormula: "C33H57N9O10", molWeight: "739.9 g/mol", halfLife: "gut-localized",
+    storage: "Store solution refrigerated 2–8°C.", purity: "≥98%"
+  },
+  {
+    id: "tesa-ipa-blend", name: "Tesamorelin + Ipamorelin Blend", aka: "GHRH + GHRP Blend",
+    category: "blends", tags: ["blend", "gh-axis"], featured: false,
+    sizes: [{label:"12mg + 6mg", price:139.99, sku:"BLND-TI"}],
+    summary: "A pre-combined GHRH + secretagogue blend for multi-pathway GH-axis study.",
+    overview: "This research blend combines Tesamorelin (a GHRH analog) with Ipamorelin (a selective secretagogue) in a single vial. The pairing is commonly used in GH-axis research to study the complementary GHRH + GHRP mechanism in one preparation.",
+    research: ["Combined GHRH + GHRP signaling", "GH/IGF-1 axis models", "Body-composition research"],
+    cas: "N/A (blend)", sequence: "See individual components",
+    molFormula: "Blend", molWeight: "Blend", halfLife: "component-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "aicar", name: "AICAR", aka: "Acadesine / AMPK Activator",
+    category: "metabolic", tags: ["ampk", "endurance", "metabolic"], featured: false, form: "vial",
+    sizes: [{label:"50mg", price:59.99, sku:"AICAR-50"}],
+    summary: "An AMPK-activating nucleotide studied in endurance and metabolic models.",
+    overview: "AICAR (5-aminoimidazole-4-carboxamide ribonucleotide) is an activator of AMP-activated protein kinase (AMPK), a central regulator of cellular energy. It is studied in metabolic and exercise-physiology research for effects on glucose uptake, fatty-acid oxidation, and endurance capacity.",
+    research: ["AMPK-pathway activation", "Glucose-uptake models", "Fatty-acid oxidation research", "Endurance & exercise-mimetic studies"],
+    cas: "2627-69-2", sequence: "Nucleotide (non-peptide)",
+    molFormula: "C9H14N4O5", molWeight: "258.23 g/mol", halfLife: "model-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥98%"
+  },
+  {
+    id: "glow-blend", name: "GLOW Blend", aka: "GHK-Cu + BPC-157 + TB-500",
+    category: "blends", tags: ["blend", "skin", "recovery"], featured: true, form: "vial",
+    sizes: [{label:"GHK 50mg + BPC 10mg + TB 10mg", price:129.99, sku:"BLND-GLOW"}],
+    summary: "A popular three-peptide research blend combining skin-remodeling and repair compounds.",
+    overview: "The GLOW blend combines GHK-Cu, BPC-157, and TB-500 in a single vial — pairing a copper skin-remodeling peptide with two of the most-studied repair peptides. It is dosed by the amount of each component the label lists rather than as a single compound, and is used to study skin, connective-tissue, and systemic-repair pathways together.",
+    research: ["Skin-remodeling + systemic repair", "Collagen & connective-tissue models", "Angiogenesis pathways"],
+    cas: "N/A (blend)", sequence: "See individual components: GHK-Cu, BPC-157, TB-500",
+    molFormula: "Blend", molWeight: "Blend", halfLife: "component-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "recovery-blend", name: "Recovery Blend", aka: "BPC-157 + TB-500",
+    category: "blends", tags: ["blend", "recovery", "healing"], featured: false, form: "vial",
+    sizes: [{label:"BPC 10mg + TB 10mg", price:99.99, sku:"BLND-REC"}],
+    summary: "The classic two-peptide repair blend in a single research vial.",
+    overview: "This blend combines BPC-157 and TB-500 — the two most-referenced tissue-repair peptides — in one vial for multi-pathway healing research. Components are dosed individually per the label.",
+    research: ["Tendon & ligament repair", "Angiogenesis + actin regulation", "Gastrointestinal-integrity models"],
+    cas: "N/A (blend)", sequence: "See individual components: BPC-157, TB-500",
+    molFormula: "Blend", molWeight: "Blend", halfLife: "component-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "cjc-ipa-blend", name: "CJC-1295 + Ipamorelin Blend", aka: "GHRH + GHRP Blend",
+    category: "blends", tags: ["blend", "gh-axis"], featured: false, form: "vial",
+    sizes: [{label:"CJC 5mg + IPA 5mg", price:99.99, sku:"BLND-CI"}],
+    summary: "A GHRH + secretagogue blend for combined GH-axis research.",
+    overview: "This blend pairs CJC-1295 (a GHRH analog) with Ipamorelin (a selective secretagogue) — the most common GH-optimization combination — in a single vial for studying the complementary GHRH + GHRP mechanism.",
+    research: ["Combined GHRH + GHRP signaling", "GH/IGF-1 axis models", "Body-composition research"],
+    cas: "N/A (blend)", sequence: "See individual components: CJC-1295, Ipamorelin",
+    molFormula: "Blend", molWeight: "Blend", halfLife: "component-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "bac-water", name: "Bacteriostatic Water", aka: "0.9% Benzyl Alcohol",
+    category: "supplies", tags: ["reconstitution", "solvent"], featured: false, form: "vial",
+    sizes: [{label:"30mL", price:16.99, sku:"BAC-30"}, {label:"3-pack (30mL)", price:39.99, sku:"BAC-3PK"}],
+    summary: "Sterile bacteriostatic water for laboratory reconstitution of lyophilized compounds.",
+    overview: "Bacteriostatic water is sterile water containing 0.9% benzyl alcohol as a preservative, allowing multiple withdrawals from a single vial. It is the standard solvent for reconstituting lyophilized research peptides. For laboratory use only.",
+    research: ["Reconstitution solvent", "Multi-use vial preservative"],
+    cas: "N/A", sequence: "N/A", molFormula: "H2O + 0.9% benzyl alcohol", molWeight: "N/A", halfLife: "N/A",
+    storage: "Store at room temperature. Discard 28 days after first puncture.", purity: "USP-grade"
+  },
+  {
+    id: "recon-kit", name: "Reconstitution Kit", aka: "Lab Supplies Kit",
+    category: "supplies", tags: ["supplies", "kit"], featured: false, form: "kit",
+    sizes: [{label:"Starter kit", price:24.99, sku:"KIT-STD"}],
+    summary: "Insulin syringes, alcohol prep pads, and storage case for research handling.",
+    overview: "A consumables kit for laboratory handling of reconstituted compounds, including graduated insulin syringes, alcohol prep pads, and a storage case. For laboratory use only.",
+    research: ["Sample handling", "Measurement & storage"],
+    cas: "N/A", sequence: "N/A", molFormula: "N/A", molWeight: "N/A", halfLife: "N/A",
+    storage: "Store at room temperature.", purity: "N/A"
+  }
+];
+
+/* ---------------------------------------------------------------
+   CURATED STACKS — multi-peptide research combinations.
+   `components` reference product ids (with optional sizeIndex).
+   Dosing figures are research/educational references only.
+--------------------------------------------------------------- */
+const STACKS = [
+  {
+    id: "recovery-stack", name: "Recovery & Repair Stack", goal: "Tissue repair · tendon, ligament & gut research",
+    featured: true, components: [{id:"bpc-157", sizeIndex:1}, {id:"tb-500", sizeIndex:1}],
+    dosing: "BPC-157 200–500 mcg/day; TB-500 2–2.5 mg twice weekly.",
+    cycle: "4–8 weeks", note: "The most-referenced healing combination — the two flagship repair peptides run together."
+  },
+  {
+    id: "gh-stack", name: "GH Optimization Stack", goal: "GH / IGF-1 axis research",
+    featured: true, components: [{id:"cjc-1295-dac", sizeIndex:0}, {id:"ipamorelin", sizeIndex:0}],
+    dosing: "CJC-1295 & Ipamorelin 100–300 mcg each, combined in one draw, pre-sleep.",
+    cycle: "8–12 weeks · 5 days on / 2 off", note: "A GHRH analog paired with a selective secretagogue for a clean GH pulse."
+  },
+  {
+    id: "glow-stack", name: "GLOW Skin & Repair Stack", goal: "Skin remodeling + systemic repair",
+    featured: true, components: [{id:"ghk-cu", sizeIndex:0}, {id:"bpc-157", sizeIndex:1}, {id:"tb-500", sizeIndex:1}],
+    dosing: "Dose each component per label: GHK-Cu ~1–2 mg/day; BPC-157 250 mcg/day; TB-500 2 mg twice weekly.",
+    cycle: "4–8 weeks", note: "Copper skin-remodeling peptide plus the two repair flagships — also available pre-mixed as the GLOW blend."
+  },
+  {
+    id: "cognitive-stack", name: "Cognitive Stack", goal: "Nootropic / neuroprotection research",
+    featured: false, components: [{id:"semax", sizeIndex:0}, {id:"selank", sizeIndex:0}],
+    dosing: "Semax 300–600 mcg/day; Selank 250–500 mcg/day (intranasal in most protocols).",
+    cycle: "2–4 weeks", note: "Pairs a BDNF-modulating nootropic with an anxiolytic tuftsin analog."
+  },
+  {
+    id: "longevity-stack", name: "Longevity Stack", goal: "Cellular-aging & mitochondrial research",
+    featured: false, components: [{id:"epithalon", sizeIndex:0}, {id:"mots-c", sizeIndex:0}],
+    dosing: "Epithalon 5–10 mg/day in short cycles; MOTS-c 5–10 mg/week.",
+    cycle: "10–20 day cycles, repeated quarterly", note: "A telomerase-studied tetrapeptide with a mitochondrial-derived peptide."
+  },
+  {
+    id: "metabolic-stack", name: "Metabolic / GLP Stack", goal: "Glucose regulation & body-composition research",
+    featured: false, components: [{id:"retatrutide", sizeIndex:0}, {id:"5-amino-1mq", sizeIndex:0}],
+    dosing: "Titrate the incretin agonist per protocol; 5-Amino-1MQ taken as an oral solution.",
+    cycle: "12+ weeks with titration", note: "A triple-agonist incretin alongside an oral NNMT inhibitor."
+  }
+];
+
+/* ---------------------------------------------------------------
+   QUICK-REFERENCE PROTOCOL CHART — per-compound research figures.
+   Joined to PRODUCTS by id for name/price/COA on the page.
+--------------------------------------------------------------- */
+const PROTOCOLS = [
+  { id:"bpc-157",      goal:"Tissue repair / gut",       dosing:"200–500 mcg/day",            cycle:"4–8 weeks",      vialLasts:"10mg ≈ 20–50 days" },
+  { id:"tb-500",       goal:"Repair / flexibility",      dosing:"2–2.5 mg twice weekly",      cycle:"4–6 weeks",      vialLasts:"10mg ≈ 2–3 weeks" },
+  { id:"ipamorelin",   goal:"GH pulse (selective)",      dosing:"100–300 mcg, 1–3×/day",      cycle:"8–12 weeks",     vialLasts:"5mg ≈ 2–4 weeks" },
+  { id:"cjc-1295-dac", goal:"Sustained GH / IGF-1",      dosing:"1–2 mg per week",            cycle:"8–12 weeks",     vialLasts:"2mg ≈ 1–2 weeks" },
+  { id:"mod-grf-1-29", goal:"Short GH pulse",            dosing:"100 mcg per dose",           cycle:"8–12 weeks",     vialLasts:"2mg ≈ 2–3 weeks" },
+  { id:"tesamorelin",  goal:"Visceral fat / GH",         dosing:"1–2 mg/day",                 cycle:"12+ weeks",      vialLasts:"5mg ≈ 3–5 days" },
+  { id:"ghrp-2",       goal:"Potent GH pulse",           dosing:"100–300 mcg, 1–3×/day",      cycle:"8–12 weeks",     vialLasts:"5mg ≈ 2–4 weeks" },
+  { id:"ghrp-6",       goal:"GH pulse + appetite",       dosing:"100–300 mcg, 1–3×/day",      cycle:"8–12 weeks",     vialLasts:"5mg ≈ 2–4 weeks" },
+  { id:"ghk-cu",       goal:"Skin / collagen",           dosing:"1–2 mg/day",                 cycle:"4–8 weeks",      vialLasts:"50mg ≈ 3–7 weeks" },
+  { id:"semaglutide",  goal:"Glucose / metabolic",       dosing:"Titrate 0.25 → 2 mg/week",   cycle:"12+ weeks",      vialLasts:"5mg ≈ 5–20 weeks" },
+  { id:"tirzepatide",  goal:"Glucose / metabolic",       dosing:"Titrate 2.5 → 15 mg/week",   cycle:"12+ weeks",      vialLasts:"10mg ≈ 4–8 weeks" },
+  { id:"retatrutide",  goal:"Metabolic (tri-agonist)",   dosing:"Titrate weekly per protocol",cycle:"12+ weeks",      vialLasts:"5mg ≈ 2–5 weeks" },
+  { id:"epithalon",    goal:"Longevity / telomere",      dosing:"5–10 mg/day",                cycle:"10–20 day cycles", vialLasts:"50mg ≈ 5–10 days" },
+  { id:"mots-c",       goal:"Mitochondrial / endurance", dosing:"5–10 mg per week",           cycle:"Cyclic",         vialLasts:"10mg ≈ 1–2 weeks" },
+  { id:"semax",        goal:"Cognition / focus",         dosing:"300–600 mcg/day",            cycle:"2–4 weeks",      vialLasts:"30mg ≈ 7–10 weeks" },
+  { id:"selank",       goal:"Anxiolytic / calm",         dosing:"250–500 mcg/day",            cycle:"2–4 weeks",      vialLasts:"10mg ≈ 3–6 weeks" },
+  { id:"ss-31",        goal:"Mitochondrial support",     dosing:"Per research protocol",      cycle:"Cyclic",         vialLasts:"10mg ≈ 1–2 weeks" },
+  { id:"pt-141",       goal:"CNS / melanocortin",        dosing:"0.5–2 mg per use",           cycle:"As needed",      vialLasts:"10mg ≈ 5–20 uses" },
+  { id:"hexarelin",    goal:"Potent GH pulse",           dosing:"100 mcg, 1–2×/day",          cycle:"6–8 weeks (desensitizes)", vialLasts:"5mg ≈ 3–7 weeks" },
+  { id:"mk-677",       goal:"Oral GH secretagogue",      dosing:"10–25 mg/day (oral)",        cycle:"8–16 weeks",     vialLasts:"750mg ≈ 30–75 days" },
+  { id:"sermorelin",   goal:"GH release (GHRH)",         dosing:"100–300 mcg pre-sleep",      cycle:"8–12 weeks",     vialLasts:"5mg ≈ 2–4 weeks" },
+  { id:"tesa-ipa-blend", goal:"GHRH + GHRP (blend)",     dosing:"Dose each component per label", cycle:"8–12 weeks",  vialLasts:"12+6mg ≈ 2–4 weeks" },
+  { id:"igf-1-lr3",    goal:"IGF-1 (hypertrophy)",       dosing:"20–50 mcg/day",              cycle:"4–6 weeks",      vialLasts:"1mg ≈ 20–50 days" },
+  { id:"igf-1-des",    goal:"IGF-1 DES (localized)",     dosing:"50–150 mcg per site",        cycle:"4–6 weeks",      vialLasts:"1mg ≈ 1–3 weeks" },
+  { id:"peg-mgf",      goal:"MGF (satellite cells)",     dosing:"200–400 mcg post-training",  cycle:"4–6 weeks",      vialLasts:"2mg ≈ 1–2 weeks" },
+  { id:"follistatin-344", goal:"Myostatin inhibition",   dosing:"100 mcg/day",                cycle:"10–30 day cycles", vialLasts:"1mg ≈ 10 days" },
+  { id:"aod-9604",     goal:"Fat metabolism",            dosing:"300 mcg/day",                cycle:"8–12 weeks",     vialLasts:"5mg ≈ 2–3 weeks" },
+  { id:"aicar",        goal:"AMPK / endurance",          dosing:"Per research protocol",      cycle:"Cyclic",         vialLasts:"50mg ≈ model-dependent" },
+  { id:"5-amino-1mq",  goal:"NNMT inhibition (oral)",    dosing:"50–150 mg/day (oral)",       cycle:"8–12 weeks",     vialLasts:"1500mg ≈ 10–30 days" },
+  { id:"adipotide",    goal:"Adipose-targeting (exp.)",  dosing:"Per research protocol",      cycle:"Short experimental cycles", vialLasts:"5mg ≈ model-dependent" },
+  { id:"melanotan-2",  goal:"Pigmentation (MC1R)",       dosing:"250–500 mcg/day loading",    cycle:"Load, then maintenance", vialLasts:"10mg ≈ 20–40 days" },
+  { id:"melanotan-1",  goal:"Pigmentation (MC1R)",       dosing:"500 mcg–1 mg/day loading",   cycle:"Load, then maintenance", vialLasts:"10mg ≈ 10–20 days" },
+  { id:"cagrilintide", goal:"Amylin (satiety)",          dosing:"Titrate 0.3 → 2.4 mg/week",  cycle:"12+ weeks",      vialLasts:"5mg ≈ 2–15 weeks" },
+  { id:"survodutide",  goal:"GLP-1/glucagon dual",       dosing:"Titrate weekly per protocol", cycle:"12+ weeks",     vialLasts:"5mg ≈ 2–5 weeks" },
+  { id:"mazdutide",    goal:"GLP-1/glucagon dual",       dosing:"Titrate weekly per protocol", cycle:"12+ weeks",     vialLasts:"5mg ≈ 2–5 weeks" },
+  { id:"thymosin-alpha-1", goal:"Immune modulation",     dosing:"1.6 mg, 2×/week",            cycle:"4–8 weeks",      vialLasts:"5mg ≈ 3 weeks" },
+  { id:"thymalin",     goal:"Immune (thymic)",           dosing:"5–10 mg/day",                cycle:"10-day cycles",  vialLasts:"10mg ≈ 1–2 weeks" },
+  { id:"kpv",          goal:"Anti-inflammatory / gut",   dosing:"200–500 mcg/day",            cycle:"2–6 weeks",      vialLasts:"10mg ≈ 3–7 weeks" },
+  { id:"ll-37",        goal:"Antimicrobial / immune",    dosing:"Per research protocol",      cycle:"Short cycles",   vialLasts:"5mg ≈ model-dependent" },
+  { id:"vip",          goal:"Anti-inflammatory (VPAC)",  dosing:"Per research protocol",      cycle:"Cyclic",         vialLasts:"5mg ≈ model-dependent" },
+  { id:"dsip",         goal:"Sleep / stress",            dosing:"100–300 mcg pre-sleep",      cycle:"As needed",      vialLasts:"5mg ≈ 2–7 weeks" },
+  { id:"dihexa",       goal:"Cognition (oral)",          dosing:"5–20 mg/day (oral)",         cycle:"2–4 weeks",      vialLasts:"100mg ≈ 5–20 days" },
+  { id:"pinealon",     goal:"Neuroprotection (bioreg.)", dosing:"5–10 mg/day",                cycle:"10-day cycles",  vialLasts:"20mg ≈ 2–4 days" },
+  { id:"kisspeptin-10", goal:"Reproductive axis",        dosing:"Per research protocol",      cycle:"Cyclic",         vialLasts:"5mg ≈ model-dependent" },
+  { id:"gonadorelin",  goal:"LH/FSH release (GnRH)",     dosing:"100–200 mcg, 2×/week",       cycle:"Ongoing",        vialLasts:"2mg ≈ 1–2 weeks" },
+  { id:"oxytocin",     goal:"Social / behavior",         dosing:"Per research protocol",      cycle:"As needed",      vialLasts:"5mg ≈ model-dependent" },
+  { id:"nad-plus",     goal:"Cellular energy / NAD+",    dosing:"50–100 mg/day",              cycle:"Cyclic",         vialLasts:"500mg ≈ 5–10 days" },
+  { id:"humanin",      goal:"Cytoprotection / aging",    dosing:"Per research protocol",      cycle:"Cyclic",         vialLasts:"5mg ≈ model-dependent" },
+  { id:"argireline",   goal:"Topical anti-wrinkle",      dosing:"Topical, 2×/day",            cycle:"Ongoing",        vialLasts:"300mg ≈ formulation-dependent" },
+  { id:"matrixyl",     goal:"Topical collagen",          dosing:"Topical, 1–2×/day",          cycle:"Ongoing",        vialLasts:"300mg ≈ formulation-dependent" },
+  { id:"liraglutide",  goal:"GLP-1 (daily)",             dosing:"Titrate 0.6 → 3 mg/day",     cycle:"12+ weeks",      vialLasts:"10mg ≈ 3–16 days" },
+  { id:"hgh-191",      goal:"GH / IGF-1",                dosing:"1–4 IU/day",                 cycle:"12+ weeks",      vialLasts:"10 IU ≈ 3–10 days" },
+  { id:"cerebrolysin", goal:"Neurotrophic / cognition",  dosing:"1–5 mL/day",                 cycle:"10–20 day cycles", vialLasts:"5mL amp ≈ 1–5 days" },
+  { id:"snap-8",       goal:"Topical anti-wrinkle",      dosing:"Topical, 2×/day",            cycle:"Ongoing",        vialLasts:"formulation-dependent" },
+  { id:"glutathione",  goal:"Antioxidant / redox",       dosing:"Per research protocol",      cycle:"Cyclic",         vialLasts:"600mg ≈ model-dependent" },
+  { id:"larazotide",   goal:"Gut barrier (oral)",        dosing:"0.5–1 mg before meals",      cycle:"Ongoing",        vialLasts:"100mg ≈ 10–20 days" }
+];
+
+/* ---------------------------------------------------------------
+   RESEARCH NOTES — extra educational context per compound (research
+   library style). Shown as a second paragraph on the product page.
+   Written from established preclinical literature; RUO context only.
+--------------------------------------------------------------- */
+const RESEARCH_NOTES = {
+  "bpc-157": "In preclinical literature, BPC-157 is investigated for interaction with the nitric-oxide (NO) system and upregulation of growth-factor receptors such as VEGFR2, which researchers associate with its angiogenic and cytoprotective effects across gastrointestinal, tendon, and muscle-injury models. It remains a research compound with no approved human indication.",
+  "tb-500": "Research on TB-500 centers on the actin-binding (G-actin sequestering) region of Thymosin Beta-4; by regulating actin polymerization, studies examine its influence on cell migration, wound closure, and revascularization in tissue-injury models.",
+  "semaglutide": "Beyond glucose-dependent insulin secretion, research examines semaglutide's action on hypothalamic appetite circuits and its slowing of gastric emptying. Its C18 fatty-diacid linker drives albumin binding and the extended half-life used in weekly-dosing study designs.",
+  "tirzepatide": "As a dual GIP/GLP-1 agonist, research explores whether concurrent GIP-receptor activation potentiates GLP-1 effects on insulin sensitivity and lipid handling — a mechanism of interest versus single-incretin comparators.",
+  "retatrutide": "Retatrutide's triple GIP/GLP-1/glucagon agonism adds a glucagon-driven energy-expenditure component to incretin signaling, a mechanism studied for effects beyond dual agonists.",
+  "ipamorelin": "Studies characterize ipamorelin as a selective ghrelin/GHS-R1a agonist that triggers GH release with minimal ACTH/cortisol or prolactin response — a selectivity profile that distinguishes it from earlier GHRPs in endocrine research.",
+  "cjc-1295-dac": "The DAC (drug-affinity-complex) maleimide binds serum albumin, extending half-life to several days and producing the sustained GH/IGF-1 elevation studied alongside secretagogues such as ipamorelin.",
+  "ghk-cu": "GHK-Cu research focuses on copper(II) delivery and modulation of gene expression tied to tissue remodeling; studies report effects on collagen, elastin, and glycosaminoglycan synthesis and on antioxidant enzymes in dermal and wound models.",
+  "epithalon": "Epithalon (Ala-Glu-Asp-Gly) is studied for putative telomerase induction and normalization of circadian melatonin rhythms; interest derives from earlier pineal-peptide (epithalamin) aging research.",
+  "mots-c": "As a mitochondrial-derived peptide, MOTS-c is studied as a regulator of AMPK signaling and metabolic flexibility, with research linking it to exercise-mimetic effects and insulin sensitivity.",
+  "igf-1-lr3": "The Arg3 substitution and 13-residue N-terminal extension in IGF-1 LR3 reduce IGF-binding-protein affinity, prolonging free-ligand activity at the IGF-1 receptor in cell-proliferation and hypertrophy research.",
+  "ss-31": "SS-31 concentrates in the inner mitochondrial membrane via cardiolipin binding, where research examines its stabilization of cristae, support of electron transport, and reduction of reactive oxygen species.",
+  "tesamorelin": "Tesamorelin is a stabilized GHRH(1-44) analog whose trans-3-hexenoyl modification resists enzymatic degradation; research focuses on its selective reduction of visceral adipose tissue through GH/IGF-1 signaling.",
+  "hexarelin": "Hexarelin is among the most potent GHRP hexapeptides; beyond GHS-R1a-mediated GH release, research examines its binding to the cardiac CD36 receptor and possible cardioprotective signaling.",
+  "ghrp-2": "GHRP-2 (pralmorelin) acts at the ghrelin receptor to evoke robust GH pulses; studies note accompanying appetite stimulation and modest prolactin/cortisol relative to selective secretagogues.",
+  "ghrp-6": "GHRP-6 was among the first synthetic secretagogues; research highlights its pronounced ghrelin-mimetic appetite stimulation alongside GH release and cytoprotective signaling.",
+  "sermorelin": "Sermorelin is the GHRH(1-29) fragment retaining full receptor activity; its very short half-life makes it a model compound for studying pulsatile, physiologic GH release.",
+  "mk-677": "MK-677 (ibutamoren) is a non-peptide ghrelin-receptor agonist studied as an orally bioavailable secretagogue that produces sustained GH/IGF-1 elevation without injection.",
+  "mod-grf-1-29": "Mod GRF 1-29 (CJC-1295 without DAC) carries four substitutions that resist enzymatic cleavage while keeping a short half-life, making it a common GHRH partner for secretagogues in pulse-synchronized designs.",
+  "semax": "Semax is a heptapeptide derived from ACTH(4-10); research associates it with increased BDNF/NGF expression, modulation of dopaminergic and serotonergic systems, and neuroprotection in ischemia models.",
+  "selank": "Selank is a synthetic tuftsin analog studied for anxiolytic effects thought to involve GABAergic and enkephalinase modulation, alongside BDNF expression and immune signaling.",
+  "dsip": "Delta sleep-inducing peptide is studied for its influence on sleep architecture and slow-wave activity, as well as neuroendocrine stress responses including cortisol modulation.",
+  "pt-141": "PT-141 (bremelanotide) is a melanocortin agonist acting centrally at MC4R; research distinguishes its CNS-mediated arousal pathway from the peripheral pigmentary action of its precursor.",
+  "melanotan-2": "Melanotan II is a cyclic α-MSH analog with broad melanocortin-receptor activity; research examines MC1R-driven melanogenesis and MC4R-linked appetite and behavioral effects.",
+  "melanotan-1": "Melanotan I (afamelanotide) is a linear α-MSH analog with greater MC1R selectivity, studied specifically for eumelanin synthesis and photoprotection.",
+  "aod-9604": "AOD-9604 is a modified hGH(176-191) C-terminal fragment studied for lipolytic and anti-lipogenic activity reported to be independent of the growth-promoting IGF-1 axis.",
+  "5-amino-1mq": "5-Amino-1MQ is a small-molecule NNMT inhibitor studied for restoring cellular methylation capacity and NAD+ salvage, with downstream effects on adipocyte energy expenditure.",
+  "kpv": "KPV is the C-terminal tripeptide of α-MSH that retains anti-inflammatory activity while lacking pigmentary effects; research examines NF-κB pathway modulation in gastrointestinal and dermal inflammation.",
+  "thymosin-alpha-1": "Thymosin Alpha-1 is studied as an immunomodulator that promotes T-cell maturation and dendritic-cell function via Toll-like-receptor signaling, of interest in antiviral and immune-restoration research.",
+  "kisspeptin-10": "Kisspeptin-10 is the active fragment of the KISS1 gene product; signaling through KISS1R, it drives GnRH release and sits upstream of the reproductive hormone axis.",
+  "gonadorelin": "Gonadorelin is synthetic GnRH; pulsatile exposure stimulates pituitary LH/FSH release while continuous exposure desensitizes the receptor — a duality central to reproductive-endocrinology research.",
+  "peg-mgf": "PEG-MGF is a pegylated form of the IGF-1Ec (mechano growth factor) splice variant expressed after mechanical load; research links it to satellite-cell activation and local muscle repair, with pegylation extending its window of action.",
+  "igf-1-des": "IGF-1 DES lacks the first three N-terminal residues, sharply lowering IGF-binding-protein affinity and yielding a more potent, shorter-acting IGF-1R agonist used in localized-action research.",
+  "follistatin-344": "Follistatin 344 binds and neutralizes myostatin and related TGF-β ligands; research uses it to probe negative regulation of skeletal-muscle growth.",
+  "aicar": "AICAR is an AMP analog that activates AMPK, shifting cells toward catabolic energy production; it is a classic exercise-mimetic tool compound in metabolic research.",
+  "nad-plus": "NAD+ is a central redox coenzyme and substrate for sirtuins and PARPs; declining levels with cellular age make its repletion a focus of longevity and mitochondrial research.",
+  "liraglutide": "Liraglutide's single fatty-acid acylation gives roughly 13-hour albumin-bound persistence; it is a long-standing daily reference agonist for GLP-1-receptor pharmacology.",
+  "larazotide": "Larazotide (AT-1001) acts locally in the gut lumen as a zonulin antagonist, tightening epithelial tight junctions; research focuses on intestinal-permeability ('leaky gut') models."
+};
+
+/* Expose globally for non-module scripts */
+window.CATEGORIES = CATEGORIES;
+window.PRODUCTS = PRODUCTS;
+window.STACKS = STACKS;
+window.PROTOCOLS = PROTOCOLS;
+window.RESEARCH_NOTES = RESEARCH_NOTES;
+
+</script>
+<script>
+/* ============================================================
+   MERIDIAN PEPTIDES — Shared app logic
+   Header/footer, cart (localStorage), rendering helpers.
+   ============================================================ */
+
+const SITE = {
+  name: "Broaddus Scientific Group",
+  wordmark: "BROADDUS",
+  tagline: "Scientific Group — research peptides & reference data for the lab.",
+  freeShipThreshold: 150,
+  email: "support@broaddusscientific.example"
+};
+
+/* ---------- Utilities ---------- */
+const $  = (s, r=document) => r.querySelector(s);
+const $ = (s, r=document) => [...r.querySelectorAll(s)];
+const money = n => "$" + Number(n).toFixed(2);
+const productById = id => PRODUCTS.find(p => p.id === id);
+const categoryById = id => CATEGORIES.find(c => c.id === id);
+const catName = id => (categoryById(id)||{}).name || id;
+function qs(name){ return new URLSearchParams(location.search).get(name); }
+function _hsearch(e){ e.preventDefault(); const q=(e.target.querySelector("input").value||"").trim(); location.href = "shop.html" + (q ? ("?q="+encodeURIComponent(q)) : ""); return false; }
+window._hsearch = _hsearch;
+function lowestPrice(p){ return Math.min(...p.sizes.map(s=>s.price)); }
+function stockOf(p){ return (p && p.stock) || "in"; }
+function stockLabel(p){ const s=stockOf(p); return s==="out" ? "Sold out" : s==="low" ? "Low stock" : "In stock"; }
+function stockDot(p){ const s=stockOf(p); return (s==="out" ? "○ " : s==="low" ? "◐ " : "● ") + stockLabel(p); }
+
+
+/* ---------- CART (localStorage) ---------- */
+const CART_KEY = "broaddus_cart_v1";
+function getCart(){ try{ return JSON.parse(localStorage.getItem(CART_KEY)) || []; }catch(e){ return []; } }
+function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); updateCartCount(); }
+function cartCount(){ return getCart().reduce((n,i)=>n+i.qty,0); }
+function cartSubtotal(){ return getCart().reduce((s,i)=>s + i.price*i.qty, 0); }
+function updateCartCount(){ $(".js-cart-count").forEach(el => el.textContent = cartCount()); }
+
+function addToCart(productId, sizeIndex=0, qty=1, silent=false){
+  const p = productById(productId); if(!p) return;
+  const size = p.sizes[sizeIndex] || p.sizes[0];
+  const key = productId + "::" + size.sku;
+  const cart = getCart();
+  const existing = cart.find(i => i.key === key);
+  if(existing){ existing.qty += qty; }
+  else{ cart.push({ key, id:productId, name:p.name, size:size.label, sku:size.sku, price:size.price, qty }); }
+  saveCart(cart);
+  if(!silent){ if($("#cart-drawer")) openCart(); else toast(`Added — ${p.name} (${size.label})`); }
+}
+
+/* ---------- Stacks & protocols ---------- */
+const stackById = id => (window.STACKS || []).find(s => s.id === id);
+const protocolById = id => (window.PROTOCOLS || []).find(r => r.id === id);
+const stacksWith = id => (window.STACKS || []).filter(s => s.components.some(c => c.id === id));
+function stackPrice(s){
+  return s.components.reduce((sum,c)=>{
+    const p = productById(c.id); if(!p) return sum;
+    const size = p.sizes[c.sizeIndex||0] || p.sizes[0];
+    return sum + size.price;
+  }, 0);
+}
+function addStackToCart(stackId){
+  const s = stackById(stackId); if(!s) return;
+  let n = 0;
+  s.components.forEach(c => { if(productById(c.id)){ addToCart(c.id, c.sizeIndex||0, 1, true); n++; } });
+  updateCartCount();
+  toast(`Added stack — ${s.name} (${n} items)`);
+  if($("#cart-drawer")) openCart();
+}
+
+/* ---------- Orders (localStorage; payment wired later) ---------- */
+const ORDERS_KEY = "broaddus_orders_v1";
+function getOrders(){ try{ return JSON.parse(localStorage.getItem(ORDERS_KEY)) || []; }catch(e){ return []; } }
+function saveOrders(o){ localStorage.setItem(ORDERS_KEY, JSON.stringify(o)); }
+const orderById = id => getOrders().find(o => o.id === id);
+function shippingCost(sub, method){
+  if(sub === 0) return 0;
+  if(sub >= SITE.freeShipThreshold) return method === "express" ? 15 : 0;
+  return method === "express" ? 25 : 12;
+}
+/* Automatic volume discount tiers (by subtotal) */
+function bulkDiscount(sub){
+  let pct = 0;
+  if(sub >= 1000) pct = 15; else if(sub >= 500) pct = 10; else if(sub >= 250) pct = 5;
+  if(!pct) return null;
+  return { code:"BULK", amount:+(sub * pct/100).toFixed(2), freeShip:false, label:`Bulk discount ${pct}%`, auto:true };
+}
+function nextBulkTier(sub){
+  const tiers = [[250,5],[500,10],[1000,15]];
+  for(const [min,pct] of tiers){ if(sub < min) return { min, pct, add: +(min - sub).toFixed(2) }; }
+  return null;
+}
+function createOrder(customer, shipDetails, discounts){
+  discounts = (discounts || []).filter(Boolean);
+  const items = getCart();
+  const sub = cartSubtotal();
+  let ship = shippingCost(sub, shipDetails.method);
+  let discTotal = 0, freeShip = false;
+  discounts.forEach(d => { discTotal += (d.amount || 0); if(d.freeShip) freeShip = true; });
+  if(freeShip) ship = 0;
+  const total = Math.max(0, +(sub - discTotal).toFixed(2)) + ship;
+  const id = "BSG-" + Date.now().toString(36).toUpperCase().slice(-5) + "-" + Math.floor(1000 + Math.random()*9000);
+  const order = { id, date: new Date().toISOString(), items, subtotal: sub, discounts, shipping: ship, total, customer, shipDetails, status: "awaiting-payment" };
+  const orders = getOrders(); orders.push(order); saveOrders(orders);
+  return order;
+}
+
+/* Back-in-stock notify requests */
+const NOTIFY_KEY = "broaddus_notify_v1";
+function saveNotify(productId, email){
+  let list = []; try{ list = JSON.parse(localStorage.getItem(NOTIFY_KEY)) || []; }catch(e){}
+  list.push({ productId, email, date: new Date().toISOString() });
+  localStorage.setItem(NOTIFY_KEY, JSON.stringify(list));
+}
+window.saveNotify = saveNotify;
+
+/* ---------- Discount codes ---------- */
+const DISCOUNTS = {
+  RESEARCH10: { type:"pct",  value:10, label:"10% off" },
+  WELCOME15:  { type:"pct",  value:15, label:"15% off — welcome" },
+  LAB20:      { type:"pct",  value:20, min:200, label:"20% off orders $200+" },
+  FREESHIP:   { type:"ship", label:"Free shipping" }
+};
+function applyDiscount(code, sub){
+  const key = (code||"").trim().toUpperCase();
+  const c = DISCOUNTS[key];
+  if(!c) return { error:"Invalid code" };
+  if(c.min && sub < c.min) return { error:`Requires a ${c.min}+ subtotal` };
+  if(c.type === "pct")  return { code:key, amount:+(sub * c.value/100).toFixed(2), freeShip:false, label:c.label };
+  if(c.type === "ship") return { code:key, amount:0, freeShip:true, label:c.label };
+  return { error:"Invalid code" };
+}
+
+/* ---------- Favorites (wishlist) ---------- */
+const FAV_KEY = "broaddus_favs_v1";
+function getFavs(){ try{ return JSON.parse(localStorage.getItem(FAV_KEY)) || []; }catch(e){ return []; } }
+function saveFavs(f){ localStorage.setItem(FAV_KEY, JSON.stringify(f)); updateFavCount(); }
+function isFav(id){ return getFavs().includes(id); }
+function favCount(){ return getFavs().length; }
+function toggleFav(id){ const f=getFavs(); const i=f.indexOf(id); if(i>=0) f.splice(i,1); else f.push(id); saveFavs(f); return isFav(id); }
+function updateFavCount(){ $(".js-fav-count").forEach(el => el.textContent = favCount()); }
+function toggleFavBtn(el, id){ const on = toggleFav(id); el.classList.toggle("on", on); el.setAttribute("aria-pressed", on); toast(on ? "Saved to favorites" : "Removed from favorites"); }
+window.toggleFavBtn = toggleFavBtn;
+
+/* ---------- Recently viewed ---------- */
+const RECENT_KEY = "broaddus_recent_v1";
+function getRecent(){ try{ return JSON.parse(localStorage.getItem(RECENT_KEY)) || []; }catch(e){ return []; } }
+function pushRecent(id){ let r = getRecent().filter(x => x !== id); r.unshift(id); localStorage.setItem(RECENT_KEY, JSON.stringify(r.slice(0,10))); }
+
+/* ---------- Compare (up to 4) ---------- */
+const CMP_KEY = "broaddus_compare_v1";
+const CMP_MAX = 4;
+function getCompare(){ try{ return JSON.parse(localStorage.getItem(CMP_KEY)) || []; }catch(e){ return []; } }
+function saveCompare(a){ localStorage.setItem(CMP_KEY, JSON.stringify(a)); }
+function isCompare(id){ return getCompare().includes(id); }
+function clearCompare(){ saveCompare([]); }
+function toggleCompareCapped(id){
+  const a = getCompare(); const i = a.indexOf(id);
+  if(i >= 0){ a.splice(i,1); saveCompare(a); return false; }
+  if(a.length >= CMP_MAX) return null;
+  a.push(id); saveCompare(a); return true;
+}
+function toggleCompareBtn(el, id){
+  const r = toggleCompareCapped(id);
+  if(r === null){ toast(`Compare up to ${CMP_MAX} items`); return; }
+  el.classList.toggle("on", r); syncCompareUI();
+}
+function syncCompareUI(){ $(".cmp-btn").forEach(b => b.classList.toggle("on", isCompare(b.dataset.id))); renderCompareBar(); }
+function renderCompareBar(){
+  const bar = $("#compare-bar"); if(!bar) return;
+  const ids = getCompare();
+  if(!ids.length){ bar.classList.remove("show"); bar.innerHTML = ""; document.body.classList.remove("has-cmp-bar"); return; }
+  bar.classList.add("show"); document.body.classList.add("has-cmp-bar");
+  bar.innerHTML = `<div class="container cmp-bar__in">
+    <div class="cmp-bar__items"><b class="small" style="text-transform:uppercase;letter-spacing:.05em">Compare ${ids.length}/${CMP_MAX}</b>
+      ${ids.map(id=>{ const p=productById(id); return p?`<span class="cmp-chip">${p.name}<button data-id="${id}" aria-label="Remove">×</button></span>`:""; }).join("")}
+    </div>
+    <div class="cmp-bar__act"><button class="btn btn--sm" id="cmp-clear">Clear</button><a class="btn btn--sm btn--solid" href="compare.html">Compare</a></div>
+  </div>`;
+  $("#compare-bar .cmp-chip button").forEach(b => b.onclick = ()=>{ toggleCompareCapped(b.dataset.id); syncCompareUI(); });
+  $("#cmp-clear").onclick = ()=>{ clearCompare(); syncCompareUI(); };
+}
+window.toggleCompareBtn = toggleCompareBtn;
+
+/* ---------- Cart drawer (mini-cart) ---------- */
+function renderDrawer(){
+  const body = $("#drawer-items"), foot = $("#drawer-foot");
+  if(!body || !foot) return;
+  const cart = getCart();
+  if(!cart.length){
+    body.innerHTML = `<p class="muted" style="padding:40px 0;text-align:center">Your cart is empty.</p>`;
+    foot.innerHTML = `<a href="shop.html" class="btn btn--full" onclick="closeCart()">Browse peptides</a>`;
+    return;
+  }
+  body.innerHTML = cart.map(i=>`
+    <div class="drawer-item" data-key="${i.key}">
+      <div>
+        <a href="product.html?id=${i.id}"><b class="small">${i.name}</b></a>
+        <div class="small muted">${i.size} · ${money(i.price)}</div>
+        <div class="qty qty--sm" style="margin-top:8px">
+          <button data-act="minus" aria-label="decrease">−</button>
+          <input data-act="qty" type="number" value="${i.qty}" min="1" inputmode="numeric">
+          <button data-act="plus" aria-label="increase">+</button>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="price small mono">${money(i.price*i.qty)}</div>
+        <button class="linkbtn" data-act="remove" style="margin-top:8px">Remove</button>
+      </div>
+    </div>`).join("");
+  const sub = cartSubtotal();
+  const hint = sub < SITE.freeShipThreshold
+    ? `<p class="small muted" style="margin:0 0 12px">Add ${money(SITE.freeShipThreshold - sub)} for free shipping</p>`
+    : `<p class="small" style="margin:0 0 12px"><b>✓ Free shipping unlocked</b></p>`;
+  foot.innerHTML = `
+    <div style="display:flex;justify-content:space-between;font-weight:800;font-size:1.05rem;margin-bottom:10px"><span>Subtotal</span><span>${money(sub)}</span></div>
+    ${hint}
+    <a href="checkout.html" class="btn btn--solid btn--full" style="margin-bottom:8px">Checkout</a>
+    <a href="cart.html" class="btn btn--full">View full cart</a>`;
+  $("#drawer-items .drawer-item").forEach(row=>{
+    const key = row.dataset.key;
+    row.querySelector('[data-act="minus"]').onclick = ()=>{ const it=getCart().find(x=>x.key===key); setQty(key, it.qty-1); renderDrawer(); };
+    row.querySelector('[data-act="plus"]').onclick  = ()=>{ const it=getCart().find(x=>x.key===key); setQty(key, it.qty+1); renderDrawer(); };
+    row.querySelector('[data-act="qty"]').onchange  = (e)=>{ setQty(key, parseInt(e.target.value)||1); renderDrawer(); };
+    row.querySelector('[data-act="remove"]').onclick = ()=>{ removeItem(key); renderDrawer(); };
+  });
+}
+function openCart(){ const d=$("#cart-drawer"), o=$("#drawer-ov"); if(!d) return; renderDrawer(); d.classList.add("open"); d.setAttribute("aria-hidden","false"); if(o) o.classList.add("show"); }
+function closeCart(){ const d=$("#cart-drawer"), o=$("#drawer-ov"); if(!d) return; d.classList.remove("open"); d.setAttribute("aria-hidden","true"); if(o) o.classList.remove("show"); }
+window.openCart = openCart; window.closeCart = closeCart;
+function setQty(key, qty){
+  const cart = getCart();
+  const item = cart.find(i=>i.key===key);
+  if(!item) return;
+  item.qty = Math.max(1, qty);
+  saveCart(cart);
+}
+function removeItem(key){ saveCart(getCart().filter(i=>i.key!==key)); }
+function clearCart(){ saveCart([]); }
+
+/* ---------- Toast ---------- */
+let toastTimer;
+function toast(msg){
+  let t = $(".toast");
+  if(!t){ t = document.createElement("div"); t.className="toast"; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove("show"), 2200);
+}
+
+/* ---------- Product card markup ---------- */
+function cardHTML(p){
+  const featured = p.featured ? `<span class="tag-featured">Featured</span>` : "";
+  const trust = [stockDot(p),
+    (p.category !== "supplies" ? "COA" : null),
+    (p.purity && p.purity !== "N/A" ? p.purity : null)].filter(Boolean).join("&nbsp;·&nbsp;");
+  return `<a class="card card--text" href="product.html?id=${p.id}">
+    <div class="card__body">
+      <div class="card__topline">
+        <span class="card__cat">${catName(p.category)}</span>
+        <span class="card__acts">
+          <button type="button" class="fav-btn ${isFav(p.id)?'on':''}" aria-label="Save to favorites" aria-pressed="${isFav(p.id)}" onclick="event.preventDefault();event.stopPropagation();toggleFavBtn(this,'${p.id}')">♥</button>
+          <button type="button" class="cmp-btn ${isCompare(p.id)?'on':''}" data-id="${p.id}" aria-label="Add to compare" title="Add to compare" onclick="event.preventDefault();event.stopPropagation();toggleCompareBtn(this,'${p.id}')">⇄</button>
+        </span>
+      </div>
+      <div class="card__title">${p.name}${featured}</div>
+      <div class="card__desc">${p.summary}</div>
+      <div class="card__trust">${trust}</div>
+      <div class="card__foot">
+        <span class="price">${money(lowestPrice(p))} <small>from</small></span>
+        <span class="btn btn--sm">View</span>
+      </div>
+    </div>
+  </a>`;
+}
+
+/* ---------- Header / Footer injection ---------- */
+function renderChrome(active){
+  const header = `
+  <div class="topbar">Research Use Only · Not for Human Consumption · Free shipping on orders over ${SITE.freeShipThreshold}</div>
+  <header class="header">
+    <div class="header__row">
+      <a class="brand" href="index.html">
+        <span class="brand__mark">${SITE.wordmark}</span>
+        <span class="brand__tag">${SITE.tagline}</span>
+      </a>
+      <div class="header__spacer"></div>
+      <form class="hsearch" role="search" onsubmit="return _hsearch(event)">
+        <input type="search" placeholder="Search peptides…" aria-label="Search peptides">
+      </form>
+      <nav class="header__links">
+        <a href="favorites.html" class="fav-pill" aria-label="Saved items">♥ <b class="js-fav-count">0</b></a>
+        <button type="button" class="cart-pill" id="cart-toggle">Cart <b class="js-cart-count">0</b></button>
+      </nav>
+    </div>
+  </header>
+  <nav class="nav"><div class="nav__inner">
+    <a href="index.html" data-k="home">Home</a>
+    <a href="shop.html" data-k="shop">Shop</a>
+    <a href="glossary.html" data-k="glossary">Glossary</a>
+    <a href="protocols.html" data-k="protocols">Protocols &amp; Stacks</a>
+  </div></nav>`;
+
+  const year = 2026;
+  const footer = `
+  <footer class="footer"><div class="container">
+    <div class="footer__grid">
+      <div>
+        <span class="brand__mark" style="display:inline-block;margin-bottom:14px">${SITE.wordmark}</span>
+        <p class="small muted">${SITE.tagline} All products are sold strictly for in-vitro laboratory research and are not intended for human or veterinary use.</p>
+        <span class="ruo-flag">Research Use Only</span>
+      </div>
+      <div>
+        <h5>Shop</h5>
+        <a href="shop.html">All Products</a>
+        <a href="category.html">Browse Categories</a>
+        <a href="favorites.html">Saved Items</a>
+        <a href="category.html?cat=glp1">GLP-1 Research</a>
+        <a href="category.html?cat=growth">Growth Hormone</a>
+      </div>
+      <div>
+        <h5>Learn</h5>
+        <a href="glossary.html">Peptide Glossary</a>
+        <a href="protocols.html">Protocols & Stacks</a>
+        <a href="about.html#coa">Certificates of Analysis</a>
+        <a href="about.html#quality">Quality & Testing</a>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <a href="about.html">About Us</a>
+        <a href="faq.html">FAQ</a>
+        <a href="orders.html">Order Lookup</a>
+        <a href="about.html#shipping">Shipping</a>
+        <a href="about.html#terms">Terms & Disclaimer</a>
+        <a href="about.html#contact">Contact</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© ${year} ${SITE.name}. For laboratory research use only.</span>
+      <span>Prices shown net of New York State sales tax.</span>
+      <span>Products are not drugs and make no therapeutic claims.</span>
+    </div>
+  </div></footer>`;
+
+  const mount = $("#chrome-top");
+  if(mount) mount.innerHTML = header;
+  const fmount = $("#chrome-bottom");
+  if(fmount) fmount.innerHTML = footer;
+
+  // active state
+  $(".nav__inner a").forEach(a => { if(a.dataset.k === active) a.classList.add("active"); });
+  updateCartCount();
+  updateFavCount();
+
+  // cart drawer (mini-cart) — inject once, then wire the header toggle
+  if(!$("#cart-drawer")){
+    const wrap = document.createElement("div");
+    wrap.innerHTML = `
+      <div class="drawer-overlay" id="drawer-ov"></div>
+      <aside class="drawer" id="cart-drawer" aria-hidden="true" aria-label="Shopping cart">
+        <div class="drawer__head"><b>Your Cart</b><button class="drawer__close" id="drawer-close" aria-label="Close cart">×</button></div>
+        <div class="drawer__body" id="drawer-items"></div>
+        <div class="drawer__foot" id="drawer-foot"></div>
+      </aside>`;
+    document.body.appendChild(wrap);
+    $("#drawer-ov").addEventListener("click", closeCart);
+    $("#drawer-close").addEventListener("click", closeCart);
+    document.addEventListener("keydown", e => { if(e.key === "Escape") closeCart(); });
+  }
+  const toggle = $("#cart-toggle");
+  if(toggle) toggle.addEventListener("click", openCart);
+
+  // compare bar — inject once, then render current state
+  if(!$("#compare-bar")){
+    const cb = document.createElement("div");
+    cb.id = "compare-bar";
+    cb.className = "compare-bar";
+    document.body.appendChild(cb);
+  }
+  renderCompareBar();
+}
+
+/* ---------- Age gate ---------- */
+function ageGate(){
+  if(localStorage.getItem("broaddus_age_ok")) return;
+  const g = document.createElement("div");
+  g.className = "gate";
+  g.innerHTML = `<div class="gate__box">
+    <span class="ruo-flag">Research Use Only</span>
+    <h3 style="margin-top:14px">Age & Use Confirmation</h3>
+    <p>The products on this site are sold strictly for <b>laboratory research use only</b> and are <b>not for human consumption</b>. By entering you confirm you are 21+ and a qualified researcher.</p>
+    <button class="btn btn--solid btn--full" id="gate-yes" style="margin-top:18px">I confirm — Enter site</button>
+    <p class="small" style="margin-top:14px"><a href="https://www.google.com" style="text-decoration:underline">Leave site</a></p>
+  </div>`;
+  document.body.appendChild(g);
+  $("#gate-yes").addEventListener("click", ()=>{ localStorage.setItem("broaddus_age_ok","1"); g.remove(); });
+}
+
+/* ---------- Pricing model ----------
+   Displayed price = base price MINUS New York State sales tax,
+   then rounded UP to a "smooth repeating" number (e.g. 33.33; over
+   $100 the hundreds are kept, e.g. 129.99 -> 133.33). Applied once
+   at load so cart, checkout, compare, and stacks all stay consistent. */
+const NY_TAX = 0.04; // New York State sales tax rate
+function repeatingPrice(x){
+  const reps = [11.11,22.22,33.33,44.44,55.55,66.66,77.77,88.88,99.99];
+  const EPS = 1e-9;
+  if(x <= 99.99 + EPS){
+    for(const r of reps){ if(r >= x - EPS) return r; }
+    return 99.99;
+  }
+  const H = Math.floor(x/100);
+  const rem = x - H*100;
+  for(const r of reps){ if(r >= rem - EPS) return +(H*100 + r).toFixed(2); }
+  return +((H+1)*100 + reps[0]).toFixed(2);
+}
+function displayPrice(base){ return repeatingPrice(base * (1 - NY_TAX)); }
+(function applyPricingModel(){
+  (window.PRODUCTS || []).forEach(p => p.sizes.forEach(s => {
+    if(s.base == null) s.base = s.price;      // preserve original base once
+    s.price = displayPrice(s.base);
+  }));
+  // migrate any existing cart items to the current displayed prices
+  try{
+    const c = getCart(); let changed = false;
+    c.forEach(it => { const p = productById(it.id); if(p){ const s = p.sizes.find(z => z.sku === it.sku); if(s && it.price !== s.price){ it.price = s.price; changed = true; } } });
+    if(changed) localStorage.setItem(CART_KEY, JSON.stringify(c));
+  }catch(e){}
+})();
+
+document.addEventListener("DOMContentLoaded", ()=>{
+  renderChrome(document.body.dataset.page || "");
+  ageGate();
+});
+
+</script>
+<script>
+  const p = productById("semaglutide");
+  const mount = document.getElementById("pdp-mount");
+  const priorRecent = getRecent();      // capture before recording this view
+  if(p) pushRecent(p.id);
+
+  if(!p){
+    mount.innerHTML = `<div class="section center"><h2>Product not found</h2><p class="muted">This item may have been moved.</p><a href="shop.html" class="btn">Back to shop</a></div>`;
+  } else {
+    document.title = `${p.name} — Broaddus Scientific Group`;
+    document.getElementById("crumb-cat").innerHTML = `<a href="shop.html?cat=${p.category}">${catName(p.category)}</a>`;
+    document.getElementById("crumb-name").textContent = p.name;
+
+    let sizeIndex = 0;
+
+    const proto = protocolById(p.id);
+    const related = stacksWith(p.id);
+    const protoSnippet = (proto || related.length) ? `
+        <div style="border:1px solid #000;margin-top:22px;padding:18px 20px">
+          <div class="eyebrow" style="margin-bottom:12px">Research Protocol · Reference</div>
+          ${proto ? `<table class="spec" style="margin:0">
+            <tr><th>Research goal</th><td>${proto.goal}</td></tr>
+            <tr><th>Reference dosing</th><td>${proto.dosing}</td></tr>
+            <tr><th>Cycle</th><td>${proto.cycle}</td></tr>
+            <tr><th>Vial lasts</th><td>${proto.vialLasts}</td></tr>
+          </table>` : `<p class="small muted" style="margin:0">No standardized reference protocol is listed for this compound.</p>`}
+          ${related.length ? `<div style="margin-top:14px"><div class="small" style="text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:8px">Featured in stacks</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">${related.map(s=>`<a class="tag" style="padding:7px 12px" href="protocols.html">${s.name}</a>`).join("")}</div></div>` : ""}
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="protocols.html" class="btn btn--sm">All protocols &amp; stacks</a>
+          </div>
+          <p class="small muted" style="margin:12px 0 0">Research & educational reference only — not dosing guidance. Verify against the batch COA.</p>
+        </div>` : "";
+
+    mount.innerHTML = `
+    <div class="pdp">
+      <div>
+        <div class="card__cat">${catName(p.category)}</div>
+        <h1>${p.name}</h1>
+        <div class="pdp__aka">${p.aka}</div>
+        <p class="muted">${p.summary}</p>
+
+        <div class="pdp__price" id="pdp-price"></div>
+        <div class="small muted">SKU: <span id="pdp-sku"></span> · Purity ${p.purity}</div>
+        <div class="small pdp-stock pdp-stock--${stockOf(p)}" id="pdp-stock" style="margin-top:8px"></div>
+
+        <div style="margin-top:20px"><b class="small" style="text-transform:uppercase;letter-spacing:.05em">Size / Quantity</b></div>
+        <div class="sizes" id="sizes"></div>
+
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0">
+          <div class="qty">
+            <button id="q-minus" aria-label="decrease">−</button>
+            <input id="qty" type="number" value="1" min="1" inputmode="numeric">
+            <button id="q-plus" aria-label="increase">+</button>
+          </div>
+          <button class="btn btn--solid" id="add" style="flex:1;min-width:200px">Add to Cart</button>
+          <button class="btn" id="save-fav" type="button" aria-label="Save to favorites">♥ Save</button>
+        </div>
+
+        <div id="notify-box" style="margin:0 0 6px"></div>
+
+        <div class="notice" style="margin-top:6px">
+          <span class="ruo-flag">RUO</span>
+          <div><b>For laboratory research use only.</b> Not for human or animal consumption. A batch-specific certificate of analysis is included with every order.</div>
+        </div>
+
+        <div class="strip" style="margin-top:22px;border-left:1px solid #000;border-right:1px solid #000">
+          <div><b>≥99%</b><span>Purity</span></div>
+          <div><b>COA</b><span>Per batch</span></div>
+          <div><b>3rd-Party</b><span>HPLC + MS</span></div>
+        </div>
+        ${protoSnippet}
+      </div>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <button class="active" data-t="overview">Overview</button>
+      <button data-t="research">Research Areas</button>
+      <button data-t="specs">Specifications</button>
+      <button data-t="handling">Handling</button>
+    </div>
+    <div id="tab-body" style="max-width:820px;padding-bottom:20px"></div>
+    `;
+
+    // Sizes
+    const sizesEl = document.getElementById("sizes");
+    sizesEl.innerHTML = p.sizes.map((s,i)=>
+      `<div class="size-opt ${i===0?'active':''}" data-i="${i}">${s.label}<div class="small muted" style="text-transform:none;letter-spacing:0">${money(s.price)}</div></div>`).join("");
+
+    function refresh(){
+      const s = p.sizes[sizeIndex];
+      document.getElementById("pdp-price").textContent = money(s.price);
+      document.getElementById("pdp-sku").textContent = s.sku;
+      $$("#sizes .size-opt").forEach(el=> el.classList.toggle("active", +el.dataset.i===sizeIndex));
+    }
+    $$("#sizes .size-opt").forEach(el=> el.addEventListener("click", ()=>{ sizeIndex=+el.dataset.i; refresh(); }));
+    refresh();
+
+    // Qty
+    const qtyEl = document.getElementById("qty");
+    document.getElementById("q-minus").onclick = ()=> qtyEl.value = Math.max(1, (+qtyEl.value||1)-1);
+    document.getElementById("q-plus").onclick  = ()=> qtyEl.value = (+qtyEl.value||1)+1;
+    document.getElementById("add").onclick = ()=> addToCart(p.id, sizeIndex, Math.max(1,+qtyEl.value||1));
+
+    // Stock status
+    (function(){
+      const st = stockOf(p);
+      document.getElementById("pdp-stock").innerHTML =
+        st==="out" ? "<b>Sold out</b> — currently unavailable" :
+        st==="low" ? "<b>Low stock</b> — order soon" :
+                     "<b>In stock</b> — ships fast";
+      if(st==="out"){
+        const ab=document.getElementById("add"); ab.disabled=true; ab.textContent="Sold out";
+        const box=document.getElementById("notify-box");
+        box.innerHTML = `<div style="border:1px solid #000;padding:16px 18px">
+          <b class="small" style="text-transform:uppercase;letter-spacing:.05em">Notify me when back in stock</b>
+          <form id="notify-form" style="display:flex;gap:8px;margin-top:10px">
+            <input type="email" required placeholder="you@lab.edu" aria-label="Email" style="flex:1;border:1px solid #000;padding:10px 12px;font-family:var(--font);font-size:.9rem">
+            <button class="btn btn--sm btn--solid" type="submit">Notify me</button>
+          </form></div>`;
+        document.getElementById("notify-form").addEventListener("submit", ev=>{
+          ev.preventDefault();
+          const email = ev.target.querySelector("input").value.trim();
+          if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ toast("Enter a valid email"); return; }
+          saveNotify(p.id, email);
+          box.innerHTML = `<div style="border:1px solid #000;padding:16px 18px"><b>✓ You're on the list.</b><p class="small muted" style="margin:6px 0 0">We'll email ${email} when ${p.name} is back in stock.</p></div>`;
+        });
+      }
+    })();
+
+    // Save / favorite
+    const saveBtn = document.getElementById("save-fav");
+    function refreshFav(){ const on=isFav(p.id); saveBtn.classList.toggle("on", on); saveBtn.textContent = on ? "♥ Saved" : "♥ Save"; }
+    saveBtn.onclick = ()=>{ toggleFav(p.id); refreshFav(); };
+    refreshFav();
+
+    // Tabs
+    const tabBody = document.getElementById("tab-body");
+    const tabs = {
+      overview: `<p>${p.overview}</p>` + (window.RESEARCH_NOTES && RESEARCH_NOTES[p.id] ? `<p>${RESEARCH_NOTES[p.id]}</p>` : ""),
+      research: `<p class="muted">Documented research areas of interest for this compound:</p><ul style="line-height:2;padding-left:1.1rem">${p.research.map(r=>`<li>${r}</li>`).join("")}</ul>`,
+      specs: `<table class="spec">
+        <tr><th>CAS Number</th><td>${p.cas}</td></tr>
+        <tr><th>Sequence</th><td style="word-break:break-word">${p.sequence}</td></tr>
+        <tr><th>Molecular Formula</th><td>${p.molFormula}</td></tr>
+        <tr><th>Molecular Weight</th><td>${p.molWeight}</td></tr>
+        <tr><th>Half-life (model)</th><td>${p.halfLife}</td></tr>
+        <tr><th>Purity</th><td>${p.purity}</td></tr>
+      </table>`,
+      handling: `<table class="spec">
+        <tr><th>Storage</th><td>${p.storage}</td></tr>
+        <tr><th>Reconstitution</th><td>Reconstitute with bacteriostatic water; draw volume depends on your target research concentration.</td></tr>
+        <tr><th>Certificate of Analysis</th><td>Batch-specific COA included with shipment and available on request.</td></tr>
+      </table>`
+    };
+    function showTab(t){ tabBody.innerHTML = tabs[t]; $$("#tabs button").forEach(b=>b.classList.toggle("active", b.dataset.t===t)); }
+    $$("#tabs button").forEach(b=> b.addEventListener("click", ()=>showTab(b.dataset.t)));
+    showTab("overview");
+
+    // Related
+    const related = PRODUCTS.filter(x=>x.category===p.category && x.id!==p.id).slice(0,4);
+    document.getElementById("related").innerHTML = (related.length?related:PRODUCTS.filter(x=>x.id!==p.id).slice(0,4)).map(cardHTML).join("");
+
+    // Recently viewed (from before this visit)
+    const rv = priorRecent.filter(id=>id!==p.id).map(productById).filter(Boolean).slice(0,4);
+    if(rv.length){
+      document.getElementById("rv-section").style.display = "";
+      document.getElementById("recently-viewed").innerHTML = rv.map(cardHTML).join("");
+    }
+  }
+</script>
+</body>
+</html>

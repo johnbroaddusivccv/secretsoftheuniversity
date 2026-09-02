@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compare — Broaddus Scientific Group</title>
+<link rel="stylesheet" href="assets/css/style.css?v=5">
+</head>
+<body data-page="">
+<div id="chrome-top"></div>
+
+<section class="page-hero"><div class="container">
+  <div class="eyebrow">Compare</div>
+  <h1>Compare Compounds</h1>
+  <p class="muted" style="max-width:62ch">Structural data and research context side by side. Add up to 4 products with the <b>⇄</b> button on any product card.</p>
+</div></section>
+
+<section class="section"><div class="container">
+  <div id="cmp-empty" style="display:none" class="center" style="padding:20px 0">
+    <p class="muted">No products selected to compare yet.</p>
+    <a href="shop.html" class="btn">Browse peptides</a>
+  </div>
+  <div id="cmp-actions" style="display:none;margin-bottom:16px">
+    <button class="btn btn--sm" id="cmp-clear-all">Clear comparison</button>
+  </div>
+  <div class="table-wrap" id="cmp-wrap" style="display:none">
+    <table class="cmp-table" id="cmp-table"></table>
+  </div>
+</div></section>
+
+<div id="chrome-bottom"></div>
+<script src="assets/js/data.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
+<script>
+  const rows = [
+    { label:"", render:p=>`<div class="cmp-name">${p.name}</div><div class="small muted">${p.aka}</div>` },
+    { label:"Category", render:p=>catName(p.category) },
+    { label:"Price (from)", render:p=>`<b>${money(lowestPrice(p))}</b>` },
+    { label:"Sizes", render:p=>p.sizes.map(s=>s.label).join(", ") },
+    { label:"Purity", render:p=>p.purity },
+    { label:"CAS", render:p=>p.cas },
+    { label:"Molecular weight", render:p=>p.molWeight },
+    { label:"Half-life", render:p=>p.halfLife },
+    { label:"Sequence", render:p=>`<span style="word-break:break-word;font-size:.8rem">${p.sequence}</span>` },
+    { label:"Research areas", render:p=>p.research.map(r=>`<div>• ${r}</div>`).join("") },
+    { label:"Storage", render:p=>`<span style="font-size:.82rem">${p.storage}</span>` },
+    { label:"", render:p=>`<a href="product.html?id=${p.id}" class="btn btn--sm btn--solid btn--full">View / Buy</a>` }
+  ];
+
+  function render(){
+    const items = getCompare().map(id=>productById(id)).filter(Boolean);
+    const empty = document.getElementById("cmp-empty");
+    const wrap = document.getElementById("cmp-wrap");
+    const actions = document.getElementById("cmp-actions");
+    if(!items.length){
+      empty.style.display = "block"; wrap.style.display = "none"; actions.style.display = "none"; return;
+    }
+    empty.style.display = "none"; wrap.style.display = "block"; actions.style.display = "block";
+    const table = document.getElementById("cmp-table");
+    const body = rows.map(r=>{
+      const th = r.label ? `<th>${r.label}</th>` : `<th></th>`;
+      return `<tr>${th}${items.map(p=>`<td>${r.render(p)}</td>`).join("")}</tr>`;
+    }).join("");
+    table.innerHTML = `<tbody>${body}</tbody>`;
+  }
+
+  document.getElementById("cmp-clear-all").onclick = ()=>{ clearCompare(); syncCompareUI(); render(); };
+  render();
+</script>
+</body>
+</html>

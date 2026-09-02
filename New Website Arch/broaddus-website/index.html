@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Broaddus Scientific Group — Research-Grade Peptides & Reference Data</title>
+<meta name="description" content="Research-grade peptides with third-party COAs, an educational peptide glossary, and reconstitution tools. For laboratory research use only.">
+<link rel="stylesheet" href="assets/css/style.css?v=5">
+</head>
+<body data-page="home">
+<div id="chrome-top"></div>
+
+<!-- HERO -->
+<section class="hero"><div class="container">
+  <div class="hero__grid">
+    <div>
+      <div class="eyebrow">Research Use Only · ≥99% Purity · COA per batch</div>
+      <h1>Research-grade peptides, backed by reference-grade data.</h1>
+      <p class="lead">Browse a curated catalog of research peptides — each one paired with an educational glossary entry, structural data, and a third-party certificate of analysis.</p>
+      <div class="hero__cta">
+        <a href="shop.html" class="btn btn--solid">Shop Peptides</a>
+        <a href="glossary.html" class="btn">Explore the Glossary</a>
+      </div>
+    </div>
+    <div class="hero__panel">
+      <h4>Why researchers order here</h4>
+      <ul class="checklist">
+        <li>Batch-specific Certificates of Analysis (COA) on every compound</li>
+        <li>Third-party HPLC & mass-spec verification, ≥99% purity standard</li>
+        <li>Educational glossary — data, sequence & research context per peptide</li>
+        <li>Free 2-day shipping on orders over $150, cold-chain packed</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- FEATURE STRIP -->
+<div class="strip container" style="max-width:none;padding:0">
+  <div class="container" style="display:contents"></div>
+</div>
+<div class="strip">
+  <div><b>Third-Party Tested</b><span>HPLC + MS on every batch</span></div>
+  <div><b>COA Included</b><span>Downloadable per lot</span></div>
+  <div><b>Fast US Shipping</b><span>Free over $150</span></div>
+  <div><b>Research Support</b><span>Reconstitution tools & data</span></div>
+</div>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section"><div class="container">
+  <div class="section__head">
+    <div>
+      <div class="eyebrow">Catalog</div>
+      <h2>Featured research compounds</h2>
+      <p>A selection of the most-referenced peptides across our research categories.</p>
+    </div>
+    <a href="shop.html" class="btn btn--sm">View all</a>
+  </div>
+  <div class="grid grid--4" id="featured-grid"></div>
+</div></section>
+
+<!-- CATEGORIES -->
+<section class="section" style="padding-top:0"><div class="container">
+  <div class="section__head">
+    <div>
+      <div class="eyebrow">Browse by research area</div>
+      <h2>Research categories</h2>
+    </div>
+    <a href="category.html" class="btn btn--sm">View all</a>
+  </div>
+  <div class="catband" id="cat-band"></div>
+</div></section>
+
+<!-- FEATURED STACKS -->
+<section class="section" style="padding-top:0"><div class="container">
+  <div class="section__head">
+    <div>
+      <div class="eyebrow">Plan the study</div>
+      <h2>Popular research stacks</h2>
+      <p>Curated multi-peptide combinations with reference dosing — add a whole stack in one click.</p>
+    </div>
+    <a href="protocols.html" class="btn btn--sm">All protocols</a>
+  </div>
+  <div class="grid grid--3" id="home-stacks"></div>
+</div></section>
+
+<!-- GLOSSARY CTA -->
+<section class="section" style="padding-top:0"><div class="container">
+  <div style="border:1px solid #000;padding:44px;display:grid;grid-template-columns:1.3fr .7fr;gap:32px;align-items:center">
+    <div>
+      <div class="eyebrow">Informational first</div>
+      <h2 style="margin-bottom:12px">Every product is also a glossary entry.</h2>
+      <p class="muted" style="max-width:52ch">We built the catalog on top of a peptide encyclopedia. Read the mechanism, research areas, sequence, and structural data before you ever add to cart — then buy the exact size you need.</p>
+    </div>
+    <div style="text-align:right">
+      <a href="glossary.html" class="btn btn--solid">Open Peptide Glossary</a>
+    </div>
+  </div>
+</div></section>
+
+<!-- RECENTLY VIEWED -->
+<section class="section" id="home-rv" style="padding-top:0;display:none"><div class="container">
+  <div class="section__head">
+    <div><div class="eyebrow">Recently viewed</div><h2>Back to what you were looking at</h2></div>
+    <a href="shop.html" class="btn btn--sm">Shop all</a>
+  </div>
+  <div class="grid grid--4" id="home-recent"></div>
+</div></section>
+
+<!-- RUO NOTICE -->
+<section class="section" style="padding-top:0"><div class="container">
+  <div class="notice">
+    <span class="ruo-flag">RUO</span>
+    <div><b>Research Use Only.</b> All products listed on this website are intended strictly for in-vitro laboratory and research use. They are not drugs, foods, or cosmetics, are not for human or animal consumption, and no statements on this site should be interpreted as medical advice or a therapeutic claim.</div>
+  </div>
+</div></section>
+
+<div id="chrome-bottom"></div>
+<script src="assets/js/data.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
+<script>
+  // Featured products
+  const featured = PRODUCTS.filter(p=>p.featured).slice(0,8);
+  document.getElementById("featured-grid").innerHTML = featured.map(cardHTML).join("");
+  // Category band (first 8)
+  document.getElementById("cat-band").innerHTML = CATEGORIES.filter(c=>c.id!=="supplies").slice(0,8).map(c=>
+    `<a href="category.html?cat=${c.id}"><h4>${c.name}</h4><p>${c.blurb}</p></a>`).join("");
+  // Featured stacks
+  // Recently viewed
+  const rvHome = getRecent().map(productById).filter(Boolean).slice(0,4);
+  if(rvHome.length){
+    document.getElementById("home-rv").style.display = "";
+    document.getElementById("home-recent").innerHTML = rvHome.map(cardHTML).join("");
+  }
+  document.getElementById("home-stacks").innerHTML = STACKS.filter(s=>s.featured).slice(0,3).map(s=>{
+    const comps = s.components.map(c=>{const p=productById(c.id);return p?p.name:"";}).filter(Boolean).join(" + ");
+    return `<a class="card" href="protocols.html" style="padding:22px">
+      <div class="card__cat">${s.goal}</div>
+      <div class="card__title" style="margin:4px 0 8px">${s.name}</div>
+      <div class="card__desc">${comps}</div>
+      <div class="card__foot"><span class="price">${money(stackPrice(s))} <small>stack</small></span><span class="btn btn--sm">View</span></div>
+    </a>`;
+  }).join("");
+</script>
+</body>
+</html>

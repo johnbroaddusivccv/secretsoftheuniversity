@@ -102,6 +102,37 @@
     transition: background .8s ease, color .8s ease;
   }
   canvas#stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+  /* ── Angel Numbers — full-viewport ambient layer ── */
+  .angel-overlay {
+    position:fixed; inset:0; z-index:0;
+    pointer-events:none; overflow:hidden;
+  }
+  .angel-num {
+    position:absolute;
+    font-family:Georgia,'Times New Roman',serif;
+    font-weight:400; font-style:italic;
+    pointer-events:none; user-select:none;
+    white-space:nowrap;
+    will-change:transform, opacity;
+  }
+  @keyframes angelDriftR {
+    0%   { transform:translate(-140px, 0); }
+    100% { transform:translate(calc(100vw + 140px), 0); }
+  }
+  @keyframes angelDriftL {
+    0%   { transform:translate(calc(100vw + 140px), 0); }
+    100% { transform:translate(-140px, 0); }
+  }
+  @keyframes angelDriftD {
+    0%   { transform:translate(0, -60px); }
+    100% { transform:translate(0, calc(100vh + 60px)); }
+  }
+  @keyframes angelFade {
+    0%, 100% { opacity:0; }
+    35%, 65% { opacity:var(--angel-peak, 0.12); }
+  }
+
   .wrap { position:relative; z-index:1; max-width:1000px; margin:0 auto; padding:0 24px; }
 
   /* Full-width nav bar */
@@ -391,6 +422,88 @@
   }
   .gate .gate-desc { font-size:0.78rem; color:var(--muted); line-height:1.35; }
 
+  /* ── Compound Library ──────────────────────────── */
+  .lib-filter-bar {
+    display:flex; flex-wrap:wrap; gap:8px; justify-content:center;
+    margin-bottom:32px; max-width:800px; margin-left:auto; margin-right:auto;
+  }
+  .lib-filter {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.7rem; letter-spacing:0.1em;
+    text-transform:uppercase; background:none; border:1px solid var(--border);
+    color:var(--muted); padding:7px 16px; border-radius:100px; cursor:pointer;
+    transition:all .3s;
+  }
+  .lib-filter:hover { border-color:var(--gold); color:var(--gold); }
+  .lib-filter.active { background:rgba(240,201,108,0.12); border-color:var(--gold); color:var(--gold); }
+  .lib-grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px;
+    max-width:920px; margin:0 auto;
+  }
+  .lib-card {
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:22px 20px; transition:all .35s; cursor:default;
+  }
+  .lib-card:hover { border-color:var(--gold); transform:translateY(-3px); }
+  .lib-card .lib-cat {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.58rem; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--violet); margin-bottom:6px; display:inline-block;
+    background:rgba(139,124,247,0.1); padding:3px 10px; border-radius:100px;
+  }
+  .lib-card h4 { font-weight:400; font-size:1.02rem; margin-bottom:6px; color:var(--ink); }
+  .lib-card .lib-aka { font-size:0.75rem; color:var(--muted); font-style:italic; margin-bottom:8px; }
+  .lib-card .lib-desc { font-size:0.84rem; color:var(--muted); line-height:1.55; }
+  .lib-card .lib-detail {
+    max-height:0; overflow:hidden; transition:max-height .4s ease, opacity .3s;
+    opacity:0; margin-top:0;
+  }
+  .lib-card:hover .lib-detail, .lib-card.open .lib-detail {
+    max-height:300px; opacity:1; margin-top:12px;
+  }
+  .lib-card .lib-detail p { font-size:0.8rem; color:var(--muted); line-height:1.55; margin-bottom:6px; }
+  .lib-card .lib-detail .lib-ref {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.65rem; color:var(--violet);
+    text-decoration:none; letter-spacing:0.06em;
+  }
+  .lib-card .lib-detail .lib-ref:hover { color:var(--gold); }
+  .lib-card[data-hidden="true"] { display:none; }
+
+  /* ── Glossary ───────────────────────────────── */
+  .glossary-grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px;
+    max-width:800px; margin:0 auto 40px;
+  }
+  .glossary-term {
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; transition:border-color .3s;
+  }
+  .glossary-term:hover { border-color:var(--violet); }
+  .glossary-term dt {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.72rem; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--gold); font-weight:600; margin-bottom:4px;
+  }
+  .glossary-term dd { font-size:0.82rem; color:var(--muted); line-height:1.5; margin:0; }
+
+  /* ── Supplier Gates ────────────────────────────── */
+  .supplier-gates {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px;
+    max-width:700px; margin:20px auto 0;
+  }
+  .supplier-gate {
+    background:linear-gradient(135deg, rgba(240,201,108,0.06), rgba(139,124,247,0.06));
+    border:1px solid var(--border); border-radius:16px; padding:24px 22px;
+    text-decoration:none; color:var(--ink); transition:all .35s;
+  }
+  .supplier-gate:hover { border-color:var(--gold); transform:translateY(-4px); box-shadow:0 8px 30px rgba(240,201,108,0.08); }
+  .supplier-gate .sg-name {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.8rem; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--gold); font-weight:700; margin-bottom:8px;
+  }
+  .supplier-gate .sg-desc { font-size:0.85rem; color:var(--muted); line-height:1.55; margin-bottom:12px; }
+  .supplier-gate .sg-cta {
+    font-family:Helvetica,Arial,sans-serif; font-size:0.68rem; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--violet);
+  }
+
   /* ── Palantir-style Footer ──────────────────── */
   .site-footer {
     position:relative; z-index:1; width:100%;
@@ -577,6 +690,8 @@
   <button class="mobile-theme" onclick="toggleTheme(); this.textContent = document.documentElement.classList.contains('light') ? '☀ Light Mode' : '☾ Dark Mode';">☾ Dark Mode</button>
 </div>
 
+<div class="angel-overlay" id="angel-overlay" aria-hidden="true"></div>
+
 <div class="wrap">
 
   <header>
@@ -727,6 +842,283 @@
     </div>
   </section>
 
+  <!-- ═══ COMPOUND LIBRARY ═══ -->
+  <section id="library">
+    <div class="section-label">Compound Library</div>
+    <h2 class="mb-sm">The peptide index</h2>
+    <p class="section-note">A reference catalog of research peptides and bioactive compounds, organized by category. Hover or tap to expand.</p>
+
+    <!-- Glossary -->
+    <div class="glossary-grid">
+      <dl class="glossary-term"><dt>Peptide</dt><dd>Short chains of amino acids (2–50) that act as signaling molecules, telling cells to perform specific tasks — repair, regulate, or modulate.</dd></dl>
+      <dl class="glossary-term"><dt>Agonist</dt><dd>A substance that binds to a cell receptor and activates it to produce a biological response. Example: semaglutide (GLP-1 agonist).</dd></dl>
+      <dl class="glossary-term"><dt>Bioavailability</dt><dd>The proportion of a compound that reaches systemic circulation after administration. Route of delivery matters.</dd></dl>
+      <dl class="glossary-term"><dt>Reconstitution</dt><dd>Adding a solvent (typically bacteriostatic water) to a lyophilized (freeze-dried) peptide powder to prepare it for use.</dd></dl>
+      <dl class="glossary-term"><dt>Half-life</dt><dd>The time required for the concentration of a compound to fall to half its initial value in the body.</dd></dl>
+      <dl class="glossary-term"><dt>Lyophilized</dt><dd>Freeze-dried. Most research peptides ship in lyophilized form and require reconstitution before use.</dd></dl>
+    </div>
+
+    <!-- Category filter -->
+    <div class="lib-filter-bar">
+      <button class="lib-filter active" onclick="filterLib('all')">All</button>
+      <button class="lib-filter" onclick="filterLib('metabolic')">Metabolic</button>
+      <button class="lib-filter" onclick="filterLib('recovery')">Recovery</button>
+      <button class="lib-filter" onclick="filterLib('growth-hormone')">Growth Hormone</button>
+      <button class="lib-filter" onclick="filterLib('immune')">Immune</button>
+      <button class="lib-filter" onclick="filterLib('cognitive')">Cognitive</button>
+      <button class="lib-filter" onclick="filterLib('longevity')">Longevity</button>
+      <button class="lib-filter" onclick="filterLib('copper')">Copper Peptides</button>
+    </div>
+
+    <!-- Compound cards -->
+    <div class="lib-grid" id="lib-grid">
+
+      <div class="lib-card" data-cat="metabolic" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Metabolic / GLP-1</div>
+        <h4>Semaglutide</h4>
+        <div class="lib-aka">GLP-1 receptor agonist</div>
+        <div class="lib-desc">Mimics the incretin hormone GLP-1. Studied extensively for appetite regulation, glucose balance, and weight management.</div>
+        <div class="lib-detail">
+          <p>Acts on the hypothalamus to increase satiety signaling. Slows gastric emptying. Originally developed for type 2 diabetes; now one of the most-studied compounds in metabolic medicine.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=semaglutide" target="_blank">PubMed → semaglutide</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="metabolic" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Metabolic / GLP-1</div>
+        <h4>Retatrutide</h4>
+        <div class="lib-aka">Triple agonist: GLP-1 / GIP / glucagon</div>
+        <div class="lib-desc">Next-generation multi-receptor agonist studied for enhanced fat metabolism, appetite regulation, and glucose control.</div>
+        <div class="lib-detail">
+          <p>Engages three receptors simultaneously — a first in its class. Phase 2 trials showed significant body weight reduction. Investigational; not yet FDA-approved.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=retatrutide" target="_blank">PubMed → retatrutide</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="metabolic" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Metabolic / GLP-1</div>
+        <h4>Tirzepatide</h4>
+        <div class="lib-aka">Dual agonist: GLP-1 / GIP</div>
+        <div class="lib-desc">Dual incretin receptor agonist studied for glycemic control and weight management. FDA-approved for type 2 diabetes.</div>
+        <div class="lib-detail">
+          <p>Acts on both GLP-1 and GIP receptors. Shown to produce substantial weight loss in clinical trials. Marketed as Mounjaro for diabetes and Zepbound for weight management.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=tirzepatide" target="_blank">PubMed → tirzepatide</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="metabolic" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Metabolic</div>
+        <h4>AOD-9604</h4>
+        <div class="lib-aka">Anti-obesity drug fragment 9604</div>
+        <div class="lib-desc">A modified fragment of human growth hormone (hGH 176-191) studied for its effects on fat metabolism without impacting blood sugar or growth.</div>
+        <div class="lib-detail">
+          <p>Stimulates lipolysis (fat breakdown) and inhibits lipogenesis (fat accumulation). Does not affect IGF-1 levels. Research-use compound.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=AOD-9604" target="_blank">PubMed → AOD-9604</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="metabolic" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Metabolic</div>
+        <h4>MOTS-c</h4>
+        <div class="lib-aka">Mitochondrial-derived peptide</div>
+        <div class="lib-desc">A mitochondrial-derived peptide that targets the folate-methionine cycle, studied for metabolic regulation and exercise mimicry.</div>
+        <div class="lib-detail">
+          <p>Activates AMPK pathway. Research suggests it may improve insulin sensitivity and promote cellular energy balance. Sometimes called an "exercise mimetic."</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=MOTS-c+peptide" target="_blank">PubMed → MOTS-c</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="recovery" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Recovery / Regenerative</div>
+        <h4>BPC-157</h4>
+        <div class="lib-aka">Body Protection Compound-157</div>
+        <div class="lib-desc">A pentadecapeptide derived from human gastric juice. One of the most-studied compounds in regenerative peptide research.</div>
+        <div class="lib-detail">
+          <p>Extensive preclinical research on tissue repair (tendons, ligaments, muscles), gastrointestinal protection, and modulation of nitric oxide synthesis. Research-use compound.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=BPC-157" target="_blank">PubMed → BPC-157</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="recovery" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Recovery / Regenerative</div>
+        <h4>TB-500</h4>
+        <div class="lib-aka">Thymosin Beta-4 fragment</div>
+        <div class="lib-desc">A synthetic fragment of naturally occurring thymosin beta-4. Studied for cell migration, angiogenesis, and soft tissue repair.</div>
+        <div class="lib-detail">
+          <p>Promotes wound healing and new blood vessel formation in preclinical models. Often studied in combination with BPC-157 for synergistic recovery effects.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=thymosin+beta-4" target="_blank">PubMed → thymosin beta-4</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="recovery" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Recovery / Regenerative</div>
+        <h4>Pentadecapeptide (BPC Blend)</h4>
+        <div class="lib-aka">BPC-157 + TB-500 combination</div>
+        <div class="lib-desc">A blend of the two most-studied regenerative peptides. Investigated for complementary mechanisms in tissue repair and recovery.</div>
+        <div class="lib-detail">
+          <p>Combines BPC-157's gastrointestinal and tendon support with TB-500's angiogenic and cell-migration properties. Popular in recovery research protocols.</p>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="growth-hormone" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Growth Hormone</div>
+        <h4>CJC-1295 + Ipamorelin</h4>
+        <div class="lib-aka">GHRH analog + GH secretagogue</div>
+        <div class="lib-desc">A combination of a growth hormone-releasing hormone analog and a selective ghrelin receptor agonist. Studied for pulsatile GH release.</div>
+        <div class="lib-detail">
+          <p>CJC-1295 extends the half-life of endogenous GHRH. Ipamorelin stimulates GH release without significantly affecting cortisol or prolactin. Often dosed at bedtime to mimic natural GH pulsation.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=CJC-1295+ipamorelin" target="_blank">PubMed → CJC-1295</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="growth-hormone" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Growth Hormone</div>
+        <h4>Tesamorelin + Ipamorelin</h4>
+        <div class="lib-aka">GHRH analog blend</div>
+        <div class="lib-desc">Tesamorelin is an FDA-approved GHRH analog (for lipodystrophy). Combined with Ipamorelin for enhanced GH secretion research.</div>
+        <div class="lib-detail">
+          <p>Tesamorelin is one of the few peptides with FDA approval (Egrifta). The combination is studied for body composition optimization and visceral fat reduction.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=tesamorelin" target="_blank">PubMed → tesamorelin</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="growth-hormone" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Growth Hormone</div>
+        <h4>Hexarelin</h4>
+        <div class="lib-aka">GH secretagogue hexapeptide</div>
+        <div class="lib-desc">A potent growth hormone secretagogue. Studied for its effects on GH release, cardiac function, and body composition.</div>
+        <div class="lib-detail">
+          <p>One of the strongest GH-releasing peptides by molar potency. Also studied for cardioprotective effects independent of GH release. Research-use compound.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=hexarelin" target="_blank">PubMed → hexarelin</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="immune" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Immune</div>
+        <h4>Thymosin Alpha-1</h4>
+        <div class="lib-aka">Tα1 · immune modulator</div>
+        <div class="lib-desc">A naturally occurring thymic peptide that modulates T-cell function. Approved in some countries for hepatitis B and as an immune adjuvant.</div>
+        <div class="lib-detail">
+          <p>Enhances dendritic cell function and T-cell maturation. One of the few peptides with international regulatory approvals (Zadaxin). Studied for immune support in chronic infections.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=thymosin+alpha-1" target="_blank">PubMed → thymosin alpha-1</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="immune" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Immune / Anti-inflammatory</div>
+        <h4>KPV</h4>
+        <div class="lib-aka">Alpha-MSH fragment (Lys-Pro-Val)</div>
+        <div class="lib-desc">A tripeptide fragment of alpha-melanocyte-stimulating hormone studied for anti-inflammatory and antimicrobial properties.</div>
+        <div class="lib-detail">
+          <p>Research focuses on gut inflammation, mucosal healing, and immune modulation. Investigated as a targeted anti-inflammatory without systemic immunosuppression.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=KPV+peptide+anti-inflammatory" target="_blank">PubMed → KPV</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="cognitive" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Cognitive / Anxiolytic</div>
+        <h4>Selank</h4>
+        <div class="lib-aka">Synthetic tuftsin analog</div>
+        <div class="lib-desc">A synthetic heptapeptide analog of tuftsin, studied for anxiolytic and nootropic effects. Approved in Russia for anxiety disorders.</div>
+        <div class="lib-detail">
+          <p>Modulates GABA, serotonin, and dopamine systems. Does not produce sedation or dependence in preclinical models. Administered intranasally in approved formulations.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=selank+peptide" target="_blank">PubMed → selank</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="cognitive" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Cognitive / Neuroprotective</div>
+        <h4>Semax</h4>
+        <div class="lib-aka">Synthetic ACTH(4-10) analog</div>
+        <div class="lib-desc">A neuropeptide derived from ACTH. Studied for cognitive enhancement, neuroprotection, and BDNF modulation.</div>
+        <div class="lib-detail">
+          <p>Increases brain-derived neurotrophic factor (BDNF). Approved in Russia for stroke recovery and cognitive disorders. Intranasal administration.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=semax+peptide" target="_blank">PubMed → semax</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="longevity" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Longevity / Cellular</div>
+        <h4>NAD+</h4>
+        <div class="lib-aka">Nicotinamide adenine dinucleotide</div>
+        <div class="lib-desc">A coenzyme central to metabolism, DNA repair, and sirtuin activation. Studied extensively in aging and longevity research.</div>
+        <div class="lib-detail">
+          <p>Declines with age. Supplementation studied for mitochondrial function, cognitive clarity, and cellular energy. Available as IV, subcutaneous, and oral (NMN/NR precursors).</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=NAD%2B+aging" target="_blank">PubMed → NAD+</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="longevity" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Longevity / Telomere</div>
+        <h4>Epitalon</h4>
+        <div class="lib-aka">Epithalon · Ala-Glu-Asp-Gly</div>
+        <div class="lib-desc">A tetrapeptide studied for telomerase activation and pineal gland function. One of the earliest peptides researched for lifespan extension.</div>
+        <div class="lib-detail">
+          <p>Based on the work of Professor Vladimir Khavinson. Studied for its ability to reactivate telomerase in somatic cells and regulate melatonin production. Research-use compound.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=epitalon+telomerase" target="_blank">PubMed → epitalon</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="longevity" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Longevity / Endocrine</div>
+        <h4>PT-141 (Bremelanotide)</h4>
+        <div class="lib-aka">Melanocortin receptor agonist</div>
+        <div class="lib-desc">A melanocortin agonist FDA-approved (as Vyleesi) for hypoactive sexual desire disorder. Acts centrally, not peripherally.</div>
+        <div class="lib-detail">
+          <p>Binds MC3R and MC4R receptors in the hypothalamus. One of the few peptides with full FDA approval for a specific indication. Subcutaneous administration.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=bremelanotide" target="_blank">PubMed → bremelanotide</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="copper" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Copper Peptides</div>
+        <h4>GHK-Cu</h4>
+        <div class="lib-aka">Copper tripeptide-1</div>
+        <div class="lib-desc">A naturally occurring copper complex (Gly-His-Lys·Cu²⁺) found in plasma and saliva. Studied for wound healing, collagen synthesis, and skin remodeling.</div>
+        <div class="lib-detail">
+          <p>Promotes collagen and elastin production, attracts immune cells to injury sites, and has antioxidant properties. Available topically and as injectable research compound.</p>
+          <a class="lib-ref" href="https://pubmed.ncbi.nlm.nih.gov/?term=GHK-Cu+peptide" target="_blank">PubMed → GHK-Cu</a>
+        </div>
+      </div>
+
+      <div class="lib-card" data-cat="copper" onclick="this.classList.toggle('open')">
+        <div class="lib-cat">Copper Peptides</div>
+        <h4>AHK-Cu</h4>
+        <div class="lib-aka">Copper tripeptide (Ala-His-Lys·Cu²⁺)</div>
+        <div class="lib-desc">A copper-binding tripeptide studied for hair follicle stimulation and wound repair, often compared with GHK-Cu.</div>
+        <div class="lib-detail">
+          <p>Research suggests it may promote dermal papilla cell proliferation. Less studied than GHK-Cu but gaining interest in cosmetic and regenerative research.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Supplier Gates -->
+    <div style="text-align:center; margin-top:40px;">
+      <div class="section-label" style="margin-bottom:8px;">Trusted Suppliers</div>
+      <p class="section-note" style="margin-bottom:20px;">Where practitioners and researchers source their compounds.</p>
+    </div>
+    <div class="supplier-gates">
+      <a class="supplier-gate" href="https://ruohub.com" target="_blank" rel="noopener noreferrer">
+        <div class="sg-name">RuoHub</div>
+        <div class="sg-desc">Research-use-only peptide marketplace. Verified suppliers, batch documentation, and transparent sourcing.</div>
+        <div class="sg-cta">Browse catalog →</div>
+      </a>
+      <a class="supplier-gate" href="https://northwestpeptides.com" target="_blank" rel="noopener noreferrer">
+        <div class="sg-name">Northwest Peptides</div>
+        <div class="sg-desc">Trusted research peptide supplier. Third-party tested, COA on every order, 2-day shipping across the USA. Categories span GLP-1, recovery, immune, growth hormone, and more.</div>
+        <div class="sg-cta">View products →</div>
+      </a>
+    </div>
+
+    <div class="callout-box" style="margin-top:30px;">
+      <div>
+        <h3>Research use only</h3>
+        <p>Compounds listed in this library are for educational reference. Many are not FDA-approved for human use. Dosing and administration should always be directed by a licensed clinician. No treatment or cure claims are made.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ FEATURED COMPOUNDS ═══ -->
   <section id="compounds">
     <div class="section-label">Featured Compounds</div>
@@ -810,26 +1202,30 @@
     </div>
   </section>
 
-  <!-- ═══ PRICE TRANSPARENCY ═══ -->
-  <section id="pricing">
-    <div class="section-label">Price Transparency</div>
-    <h2 class="mb-sm">Compare the going rate</h2>
-    <p class="section-note">See how our pricing stacks up against the current market average.</p>
-    <div class="price-panel">
-      <div>
-        <label for="peptide-select">Select a compound</label>
-        <select id="peptide-select" onchange="updateBars()">
-          <option value="reta">Retatrutide</option>
-          <option value="bpc">BPC-157</option>
-          <option value="nad">NAD+</option>
-        </select>
-        <div class="price-note">Figures are illustrative market estimates for reference, not quotes. Contact us for current pricing.</div>
+  <!-- ═══ OUR STANDARDS ═══ -->
+  <section id="standards">
+    <div class="section-label">Our Standards</div>
+    <h2 class="mb-sm">How we source</h2>
+    <p class="section-note">The principles behind every compound we carry.</p>
+    <div class="serve-grid">
+      <div class="serve-card">
+        <div class="serve-icon">◉</div>
+        <h3>Third-party tested</h3>
+        <p>Every compound includes batch-specific documentation. Certificates of Analysis verify purity and identity before anything ships.</p>
       </div>
-      <div class="bars">
-        <div class="bar-row"><div class="bar-label"><span>Market average</span><span class="bar-val" id="mkt">$320</span></div><div class="bar-track"><div class="bar-fill market" id="mktbar" style="width:100%"></div></div></div>
-        <div class="bar-row"><div class="bar-label"><span>Broaddus Research Group</span><span class="bar-val" id="our">$222</span></div><div class="bar-track"><div class="bar-fill brg" id="ourbar" style="width:69%"></div></div></div>
-        <div class="bar-save">You save <b id="savepct">~31%</b> vs. market average</div>
+      <div class="serve-card">
+        <div class="serve-icon">⚖</div>
+        <h3>Transparent sourcing</h3>
+        <p>We work with licensed compounding pharmacies and verified research suppliers. Chain of custody is documented, not assumed.</p>
       </div>
+      <div class="serve-card">
+        <div class="serve-icon">✦</div>
+        <h3>Practitioner-first</h3>
+        <p>Pricing is provided directly to licensed practitioners upon inquiry. No public price lists — we believe in conversations, not carts.</p>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:28px;">
+      <a href="mailto:john@secretsoftheuniversity.com" style="display:inline-block; font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold); padding:12px 28px; border-radius:100px; text-decoration:none; transition:all .3s;">Inquire about pricing</a>
     </div>
   </section>
 
@@ -924,6 +1320,8 @@
       <a class="gate" href="https://peterattiamd.com" target="_blank"><span class="gate-dot" style="background:#9b97b8"></span><div class="gate-info"><div class="gate-name">Peter Attia</div><div class="gate-desc">Longevity medicine. The long game.</div></div></a>
       <a class="gate" href="https://www.mayoclinic.org" target="_blank"><span class="gate-dot" style="background:#0057b8"></span><div class="gate-info"><div class="gate-name">Mayo Clinic</div><div class="gate-desc">Conditions, symptoms, treatments.</div></div></a>
       <a class="gate" href="https://www.ncbi.nlm.nih.gov/books" target="_blank"><span class="gate-dot" style="background:#f0c96c"></span><div class="gate-info"><div class="gate-name">NCBI Bookshelf</div><div class="gate-desc">Free medical textbooks. StatPearls.</div></div></a>
+      <a class="gate" href="https://ruohub.com" target="_blank"><span class="gate-dot" style="background:#e8a838"></span><div class="gate-info"><div class="gate-name">RuoHub</div><div class="gate-desc">Research-use-only peptide marketplace. Verified suppliers.</div></div></a>
+      <a class="gate" href="https://northwestpeptides.com" target="_blank"><span class="gate-dot" style="background:#2e7d32"></span><div class="gate-info"><div class="gate-name">Northwest Peptides</div><div class="gate-desc">Research peptides. Third-party tested, COA included.</div></div></a>
     </div>
   </section>
 
@@ -1038,6 +1436,65 @@
   }
 
   // ══════════════════════════════════════════════════
+  // ANGEL NUMBERS — full-viewport ambient layer
+  // ══════════════════════════════════════════════════
+  (function initAngels(){
+    const overlay = document.getElementById('angel-overlay');
+    if (!overlay) return;
+    const ANGELS = ['111','222','333','444','555','666','777','888','999',
+      '1111','1212','1010','1234','2222','3333','4444','5555','7777','1001','808'];
+    const COLORS = [
+      'rgba(240,201,108,',
+      'rgba(139,124,247,',
+      'rgba(232,230,245,',
+      'rgba(95,208,138,',
+      'rgba(226,112,138,',
+      'rgba(180,160,255,',
+    ];
+    const DRIFTS = ['angelDriftR','angelDriftL','angelDriftD'];
+    for (let i = 0; i < 45; i++) {
+      const el = document.createElement('span');
+      el.className = 'angel-num';
+      el.textContent = ANGELS[Math.floor(Math.random() * ANGELS.length)];
+      const size = 14 + Math.random() * 58;
+      const duration = 25 + Math.random() * 70;
+      const delay = -(Math.random() * duration);
+      const fadeDur = 6 + Math.random() * 14;
+      const fadeDelay = -(Math.random() * fadeDur);
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
+      const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      const peak = 0.04 + Math.random() * 0.14;
+      const drift = DRIFTS[Math.floor(Math.random() * DRIFTS.length)];
+      el.style.cssText = `
+        font-size:${size}px;
+        top:${top}%; left:${left}%;
+        color:${color}1);
+        --angel-peak:${peak};
+        animation:
+          ${drift} ${duration}s linear ${delay}s infinite,
+          angelFade ${fadeDur}s ease-in-out ${fadeDelay}s infinite;
+      `;
+      overlay.appendChild(el);
+    }
+  })();
+
+  /* ── Compound Library filter ──────────────── */
+  function filterLib(cat) {
+    const cards = document.querySelectorAll('.lib-card');
+    cards.forEach(c => {
+      if (cat === 'all' || c.dataset.cat === cat) {
+        c.removeAttribute('data-hidden');
+      } else {
+        c.setAttribute('data-hidden', 'true');
+      }
+    });
+    document.querySelectorAll('.lib-filter').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.toLowerCase().replace(/\s+/g, '-') === cat || (cat === 'all' && btn.textContent.toLowerCase() === 'all'));
+    });
+  }
+
+  // ══════════════════════════════════════════════════
   // VITAL SIGNS — gentle oscillation
   // ══════════════════════════════════════════════════
   (function animateVitals(){
@@ -1069,18 +1526,7 @@
   });
 
   // ══════════════════════════════════════════════════
-  // PRICE COMPARISON TOOL
-  // ══════════════════════════════════════════════════
-  var PRICE_DATA = { reta:{m:320, o:222}, bpc:{m:165, o:111}, nad:{m:449, o:333} };
-  function updateBars(){
-    var k = document.getElementById('peptide-select').value, d = PRICE_DATA[k];
-    document.getElementById('mkt').textContent = '$' + d.m;
-    document.getElementById('our').textContent = '$' + d.o;
-    document.getElementById('mktbar').style.width = '100%';
-    document.getElementById('ourbar').style.width = Math.round(d.o / d.m * 100) + '%';
-    document.getElementById('savepct').textContent = '~' + Math.round((1 - d.o / d.m) * 100) + '%';
-  }
-  updateBars();
+
 
   // Footer form — sends via mailto: to john@secretsoftheuniversity.com
   function footerJoin(e){

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Category — Broaddus Scientific Group</title>
+<meta name="description" content="Browse research peptides by research area, with category context, featured compounds, and related stacks. Research use only.">
+<link rel="stylesheet" href="assets/css/style.css?v=5">
+</head>
+<body data-page="shop">
+<div id="chrome-top"></div>
+
+<main id="cat-mount"></main>
+
+<div id="chrome-bottom"></div>
+<script src="assets/js/data.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
+<script>
+  const cat = categoryById(qs("cat"));
+  const mount = document.getElementById("cat-mount");
+
+  if(!cat){
+    // ---- Category index ----
+    document.title = "Research Categories — Broaddus Scientific Group";
+    const cards = CATEGORIES.map(c=>{
+      const n = PRODUCTS.filter(p=>p.category===c.id).length;
+      return `<a class="card" href="category.html?cat=${c.id}" style="padding:24px">
+        <div class="card__cat">${n} product${n===1?"":"s"}</div>
+        <div class="card__title" style="margin:4px 0 8px">${c.name}</div>
+        <div class="card__desc">${c.blurb}</div>
+        <div class="card__foot"><span></span><span class="btn btn--sm">Explore</span></div>
+      </a>`;
+    }).join("");
+    mount.innerHTML = `
+      <section class="page-hero"><div class="container">
+        <div class="eyebrow">Browse by research area</div>
+        <h1>Research Categories</h1>
+        <p class="muted" style="max-width:62ch">Explore our catalog by research area. Each category collects the relevant compounds, context, and related stacks.</p>
+      </div></section>
+      <section class="section"><div class="container"><div class="grid grid--3">${cards}</div></div></section>`;
+  } else {
+    // ---- Single category landing ----
+    document.title = `${cat.name} — Broaddus Scientific Group`;
+    const items = PRODUCTS.filter(p=>p.category===cat.id);
+    const featured = items.filter(p=>p.featured);
+    const catIds = new Set(items.map(p=>p.id));
+    const relatedStacks = (window.STACKS||[]).filter(s=> s.components.some(c=>catIds.has(c.id)));
+
+    const otherCats = CATEGORIES.filter(c=>c.id!==cat.id).map(c=>
+      `<a href="category.html?cat=${c.id}" class="tag" style="padding:8px 14px">${c.name}</a>`).join("");
+
+    const stacksHTML = relatedStacks.length ? `
+      <section class="section" style="padding-top:0"><div class="container">
+        <div class="section__head"><div><div class="eyebrow">Plan the study</div><h2>Related stacks</h2></div>
+          <a href="protocols.html" class="btn btn--sm">All protocols</a></div>
+        <div class="grid grid--3">${relatedStacks.map(s=>{
+          const comps = s.components.map(c=>{const p=productById(c.id);return p?p.name:"";}).filter(Boolean).join(" + ");
+          return `<a class="card" href="protocols.html" style="padding:22px">
+            <div class="card__cat">${s.goal}</div>
+            <div class="card__title" style="margin:4px 0 8px">${s.name}</div>
+            <div class="card__desc">${comps}</div>
+            <div class="card__foot"><span class="price">${money(stackPrice(s))} <small>stack</small></span><span class="btn btn--sm">View</span></div>
+          </a>`;}).join("")}</div>
+      </div></section>` : "";
+
+    mount.innerHTML = `
+      <div class="container" style="padding-top:18px"><p class="small muted"><a href="category.html">Categories</a> / <span>${cat.name}</span></p></div>
+
+      <section class="page-hero"><div class="container">
+        <div class="hero__grid">
+          <div>
+            <div class="eyebrow">Research Category</div>
+            <h1>${cat.name}</h1>
+            <p class="lead" style="margin-bottom:18px">${cat.blurb}</p>
+            <div class="hero__cta">
+              <a href="#products" class="btn btn--solid">Shop ${items.length} compound${items.length===1?"":"s"}</a>
+              <a href="glossary.html" class="btn">Read the glossary</a>
+            </div>
+          </div>
+          <div class="hero__panel">
+            <h4>In this category</h4>
+            <ul class="checklist">
+              <li>${items.length} research compound${items.length===1?"":"s"}, each with a full glossary entry</li>
+              <li>Batch-specific COA & ≥99% purity standard</li>
+              ${featured.length?`<li>Featured: ${featured.slice(0,3).map(p=>p.name).join(", ")}</li>`:""}
+              ${relatedStacks.length?`<li>${relatedStacks.length} related research stack${relatedStacks.length===1?"":"s"}</li>`:""}
+            </ul>
+          </div>
+        </div>
+      </div></section>
+
+      <section class="section" style="padding-bottom:0"><div class="container" style="max-width:900px">
+        <div class="eyebrow">About this research area</div>
+        <h2 style="margin-bottom:16px">More about ${cat.name}</h2>
+        ${((window.CATEGORY_ABOUT && CATEGORY_ABOUT[cat.id]) || [cat.blurb]).map(para=>`<p class="muted" style="line-height:1.7">${para}</p>`).join("")}
+
+        <div style="margin-top:26px">
+          <div class="small" style="text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:10px">Key compounds</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            ${[...items.filter(p=>p.featured), ...items.filter(p=>!p.featured)].slice(0,10).map(p=>`<a href="product.html?id=${p.id}" class="tag" style="padding:7px 12px">${p.name}</a>`).join("")}
+          </div>
+        </div>
+
+        <div class="grid grid--2" style="margin-top:30px;gap:34px">
+          <div>
+            <div class="small" style="text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:10px">Common research applications</div>
+            <ul class="muted" style="margin:0;padding-left:1.1rem;line-height:1.9">
+              ${((window.CATEGORY_APPLICATIONS && CATEGORY_APPLICATIONS[cat.id]) || []).map(a=>`<li>${a}</li>`).join("")}
+            </ul>
+          </div>
+          <div>
+            <div class="small" style="text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:10px">References & further reading</div>
+            <ul style="margin:0;padding-left:1.1rem;line-height:1.9">
+              ${((window.CATEGORY_REFERENCES && CATEGORY_REFERENCES[cat.id]) || [{label:"Browse the peptide glossary", url:"glossary.html"}]).map(r=>`<li><a href="${r.url}"${r.url.startsWith("http")?' target="_blank" rel="noopener noreferrer"':''} style="text-decoration:underline">${r.label}</a></li>`).join("")}
+            </ul>
+            <p class="small muted" style="margin-top:10px">External research databases (third-party), provided for educational reference — Research Use Only.</p>
+          </div>
+        </div>
+      </div></section>
+
+      <section class="section" id="products"><div class="container">
+        <div class="section__head"><div><div class="eyebrow">Catalog</div><h2>${cat.name}</h2></div>
+          <a href="shop.html" class="btn btn--sm">All products</a></div>
+        <div class="grid grid--4">${items.map(cardHTML).join("")}</div>
+      </div></section>
+
+      ${stacksHTML}
+
+      <section class="section" style="padding-top:0"><div class="container">
+        <div class="eyebrow">Other research areas</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">${otherCats}</div>
+      </div></section>
+
+      <section class="section" style="padding-top:0"><div class="container">
+        <div class="notice"><span class="ruo-flag">RUO</span>
+          <div><b>Research Use Only.</b> Compounds in this category are intended strictly for in-vitro laboratory research — not for human or animal consumption, and not offered with any therapeutic claim.</div>
+        </div>
+      </div></section>`;
+  }
+</script>
+</body>
+</html>
