@@ -60,7 +60,7 @@
         <div class="cart-row" data-key="${i.key}">
           <div>
             <a href="product.html?id=${i.id}"><b>${i.name}</b></a>
-            <div class="small muted">${i.size} · SKU ${i.sku}</div>
+            <div class="small muted">${i.size} · SKU ${i.sku} · ${money(i.price)}/vial${i.tier ? ` <b class="tier-tag">${(window.VOLUME_TIERS||[])[i.tier].label} price</b>` : ""}</div>
           </div>
           <div class="qty">
             <button data-act="minus">−</button>

@@ -30,7 +30,14 @@ function stockDot(p){ const s=stockOf(p); return (s==="out" ? "○ " : s==="low"
 /* ---------- CART (localStorage) ---------- */
 const CART_KEY = "broaddus_cart_v1";
 function getCart(){ try{ return JSON.parse(localStorage.getItem(CART_KEY)) || []; }catch(e){ return []; } }
-function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); updateCartCount(); }
+/* ---------- Volume tiers (catalog sizes only) ----------
+   A size with tiers [t1,t2,t3] is priced per vial by how many vials of that
+   exact size are in the cart: 1–4 -> t1, 5–9 -> t2, 10+ -> t3. */
+function tierIndex(qty){ const t = window.VOLUME_TIERS || [{min:1},{min:5},{min:10}]; let i = 0; t.forEach((x,k)=>{ if(qty >= x.min) i = k; }); return i; }
+function sizeBySku(id, sku){ const p = productById(id); return p ? p.sizes.find(z => z.sku === sku) : null; }
+function unitPrice(size, qty){ if(!size) return 0; return size.tiers ? size.tiers[Math.min(tierIndex(qty), size.tiers.length-1)] : size.price; }
+function repriceCart(c){ c.forEach(it => { const s = sizeBySku(it.id, it.sku); if(s){ it.price = unitPrice(s, it.qty); it.tier = s.tiers ? tierIndex(it.qty) : 0; } }); return c; }
+function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(repriceCart(c))); updateCartCount(); }
 function cartCount(){ return getCart().reduce((n,i)=>n+i.qty,0); }
 function cartSubtotal(){ return getCart().reduce((s,i)=>s + i.price*i.qty, 0); }
 function updateCartCount(){ $$(".js-cart-count").forEach(el => el.textContent = cartCount()); }
@@ -78,13 +85,16 @@ function shippingCost(sub, method){
   return method === "express" ? 25 : 12;
 }
 /* Automatic volume discount tiers (by subtotal) */
+function bulkEligible(){ return getCart().reduce((t,i)=> t + (i.tier ? 0 : i.price*i.qty), 0); }
 function bulkDiscount(sub){
+  sub = bulkEligible();
   let pct = 0;
   if(sub >= 1000) pct = 15; else if(sub >= 500) pct = 10; else if(sub >= 250) pct = 5;
   if(!pct) return null;
   return { code:"BULK", amount:+(sub * pct/100).toFixed(2), freeShip:false, label:`Bulk discount ${pct}%`, auto:true };
 }
 function nextBulkTier(sub){
+  sub = bulkEligible();
   const tiers = [[250,5],[500,10],[1000,15]];
   for(const [min,pct] of tiers){ if(sub < min) return { min, pct, add: +(min - sub).toFixed(2) }; }
   return null;
@@ -195,7 +205,7 @@ function renderDrawer(){
     <div class="drawer-item" data-key="${i.key}">
       <div>
         <a href="product.html?id=${i.id}"><b class="small">${i.name}</b></a>
-        <div class="small muted">${i.size} · ${money(i.price)}</div>
+        <div class="small muted">${i.size} · ${money(i.price)}${i.tier ? ` <b class="tier-tag">${(window.VOLUME_TIERS||[])[i.tier].label} price</b>` : ""}</div>
         <div class="qty qty--sm" style="margin-top:8px">
           <button data-act="minus" aria-label="decrease">−</button>
           <input data-act="qty" type="number" value="${i.qty}" min="1" inputmode="numeric">
@@ -416,13 +426,15 @@ function repeatingPrice(x){
 function displayPrice(base){ return repeatingPrice(base * (1 - NY_TAX)); }
 (function applyPricingModel(){
   (window.PRODUCTS || []).forEach(p => p.sizes.forEach(s => {
+    if(s.exact) return;                       // catalog sizes keep exact prices
     if(s.base == null) s.base = s.price;      // preserve original base once
     s.price = displayPrice(s.base);
   }));
   // migrate any existing cart items to the current displayed prices
   try{
     const c = getCart(); let changed = false;
-    c.forEach(it => { const p = productById(it.id); if(p){ const s = p.sizes.find(z => z.sku === it.sku); if(s && it.price !== s.price){ it.price = s.price; changed = true; } } });
+    c.forEach(it => { const s = sizeBySku(it.id, it.sku); if(s){ const up = unitPrice(s, it.qty); if(it.price !== up){ it.price = up; changed = true; } } });
+    repriceCart(c);
     if(changed) localStorage.setItem(CART_KEY, JSON.stringify(c));
   }catch(e){}
 })();

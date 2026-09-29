@@ -75,6 +75,7 @@
         <div class="pdp__price" id="pdp-price"></div>
         <div class="small muted">SKU: <span id="pdp-sku"></span> · Purity ${p.purity}</div>
         <div class="small pdp-stock pdp-stock--${stockOf(p)}" id="pdp-stock" style="margin-top:8px"></div>
+        <div id="pdp-tiers"></div>
 
         <div style="margin-top:20px"><b class="small" style="text-transform:uppercase;letter-spacing:.05em">Size / Quantity</b></div>
         <div class="sizes" id="sizes"></div>
@@ -123,6 +124,14 @@
       const s = p.sizes[sizeIndex];
       document.getElementById("pdp-price").textContent = money(s.price);
       document.getElementById("pdp-sku").textContent = s.sku;
+      const tiersEl = document.getElementById("pdp-tiers");
+      if(s.tiers){
+        const T = window.VOLUME_TIERS;
+        tiersEl.innerHTML = `<table class="tier-table"><thead><tr><th>Volume pricing</th><th>Per vial</th>${s.mg ? "<th>Per mg</th>" : ""}</tr></thead><tbody>` +
+          s.tiers.map((t,k)=>`<tr${k? "" : " class=\"on\""} data-k="${k}"><td>${T[k].label}</td><td class="mono">${money(t)}</td>${s.mg ? `<td class="mono">${money(t/s.mg)}</td>` : ""}</tr>`).join("") +
+          `</tbody></table><p class="small muted" style="margin:6px 0 0">Price per vial drops automatically at 5 and 10 vials of the same size.</p>`;
+      } else { tiersEl.innerHTML = ""; }
+      markTier();
       $$("#sizes .size-opt").forEach(el=> el.classList.toggle("active", +el.dataset.i===sizeIndex));
     }
     $$("#sizes .size-opt").forEach(el=> el.addEventListener("click", ()=>{ sizeIndex=+el.dataset.i; refresh(); }));
@@ -130,8 +139,10 @@
 
     // Qty
     const qtyEl = document.getElementById("qty");
-    document.getElementById("q-minus").onclick = ()=> qtyEl.value = Math.max(1, (+qtyEl.value||1)-1);
-    document.getElementById("q-plus").onclick  = ()=> qtyEl.value = (+qtyEl.value||1)+1;
+    function markTier(){ const q = Math.max(1, +(document.getElementById("qty")||{}).value || 1); $$("#pdp-tiers tr[data-k]").forEach(r=> r.classList.toggle("on", +r.dataset.k === tierIndex(q))); }
+    qtyEl.addEventListener("input", markTier);
+    document.getElementById("q-minus").onclick = ()=>{ qtyEl.value = Math.max(1, (+qtyEl.value||1)-1); markTier(); };
+    document.getElementById("q-plus").onclick  = ()=>{ qtyEl.value = (+qtyEl.value||1)+1; markTier(); };
     document.getElementById("add").onclick = ()=> addToCart(p.id, sizeIndex, Math.max(1,+qtyEl.value||1));
 
     // Stock status

@@ -999,7 +999,122 @@ const CATEGORY_REFERENCES = {
   ]
 };
 
+/* ============================================================
+   CATALOG VOLUME PRICING (Q2 2026)
+   Per-size volume tiers: tiers[0] = 1–4 vials, tiers[1] = 5–9 vials,
+   tiers[2] = 10+ vials. These sizes are sold at exact prices (the
+   repeating-price rounding in app.js is skipped for them).
+   Sizes a product already had that are not in the catalog keep
+   their existing store price.
+   ============================================================ */
+const VOLUME_TIERS = [ {min:1, label:"1–4 vials"}, {min:5, label:"5–9 vials"}, {min:10, label:"10+ vials"} ];
+
+PRODUCTS.push(
+  {
+    id: "ara-290", name: "Ara-290", aka: "Cibinetide",
+    category: "immune", tags: ["tissue-protection", "neuropathy", "innate-repair"], form: "vial",
+    sizes: [],
+    summary: "An 11-amino-acid peptide derived from erythropoietin, studied for tissue-protective signaling without red-cell effects.",
+    overview: "Ara-290 (cibinetide) is a small linear peptide modeled on the helix-B surface of erythropoietin (EPO). It was designed to engage the innate repair receptor — a heterocomplex of the EPO receptor and the beta-common receptor (CD131) — while avoiding the hematopoietic activity of EPO itself. In preclinical and early clinical research it has been examined in models of small-fiber neuropathy, inflammation, and tissue injury.",
+    research: ["Innate repair receptor (EPOR/CD131) signaling", "Small-fiber neuropathy models", "Anti-inflammatory & tissue-protective pathways", "Metabolic / insulin-sensitivity research"],
+    cas: "1208243-50-8", sequence: "pGlu-Glu-Ser-Leu-Glu-Arg-Tyr-Leu-Ala-Leu-Ser",
+    molFormula: "C51H84N16O21", molWeight: "≈1257.3 g/mol", halfLife: "Short (minutes in plasma; model-dependent)",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C, use within 3–4 weeks.", purity: "≥99%"
+  },
+  {
+    id: "klow-blend", name: "KLOW Blend", aka: "GHK-Cu + BPC-157 + KPV + TB-500",
+    category: "blends", tags: ["blend", "skin", "recovery", "inflammation"], form: "vial",
+    sizes: [],
+    summary: "The GLOW blend with KPV added — four repair and skin-remodeling peptides in one vial.",
+    overview: "KLOW extends the GLOW combination (GHK-Cu, BPC-157, TB-500) with KPV, the C-terminal tripeptide of alpha-MSH studied for its anti-inflammatory activity. It is dosed by the amount of each component listed on the label and is used to study skin remodeling, connective-tissue repair, and inflammatory signaling together.",
+    research: ["Skin-remodeling + systemic repair", "Inflammatory signaling (KPV / NF-κB)", "Collagen & connective-tissue models", "Angiogenesis pathways"],
+    cas: "N/A (blend)", sequence: "See individual components: GHK-Cu, BPC-157, KPV, TB-500",
+    molFormula: "Blend", molWeight: "Blend", halfLife: "component-dependent",
+    storage: "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.", purity: "≥99%"
+  },
+  {
+    id: "selank-semax-nasal", name: "Selank + Semax Nasal", aka: "Selank / Semax nasal blend",
+    category: "neuro", tags: ["blend", "cognition", "nasal"], form: "solution",
+    sizes: [],
+    summary: "The two classic Russian nootropic peptides combined in a single nasal-spray format.",
+    overview: "This blend pairs Selank, a tuftsin analog studied for anxiolytic and immunomodulatory effects, with Semax, an ACTH(4–10) analog studied for attention, memory, and neurotrophic (BDNF) signaling. Both were developed for intranasal administration, and the combination is used to study complementary calming and focusing pathways together.",
+    research: ["GABAergic & anxiolytic pathways (Selank)", "BDNF / neurotrophic signaling (Semax)", "Attention & memory models", "Intranasal delivery"],
+    cas: "N/A (blend)", sequence: "See individual components: Selank, Semax",
+    molFormula: "Blend", molWeight: "Blend", halfLife: "component-dependent",
+    storage: "Store refrigerated 2–8°C. Keep sealed; discard per label after opening.", purity: "≥99%"
+  }
+);
+
+const CATALOG_PRICING = {
+  "aod-9604": [{label:"5mg", mg:5, tiers:[75.00, 65.62, 58.35]}, {label:"10mg", mg:10, tiers:[112.50, 98.44, 87.52]}],
+  "ara-290": [{label:"10mg", mg:10, tiers:[66.00, 57.75, 51.35]}],
+  "bpc-157": [{label:"5mg", mg:5, tiers:[40.20, 35.18, 31.28]}, {label:"10mg", mg:10, tiers:[39.00, 34.12, 30.34]}, {label:"20mg", mg:20, tiers:[75.00, 65.62, 58.35]}],
+  "recovery-blend": [{label:"BPC 5mg + TB 5mg", mg:10, tiers:[88.80, 77.70, 69.09]}, {label:"BPC 10mg + TB 10mg", mg:20, tiers:[95.00, 83.12, 73.91]}],
+  "cjc-1295-dac": [{label:"10mg", mg:10, tiers:[105.00, 91.88, 81.69]}],
+  "mod-grf-1-29": [{label:"10mg", mg:10, tiers:[45.00, 39.38, 35.01]}],
+  "cjc-ipa-blend": [{label:"CJC 5mg + IPA 5mg", mg:10, tiers:[69.00, 60.38, 53.68]}],
+  "cagrilintide": [{label:"5mg", mg:5, tiers:[80.00, 70.00, 62.24]}, {label:"10mg", mg:10, tiers:[120.00, 105.00, 93.36]}],
+  "cerebrolysin": [{label:"1200mg", mg:1200, tiers:[120.00, 105.00, 93.36]}],
+  "dsip": [{label:"5mg", mg:5, tiers:[50.00, 43.75, 38.90]}, {label:"10mg", mg:10, tiers:[75.00, 65.62, 58.35]}],
+  "epithalon": [{label:"10mg", mg:10, tiers:[42.00, 36.75, 32.68]}],
+  "ghk-cu": [{label:"50mg", mg:50, tiers:[32.00, 28.00, 24.90]}, {label:"100mg", mg:100, tiers:[48.00, 42.00, 37.34]}],
+  "glow-blend": [{label:"GHK 50mg + BPC 10mg + TB 10mg", mg:70, tiers:[115.00, 100.62, 89.47]}],
+  "klow-blend": [{label:"GHK 25mg + BPC 10mg + KPV 10mg + TB 10mg", mg:55, tiers:[130.00, 113.75, 101.14]}, {label:"GHK 50mg + BPC 10mg + KPV 10mg + TB 10mg", mg:80, tiers:[130.00, 113.75, 101.14]}],
+  "ghrp-2": [{label:"10mg", mg:10, tiers:[42.66, 37.33, 33.19]}],
+  "glutathione": [{label:"1500mg", mg:1500, tiers:[75.00, 65.62, 58.35]}],
+  "igf-1-lr3": [{label:"1mg", mg:1, tiers:[126.21, 110.43, 98.19]}],
+  "ipamorelin": [{label:"10mg", mg:10, tiers:[52.00, 45.50, 40.46]}],
+  "kisspeptin-10": [{label:"10mg", mg:10, tiers:[85.00, 74.38, 66.13]}],
+  "kpv": [{label:"10mg", mg:10, tiers:[45.00, 39.38, 35.01]}],
+  "ll-37": [{label:"4mg", mg:4, tiers:[90.00, 78.75, 70.02]}, {label:"5mg", mg:5, tiers:[102.55, 89.73, 79.78]}],
+  "mots-c": [{label:"10mg", mg:10, tiers:[50.00, 43.75, 38.90]}, {label:"40mg", mg:40, tiers:[112.51, 98.45, 87.53]}],
+  "melanotan-2": [{label:"10mg", mg:10, tiers:[40.00, 35.00, 31.12]}],
+  "melanotan-1": [{label:"10mg", mg:10, tiers:[40.00, 35.00, 31.12]}],
+  "nad-plus": [{label:"500mg", mg:500, tiers:[65.00, 56.88, 50.57]}, {label:"1000mg", mg:1000, tiers:[80.00, 70.00, 62.24]}],
+  "oxytocin": [{label:"2mg", mg:2, tiers:[24.30, 21.26, 18.91]}],
+  "pt-141": [{label:"10mg", mg:10, tiers:[45.00, 39.38, 35.01]}],
+  "pinealon": [{label:"5mg", mg:5, tiers:[26.67, 23.34, 20.75]}, {label:"10mg", mg:10, tiers:[40.00, 35.00, 31.12]}, {label:"20mg", mg:20, tiers:[60.00, 52.50, 46.68]}],
+  "retatrutide": [{label:"10mg", mg:10, tiers:[134.82, 117.97, 104.89]}, {label:"12mg", mg:12, tiers:[150.00, 131.25, 116.70]}, {label:"20mg", mg:20, tiers:[238.19, 208.42, 185.31]}, {label:"24mg", mg:24, tiers:[265.00, 231.88, 206.17]}, {label:"30mg", mg:30, tiers:[352.30, 308.26, 274.09]}, {label:"50mg", mg:50, tiers:[475.00, 415.62, 369.55]}, {label:"60mg", mg:60, tiers:[528.46, 462.40, 411.14]}],
+  "ss-31": [{label:"10mg", mg:10, tiers:[80.00, 70.00, 62.24]}, {label:"50mg", mg:50, tiers:[205.11, 179.47, 159.58]}],
+  "selank": [{label:"10mg", mg:10, tiers:[75.00, 65.62, 58.35]}, {label:"11mg", mg:11, tiers:[79.30, 69.39, 61.70]}],
+  "selank-semax-nasal": [{label:"Selank 10mg + Semax 10mg", mg:20, tiers:[125.73, 110.01, 97.82]}],
+  "semax": [{label:"11mg", mg:11, tiers:[62.10, 54.34, 48.31]}, {label:"30mg", mg:30, tiers:[69.00, 60.38, 53.68]}],
+  "semaglutide": [{label:"5mg", mg:5, tiers:[50.00, 43.75, 38.90]}, {label:"10mg", mg:10, tiers:[95.00, 83.12, 73.91]}, {label:"20mg", mg:20, tiers:[190.00, 166.25, 147.82]}, {label:"60mg", mg:60, tiers:[425.00, 371.88, 330.65]}],
+  "sermorelin": [{label:"5mg", mg:5, tiers:[56.67, 49.59, 44.09]}, {label:"10mg", mg:10, tiers:[85.00, 74.38, 66.13]}],
+  "thymosin-alpha-1": [{label:"10mg", mg:10, tiers:[100.00, 87.50, 77.80]}],
+  "tb-500": [{label:"5mg", mg:5, tiers:[46.00, 40.25, 35.79]}, {label:"10mg", mg:10, tiers:[69.00, 60.38, 53.68]}],
+  "tesamorelin": [{label:"10mg", mg:10, tiers:[75.00, 65.62, 58.35]}],
+  "tesa-ipa-blend": [{label:"5mg + 5mg", mg:10, tiers:[103.37, 90.45, 80.42]}, {label:"10mg + 2mg", mg:12, tiers:[115.00, 100.62, 89.47]}, {label:"12mg + 6mg", mg:18, tiers:[145.78, 127.56, 113.42]}],
+  "tirzepatide": [{label:"10mg", mg:10, tiers:[80.00, 70.00, 62.24]}, {label:"30mg", mg:30, tiers:[175.00, 153.12, 136.15]}, {label:"60mg", mg:60, tiers:[320.00, 280.00, 248.96]}, {label:"90mg", mg:90, tiers:[425.00, 371.88, 330.65]}]
+};
+
+(function applyCatalogPricing(){
+  const norm = s => String(s).toLowerCase().replace(/\s+/g, "");
+  const mgOf = s => { const m = String(s).match(/(\d+(?:\.\d+)?)\s*mg/gi); return m ? m.reduce((t, x) => t + parseFloat(x), 0) : null; };
+  const skuBase = p => { const k = p.sizes[0] && p.sizes[0].sku; if(!k) return p.id.toUpperCase(); return /-\d[\w.]*$/.test(k) ? k.replace(/-[^-]*$/, "") : k; };
+  const NEW_BASE = { "ara-290":"ARA", "klow-blend":"BLND-KLOW", "selank-semax-nasal":"BLND-SSN" };
+  const oldSku = {}; // productId -> [sku by old index], to keep stack references pointing at the same size
+  Object.entries(CATALOG_PRICING).forEach(([pid, sizes]) => {
+    const p = PRODUCTS.find(x => x.id === pid); if(!p) return;
+    oldSku[pid] = p.sizes.map(s => s.sku);
+    const base = NEW_BASE[pid] || skuBase(p);
+    sizes.forEach(c => {
+      let s = p.sizes.find(x => norm(x.label) === norm(c.label));
+      if(!s){ s = { label:c.label, sku: base + "-" + c.label.replace(/[^0-9.]+/g, "-").replace(/^-|-$/g, "") }; p.sizes.push(s); }
+      s.price = c.tiers[0]; s.tiers = c.tiers.slice(); s.mg = c.mg; s.exact = true;
+    });
+    if(p.sizes.every(s => (s.mg || mgOf(s.label)) != null)) p.sizes.sort((a, b) => (a.mg || mgOf(a.label)) - (b.mg || mgOf(b.label)));
+  });
+  (typeof STACKS !== "undefined" ? STACKS : []).forEach(st => st.components.forEach(c => {
+    const skus = oldSku[c.id]; if(!skus) return;
+    const p = PRODUCTS.find(x => x.id === c.id);
+    const i = p.sizes.findIndex(s => s.sku === skus[c.sizeIndex || 0]);
+    c.sizeIndex = i >= 0 ? i : 0;
+  }));
+})();
+
 /* Expose globally for non-module scripts */
+window.VOLUME_TIERS = VOLUME_TIERS;
 window.CATEGORY_ABOUT = CATEGORY_ABOUT;
 window.CATEGORY_APPLICATIONS = CATEGORY_APPLICATIONS;
 window.CATEGORY_REFERENCES = CATEGORY_REFERENCES;

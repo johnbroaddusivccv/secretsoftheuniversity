@@ -347,3 +347,10 @@ h1, .hero h1, .section-title, h2 {
   letter-spacing: -.01em;
 }
 ::selection { background: var(--ink); color: var(--white); }
+
+/* Volume pricing table (product page) */
+.tier-table{width:100%;max-width:420px;border-collapse:collapse;margin-top:16px;font-size:.85rem}
+.tier-table th{text-align:left;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;padding:6px 10px;border-bottom:1px solid var(--line)}
+.tier-table td{padding:8px 10px;border-bottom:1px solid var(--line-soft)}
+.tier-table tr.on td{background:var(--ink);color:var(--white)}
+.tier-tag{font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;background:var(--ink);color:var(--white);padding:2px 6px;margin-left:4px;white-space:nowrap}
