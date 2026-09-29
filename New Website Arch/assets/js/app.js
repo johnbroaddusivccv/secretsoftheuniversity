@@ -8,6 +8,8 @@ const SITE = {
   wordmark: "BROADDUS",
   tagline: "Scientific Group — research peptides & reference data for the lab.",
   freeShipThreshold: 150,
+  parentName: "Secrets of the University",
+  parentUrl: "/",
   email: "support@broaddusscientific.example"
 };
 
@@ -286,7 +288,10 @@ function cardHTML(p){
 /* ---------- Header / Footer injection ---------- */
 function renderChrome(active){
   const header = `
-  <div class="topbar">Research Use Only · Not for Human Consumption · Free shipping on orders over $${SITE.freeShipThreshold}</div>
+  <div class="topbar">
+    <a class="topbar__back" href="${SITE.parentUrl}"><span aria-hidden="true">←</span> <span class="topbar__back-full">${SITE.parentName}</span><span class="topbar__back-short">University</span></a>
+    <span class="topbar__msg">Research Use Only<span class="topbar__more"> · Not for Human Consumption · Free shipping on orders over $${SITE.freeShipThreshold}</span></span>
+  </div>
   <header class="header">
     <div class="header__row">
       <a class="brand" href="index.html">
@@ -318,6 +323,7 @@ function renderChrome(active){
         <span class="brand__mark" style="display:inline-block;margin-bottom:14px">${SITE.wordmark}</span>
         <p class="small muted">${SITE.tagline} All products are sold strictly for in-vitro laboratory research and are not intended for human or veterinary use.</p>
         <span class="ruo-flag">Research Use Only</span>
+        <a class="footer__parent" href="${SITE.parentUrl}">← Back to ${SITE.parentName}</a>
       </div>
       <div>
         <h5>Shop</h5>
@@ -345,7 +351,7 @@ function renderChrome(active){
       </div>
     </div>
     <div class="footer__bottom">
-      <span>© ${year} ${SITE.name}. For laboratory research use only.</span>
+      <span>© ${year} ${SITE.name}, a <a href="${SITE.parentUrl}" style="display:inline;padding:0;text-decoration:underline">${SITE.parentName}</a> company. For laboratory research use only.</span>
       <span>Prices shown net of New York State sales tax.</span>
       <span>Products are not drugs and make no therapeutic claims.</span>
     </div>

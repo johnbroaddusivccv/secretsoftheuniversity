@@ -354,3 +354,17 @@ h1, .hero h1, .section-title, h2 {
 .tier-table td{padding:8px 10px;border-bottom:1px solid var(--line-soft)}
 .tier-table tr.on td{background:var(--ink);color:var(--white)}
 .tier-tag{font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;background:var(--ink);color:var(--white);padding:2px 6px;margin-left:4px;white-space:nowrap}
+
+/* Link back to secretsoftheuniversity.com */
+.topbar{display:flex;align-items:center;justify-content:center;position:relative}
+.topbar__back{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--white);font-weight:600;white-space:nowrap}
+.topbar__back:hover{text-decoration:underline}
+.topbar__back-short{display:none}
+.footer .footer__parent{margin-top:14px;color:var(--ink);font-weight:600}
+@media (max-width:900px){
+  .topbar{justify-content:space-between;gap:12px;text-align:right}
+  .topbar__back{position:static;transform:none}
+  .topbar__back-full{display:none}
+  .topbar__back-short{display:inline}
+  .topbar__more{display:none}
+}
