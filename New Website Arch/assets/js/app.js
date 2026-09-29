@@ -266,6 +266,7 @@ function cardHTML(p){
     (p.category !== "supplies" ? "COA" : null),
     (p.purity && p.purity !== "N/A" ? p.purity : null)].filter(Boolean).join("&nbsp;·&nbsp;");
   return `<a class="card card--text" href="product.html?id=${p.id}">
+    <div class="card__media">${productArt(p)}</div>
     <div class="card__body">
       <div class="card__topline">
         <span class="card__cat">${catName(p.category)}</span>
@@ -410,6 +411,145 @@ function ageGate(){
   document.body.appendChild(g);
   $("#gate-yes").addEventListener("click", ()=>{ localStorage.setItem("broaddus_age_ok","1"); g.remove(); });
 }
+
+/* ---------- Product art (generated SVG) ----------
+   Every product image is drawn from its data: container follows the
+   form of the chosen size (vial, dropper, nasal spray, capsule bottle,
+   powder jar), label carries the name and strength. No image files. */
+const CAT_ACCENT = {
+  glp1:"#3b82a0", growth:"#5b6bb5", metabolic:"#b0703a", recovery:"#3f8f6a", neuro:"#7a5fb0",
+  nootropics:"#2f6fb3", immune:"#a0463f", endocrine:"#b05a8a", performance:"#c0582a", copper:"#b87333",
+  cosmetic:"#c48aa0", longevity:"#4d8f8a", blends:"#0e1116", supplies:"#8b94a3"
+};
+let _artSeq = 0;
+function _esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function artForm(p, size){
+  const l = ((size && size.label) || "").toLowerCase();
+  if(/nasal/.test(l)) return "nasal";
+  if(/capsule/.test(l)) return "caps";
+  if(/powder/.test(l)) return "powder";
+  if(/solution|mg\/ml|\/ml|dropper/.test(l)) return "dropper";
+  if(p.category === "nootropics" && /\d\s*g\b/.test(l)) return "powder";
+  if(p.form === "solution" && !/^\d+(\.\d+)?\s*mg$/.test(l.trim())) return "dropper";
+  return "vial";
+}
+function artStrength(size){
+  let l = ((size && size.label) || "").replace(/^(capsules|powder|solution|nasal spray)\s*(\([^)]*\))?\s*·\s*/i, "");
+  if(l.includes("+")){
+    const nums = l.match(/\d+(\.\d+)?/g) || [];
+    const unit = /iu/i.test(l) ? " IU" : "mg";
+    return nums.join("/") + unit;
+  }
+  return l.replace(/\s*\(\d+\s*ml\)/i, "").replace(/\s+/g, " ").trim() || "—";
+}
+function artNameLines(name){
+  const n = name.toUpperCase();
+  if(n.length <= 11) return [n];
+  const words = n.split(" ");
+  if(words.length === 1) return [n];
+  let best = [n], bestLen = n.length;
+  for(let i = 1; i < words.length; i++){
+    const a = words.slice(0, i).join(" "), b = words.slice(i).join(" ");
+    const m = Math.max(a.length, b.length);
+    if(m < bestLen){ bestLen = m; best = [a, b]; }
+  }
+  return best;
+}
+function productArt(p, sizeIndex){
+  if(!p) return "";
+  const size = p.sizes[sizeIndex == null ? defaultSizeIndex(p) : sizeIndex] || p.sizes[0];
+  const form = artForm(p, size), id = "a" + (++_artSeq);
+  const accent = CAT_ACCENT[p.category] || "#0e1116", ink = "#0e1116";
+  const strength = artStrength(size);
+
+  // container geometry: label box {x,y,w,h} and the container body markup
+  let body = "", L;
+  if(form === "vial"){
+    L = {x:146, y:188, w:108, h:112};
+    body = `
+      <rect x="140" y="150" width="120" height="172" rx="12" fill="url(#${id}g)" stroke="#c9d1db" stroke-width="1.5"/>
+      <path d="M140 164 Q140 150 156 146 L166 142 L234 142 L244 146 Q260 150 260 164 Z" fill="url(#${id}g)" stroke="#c9d1db" stroke-width="1.5"/>
+      <rect x="164" y="126" width="72" height="20" fill="#dfe4ea" stroke="#c9d1db"/>
+      <rect x="152" y="96" width="96" height="36" rx="4" fill="${ink}"/>
+      <rect x="152" y="96" width="96" height="36" rx="4" fill="url(#${id}m)"/>
+      <rect x="160" y="86" width="80" height="12" rx="3" fill="${accent}"/>
+      <rect x="150" y="160" width="8" height="150" rx="4" fill="#fff" opacity=".55"/>`;
+  } else if(form === "dropper"){
+    L = {x:150, y:208, w:100, h:98};
+    body = `
+      <path d="M146 196 Q146 176 170 170 L230 170 Q254 176 254 196 L254 306 Q254 322 238 322 L162 322 Q146 322 146 306 Z" fill="url(#${id}amb)"/>
+      <rect x="176" y="150" width="48" height="22" fill="#5a2c0c"/>
+      <rect x="162" y="112" width="76" height="42" rx="5" fill="${ink}"/>
+      <rect x="162" y="112" width="76" height="42" rx="5" fill="url(#${id}m)"/>
+      <path d="M178 112 L178 84 Q178 58 200 58 Q222 58 222 84 L222 112 Z" fill="${ink}"/>
+      <rect x="156" y="186" width="7" height="118" rx="3.5" fill="#fff" opacity=".28"/>`;
+  } else if(form === "nasal"){
+    L = {x:154, y:196, w:92, h:108};
+    body = `
+      <rect x="148" y="176" width="104" height="146" rx="18" fill="url(#${id}w)" stroke="#c9d1db" stroke-width="1.5"/>
+      <rect x="160" y="150" width="80" height="30" rx="4" fill="${ink}"/>
+      <rect x="160" y="150" width="80" height="30" rx="4" fill="url(#${id}m)"/>
+      <path d="M186 150 L190 84 Q200 64 210 84 L214 150 Z" fill="url(#${id}w)" stroke="#c9d1db" stroke-width="1.5"/>
+      <circle cx="200" cy="76" r="4" fill="${accent}"/>`;
+  } else if(form === "caps"){
+    L = {x:136, y:190, w:128, h:112};
+    body = `
+      <rect x="128" y="150" width="144" height="172" rx="18" fill="url(#${id}w)" stroke="#c9d1db" stroke-width="1.5"/>
+      <rect x="136" y="104" width="128" height="50" rx="6" fill="${ink}"/>
+      <rect x="136" y="104" width="128" height="50" rx="6" fill="url(#${id}m)"/>
+      ${[0,1,2,3,4,5,6,7,8,9,10].map(i=>`<line x1="${144+i*11.2}" y1="110" x2="${144+i*11.2}" y2="148" stroke="#ffffff" stroke-opacity=".08" stroke-width="3"/>`).join("")}
+      <rect x="136" y="150" width="128" height="6" fill="${accent}"/>`;
+  } else { // powder jar
+    L = {x:118, y:214, w:164, h:92};
+    body = `
+      <rect x="110" y="194" width="180" height="128" rx="18" fill="url(#${id}w)" stroke="#c9d1db" stroke-width="1.5"/>
+      <rect x="114" y="158" width="172" height="40" rx="6" fill="${ink}"/>
+      <rect x="114" y="158" width="172" height="40" rx="6" fill="url(#${id}m)"/>
+      <rect x="114" y="194" width="172" height="5" fill="${accent}"/>`;
+  }
+
+  // label
+  const cx = L.x + L.w/2;
+  const lines = artNameLines(p.name);
+  const longest = Math.max(...lines.map(s => s.length));
+  const avail = L.w - 14;
+  const fs = Math.max(8.5, Math.min(lines.length > 1 ? 17 : 21, avail / (longest * 0.66)));
+  const nameY0 = L.y + 40 + (lines.length > 1 ? 0 : 4);
+  const nameSvg = lines.map((s, i) => {
+    const w = s.length * fs * 0.66;
+    const fit = w > avail ? ` textLength="${avail}" lengthAdjust="spacingAndGlyphs"` : "";
+    return `<text x="${cx}" y="${nameY0 + i*(fs+2)}" text-anchor="middle" font-size="${fs.toFixed(1)}" font-weight="800" fill="${ink}"${fit}>${_esc(s)}</text>`;
+  }).join("");
+  const pillY = nameY0 + (lines.length-1)*(fs+2) + 8;
+  const pillW = Math.min(L.w - 16, Math.max(46, strength.length * 7.4 + 18));
+  const compact = L.h < 100;
+  const label = `
+    <rect x="${L.x}" y="${L.y}" width="${L.w}" height="${L.h}" rx="2" fill="#fff"/>
+    <rect x="${L.x}" y="${L.y + L.h - 5}" width="${L.w}" height="5" fill="${accent}"/>
+    <rect x="${cx-31}" y="${L.y+9}" width="62" height="15" fill="none" stroke="${ink}" stroke-width="1.4"/>
+    <text x="${cx}" y="${L.y+20}" text-anchor="middle" font-size="8.2" font-weight="800" letter-spacing="1.3" fill="${ink}">BROADDUS</text>
+    ${nameSvg}
+    <rect x="${cx-pillW/2}" y="${pillY}" width="${pillW}" height="17" rx="2" fill="${ink}"/>
+    <text x="${cx}" y="${pillY+12.2}" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">${_esc(strength.toUpperCase())}</text>
+    ${compact ? "" : `<text x="${cx}" y="${L.y + L.h - 12}" text-anchor="middle" font-size="6.2" font-weight="700" letter-spacing=".9" fill="#5b6472">RESEARCH USE ONLY</text>`}`;
+
+  return `<svg class="product-art" viewBox="52 44 296 296" role="img" aria-label="${_esc(p.name)} ${_esc(size ? size.label : "")}" font-family="Inter, -apple-system, system-ui, Helvetica, sans-serif">
+  <defs>
+    <linearGradient id="${id}g" x1="0" x2="1"><stop offset="0" stop-color="#eef3f8"/><stop offset=".45" stop-color="#ffffff"/><stop offset="1" stop-color="#dfe6ee"/></linearGradient>
+    <linearGradient id="${id}w" x1="0" x2="1"><stop offset="0" stop-color="#f4f6f9"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#e3e8ee"/></linearGradient>
+    <linearGradient id="${id}amb" x1="0" x2="1"><stop offset="0" stop-color="#5c2d0b"/><stop offset=".45" stop-color="#8a4a17"/><stop offset="1" stop-color="#4a2408"/></linearGradient>
+    <linearGradient id="${id}m" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".05"/><stop offset=".35" stop-color="#fff" stop-opacity=".22"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <radialGradient id="${id}sh"><stop offset="0" stop-color="#0e1116" stop-opacity=".22"/><stop offset="1" stop-color="#0e1116" stop-opacity="0"/></radialGradient>
+  </defs>
+  <ellipse cx="200" cy="352" rx="150" ry="22" fill="url(#${id}sh)"/>
+  <path d="M70 330 L70 346 Q200 372 330 346 L330 330 Z" fill="#e6eaef"/>
+  <ellipse cx="200" cy="330" rx="130" ry="17" fill="#ffffff" stroke="#dfe3e8"/>
+  <ellipse cx="200" cy="324" rx="${form === "powder" ? 96 : 70}" ry="8" fill="#0e1116" opacity=".10"/>
+  ${body}
+  ${label}
+</svg>`;
+}
+function defaultSizeIndex(p){ const i = p.sizes.findIndex(s => s.tiers); return i >= 0 ? i : 0; }
 
 /* ---------- Pricing model ----------
    Displayed price = base price MINUS New York State sales tax,

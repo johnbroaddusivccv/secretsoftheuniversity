@@ -67,6 +67,7 @@
 
     mount.innerHTML = `
     <div class="pdp">
+      <div class="pdp__media" id="pdp-media"></div>
       <div>
         <div class="card__cat">${catName(p.category)}</div>
         <h1>${p.name}</h1>
@@ -125,6 +126,7 @@
       const s = p.sizes[sizeIndex];
       document.getElementById("pdp-price").textContent = money(s.price);
       document.getElementById("pdp-sku").textContent = s.sku;
+      document.getElementById("pdp-media").innerHTML = productArt(p, sizeIndex);
       const tiersEl = document.getElementById("pdp-tiers");
       if(s.tiers){
         const T = window.VOLUME_TIERS;
