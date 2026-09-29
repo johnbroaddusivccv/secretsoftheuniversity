@@ -1113,6 +1113,294 @@ const CATALOG_PRICING = {
   }));
 })();
 
+/* ============================================================
+   NOOTROPICS (added Sept 2026)
+   Prices are exact list prices (no repeating-price rounding).
+   Where a compound is sold in several forms, each form is a size.
+   ============================================================ */
+CATEGORIES.splice(CATEGORIES.findIndex(c => c.id === "immune"), 0,
+  { id: "nootropics", name: "Nootropics", blurb: "Racetams, cholinergics, neurotrophic and neuroprotective small molecules studied in cognition, memory, and mood models." });
+
+(function addNootropics(){
+  const COA = "See lot certificate of analysis";
+  const SMALL = "N/A (small molecule)";
+  const STORE = {
+    powder:   "Store sealed, cool and dry, away from light. Desiccate after opening.",
+    caps:     "Store sealed at room temperature, away from heat, light and moisture.",
+    solution: "Refrigerate 2–8°C after opening. Keep tightly capped and away from light.",
+    nasal:    "Refrigerate 2–8°C. Keep capped; discard per label after opening."
+  };
+  const sz = (label, price, sku) => ({ label, price, sku, exact: true });
+  const N = (o) => Object.assign({
+    category: "nootropics", featured: false, purity: "≥98%",
+    sequence: SMALL, cas: COA, molFormula: COA, molWeight: COA,
+    halfLife: "Model-dependent", storage: STORE.powder, form: "solution"
+  }, o);
+
+  const NEW = [
+    /* ---- Racetams & ampakines ---- */
+    N({ id:"piracetam", name:"Piracetam", aka:"2-oxo-1-pyrrolidineacetamide", tags:["racetam","memory","nootropic"],
+      sizes:[sz("Capsules · 800mg × 60",19.99,"PIRA-C60"), sz("Powder · 150g",24.99,"PIRA-150G")],
+      summary:"The original racetam and the reference compound for the entire class.",
+      overview:"Piracetam was synthesized in the 1960s and gave the word 'nootropic' its first example. It is a cyclic derivative of GABA that does not act as a GABA agonist; research has focused instead on membrane fluidity, AMPA-receptor modulation, and cerebral microcirculation in models of learning and age-related cognitive decline.",
+      research:["Membrane fluidity & neuronal plasticity","AMPA-receptor modulation","Age-related cognitive-decline models","Cerebral microcirculation"],
+      cas:"7491-74-9", molFormula:"C6H10N2O2", molWeight:"142.16 g/mol", storage:STORE.powder }),
+    N({ id:"oxiracetam", name:"Oxiracetam", aka:"4-hydroxy-2-oxopyrrolidine-N-acetamide", tags:["racetam","memory","focus"],
+      sizes:[sz("Powder · 50g",47.99,"OXI-50G"), sz("Powder · 60g",42.99,"OXI-60G")],
+      summary:"A hydroxylated piracetam analog studied for memory and attention.",
+      overview:"Oxiracetam adds a hydroxyl group to the piracetam scaffold. It has been studied for effects on acetylcholine and glutamate release, protein kinase C activity, and performance in spatial-memory and attention tasks, including clinical research in vascular and degenerative cognitive impairment.",
+      research:["Cholinergic & glutamatergic release","PKC signaling","Spatial-memory models","Vascular cognitive impairment"],
+      cas:"62613-82-5", molFormula:"C6H10N2O3", molWeight:"158.16 g/mol" }),
+    N({ id:"pramiracetam", name:"Pramiracetam", aka:"Pramiracetam HCl", tags:["racetam","memory","lipophilic"],
+      sizes:[sz("Powder · 10g",28.99,"PRAM-10G"), sz("Powder (HCl) · 18g",34.99,"PRAM-18G")],
+      summary:"A lipophilic racetam studied for high-affinity choline uptake and memory.",
+      overview:"Pramiracetam is a fat-soluble racetam that is active at much lower amounts than piracetam. Its best-characterized research effect is an increase in high-affinity choline uptake in the hippocampus, and it has been examined in memory-formation and memory-retrieval models.",
+      research:["High-affinity choline uptake (HACU)","Hippocampal memory formation","Nitric-oxide synthase activity","Memory-retrieval models"],
+      cas:"68497-62-1", molFormula:"C14H27N3O2", molWeight:"269.38 g/mol" }),
+    N({ id:"fasoracetam", name:"Fasoracetam", aka:"NS-105 · LAM-105", tags:["racetam","mglur","gaba-b"],
+      sizes:[sz("Powder · 1g",20.99,"FASO-1G"), sz("Powder · 2g",19.99,"FASO-2G")],
+      summary:"A racetam studied for metabotropic glutamate-receptor and GABA-B modulation.",
+      overview:"Fasoracetam was developed in Japan for vascular dementia and later studied in ADHD associated with variants in metabotropic glutamate-receptor (mGluR) network genes. Research interest centers on mGluR activation, GABA-B receptor up-regulation, and cholinergic effects.",
+      research:["mGluR network signaling","GABA-B receptor regulation","ADHD genetic-subtype research","Cholinergic modulation"],
+      cas:"110958-19-5", molFormula:"C10H16N2O2", molWeight:"196.25 g/mol" }),
+    N({ id:"coluracetam", name:"Coluracetam", aka:"MKC-231 · BCI-540", tags:["racetam","choline","mood"],
+      sizes:[sz("Powder · 1g",19.99,"COLU-1G"), sz("Powder · 2g",21.99,"COLU-2G")],
+      summary:"A racetam-class compound studied for choline uptake after cholinergic injury.",
+      overview:"Coluracetam enhances high-affinity choline uptake, and in animal models it reversed memory deficits caused by cholinergic neurotoxins. It was later studied clinically for major depressive disorder with comorbid anxiety.",
+      research:["High-affinity choline uptake","Cholinergic-lesion memory models","Depression & anxiety research","Acetylcholine synthesis"],
+      cas:"135463-81-9", molFormula:"C19H23N3O3", molWeight:"341.40 g/mol" }),
+    N({ id:"noopept", name:"Noopept", aka:"Omberacetam · GVS-111", tags:["nootropic","bdnf","memory"],
+      sizes:[sz("Capsules · 30mg × 60",24.99,"NOOP-C60"), sz("Powder · 10g",19.99,"NOOP-10G"), sz("Solution · 20mg/mL",18.99,"NOOP-SOL")],
+      summary:"A dipeptide-derived nootropic active at milligram amounts.",
+      overview:"Noopept (omberacetam) is a Russian-developed dipeptide compound often grouped with the racetams, though it is structurally distinct. It is metabolized to cycloprolylglycine and has been studied for increases in NGF and BDNF expression, AMPA-receptor effects, and neuroprotection.",
+      research:["NGF & BDNF expression","Cycloprolylglycine metabolism","Neuroprotection models","Memory consolidation"],
+      sequence:"N-phenylacetyl-L-prolylglycine ethyl ester", cas:"157115-85-0", molFormula:"C17H22N2O4", molWeight:"318.37 g/mol" }),
+    N({ id:"aniracetam", name:"Aniracetam", aka:"1-(4-methoxybenzoyl)-2-pyrrolidinone", tags:["racetam","ampakine","mood"],
+      sizes:[sz("Powder · 50g",24.99,"ANI-50G")],
+      summary:"A fat-soluble racetam and positive AMPA-receptor modulator.",
+      overview:"Aniracetam is a lipophilic racetam that slows AMPA-receptor desensitization, making it one of the earliest compounds studied as an ampakine. Research has covered memory, attention, and anxiolytic-like effects, including interactions with dopamine and serotonin signaling.",
+      research:["AMPA-receptor desensitization","Anxiolytic-like models","Dopaminergic & serotonergic signaling","Attention research"],
+      cas:"72432-10-1", molFormula:"C12H13NO3", molWeight:"219.24 g/mol" }),
+    N({ id:"phenylpiracetam", name:"Phenylpiracetam", aka:"Fonturacetam", tags:["racetam","stimulant","performance"],
+      sizes:[sz("Solution · 50mg/mL",29.99,"PHPIR-SOL")],
+      summary:"A phenylated piracetam studied for cognition and physical endurance.",
+      overview:"Phenylpiracetam adds a phenyl group to piracetam, increasing its potency and blood-brain-barrier penetration. It was developed in Russia and studied for cognition, cold tolerance, and physical performance; it appears on the WADA prohibited list as a stimulant.",
+      research:["Dopamine-transporter activity","Endurance & cold-tolerance models","Cognitive performance","Post-stroke recovery research"],
+      cas:"77472-70-9", molFormula:"C12H14N2O2", molWeight:"218.25 g/mol" }),
+    N({ id:"idra-21", name:"IDRA-21", aka:"Benzothiadiazine ampakine", tags:["ampakine","memory","ampa"],
+      sizes:[sz("Solution · 45mg/mL",29.99,"IDRA-SOL")],
+      summary:"A long-acting AMPA-receptor modulator studied in learning models.",
+      overview:"IDRA-21 is a benzothiadiazine derivative that reduces AMPA-receptor desensitization with a notably long duration of action. Primate research reported improved performance on delayed-matching memory tasks; its safety margin under neurotoxic conditions is an active research question.",
+      research:["AMPA-receptor desensitization","Delayed-matching memory tasks","Long-term potentiation","Excitotoxicity safety margins"],
+      cas:"22503-72-6", molFormula:"C8H9ClN2O2S", molWeight:"232.69 g/mol" }),
+    N({ id:"tak-653", name:"TAK-653", aka:"AMPA positive allosteric modulator", tags:["ampakine","depression","ampa"],
+      sizes:[sz("Solution · 4mg/mL",27.99,"TAK653-SOL")],
+      summary:"A newer AMPA-receptor potentiator studied in depression and cognition.",
+      overview:"TAK-653 is an AMPA-receptor positive allosteric modulator designed to have minimal agonist activity of its own, aiming to reduce seizure risk compared with earlier ampakines. It has been studied in depression models and in human cortical-excitability research.",
+      research:["AMPA potentiation with low agonism","Treatment-resistant depression models","Cortical excitability (TMS) studies","mTOR / BDNF signaling"] }),
+    N({ id:"sunifiram", name:"Sunifiram", aka:"DM-235", tags:["ampakine","memory","potent"],
+      sizes:[sz("Powder · 10g",34.99,"SUNI-10G")],
+      summary:"A piperazine ampakine-like compound active at very low amounts.",
+      overview:"Sunifiram is structurally related to piracetam but far more potent in animal models. Its studied mechanism involves AMPA-receptor stimulation via the glycine site of NMDA receptors and PKC-alpha activation; it has no human clinical research record.",
+      research:["NMDA glycine-site signaling","AMPA-receptor activation","Scopolamine-amnesia models","PKCα / CaMKII pathways"],
+      cas:"314728-85-3", molFormula:"C14H18N2O2", molWeight:"246.31 g/mol" }),
+
+    /* ---- Cholinergics ---- */
+    N({ id:"alpha-gpc", name:"Alpha-GPC", aka:"L-alpha-glycerylphosphorylcholine (50%)", tags:["choline","acetylcholine"],
+      sizes:[sz("Powder (50%) · 50g",19.99,"AGPC-50G")],
+      summary:"A highly bioavailable choline source studied for acetylcholine synthesis.",
+      overview:"Alpha-GPC is a phospholipid metabolite that delivers choline across the blood-brain barrier efficiently. It is studied as an acetylcholine precursor in cognitive-decline research and for growth-hormone response and power output in exercise research. This grade is a 50% standardized powder.",
+      research:["Acetylcholine precursor","Cognitive-decline research","Exercise power & GH response","Phospholipid membrane synthesis"],
+      cas:"28319-77-9", molFormula:"C8H20NO6P", molWeight:"257.22 g/mol", purity:"50% (standardized)" }),
+    N({ id:"citicoline", name:"Citicoline", aka:"CDP-Choline", tags:["choline","neuroprotection"],
+      sizes:[sz("Powder · 20g",18.99,"CITI-20G")],
+      summary:"A choline donor studied for membrane repair and neuroprotection.",
+      overview:"Citicoline (cytidine diphosphate-choline) is an intermediate in phosphatidylcholine synthesis that supplies both choline and cytidine, which converts to uridine. It has been studied in stroke, traumatic brain injury, glaucoma, and attention research.",
+      research:["Phosphatidylcholine synthesis","Stroke & TBI recovery research","Uridine / dopamine interactions","Attention models"],
+      cas:"987-78-0", molFormula:"C14H26N4O11P2", molWeight:"488.32 g/mol" }),
+    N({ id:"abt-089", name:"ABT-089", aka:"Pozanicline HCl", tags:["nicotinic","attention","cholinergic"],
+      sizes:[sz("Solution · 4mg/mL",25.99,"ABT089-SOL")],
+      summary:"A selective nicotinic-receptor partial agonist studied in attention research.",
+      overview:"ABT-089 (pozanicline) is a partial agonist at α4β2 nicotinic acetylcholine receptors developed by Abbott. It was studied clinically in adult ADHD and cognitive impairment associated with schizophrenia, with interest in its low cardiovascular and gastrointestinal side-effect profile.",
+      research:["α4β2 nicotinic partial agonism","Adult ADHD research","Schizophrenia-associated cognition","Working-memory models"] }),
+    N({ id:"galantamine", name:"Galantamine HBr", aka:"Galantamine hydrobromide", tags:["cholinesterase","memory"],
+      sizes:[sz("Solution · 16mg/mL",29.99,"GALA-SOL")],
+      summary:"A plant alkaloid acetylcholinesterase inhibitor and nicotinic modulator.",
+      overview:"Galantamine is an alkaloid first isolated from snowdrop bulbs. It inhibits acetylcholinesterase and allosterically sensitizes nicotinic acetylcholine receptors. It is an approved medicine in several countries for Alzheimer's-type dementia and is supplied here strictly for laboratory research.",
+      research:["Acetylcholinesterase inhibition","Nicotinic allosteric modulation","Dementia research","REM-sleep & dream research"],
+      cas:"1953-04-4", molFormula:"C17H21NO3·HBr", molWeight:"368.27 g/mol" }),
+
+    /* ---- Neurogenesis & BDNF ---- */
+    N({ id:"nsi-189", name:"NSI-189", aka:"Amdiglurax", tags:["neurogenesis","hippocampus","depression"],
+      sizes:[sz("Capsules (phosphate) · 20mg × 60",39.99,"NSI-C60"), sz("Powder (phosphate) · 1g",24.99,"NSI-P1G"), sz("Powder (freebase) · 1g",22.99,"NSI-F1G"), sz("Solution (freebase) · 40mg/mL",27.99,"NSI-SOL")],
+      summary:"A compound studied for hippocampal neurogenesis in depression research.",
+      overview:"NSI-189 was identified in a screen for compounds that stimulate neurogenesis from human hippocampal stem cells. It has been studied in major depressive disorder, where cognitive endpoints were of particular interest, and in models of diabetic neuropathy and stroke.",
+      research:["Hippocampal neurogenesis","Major depressive disorder research","Cognitive endpoints in depression","Peripheral neuropathy models"],
+      cas:"1270138-40-3", molFormula:"C22H30N4O", molWeight:"366.50 g/mol" }),
+    N({ id:"eutropoflavin", name:"Eutropoflavin", aka:"4'-DMA-7,8-DHF", tags:["trkb","bdnf","flavone"],
+      sizes:[sz("Capsules · 10mg × 60",28.95,"EUTRO-C60")],
+      summary:"A potent 7,8-DHF analog studied as a TrkB-receptor agonist.",
+      overview:"Eutropoflavin (4'-dimethylamino-7,8-dihydroxyflavone) is a derivative of 7,8-dihydroxyflavone, a small-molecule mimic of BDNF at the TrkB receptor. The dimethylamino substitution was reported to increase TrkB potency in preclinical research on neurogenesis and neuroprotection.",
+      research:["TrkB receptor agonism","BDNF-mimetic signaling","Neurogenesis models","Neuroprotection research"] }),
+    N({ id:"9-me-bc", name:"9-Me-BC", aka:"9-Methyl-β-carboline", tags:["dopamine","neurotrophic","carboline"],
+      sizes:[sz("Capsules · 15mg × 60",62.99,"9MBC-C60")],
+      summary:"A β-carboline studied for dopaminergic neuron growth and protection.",
+      overview:"9-Methyl-β-carboline has been studied in cell and animal models for stimulating the differentiation and survival of dopaminergic neurons, increasing neurotrophic factor expression, and inhibiting monoamine oxidase. Its photosensitivity and long-term safety remain open research questions.",
+      research:["Dopaminergic neuron differentiation","Neurotrophic factor expression","MAO inhibition","Parkinsonian models"],
+      cas:"2521-07-5", molFormula:"C12H10N2", molWeight:"182.22 g/mol", storage:STORE.caps }),
+    N({ id:"j-147", name:"J-147", aka:"Curcumin / cyclohexyl-bisphenol A hybrid", tags:["neuroprotection","longevity","memory"],
+      sizes:[sz("Solution · 45mg/mL",39.99,"J147-SOL")],
+      summary:"A curcumin-derived compound studied in Alzheimer's and aging models.",
+      overview:"J-147 was developed at the Salk Institute from curcumin and cyclohexyl-bisphenol A through phenotypic screening for neuroprotection. Its identified target is mitochondrial ATP synthase, and it has been studied for memory, neurotrophic signaling, and markers of aging in mouse models.",
+      research:["Mitochondrial ATP synthase","Alzheimer's-disease models","BDNF / NGF signaling","Aging biomarkers"],
+      cas:"1146963-51-0", molFormula:"C18H17F3N2O2", molWeight:"350.34 g/mol" }),
+    N({ id:"acd856", name:"ACD856", aka:"Trk-receptor positive modulator", tags:["trk","bdnf","memory"],
+      sizes:[sz("Solution · 10mg/mL",20.99,"ACD856-SOL"), sz("Powder · 500mg",33.99,"ACD856-500")],
+      summary:"A small molecule that enhances neurotrophin signaling at Trk receptors.",
+      overview:"ACD856 is a positive allosteric modulator of the Trk family of neurotrophin receptors (TrkA, TrkB, TrkC), developed by AlzeCure Pharma. Rather than activating the receptors directly, it amplifies the signal from endogenous NGF and BDNF; early clinical research explored Alzheimer's disease and depression.",
+      research:["Trk-receptor allosteric modulation","NGF / BDNF signal amplification","Alzheimer's research","Depression models"] }),
+    N({ id:"usmarapride", name:"Usmarapride", aka:"SUVN-D4010 (oxalate)", tags:["5-ht4","memory","cholinergic"],
+      sizes:[sz("Powder · 2g",44.99,"USMA-2G")],
+      summary:"A selective serotonin 5-HT4 receptor partial agonist studied for memory.",
+      overview:"Usmarapride is a 5-HT4 receptor partial agonist developed by Suven Life Sciences. 5-HT4 activation increases acetylcholine release and promotes non-amyloidogenic processing of amyloid precursor protein, making it a target in Alzheimer's research.",
+      research:["5-HT4 partial agonism","Acetylcholine release","sAPPα / amyloid processing","Episodic-memory models"] }),
+    N({ id:"bpn14770", name:"BPN14770", aka:"Zatolmilast", tags:["pde4d","memory","fragile-x"],
+      sizes:[sz("Solution · 10mg/mL",45.99,"BPN-SOL")],
+      summary:"A PDE4D allosteric inhibitor studied in Fragile X and memory research.",
+      overview:"BPN14770 (zatolmilast) selectively inhibits the PDE4D enzyme, raising cAMP signaling involved in memory formation while aiming to avoid the nausea common to broader PDE4 inhibitors. It has been studied clinically in Fragile X syndrome and in Alzheimer's-disease models.",
+      research:["PDE4D allosteric inhibition","cAMP / CREB signaling","Fragile X syndrome research","Memory-consolidation models"] }),
+
+    /* ---- Energy, focus & actoprotectors ---- */
+    N({ id:"bromantane", name:"Bromantane", aka:"Ladasten", tags:["actoprotector","dopamine","stamina"],
+      sizes:[sz("Capsules · 25mg × 60",59.99,"BROM-C60"), sz("Powder · 5g",59.99,"BROM-5G"), sz("Nasal spray · 90mg/mL",34.99,"BROM-NAS")],
+      summary:"An adamantane actoprotector studied for dopamine synthesis and fatigue.",
+      overview:"Bromantane was developed in Russia as an actoprotector, a compound meant to raise physical and mental work capacity under stress. Its studied mechanism is up-regulation of tyrosine hydroxylase and dopamine synthesis rather than dopamine release; it is on the WADA prohibited list.",
+      research:["Tyrosine hydroxylase expression","Dopamine synthesis","Asthenia & fatigue research","Work capacity under stress"],
+      cas:"87913-26-6", molFormula:"C16H20BrN", molWeight:"306.24 g/mol" }),
+    N({ id:"prl-8-53", name:"PRL-8-53", aka:"Methyl 3-(2-(benzyl(methyl)amino)ethyl)benzoate", tags:["memory","nootropic"],
+      sizes:[sz("Solution · 10mg/mL",14.99,"PRL-SOL")],
+      summary:"A benzoic-acid derivative from a single 1970s human memory study.",
+      overview:"PRL-8-53 was synthesized in the 1970s and evaluated in one small human study for verbal-recall performance. Its mechanism is not well characterized; proposed effects include cholinergic potentiation and dopamine modulation. The research record remains very limited.",
+      research:["Verbal-recall memory","Cholinergic potentiation (proposed)","Dopaminergic modulation (proposed)","Replication research"],
+      cas:"51352-87-5", molFormula:"C18H21NO2", molWeight:"283.37 g/mol" }),
+    N({ id:"bemethyl", name:"Bemethyl", aka:"2-ethylthiobenzimidazole HBr", tags:["actoprotector","endurance"],
+      sizes:[sz("Capsules · 100mg × 60",59.99,"BEME-C60")],
+      summary:"A Soviet-era actoprotector studied for endurance and recovery.",
+      overview:"Bemethyl is a synthetic actoprotector developed in the USSR to increase work capacity under physical and environmental stress. Research attributes its effects to increased synthesis of RNA and proteins, including mitochondrial and gluconeogenic enzymes. It is on the WADA monitoring program.",
+      research:["Protein & RNA synthesis","Mitochondrial enzyme expression","Endurance under hypoxia","Recovery from exertion"], storage:STORE.caps }),
+    N({ id:"methylene-blue", name:"Methylene Blue", aka:"Methylthioninium chloride", tags:["mitochondria","redox","memory"],
+      sizes:[sz("Capsules · 10mg × 60",16.99,"MB-C60"), sz("Solution",15.99,"MB-SOL")],
+      summary:"A redox dye studied as a mitochondrial electron carrier at low amounts.",
+      overview:"Methylene blue is a phenothiazine dye with a long medical history. At low concentrations it can shuttle electrons in the mitochondrial respiratory chain, which drives research into memory and neuroprotection. It is a potent MAO-A inhibitor, and combining it with serotonergic agents can cause serotonin toxicity.",
+      research:["Mitochondrial electron transport","Cytochrome c oxidase activity","Memory-retention models","MAO-A inhibition"],
+      cas:"61-73-4", molFormula:"C16H18ClN3S", molWeight:"319.85 g/mol" }),
+    N({ id:"paraxanthine", name:"Paraxanthine", aka:"1,7-Dimethylxanthine", tags:["stimulant","adenosine","focus"],
+      sizes:[sz("Powder · 15g",25.99,"PARA-15G")],
+      summary:"The primary metabolite of caffeine, studied as a cleaner stimulant.",
+      overview:"Paraxanthine accounts for most of the caffeine the body metabolizes. Like caffeine it antagonizes adenosine receptors, and it also inhibits PDE9. Research has compared it with caffeine for alertness, attention, and physical performance with less anxiety and blood-pressure effect.",
+      research:["Adenosine-receptor antagonism","PDE9 inhibition","Attention & reaction time","Comparison with caffeine"],
+      cas:"611-59-6", molFormula:"C7H8N4O2", molWeight:"180.16 g/mol" }),
+    N({ id:"ppap", name:"PPAP HCl", aka:"Phenylpropylaminopentane", tags:["catecholamine","enhancer"],
+      sizes:[sz("Solution · 50mg/mL",56.99,"PPAP-SOL")],
+      summary:"A catecholaminergic activity enhancer related to selegiline research.",
+      overview:"PPAP was described by Knoll as a catecholaminergic activity enhancer: it increases impulse-driven release of dopamine and noradrenaline without acting as a classic releasing agent. It was derived from work on selegiline and is studied alongside BPAP in models of learning and drive.",
+      research:["Catecholaminergic activity enhancement","Impulse-propagated dopamine release","Learning & drive models","TAAR1 research"] }),
+
+    /* ---- Mood, calm & sleep ---- */
+    N({ id:"l-theanine", name:"L-Theanine", aka:"N-ethyl-L-glutamine", tags:["calm","alpha-waves","amino-acid"],
+      sizes:[sz("Powder · 100g",20.98,"THEA-100G")],
+      summary:"The tea amino acid studied for calm focus and alpha-wave activity.",
+      overview:"L-theanine is an amino acid found in tea leaves. It has been studied for increasing alpha-band brain activity, attenuating stress responses, and — alongside caffeine — improving attention-switching performance.",
+      research:["Alpha-wave EEG activity","Stress & cortisol response","Caffeine synergy in attention","Sleep-quality research"],
+      cas:"3081-61-6", molFormula:"C7H14N2O3", molWeight:"174.20 g/mol" }),
+    N({ id:"phenibut", name:"Phenibut HCl", aka:"β-phenyl-GABA", tags:["gaba-b","anxiolytic"],
+      sizes:[sz("Capsules · 250mg × 60",24.99,"PHEN-C60")],
+      summary:"A phenyl-substituted GABA analog and GABA-B receptor agonist.",
+      overview:"Phenibut is a GABA derivative whose phenyl ring lets it cross the blood-brain barrier. It acts mainly at GABA-B receptors and at α2δ subunits of voltage-gated calcium channels. Tolerance and withdrawal are well documented, and it is a controlled substance in some US states and other countries.",
+      research:["GABA-B receptor agonism","α2δ calcium-channel binding","Anxiolytic models","Tolerance & withdrawal research"],
+      cas:"3060-41-1", molFormula:"C10H13NO2·HCl", molWeight:"215.68 g/mol", storage:STORE.caps }),
+    N({ id:"agmatine", name:"Agmatine Sulfate", aka:"Decarboxylated arginine", tags:["nmda","mood","neuromodulator"],
+      sizes:[sz("Powder · 120g",18.99,"AGMA-120G")],
+      summary:"An endogenous arginine metabolite studied as a neuromodulator.",
+      overview:"Agmatine is produced from arginine and acts at several targets, including NMDA receptors, imidazoline receptors, α2-adrenoceptors, and nitric-oxide synthase. It has been studied in depression, neuropathic pain, and opioid-tolerance models.",
+      research:["NMDA-receptor antagonism","Imidazoline-receptor signaling","Neuropathic pain models","Opioid-tolerance research"],
+      cas:"2482-00-0", molFormula:"C5H14N4·H2SO4", molWeight:"228.27 g/mol" }),
+    N({ id:"sarcosine", name:"Sarcosine", aka:"N-Methylglycine", tags:["nmda","glycine","amino-acid"],
+      sizes:[sz("Powder · 100g",24.99,"SARC-100G")],
+      summary:"A glycine-transporter inhibitor studied for NMDA-receptor function.",
+      overview:"Sarcosine is a natural amino-acid derivative that inhibits the type-1 glycine transporter (GlyT1), raising synaptic glycine and enhancing NMDA-receptor function. It has been studied as an add-on in schizophrenia and depression research.",
+      research:["GlyT1 inhibition","NMDA co-agonist site","Schizophrenia add-on research","Depression models"],
+      cas:"107-97-1", molFormula:"C3H7NO2", molWeight:"89.09 g/mol" }),
+    N({ id:"seltorexant", name:"Seltorexant", aka:"JNJ-42847922", tags:["orexin","sleep","depression"],
+      sizes:[sz("Solution · 10mg/mL",35.99,"SELT-SOL")],
+      summary:"A selective orexin-2 receptor antagonist studied in depression with insomnia.",
+      overview:"Seltorexant blocks the orexin-2 receptor, part of the brain's wake-promoting system. It has been studied in late-stage clinical research for major depressive disorder with insomnia symptoms, where normalizing hyperarousal is the proposed mechanism.",
+      research:["Orexin-2 receptor antagonism","Depression with insomnia","Sleep architecture","HPA-axis hyperarousal"] }),
+    N({ id:"aticaprant", name:"Aticaprant", aka:"JNJ-67953964 · CERC-501", tags:["kappa-opioid","anhedonia"],
+      sizes:[sz("Solution · 10mg/mL",25.99,"ATIC-SOL")],
+      summary:"A selective kappa-opioid receptor antagonist studied for anhedonia.",
+      overview:"Aticaprant blocks the kappa-opioid receptor, whose activation by dynorphin is linked to stress, dysphoria, and loss of reward sensitivity. It has been studied as an add-on treatment in depression with prominent anhedonia.",
+      research:["Kappa-opioid antagonism","Anhedonia & reward processing","Stress-induced dysphoria","Adjunctive depression research"] }),
+    N({ id:"tabernanthalog", name:"Tabernanthalog", aka:"TBG", tags:["psychoplastogen","neuroplasticity"],
+      sizes:[sz("Powder · 500mg",84.99,"TBG-500")],
+      summary:"A non-hallucinogenic ibogaine analog studied as a psychoplastogen.",
+      overview:"Tabernanthalog was designed at UC Davis as a simplified, water-soluble analog of ibogaine intended to keep neuroplasticity-promoting effects without hallucinogenic or cardiotoxic liability. It has been studied in rodent models of addiction and depression and for dendritic-spine growth.",
+      research:["Dendritic-spine growth","5-HT2A signaling without head-twitch","Addiction & relapse models","Depression models"] }),
+
+    /* ---- Mitochondrial & neuroprotective ---- */
+    N({ id:"pqq", name:"PQQ Disodium", aka:"Pyrroloquinoline quinone disodium salt", tags:["mitochondria","antioxidant"],
+      sizes:[sz("Powder · 1g",16.99,"PQQ-1G"), sz("Powder · 2g",16.49,"PQQ-2G")],
+      summary:"A redox cofactor studied for mitochondrial biogenesis.",
+      overview:"PQQ is a redox-active quinone found in foods. It has been studied for stimulating mitochondrial biogenesis through PGC-1α signaling, for antioxidant capacity, and for effects on memory and attention in older adults.",
+      research:["Mitochondrial biogenesis (PGC-1α)","Redox cycling","Neuroprotection models","Cognition in older adults"],
+      cas:"122628-50-6", molFormula:"C14H4N2Na2O8", molWeight:"374.17 g/mol" }),
+    N({ id:"idebenone", name:"Idebenone", aka:"Short-chain CoQ10 analog", tags:["mitochondria","antioxidant","neuroprotection"],
+      sizes:[sz("Powder · 6g",59.99,"IDEB-6G")],
+      summary:"A synthetic CoQ10 analog studied in mitochondrial disease research.",
+      overview:"Idebenone is a shorter-chain, more water-soluble analog of coenzyme Q10 that can bypass complex I of the respiratory chain. It has been studied in Leber's hereditary optic neuropathy, Friedreich's ataxia, and Duchenne muscular dystrophy.",
+      research:["Complex I bypass (NQO1)","Leber's hereditary optic neuropathy","Friedreich's ataxia research","Oxidative-stress models"],
+      cas:"58186-27-9", molFormula:"C19H30O5", molWeight:"338.44 g/mol" }),
+
+    /* ---- Nootropic peptides (new) ---- */
+    N({ id:"na-semax", name:"NA-Semax", aka:"N-Acetyl Semax Amidate", tags:["peptide","bdnf","nasal"], category:"neuro", form:"solution",
+      sizes:[sz("Nasal spray · 2mg/mL",31.99,"NASMX-NAS")], storage:STORE.nasal,
+      summary:"A stabilized Semax analog with N-acetyl and amidate modifications.",
+      overview:"NA-Semax adds an N-terminal acetyl group and a C-terminal amide to Semax, the ACTH(4–10) analog. The modifications are intended to slow enzymatic breakdown and extend activity. Research interest follows Semax: BDNF expression, attention, and neuroprotection.",
+      research:["BDNF / TrkB expression","Attention models","Neuroprotection after ischemia","Peptide stability"],
+      sequence:"Ac-Met-Glu-His-Phe-Pro-Gly-Pro-NH2" }),
+    N({ id:"na-selank", name:"NA-Selank", aka:"N-Acetyl Selank Amidate", tags:["peptide","anxiolytic","nasal"], category:"neuro", form:"solution",
+      sizes:[sz("Nasal spray · 2mg/mL",31.99,"NASLK-NAS")], storage:STORE.nasal,
+      summary:"A stabilized Selank analog with N-acetyl and amidate modifications.",
+      overview:"NA-Selank carries N-acetyl and amide caps on the Selank heptapeptide, a tuftsin analog. The changes aim to improve stability against peptidases. Research interest follows Selank: GABAergic anxiolytic effects, enkephalin metabolism, and immunomodulation.",
+      research:["GABA-A allosteric effects","Enkephalinase inhibition","Anxiolytic models","Immunomodulation (IL-6)"],
+      sequence:"Ac-Thr-Lys-Pro-Arg-Pro-Gly-Pro-NH2" }),
+    N({ id:"gb-115", name:"GB-115", aka:"Cholecystokinin-4 analog", tags:["peptide","anxiolytic","cck"], category:"neuro", form:"solution",
+      sizes:[sz("Nasal spray · 2mg/mL",21.99,"GB115-NAS"), sz("Solution · 6mg/mL",24.99,"GB115-SOL")], storage:STORE.solution,
+      summary:"A dipeptide CCK-4 analog studied as an anxiolytic in Russia.",
+      overview:"GB-115 is a dipeptide analog of the tetrapeptide cholecystokinin-4 (CCK-4), which induces panic-like anxiety. By acting as a CCK-B receptor antagonist, GB-115 was developed at the Zakusov Institute as a non-sedating anxiolytic and studied in generalized anxiety models.",
+      research:["CCK-B receptor antagonism","Generalized anxiety models","Non-sedating anxiolysis","Alcohol-withdrawal research"] })
+  ];
+  PRODUCTS.push(...NEW);
+
+  /* Extra forms of peptides already in the store */
+  const addSizes = (id, list) => { const p = PRODUCTS.find(x => x.id === id); if(p) p.sizes.push(...list); };
+  addSizes("semax",    [sz("Nasal spray · 2mg/mL",26.49,"SEMX-NAS")]);
+  addSizes("selank",   [sz("Nasal spray · 2mg/mL",26.49,"SEL-NAS")]);
+  addSizes("pinealon", [sz("Nasal spray · 10mg/mL",32.99,"PIN-NAS")]);
+  addSizes("dihexa",   [sz("Capsules · 5mg × 60",69.99,"DIHEXA-C60"), sz("Powder · 500mg",97.99,"DIHEXA-500")]);
+})();
+
+CATEGORY_ABOUT.nootropics = [
+  "Nootropics covers small-molecule compounds studied for effects on cognition, memory, attention, mood, and sleep — from the classic racetams and choline donors to newer neurotrophic, AMPA-modulating, and mitochondrial compounds.",
+  "Many were developed as clinical candidates for dementia, depression, or ADHD; others come from Soviet and Russian actoprotector research. All are supplied for laboratory research use only."
+];
+CATEGORY_APPLICATIONS.nootropics = ["Learning & memory models", "Attention & working memory", "Neurogenesis & BDNF / TrkB signaling", "Mood, anxiety & sleep research"];
+CATEGORY_REFERENCES.nootropics = [
+  {label:"“Nootropic agents” on PubMed", url:"https://pubmed.ncbi.nlm.nih.gov/?term=nootropic+agents"},
+  {label:"“Racetam cognition” on PubMed", url:"https://pubmed.ncbi.nlm.nih.gov/?term=racetam+cognition"},
+  {label:"PubChem compound database", url:"https://pubchem.ncbi.nlm.nih.gov/"}
+];
+
 /* Expose globally for non-module scripts */
 window.VOLUME_TIERS = VOLUME_TIERS;
 window.CATEGORY_ABOUT = CATEGORY_ABOUT;
