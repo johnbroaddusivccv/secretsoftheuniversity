@@ -699,6 +699,16 @@
   .footer-subscribe input:focus, .footer-subscribe textarea:focus {
     border-color: var(--ink); outline: none;
   }
+
+  /* ── Mobile nav: wordmark and menu button on one line ── */
+  @media (max-width:700px) {
+    .nav-inner { flex-direction:row; justify-content:space-between; align-items:center; gap:12px; }
+    .brand { width:auto; flex:1 1 auto; min-width:0; text-align:left; font-size:0.84rem; letter-spacing:0.14em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .nav-links { flex:0 0 auto; }
+  }
+  @media (max-width:360px) {
+    .brand { font-size:0.76rem; letter-spacing:0.1em; }
+  }
 </style>
 </head>
 <body>
