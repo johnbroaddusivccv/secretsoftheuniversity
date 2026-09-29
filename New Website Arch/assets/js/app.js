@@ -425,7 +425,7 @@ let _artSeq = 0;
 function _esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 function artForm(p, size){
   const l = ((size && size.label) || "").toLowerCase();
-  if(/nasal/.test(l)) return "nasal";
+  if(/nasal/.test(l) || /nasal/i.test(p.name)) return "nasal";
   if(/capsule/.test(l)) return "caps";
   if(/powder/.test(l)) return "powder";
   if(/solution|mg\/ml|\/ml|dropper/.test(l)) return "dropper";
@@ -458,6 +458,10 @@ function artNameLines(name){
 function productArt(p, sizeIndex){
   if(!p) return "";
   const size = p.sizes[sizeIndex == null ? defaultSizeIndex(p) : sizeIndex] || p.sizes[0];
+  // rendered 3D product photo when one exists for this size; drawn SVG otherwise
+  if(size && window.PRODUCT_PHOTOS && window.PRODUCT_PHOTOS.has(size.sku)){
+    return `<img class="product-art product-photo" src="assets/img/products/${encodeURIComponent(size.sku)}.webp" alt="${_esc(p.name)} — ${_esc(size.label)}" width="800" height="800" loading="lazy" decoding="async">`;
+  }
   const form = artForm(p, size), id = "a" + (++_artSeq);
   const accent = CAT_ACCENT[p.category] || "#0e1116", ink = "#0e1116";
   const strength = artStrength(size);

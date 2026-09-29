@@ -380,3 +380,4 @@ h1, .hero h1, .section-title, h2 {
   .pdp{grid-template-columns:1fr;gap:28px}
   .pdp__media{position:static;max-width:520px;width:100%}
 }
+.product-photo{object-fit:cover;background:#eef1f4}

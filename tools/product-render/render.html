@@ -1,0 +1,217 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Inter;font-weight:600;src:url(node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2)}
+@font-face{font-family:Inter;font-weight:700;src:url(node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2)}
+@font-face{font-family:Inter;font-weight:800;src:url(node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2)}
+html,body{margin:0;background:#fff}
+</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head><body>
+<script type="module">
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+const SIZE = 1024;
+const renderer = new THREE.WebGLRenderer({ antialias:true, preserveDrawingBuffer:true });
+renderer.setPixelRatio(1);
+renderer.setSize(SIZE, SIZE);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+/* ---------- label artwork ---------- */
+function labelTexture(spec, arcLen, height){
+  const H = 1024, W = Math.round(H * arcLen / height);
+  const c = document.createElement("canvas"); c.width = W; c.height = H;
+  const g = c.getContext("2d");
+  const ink = "#0e1116";
+  g.fillStyle = "#fbfcfd"; g.fillRect(0,0,W,H);
+  // subtle paper grain
+  for(let i=0;i<6000;i++){ g.fillStyle = `rgba(14,17,22,${Math.random()*0.025})`; g.fillRect(Math.random()*W, Math.random()*H, 1.5, 1.5); }
+  const cx = W/2;
+  const k = Math.min(1.5, Math.max(1, (W/H)/2.1));   // wider labels get larger type
+  const face = Math.min(W*0.5, H*0.95*k);        // visible front width
+  // accent stripe
+  g.fillStyle = spec.accent; g.fillRect(0, H-H*0.075, W, H*0.075);
+  g.fillStyle = ink; g.fillRect(0, H-H*0.075-6, W, 3);
+  // boxed wordmark
+  const mfs = H*0.075*k;
+  g.font = `800 ${mfs}px Inter`; g.textAlign = "center"; g.textBaseline = "middle";
+  const markW = g.measureText("B R O A D D U S").width;
+  const my = H*0.14;
+  g.lineWidth = H*0.012; g.strokeStyle = ink;
+  g.strokeRect(cx - markW/2 - mfs*0.6, my - mfs*0.85, markW + mfs*1.2, mfs*1.7);
+  g.fillStyle = ink; g.fillText("B R O A D D U S", cx, my + mfs*0.04);
+  // name (1–2 lines, auto-fit)
+  const lines = spec.lines;
+  const longest = Math.max(...lines.map(s=>s.length));
+  let fs = Math.min(H*(lines.length>1 ? 0.15 : 0.19)*k, face*0.95/(longest*0.62));
+  g.font = `800 ${fs}px Inter`;
+  let widest = Math.max(...lines.map(s=>g.measureText(s).width));
+  if(widest > face*0.95){ fs *= face*0.95/widest; g.font = `800 ${fs}px Inter`; }
+  const markBottom = my + mfs*0.85;
+  const nameTop = Math.max(H*0.36 - (lines.length-1)*fs*0.52, markBottom + fs*0.72);
+  lines.forEach((s,i)=> g.fillText(s, cx, nameTop + i*fs*1.04));
+  // strength pill
+  const ps = H*0.085*Math.min(k,1.3); g.font = `700 ${ps}px Inter`;
+  const pw = Math.min(face, g.measureText(spec.strength).width + ps*1.4), ph = ps*1.55;
+  const py = nameTop + (lines.length-1)*fs*1.04 + fs*0.62 + H*0.03;
+  g.fillStyle = ink; g.fillRect(cx - pw/2, py, pw, ph);
+  g.fillStyle = "#fff"; g.fillText(spec.strength, cx, py + ph/2 + ps*0.04);
+  // fine print
+  const ruoY = Math.max(H*0.815, py + ph + H*0.07);
+  g.fillStyle = "#5b6472"; g.font = `700 ${H*0.042}px Inter`;
+  g.fillText("R E S E A R C H   U S E   O N L Y", cx, ruoY);
+  if(ruoY + H*0.045 < H*0.9){
+    g.font = `600 ${H*0.03}px Inter`; g.fillStyle = "#8b94a3";
+    g.fillText("Not for human consumption  ·  Lot tested  ·  ≥99%", cx, ruoY + H*0.045);
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  return t;
+}
+
+/* ---------- materials ---------- */
+const M = {
+  clear: () => new THREE.MeshPhysicalMaterial({ color:0xffffff, transparent:true, opacity:0.16, roughness:0.02, metalness:0, envMapIntensity:2.6, clearcoat:1, clearcoatRoughness:0.02, specularIntensity:1, depthWrite:false }),
+  edge: () => new THREE.MeshPhysicalMaterial({ color:0x9fb0c2, transparent:true, opacity:0.22, roughness:0.05, envMapIntensity:1.5, side:THREE.BackSide, depthWrite:false }),
+  glass: () => new THREE.MeshPhysicalMaterial({ color:0xffffff, metalness:0, roughness:0.015, transmission:1, thickness:0.08, ior:1.52, envMapIntensity:1.3, clearcoat:1, clearcoatRoughness:0.02, specularIntensity:1 }),
+  amber: () => new THREE.MeshPhysicalMaterial({ color:0xb86a2a, metalness:0, roughness:0.05, transmission:0.92, thickness:0.5, ior:1.52, attenuationColor:new THREE.Color(0x5a2a08), attenuationDistance:0.55, envMapIntensity:1.4, clearcoat:1, clearcoatRoughness:0.03 }),
+  hdpe:  () => new THREE.MeshPhysicalMaterial({ color:0xf3f4f6, roughness:0.42, metalness:0, sheen:0.4, sheenRoughness:0.6, clearcoat:0.15, clearcoatRoughness:0.5, envMapIntensity:0.9 }),
+  black: () => new THREE.MeshPhysicalMaterial({ color:0x111317, roughness:0.32, metalness:0, clearcoat:0.5, clearcoatRoughness:0.25, envMapIntensity:1 }),
+  rubber:() => new THREE.MeshPhysicalMaterial({ color:0x15171b, roughness:0.62, metalness:0, envMapIntensity:0.6 }),
+  alu:   () => new THREE.MeshPhysicalMaterial({ color:0xcfd4da, roughness:0.26, metalness:1, envMapIntensity:1.2 }),
+  flip:  (c) => new THREE.MeshPhysicalMaterial({ color:new THREE.Color(c), roughness:0.28, metalness:0, clearcoat:0.8, clearcoatRoughness:0.15 }),
+  cake:  () => new THREE.MeshStandardMaterial({ color:0xf6f5f0, roughness:0.95 }),
+  liquid:() => new THREE.MeshPhysicalMaterial({ color:0xffe7c2, roughness:0.02, transmission:0.85, thickness:1.2, ior:1.34, attenuationColor:new THREE.Color(0x7a3a10), attenuationDistance:1.2 }),
+};
+function lathe(points, mat, seg=128){
+  const m = new THREE.Mesh(new THREE.LatheGeometry(points.map(([r,y])=>new THREE.Vector2(r,y)), seg), mat);
+  m.castShadow = true; m.receiveShadow = true; return m;
+}
+function roundedProfile(r, h, rb, shoulderTo, shoulderY, neckR, neckTop){
+  // body with rounded bottom edge, optional shoulder into a neck
+  const p = [[0,0]];
+  for(let i=0;i<=8;i++){ const a = -Math.PI/2 + i*Math.PI/16; p.push([r - rb + rb*Math.cos(a), rb + rb*Math.sin(a)]); }
+  p.push([r, h]);
+  if(shoulderTo != null){
+    for(let i=1;i<=10;i++){ const t=i/10; p.push([r + (shoulderTo-r)*(1-Math.cos(t*Math.PI/2)), h + (shoulderY-h)*Math.sin(t*Math.PI/2)]); }
+    p.push([neckR, shoulderY + 0.02]); p.push([neckR, neckTop]); p.push([0, neckTop]);
+  } else { p.push([0,h]); }
+  return p;
+}
+function labelMesh(spec, r, y0, y1, arc=Math.PI*1.25){
+  // CylinderGeometry puts theta=0 at +z (toward the camera); center the label there
+  const h = y1 - y0;
+  const geo = new THREE.CylinderGeometry(r, r, h, 160, 1, true, -arc/2, arc);
+  const tex = labelTexture(spec, r*arc, h);
+  const m = new THREE.Mesh(geo, new THREE.MeshPhysicalMaterial({ map:tex, roughness:0.5, clearcoat:0.25, clearcoatRoughness:0.4, envMapIntensity:0.7 }));
+  m.position.y = y0 + h/2; m.receiveShadow = true;
+  return m;
+}
+function ribbedCap(r, y0, y1, mat, ribs=72){
+  const grp = new THREE.Group();
+  const core = lathe([[0,y0],[r*0.98,y0],[r,y0+0.03],[r,y1-0.06],[r*0.97,y1],[0,y1]], mat);
+  grp.add(core);
+  const rg = new THREE.BoxGeometry(0.05, (y1-y0)*0.86, 0.035);
+  for(let i=0;i<ribs;i++){
+    const a = i/ribs*Math.PI*2, b = new THREE.Mesh(rg, mat);
+    b.position.set(Math.sin(a)*r, (y0+y1)/2, Math.cos(a)*r); b.rotation.y = a; b.castShadow = true; grp.add(b);
+  }
+  return grp;
+}
+
+/* ---------- containers ---------- */
+function buildVial(spec){
+  const g = new THREE.Group();
+  const shell = lathe(roundedProfile(0.84, 2.7, 0.12, 0.5, 3.18, 0.5, 3.24), M.clear()); shell.castShadow = false; shell.renderOrder = 3; g.add(shell);
+  const inner = lathe(roundedProfile(0.8, 2.66, 0.1, 0.46, 3.14, 0.46, 3.2), M.edge()); inner.castShadow = false; inner.renderOrder = 2; g.add(inner);
+  const stopper = lathe([[0,3.02],[0.44,3.02],[0.46,3.12],[0,3.12]], M.rubber()); g.add(stopper);
+  const cake = new THREE.Mesh(new THREE.CylinderGeometry(0.74, 0.76, 0.38, 96), M.cake());
+  cake.position.y = 0.26; g.add(cake);
+  g.add(lathe([[0,3.1],[0.54,3.1],[0.63,3.16],[0.65,3.24],[0.65,3.52],[0.6,3.56],[0,3.56]], M.alu()));
+  g.add(lathe([[0,3.54],[0.58,3.54],[0.62,3.58],[0.62,3.78],[0.58,3.82],[0,3.82]], M.flip(spec.accent)));
+  g.add(labelMesh(spec, 0.852, 0.6, 2.35, Math.PI*1.35));
+  return { g, h:3.82, w:0.84 };
+}
+function buildDropper(spec){
+  const g = new THREE.Group();
+  g.add(lathe(roundedProfile(1.05, 2.45, 0.2, 0.44, 3.0, 0.44, 3.1), M.amber()));
+  const liq = new THREE.Mesh(new THREE.CylinderGeometry(0.97, 0.97, 1.9, 96), M.liquid()); liq.position.y = 1.02; g.add(liq);
+  g.add(ribbedCap(0.62, 2.95, 3.72, M.black()));
+  g.add(lathe([[0,3.7],[0.36,3.7],[0.4,3.85],[0.36,4.25],[0.34,4.5],[0.24,4.72],[0,4.78]], M.rubber()));
+  g.add(labelMesh(spec, 1.062, 0.5, 2.05));
+  return { g, h:4.78, w:1.05 };
+}
+function buildNasal(spec){
+  const g = new THREE.Group();
+  g.add(lathe(roundedProfile(0.95, 2.55, 0.18, 0.58, 2.95, 0.58, 3.0), M.hdpe()));
+  g.add(lathe([[0,2.95],[0.64,2.95],[0.66,3.0],[0.66,3.34],[0.62,3.38],[0,3.38]], M.black()));
+  g.add(lathe([[0,3.36],[0.5,3.36],[0.5,3.46],[0.3,3.52],[0.22,3.9],[0.17,4.45],[0.12,4.66],[0.05,4.72],[0,4.72]], M.hdpe()));
+  g.add(labelMesh(spec, 0.962, 0.45, 2.35));
+  return { g, h:4.72, w:0.95 };
+}
+function buildCaps(spec){
+  const g = new THREE.Group();
+  g.add(lathe(roundedProfile(1.3, 2.8, 0.26, 1.02, 3.08, 1.02, 3.12), M.hdpe()));
+  g.add(ribbedCap(1.1, 3.02, 3.82, M.black(), 110));
+  g.add(labelMesh(spec, 1.312, 0.45, 2.55));
+  return { g, h:3.82, w:1.3 };
+}
+function buildJar(spec){
+  const g = new THREE.Group();
+  g.add(lathe(roundedProfile(1.72, 1.95, 0.24, 1.62, 2.05, 1.62, 2.08), M.hdpe()));
+  g.add(ribbedCap(1.72, 2.0, 2.72, M.black(), 140));
+  g.add(labelMesh(spec, 1.732, 0.32, 1.72, Math.PI*1.1));
+  return { g, h:2.72, w:1.72 };
+}
+const BUILD = { vial:buildVial, dropper:buildDropper, nasal:buildNasal, caps:buildCaps, powder:buildJar };
+
+/* ---------- studio ---------- */
+function backdrop(){
+  const c = document.createElement("canvas"); c.width = 8; c.height = 512;
+  const g = c.getContext("2d"); const gr = g.createLinearGradient(0,0,0,512);
+  gr.addColorStop(0, "#fbfcfd"); gr.addColorStop(0.62, "#eef1f4"); gr.addColorStop(1, "#dde2e8");
+  g.fillStyle = gr; g.fillRect(0,0,8,512);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+window.renderProduct = async function(spec){
+  await document.fonts.load("800 40px Inter"); await document.fonts.load("700 40px Inter"); await document.fonts.load("600 40px Inter");
+  const scene = new THREE.Scene();
+  scene.background = backdrop();
+  scene.environment = envTex;
+  const { g, h, w } = BUILD[spec.form](spec);
+  // pedestal
+  const ped = new THREE.Mesh(new THREE.CylinderGeometry(w*1.85, w*1.9, 0.3, 128), new THREE.MeshPhysicalMaterial({ color:0xfbfbfc, roughness:0.35, clearcoat:0.6, clearcoatRoughness:0.2 }));
+  ped.position.y = -0.16; ped.receiveShadow = true; ped.castShadow = true; scene.add(ped);
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(60,60), new THREE.ShadowMaterial({ opacity:0.12 }));
+  scene.add(g);
+  // lights
+  const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(-4, 9, 7); key.castShadow = true;
+  key.shadow.mapSize.set(2048,2048); key.shadow.radius = 8; key.shadow.bias = -0.0004;
+  Object.assign(key.shadow.camera, { left:-6, right:6, top:8, bottom:-4, near:1, far:30 });
+  scene.add(key);
+  const rim = new THREE.DirectionalLight(0xdfe8ff, 1.4); rim.position.set(6, 5, -6); scene.add(rim);
+  const fill = new THREE.DirectionalLight(0xffffff, 0.5); fill.position.set(5, 2, 8); scene.add(fill);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xdfe3e8, 0.35));
+  // camera: frame the container and top of pedestal
+  const cam = new THREE.PerspectiveCamera(22, 1, 0.1, 100);
+  const span = Math.max(h + 1.0, w*3.9);
+  const dist = span / (2*Math.tan(THREE.MathUtils.degToRad(11))) * 1.04;
+  const cy = h*0.44;
+  cam.position.set(0, cy + dist*0.11, dist); cam.lookAt(0, cy - 0.12, 0);
+  renderer.render(scene, cam);
+  const url = renderer.domElement.toDataURL("image/png");
+  scene.traverse(o => { if(o.geometry) o.geometry.dispose(); if(o.material){ if(o.material.map) o.material.map.dispose(); o.material.dispose(); } });
+  return url;
+};
+window.ready = true;
+</script>
+</body></html>
