@@ -367,6 +367,14 @@
     .footer-bottom { flex-direction:column; text-align:center; }
   }
 
+  /* ── Storefront card ── */
+  .pillar .store-verse { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:1.05rem; color:var(--ink); margin:0 auto 14px; }
+  .pillar p { max-width:620px; margin-left:auto; margin-right:auto; }
+  .store-doors { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin:20px 0 14px; }
+  .store-doors a { font-size:0.72rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink); text-decoration:none; border:1px solid var(--border); padding:9px 16px; transition:border-color .2s; }
+  .store-doors a:hover { border-color:var(--ink); }
+  .pillar .store-fine { font-size:0.72rem; letter-spacing:0.08em; color:var(--muted); margin-bottom:6px; }
+
   /* ── Sibling system (shared with the Broaddus Commerce site) ──────
      Inter for everything functional; Georgia stays as the University's
      voice (wordmark, headlines, scripture, fragments, quotes). Square corners. */
@@ -441,7 +449,14 @@
       <div class="pillar" style="grid-column:1/-1; text-align:center;">
         <div class="glyph">✦</div>
         <h3>Broaddus Commerce</h3>
-        <p>The marketplace. Browse products, place orders, and do business.</p>
+        <p class="store-verse">What the body rebuilds. What the mind sharpens. What the years preserve.</p>
+        <p>Research peptides studied in repair and recovery. Nootropics studied for memory, focus, and calm. Longevity compounds for the long road. Every lot third-party tested; every vial with its certificate.</p>
+        <div class="store-doors">
+          <a href="New%20Website%20Arch/shop.html">Peptides</a>
+          <a href="New%20Website%20Arch/category.html?cat=nootropics">Nootropics</a>
+          <a href="New%20Website%20Arch/category.html?cat=longevity">Longevity</a>
+        </div>
+        <p class="store-fine">For laboratory research use only.</p>
         <a class="pillar-link" href="New%20Website%20Arch/">Enter →</a>
       </div>
     </div>
