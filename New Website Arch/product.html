@@ -43,7 +43,8 @@
     document.getElementById("crumb-cat").innerHTML = `<a href="shop.html?cat=${p.category}">${catName(p.category)}</a>`;
     document.getElementById("crumb-name").textContent = p.name;
 
-    let sizeIndex = 0;
+    // open on the first volume-priced (catalog) size when the product has one
+    let sizeIndex = Math.max(0, p.sizes.findIndex(s => s.tiers));
 
     const proto = protocolById(p.id);
     const relatedStacks = stacksWith(p.id);
@@ -118,7 +119,7 @@
     // Sizes
     const sizesEl = document.getElementById("sizes");
     sizesEl.innerHTML = p.sizes.map((s,i)=>
-      `<div class="size-opt ${i===0?'active':''}" data-i="${i}">${s.label}<div class="small muted" style="text-transform:none;letter-spacing:0">${money(s.price)}</div></div>`).join("");
+      `<div class="size-opt ${i===sizeIndex?'active':''}" data-i="${i}">${s.label}<div class="small muted" style="text-transform:none;letter-spacing:0">${money(s.price)}</div></div>`).join("");
 
     function refresh(){
       const s = p.sizes[sizeIndex];
