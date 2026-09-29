@@ -15,9 +15,15 @@ Working rules for AI agents on this codebase. Read README.md first for project o
 - The brand persona is "The Registrar". The site never explains itself directly.
 
 ## Design tokens
-- Colors: bg #070713, bg2 #0d0d24, ink #e8e6f5, muted #9b97b8, gold #f0c96c, violet #8b7cf7
-- Type: Georgia serif for prose; Helvetica for labels/UI (uppercase, letter-spaced)
-- Motifs: ✦ glyph, gold redaction bars (hover to reveal), 100px-radius pill buttons
+Sibling system: this site and the Broaddus Commerce site (`New Website Arch/`) share one visual language — cool monochrome, Inter, square corners. Georgia is the University's voice and is what sets this site apart.
+- Colors (dark, default): bg #0a0d12, bg2 #11151c, ink #eef1f5, muted #8b94a3, accent (`--gold`) #f5f7fa, steel (`--violet`) #7d8da3
+- Colors (light, `html.light`): bg #f7f8fa, bg2 #eceff3, ink #0e1116, muted #5b6472, accent (`--gold`) #0e1116, steel (`--violet`) #4a5a70
+- `--gold` and `--violet` keep their old names for compatibility; they now hold the monochrome accent and steel blue-gray. Do not reintroduce gold or violet hues.
+- Text on an accent-filled button uses `color: var(--bg)` so it flips with the theme.
+- Semantic colors stay: #5fd08a (up / normal), #e2708a (down / flag). Use them only for meaning, never decoration.
+- Type: Inter (`--font-sans`) for UI, labels, buttons, forms, and body copy. Georgia (`--font-voice`) for the wordmark, headlines, scripture, fragments, and quotes.
+- Shape: square corners (radius 0) on cards, buttons, inputs; 50% only for true circles. 1px rules instead of glows.
+- Motifs: ✦ glyph, ink redaction bars (hover to reveal), solid ink buttons with reversed hover
 
 ## Do not
 - Do not add TikTok links (brand decision).

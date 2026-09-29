@@ -3,41 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>Careers — Secrets of the University</title>
 <meta name="description" content="The race is not to the swift. Career lessons, résumé forge, and the things no advisor mentioned.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/scroll/simplescrollbars.css">
 <style>
   :root {
-    --bg: #070713;
-    --bg2: #0d0d24;
-    --ink: #e8e6f5;
-    --muted: #9b97b8;
-    --gold: #f0c96c;
-    --violet: #8b7cf7;
-    --card: rgba(139,124,247,0.07);
-    --border: rgba(139,124,247,0.22);
+    --bg: #0a0d12;
+    --bg2: #11151c;
+    --ink: #eef1f5;
+    --muted: #8b94a3;
+    --gold: #f5f7fa;
+    --violet: #7d8da3;
+    --card: rgba(148,163,184,0.06);
+    --border: rgba(148,163,184,0.18);
   }
   /* ── Light Mode ──────────────────────────────── */
   html.light {
-    --bg: #f5f3f0;
-    --bg2: #eae8e4;
-    --ink: #1a1a2e;
-    --muted: #6b6889;
-    --gold: #b8860b;
-    --violet: #6b5ce7;
-    --card: rgba(107,92,231,0.05);
-    --border: rgba(107,92,231,0.13);
+    --bg: #f7f8fa;
+    --bg2: #eceff3;
+    --ink: #0e1116;
+    --muted: #5b6472;
+    --gold: #0e1116;
+    --violet: #4a5a70;
+    --card: rgba(15,23,42,0.03);
+    --border: rgba(15,23,42,0.12);
   }
-  html.light .nav-full { background:rgba(245,243,240,0.88); }
+  html.light .nav-full { background:rgba(247,248,250,0.88); }
   html.light .site-footer { background:var(--bg2); }
-  html.light .footer-legal, html.light .footer-legal a { color:rgba(107,104,137,0.5); }
+  html.light .footer-legal, html.light .footer-legal a { color:rgba(91,100,114,0.5); }
   html.light .footer-subscribe input { background:rgba(0,0,0,0.04); }
   html.light .field input, html.light .field textarea, html.light .field select { background:rgba(0,0,0,0.03); }
-  html.light .form-panel { background:rgba(107,92,231,0.04); }
-  html.light .exp-block { background:rgba(107,92,231,0.03); }
+  html.light .form-panel { background:rgba(74,90,112,0.04); }
+  html.light .exp-block { background:rgba(74,90,112,0.03); }
   html.light .CodeMirror { background:#faf9fc !important; color:#1a1a2e !important; }
-  html.light .CodeMirror-gutters { background:#f0eff5 !important; border-right:1px solid rgba(107,92,231,0.13) !important; }
+  html.light .CodeMirror-gutters { background:#f0eff5 !important; border-right:1px solid rgba(74,90,112,0.13) !important; }
   html.light .CodeMirror-linenumber { color:#6b6889 !important; }
   html.light .job-search-bar input { background:rgba(0,0,0,0.03); }
   html.light .job-paste-area textarea { background:rgba(0,0,0,0.03); }
@@ -52,7 +55,7 @@
 
   /* Hamburger button — hidden on desktop */
   .hamburger {
-    display:none; background:none; border:1px solid var(--border); border-radius:8px;
+    display:none; background:none; border:1px solid var(--border); border-radius:0;
     width:40px; height:40px; align-items:center; justify-content:center;
     color:var(--gold); font-size:1.3rem; cursor:pointer; transition:all .3s;
     padding:0; line-height:1;
@@ -62,10 +65,10 @@
   /* Mobile nav overlay */
   .mobile-nav {
     display:none; position:fixed; inset:0; z-index:1000;
-    background:rgba(7,7,19,0.96); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    background:rgba(10,13,18,0.96); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
     flex-direction:column; align-items:center; justify-content:center; gap:28px;
   }
-  html.light .mobile-nav { background:rgba(245,243,240,0.96); }
+  html.light .mobile-nav { background:rgba(247,248,250,0.96); }
   .mobile-nav.open { display:flex; }
   .mobile-nav a {
     font-family:Helvetica,Arial,sans-serif; font-size:1.1rem; letter-spacing:0.18em;
@@ -82,7 +85,7 @@
   }
   .mobile-nav .mobile-close:hover { border-color:var(--gold); color:var(--gold); }
   .mobile-nav .mobile-theme {
-    background:none; border:1px solid var(--border); border-radius:100px;
+    background:none; border:1px solid var(--border); border-radius:0;
     padding:12px 28px; color:var(--gold); font-family:Helvetica,Arial,sans-serif;
     font-size:0.82rem; letter-spacing:0.15em; text-transform:uppercase;
     cursor:pointer; transition:all .3s; margin-top:8px;
@@ -105,7 +108,7 @@
   .nav-full {
     position:relative; z-index:1; width:100%;
     border-bottom:1px solid var(--border);
-    background:rgba(7,7,19,0.7); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    background:rgba(10,13,18,0.7); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
   }
   .nav-inner {
     max-width:1000px; margin:0 auto; padding:20px 24px;
@@ -120,7 +123,7 @@
   }
   .nav-links a:hover { color:var(--gold); }
   .nav-links a.cta-small {
-    color:var(--ink); border:1px solid var(--border); padding:8px 18px; border-radius:100px;
+    color:var(--ink); border:1px solid var(--border); padding:8px 18px; border-radius:0;
     transition:all .3s;
   }
   .nav-links a.cta-small:hover { border-color:var(--gold); color:var(--gold); }
@@ -189,19 +192,19 @@
   .footer-subscribe form { display:flex; flex-direction:column; gap:8px; }
   .footer-subscribe input {
     background:rgba(255,255,255,0.05); border:1px solid var(--border);
-    border-radius:8px; padding:10px 14px; color:var(--ink); font-size:0.82rem;
+    border-radius:0; padding:10px 14px; color:var(--ink); font-size:0.82rem;
     font-family:Helvetica,Arial,sans-serif; outline:none; transition:border .3s;
     width:100%; box-sizing:border-box;
   }
   .footer-subscribe input:focus, .footer-subscribe textarea:focus { border-color:var(--gold); }
   .footer-subscribe textarea {
     background:rgba(255,255,255,0.05); border:1px solid var(--border);
-    border-radius:8px; padding:10px 14px; color:var(--ink); font-size:0.82rem;
+    border-radius:0; padding:10px 14px; color:var(--ink); font-size:0.82rem;
     font-family:Georgia,serif; outline:none; transition:border .3s;
     width:100%; box-sizing:border-box; resize:vertical; min-height:50px; max-height:140px;
   }
   .footer-subscribe button {
-    background:var(--gold); color:#1a1305; border:none; border-radius:8px;
+    background:var(--gold); color:var(--bg); border:none; border-radius:0;
     padding:10px 18px; font-size:0.72rem; font-weight:700; letter-spacing:0.08em;
     text-transform:uppercase; cursor:pointer; transition:transform .2s, opacity .3s;
     font-family:Helvetica,Arial,sans-serif; white-space:nowrap;
@@ -214,8 +217,8 @@
     display:flex; justify-content:space-between; align-items:center;
     padding:20px 0; flex-wrap:wrap; gap:12px;
   }
-  .footer-legal { font-size:0.7rem; color:rgba(155,151,184,0.6); }
-  .footer-legal a { color:rgba(155,151,184,0.6); text-decoration:none; transition:color .3s; }
+  .footer-legal { font-size:0.7rem; color:rgba(139,148,163,0.6); }
+  .footer-legal a { color:rgba(139,148,163,0.6); text-decoration:none; transition:color .3s; }
   .footer-legal a:hover { color:var(--muted); }
   .footer-socials { display:flex; gap:16px; }
   .footer-socials a {
@@ -244,7 +247,7 @@
 
   .lessons { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
   .lesson {
-    background:var(--card); border:1px solid var(--border); border-radius:16px; padding:30px 26px;
+    background:var(--card); border:1px solid var(--border); border-radius:0; padding:30px 26px;
     transition:transform .3s, border-color .3s;
   }
   .lesson:hover { transform:translateY(-6px); border-color:var(--gold); }
@@ -265,18 +268,18 @@
     margin-bottom:36px;
   }
   .tmpl-card {
-    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    background:var(--card); border:1px solid var(--border); border-radius:0;
     padding:20px 18px; cursor:pointer; transition:transform .3s, border-color .3s, box-shadow .3s;
     text-align:center; position:relative; overflow:hidden;
   }
   .tmpl-card::before {
-    content:''; position:absolute; inset:0; border-radius:14px;
-    background:linear-gradient(135deg, rgba(240,201,108,0.08), transparent);
+    content:''; position:absolute; inset:0; border-radius:0;
+    background:linear-gradient(135deg, rgba(125,141,163,0.08), transparent);
     opacity:0; transition:opacity .3s;
   }
-  .tmpl-card:hover { transform:translateY(-4px); border-color:rgba(240,201,108,0.5); }
+  .tmpl-card:hover { transform:translateY(-4px); border-color:rgba(125,141,163,0.5); }
   .tmpl-card:hover::before { opacity:1; }
-  .tmpl-card.active { border-color:var(--gold); box-shadow:0 0 24px rgba(240,201,108,0.15); }
+  .tmpl-card.active { border-color:var(--gold); box-shadow:0 0 24px rgba(125,141,163,0.15); }
   .tmpl-card.active::before { opacity:1; }
   .tmpl-card .tmpl-icon { display:block; margin:0 auto 10px; }
   .tmpl-card .tmpl-icon svg { width:60px; height:78px; }
@@ -291,13 +294,13 @@
     position:absolute; top:8px; right:8px;
     font-family:Helvetica,Arial,sans-serif; font-size:0.52rem; letter-spacing:0.12em;
     text-transform:uppercase; color:var(--bg); background:var(--gold);
-    padding:2px 8px; border-radius:100px; opacity:0; transition:opacity .3s;
+    padding:2px 8px; border-radius:0; opacity:0; transition:opacity .3s;
   }
   .tmpl-card.active .tmpl-badge { opacity:1; }
 
   /* ── Form Fields ────────────────────────────────── */
   .form-panel {
-    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    background:var(--card); border:1px solid var(--border); border-radius:0;
     padding:32px 28px;
   }
   .form-section { margin-bottom:28px; }
@@ -317,18 +320,18 @@
   }
   .field input, .field textarea, .field select {
     width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border);
-    border-radius:10px; padding:12px 14px; color:var(--ink); font-size:0.9rem;
+    border-radius:0; padding:12px 14px; color:var(--ink); font-size:0.9rem;
     font-family:Georgia,'Times New Roman',serif; outline:none; transition:border .3s;
     resize:vertical;
   }
   .field input:focus, .field textarea:focus { border-color:var(--gold); }
   .field textarea { min-height:70px; line-height:1.5; }
-  .field input::placeholder, .field textarea::placeholder { color:rgba(155,151,184,0.5); }
+  .field input::placeholder, .field textarea::placeholder { color:rgba(139,148,163,0.5); }
 
   /* Experience block */
   .exp-block {
-    background:rgba(139,124,247,0.04); border:1px solid rgba(139,124,247,0.12);
-    border-radius:12px; padding:20px 18px; margin-bottom:14px; position:relative;
+    background:rgba(148,163,184,0.04); border:1px solid rgba(148,163,184,0.12);
+    border-radius:0; padding:20px 18px; margin-bottom:14px; position:relative;
   }
   .exp-block .remove-exp {
     position:absolute; top:12px; right:14px; background:none; border:none;
@@ -338,7 +341,7 @@
   .exp-block .remove-exp:hover { color:#e2708a; }
   .btn-add {
     display:inline-flex; align-items:center; gap:6px; background:none;
-    border:1px dashed var(--border); border-radius:100px; padding:10px 20px;
+    border:1px dashed var(--border); border-radius:0; padding:10px 20px;
     color:var(--muted); font-family:Helvetica,Arial,sans-serif; font-size:0.78rem;
     letter-spacing:0.08em; cursor:pointer; transition:all .3s;
   }
@@ -347,8 +350,8 @@
   /* Skills pills */
   .skills-display { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
   .skill-pill {
-    background:rgba(240,201,108,0.12); border:1px solid rgba(240,201,108,0.3);
-    border-radius:100px; padding:4px 14px; font-family:Helvetica,Arial,sans-serif;
+    background:rgba(125,141,163,0.12); border:1px solid rgba(125,141,163,0.3);
+    border-radius:0; padding:4px 14px; font-family:Helvetica,Arial,sans-serif;
     font-size:0.75rem; color:var(--gold); letter-spacing:0.05em;
   }
 
@@ -359,7 +362,7 @@
   /* Photo toggle */
   .toggle-row { display:flex; align-items:center; gap:10px; }
   .toggle-switch {
-    width:40px; height:22px; background:var(--border); border-radius:11px;
+    width:40px; height:22px; background:var(--border); border-radius:0;
     position:relative; cursor:pointer; transition:background .3s;
   }
   .toggle-switch.on { background:var(--gold); }
@@ -377,7 +380,7 @@
   .job-search-bar { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; justify-content:center; }
   .job-search-bar input {
     flex:1; min-width:200px; max-width:360px;
-    background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:100px;
+    background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:0;
     padding:14px 22px; color:var(--ink); font-size:0.9rem;
     font-family:Helvetica,Arial,sans-serif; outline:none; transition:border .3s;
   }
@@ -385,7 +388,7 @@
   .job-sites { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:16px; }
   .job-site-btn {
     display:inline-flex; align-items:center; gap:6px;
-    background:var(--card); border:1px solid var(--border); border-radius:100px;
+    background:var(--card); border:1px solid var(--border); border-radius:0;
     padding:10px 20px; color:var(--ink); font-family:Helvetica,Arial,sans-serif;
     font-size:0.78rem; letter-spacing:0.06em; text-decoration:none;
     transition:all .3s; cursor:pointer;
@@ -399,7 +402,7 @@
   }
   .job-paste-area textarea {
     width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border);
-    border-radius:12px; padding:16px 18px; color:var(--ink); font-size:0.88rem;
+    border-radius:0; padding:16px 18px; color:var(--ink); font-size:0.88rem;
     font-family:Georgia,'Times New Roman',serif; outline:none; resize:vertical;
     min-height:100px; transition:border .3s; line-height:1.5;
   }
@@ -417,14 +420,14 @@
   .letter-fields { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; justify-content:center; }
   .letter-fields input {
     flex:1; min-width:180px;
-    background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:10px;
+    background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:0;
     padding:12px 14px; color:var(--ink); font-size:0.9rem;
     font-family:Georgia,'Times New Roman',serif; outline:none; transition:border .3s;
   }
   .letter-fields input:focus { border-color:var(--gold); }
   .letter-preview {
     background:linear-gradient(135deg, #faf8f3, #f5f0e8);
-    border-radius:12px; padding:40px 36px; color:#2b2b3d;
+    border-radius:0; padding:40px 36px; color:#2b2b3d;
     font-family:Georgia,'Times New Roman',serif; font-size:0.92rem; line-height:1.7;
     box-shadow:0 8px 40px rgba(0,0,0,0.4); position:relative; min-height:240px;
   }
@@ -446,7 +449,7 @@
 
   /* ── Resume Preview ─────────────────────────────── */
   .preview-frame {
-    background:#fff; border-radius:8px; padding:44px 40px; color:#2b2b3d;
+    background:#fff; border-radius:0; padding:44px 40px; color:#2b2b3d;
     max-width:720px; margin:0 auto;
     box-shadow:0 12px 60px rgba(0,0,0,0.5);
     font-family:Georgia,'Times New Roman',serif; font-size:0.88rem; line-height:1.55;
@@ -456,27 +459,27 @@
   .preview-frame .pv-name { font-size:1.6rem; font-weight:700; color:#2b2b3d; margin-bottom:4px; }
   .preview-frame .pv-title-line { font-size:0.92rem; color:#555; margin-bottom:4px; }
   .preview-frame .pv-contact { font-size:0.75rem; color:#888; }
-  .preview-frame .pv-contact a { color:#8b7cf7; text-decoration:none; }
+  .preview-frame .pv-contact a { color:#7d8da3; text-decoration:none; }
   .preview-frame .pv-section-head {
     font-size:0.88rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;
-    color:#f0c96c; border-bottom:1.5px solid #f0c96c; padding-bottom:3px;
+    color:#cbd5e1; border-bottom:1.5px solid #cbd5e1; padding-bottom:3px;
     margin:18px 0 10px;
   }
-  .preview-frame .pv-section-head.navy { color:#1A1A3E; border-color:#8b7cf7; }
+  .preview-frame .pv-section-head.navy { color:#1A1A3E; border-color:#7d8da3; }
   .preview-frame .pv-section-head.minimal { color:#222; border:none; font-weight:700; }
-  .preview-frame .pv-section-head.exec { border-bottom:2px solid #f0c96c; }
+  .preview-frame .pv-section-head.exec { border-bottom:2px solid #cbd5e1; }
   .preview-frame .pv-exp-title { font-weight:700; font-size:0.86rem; }
   .preview-frame .pv-exp-meta { font-size:0.78rem; color:#888; font-style:italic; }
   .preview-frame .pv-exp-bullets { padding-left:18px; margin:6px 0 12px; }
   .preview-frame .pv-exp-bullets li { font-size:0.82rem; color:#444; margin-bottom:3px; }
   .preview-frame .pv-skills-pills { display:flex; flex-wrap:wrap; gap:6px; }
   .preview-frame .pv-skill {
-    background:rgba(240,201,108,0.15); border:1px solid rgba(240,201,108,0.3);
-    border-radius:100px; padding:2px 12px; font-size:0.72rem; color:#b8940a;
+    background:rgba(125,141,163,0.15); border:1px solid rgba(125,141,163,0.3);
+    border-radius:0; padding:2px 12px; font-size:0.72rem; color:#b8940a;
     font-family:Helvetica,Arial,sans-serif;
   }
   .preview-frame .pv-photo {
-    width:64px; height:64px; border-radius:50%; background:#e8e6f5;
+    width:64px; height:64px; border-radius:50%; background:#eef1f5;
     display:flex; align-items:center; justify-content:center; font-size:0.6rem; color:#999;
   }
   .preview-frame .pv-placeholder {
@@ -488,7 +491,7 @@
     width:35%; background:#1A1A2E; color:#f5f5f5; padding:28px 18px;
     font-size:0.78rem;
   }
-  .preview-frame.arch-layout .pv-sidebar .pv-section-head { color:#f0c96c; border-color:#f0c96c; }
+  .preview-frame.arch-layout .pv-sidebar .pv-section-head { color:#cbd5e1; border-color:#cbd5e1; }
   .preview-frame.arch-layout .pv-main { flex:1; padding:28px 24px; }
   /* Minimalist */
   .preview-frame.mini-layout { font-family:Helvetica,Arial,sans-serif; }
@@ -498,22 +501,22 @@
   /* Executive header bar */
   .preview-frame.exec-layout .pv-header-bar {
     background:#1A1A2E; color:#fff; margin:-44px -40px 24px; padding:28px 40px;
-    border-radius:8px 8px 0 0;
+    border-radius:0 8px 0 0;
   }
   .preview-frame.exec-layout .pv-header-bar .pv-name { color:#fff; }
-  .preview-frame.exec-layout .pv-header-bar .pv-title-line { color:#f0c96c; }
+  .preview-frame.exec-layout .pv-header-bar .pv-title-line { color:#cbd5e1; }
   .preview-frame.exec-layout .pv-header-bar .pv-contact { color:rgba(255,255,255,0.7); }
 
   /* ── Buttons ────────────────────────────────────── */
   .btn-gold {
-    background:linear-gradient(135deg, var(--gold), #d9a63f);
-    color:#1a1305; border:none; border-radius:100px; padding:14px 28px; font-size:0.85rem;
+    background:var(--gold);
+    color:var(--bg); border:none; border-radius:0; padding:14px 28px; font-size:0.85rem;
     font-family:Helvetica,Arial,sans-serif; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
     cursor:pointer; transition:transform .2s, box-shadow .3s; display:inline-flex; align-items:center; gap:8px;
   }
-  .btn-gold:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(240,201,108,0.35); }
+  .btn-gold:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(125,141,163,0.35); }
   .btn-outline {
-    background:none; border:1px solid var(--border); border-radius:100px;
+    background:none; border:1px solid var(--border); border-radius:0;
     padding:12px 24px; color:var(--ink); font-family:Helvetica,Arial,sans-serif;
     font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
     cursor:pointer; transition:all .3s;
@@ -525,7 +528,7 @@
     text-align:center; margin:24px 0 16px;
   }
   .source-toggle button {
-    background:none; border:1px solid var(--border); border-radius:100px;
+    background:none; border:1px solid var(--border); border-radius:0;
     padding:10px 22px; color:var(--muted); font-family:Helvetica,Arial,sans-serif;
     font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase;
     cursor:pointer; transition:all .3s;
@@ -534,21 +537,21 @@
   .source-panel { display:none; margin-top:16px; }
   .source-panel.open { display:block; }
   .lab-container {
-    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    background:var(--card); border:1px solid var(--border); border-radius:0;
     padding:24px; overflow:hidden;
   }
 
   /* CodeMirror theme overrides */
   .CodeMirror {
     background: var(--bg2) !important; color: var(--ink) !important;
-    border-radius: 10px; font-family: 'SF Mono','Fira Code','Consolas',monospace;
+    border-radius:0; font-family: 'SF Mono','Fira Code','Consolas',monospace;
     font-size: 0.85rem; line-height: 1.5; height: 420px;
     border: 1px solid var(--border);
   }
-  .CodeMirror-gutters { background: rgba(13,13,36,0.8) !important; border-right: 1px solid var(--border) !important; }
+  .CodeMirror-gutters { background: rgba(17,21,28,0.8) !important; border-right: 1px solid var(--border) !important; }
   .CodeMirror-linenumber { color: var(--muted) !important; }
   .CodeMirror-cursor { border-left-color: var(--gold) !important; }
-  .CodeMirror-selected { background: rgba(139,124,247,0.2) !important; }
+  .CodeMirror-selected { background: rgba(148,163,184,0.2) !important; }
   .cm-keyword { color: var(--violet) !important; }
   .cm-tag { color: var(--gold) !important; }
   .cm-bracket { color: var(--muted) !important; }
@@ -560,18 +563,18 @@
   /* ── Signup & Footer ────────────────────────────── */
   .signup { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
   .signup input {
-    background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:100px;
+    background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:0;
     padding:16px 24px; color:var(--ink); font-size:1rem; width:320px; max-width:100%;
     font-family:Helvetica,Arial,sans-serif; outline:none; transition:border .3s;
   }
   .signup input:focus { border-color:var(--violet); }
   .signup button {
-    background:linear-gradient(135deg, var(--gold), #d9a63f);
-    color:#1a1305; border:none; border-radius:100px; padding:16px 32px; font-size:0.9rem;
+    background:var(--gold);
+    color:var(--bg); border:none; border-radius:0; padding:16px 32px; font-size:0.9rem;
     font-family:Helvetica,Arial,sans-serif; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
     cursor:pointer; transition:transform .2s, box-shadow .3s;
   }
-  .signup button:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(240,201,108,0.35); }
+  .signup button:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(125,141,163,0.35); }
   #signup-msg { color:var(--gold); margin-top:16px; font-style:italic; display:none; text-align:center; }
   footer {
     border-top:1px solid var(--border); padding:32px 0; text-align:center;
@@ -602,13 +605,48 @@
     .preview-frame { padding:24px 20px; font-size:0.8rem; min-height:400px; }
     .preview-frame.arch-layout { flex-direction:column; }
     .preview-frame.arch-layout .pv-sidebar { width:100%; }
-    .preview-frame.exec-layout .pv-header-bar { margin:-24px -20px 18px; padding:20px; border-radius:8px 8px 0 0; }
+    .preview-frame.exec-layout .pv-header-bar { margin:-24px -20px 18px; padding:20px; border-radius:0 8px 0 0; }
     .letter-preview { padding:24px 20px; }
     .job-search-bar input { min-width:100%; }
     .letter-fields input { min-width:100%; }
     .footer-grid { grid-template-columns:1fr; gap:24px; }
     .footer-subscribe { grid-column:span 1; }
     .footer-bottom { flex-direction:column; text-align:center; }
+  }
+
+  /* ── Sibling system (shared with the Broaddus Commerce site) ──────
+     Inter for everything functional; Georgia stays as the University's
+     voice (wordmark, headlines, scripture, fragments, quotes). Square corners. */
+  :root {
+    --font-sans: "Inter", -apple-system, system-ui, "Helvetica Neue", Helvetica, sans-serif;
+    --font-voice: Georgia, "Times New Roman", serif;
+  }
+  body { font-family: var(--font-sans); }
+  h1, h2, h3, .logo, .brand, blockquote, .manifesto, .manifesto p, .teaser,
+  .daily-verse-card, .angel-num, textarea { font-family: var(--font-voice); }
+  .manifesto .sig, .teaser small, .daily-verse-card .verse-ref,
+  .daily-verse-card .verse-source { font-family: var(--font-sans); }
+  .section-label, .eyebrow, .footer-col-title {
+    font-family: var(--font-sans); font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .nav-links a { font-weight: 500; letter-spacing: 0.08em; }
+  .hamburger, .theme-toggle, .mobile-nav .mobile-close { border-radius: 0; }
+  .signup button, .footer-subscribe button, .nav-links a.cta-small, .btn-gold {
+    font-family: var(--font-sans); font-weight: 600; letter-spacing: 0.04em;
+    text-transform: uppercase; background: var(--ink); color: var(--bg);
+    border: 1px solid var(--ink); box-shadow: none;
+  }
+  .signup button:hover, .footer-subscribe button:hover,
+  .nav-links a.cta-small:hover, .btn-gold:hover {
+    background: transparent; color: var(--ink); box-shadow: none; transform: none;
+  }
+  .signup input, .signup textarea, .footer-subscribe input, .footer-subscribe textarea {
+    border: 1px solid var(--border);
+  }
+  .signup input:focus, .signup textarea:focus,
+  .footer-subscribe input:focus, .footer-subscribe textarea:focus {
+    border-color: var(--ink); outline: none;
   }
 </style>
 </head>
@@ -697,31 +735,31 @@
     <div class="tmpl-gallery" id="tmpl-gallery">
       <div class="tmpl-card active" data-tmpl="classic">
         <span class="tmpl-badge">Active</span>
-        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#f0c96c" stroke-width="1.2" fill="rgba(240,201,108,0.06)"/><circle cx="15" cy="16" r="7" stroke="#9b97b8" stroke-width="0.8" fill="none"/><line x1="28" y1="12" x2="50" y2="12" stroke="#e8e6f5" stroke-width="1.5"/><line x1="28" y1="17" x2="44" y2="17" stroke="#9b97b8" stroke-width="0.8"/><line x1="28" y1="21" x2="50" y2="21" stroke="#9b97b8" stroke-width="0.6"/><line x1="8" y1="32" x2="52" y2="32" stroke="#f0c96c" stroke-width="1"/><line x1="8" y1="38" x2="50" y2="38" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="42" x2="48" y2="42" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="50" x2="52" y2="50" stroke="#f0c96c" stroke-width="1"/><line x1="8" y1="56" x2="50" y2="56" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="60" x2="46" y2="60" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="64" x2="48" y2="64" stroke="#9b97b8" stroke-width="0.5"/></svg></span>
+        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#cbd5e1" stroke-width="1.2" fill="rgba(125,141,163,0.06)"/><circle cx="15" cy="16" r="7" stroke="#8b94a3" stroke-width="0.8" fill="none"/><line x1="28" y1="12" x2="50" y2="12" stroke="#eef1f5" stroke-width="1.5"/><line x1="28" y1="17" x2="44" y2="17" stroke="#8b94a3" stroke-width="0.8"/><line x1="28" y1="21" x2="50" y2="21" stroke="#8b94a3" stroke-width="0.6"/><line x1="8" y1="32" x2="52" y2="32" stroke="#cbd5e1" stroke-width="1"/><line x1="8" y1="38" x2="50" y2="38" stroke="#8b94a3" stroke-width="0.5"/><line x1="8" y1="42" x2="48" y2="42" stroke="#8b94a3" stroke-width="0.5"/><line x1="8" y1="50" x2="52" y2="50" stroke="#cbd5e1" stroke-width="1"/><line x1="8" y1="56" x2="50" y2="56" stroke="#8b94a3" stroke-width="0.5"/><line x1="8" y1="60" x2="46" y2="60" stroke="#8b94a3" stroke-width="0.5"/><line x1="8" y1="64" x2="48" y2="64" stroke="#8b94a3" stroke-width="0.5"/></svg></span>
         <div class="tmpl-name">The Classic</div>
         <div class="tmpl-desc">Photo, gold accents, clean sections</div>
       </div>
       <div class="tmpl-card" data-tmpl="architect">
         <span class="tmpl-badge">Active</span>
-        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#8b7cf7" stroke-width="1.2" fill="rgba(139,124,247,0.06)"/><rect x="1" y="1" width="20" height="76" rx="3" fill="rgba(26,26,46,0.7)" stroke="none"/><circle cx="11" cy="16" r="6" stroke="#f0c96c" stroke-width="0.8" fill="none"/><line x1="5" y1="28" x2="17" y2="28" stroke="#f0c96c" stroke-width="0.7"/><line x1="5" y1="33" x2="17" y2="33" stroke="#9b97b8" stroke-width="0.4"/><line x1="5" y1="36" x2="15" y2="36" stroke="#9b97b8" stroke-width="0.4"/><line x1="5" y1="44" x2="17" y2="44" stroke="#f0c96c" stroke-width="0.7"/><line x1="5" y1="49" x2="16" y2="49" stroke="#9b97b8" stroke-width="0.4"/><line x1="5" y1="52" x2="14" y2="52" stroke="#9b97b8" stroke-width="0.4"/><line x1="26" y1="10" x2="52" y2="10" stroke="#f0c96c" stroke-width="1"/><line x1="26" y1="17" x2="54" y2="17" stroke="#9b97b8" stroke-width="0.5"/><line x1="26" y1="21" x2="50" y2="21" stroke="#9b97b8" stroke-width="0.5"/><line x1="26" y1="30" x2="52" y2="30" stroke="#f0c96c" stroke-width="1"/><line x1="26" y1="37" x2="54" y2="37" stroke="#9b97b8" stroke-width="0.5"/><line x1="26" y1="41" x2="50" y2="41" stroke="#9b97b8" stroke-width="0.5"/><line x1="26" y1="45" x2="52" y2="45" stroke="#9b97b8" stroke-width="0.5"/><line x1="26" y1="53" x2="52" y2="53" stroke="#f0c96c" stroke-width="1"/><line x1="26" y1="60" x2="54" y2="60" stroke="#9b97b8" stroke-width="0.5"/></svg></span>
+        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#7d8da3" stroke-width="1.2" fill="rgba(148,163,184,0.06)"/><rect x="1" y="1" width="20" height="76" rx="3" fill="rgba(14,17,22,0.7)" stroke="none"/><circle cx="11" cy="16" r="6" stroke="#cbd5e1" stroke-width="0.8" fill="none"/><line x1="5" y1="28" x2="17" y2="28" stroke="#cbd5e1" stroke-width="0.7"/><line x1="5" y1="33" x2="17" y2="33" stroke="#8b94a3" stroke-width="0.4"/><line x1="5" y1="36" x2="15" y2="36" stroke="#8b94a3" stroke-width="0.4"/><line x1="5" y1="44" x2="17" y2="44" stroke="#cbd5e1" stroke-width="0.7"/><line x1="5" y1="49" x2="16" y2="49" stroke="#8b94a3" stroke-width="0.4"/><line x1="5" y1="52" x2="14" y2="52" stroke="#8b94a3" stroke-width="0.4"/><line x1="26" y1="10" x2="52" y2="10" stroke="#cbd5e1" stroke-width="1"/><line x1="26" y1="17" x2="54" y2="17" stroke="#8b94a3" stroke-width="0.5"/><line x1="26" y1="21" x2="50" y2="21" stroke="#8b94a3" stroke-width="0.5"/><line x1="26" y1="30" x2="52" y2="30" stroke="#cbd5e1" stroke-width="1"/><line x1="26" y1="37" x2="54" y2="37" stroke="#8b94a3" stroke-width="0.5"/><line x1="26" y1="41" x2="50" y2="41" stroke="#8b94a3" stroke-width="0.5"/><line x1="26" y1="45" x2="52" y2="45" stroke="#8b94a3" stroke-width="0.5"/><line x1="26" y1="53" x2="52" y2="53" stroke="#cbd5e1" stroke-width="1"/><line x1="26" y1="60" x2="54" y2="60" stroke="#8b94a3" stroke-width="0.5"/></svg></span>
         <div class="tmpl-name">The Architect</div>
         <div class="tmpl-desc">Two-column sidebar layout</div>
       </div>
       <div class="tmpl-card" data-tmpl="minimalist">
         <span class="tmpl-badge">Active</span>
-        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#9b97b8" stroke-width="1.2" fill="rgba(155,151,184,0.04)"/><line x1="16" y1="14" x2="44" y2="14" stroke="#e8e6f5" stroke-width="1.5"/><line x1="12" y1="20" x2="48" y2="20" stroke="#9b97b8" stroke-width="0.5"/><line x1="20" y1="26" x2="40" y2="26" stroke="#9b97b8" stroke-width="0.3"/><line x1="8" y1="36" x2="24" y2="36" stroke="#e8e6f5" stroke-width="0.8"/><line x1="8" y1="42" x2="50" y2="42" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="46" x2="48" y2="46" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="54" x2="24" y2="54" stroke="#e8e6f5" stroke-width="0.8"/><line x1="8" y1="60" x2="50" y2="60" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="64" x2="46" y2="64" stroke="#9b97b8" stroke-width="0.4"/></svg></span>
+        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#8b94a3" stroke-width="1.2" fill="rgba(139,148,163,0.04)"/><line x1="16" y1="14" x2="44" y2="14" stroke="#eef1f5" stroke-width="1.5"/><line x1="12" y1="20" x2="48" y2="20" stroke="#8b94a3" stroke-width="0.5"/><line x1="20" y1="26" x2="40" y2="26" stroke="#8b94a3" stroke-width="0.3"/><line x1="8" y1="36" x2="24" y2="36" stroke="#eef1f5" stroke-width="0.8"/><line x1="8" y1="42" x2="50" y2="42" stroke="#8b94a3" stroke-width="0.4"/><line x1="8" y1="46" x2="48" y2="46" stroke="#8b94a3" stroke-width="0.4"/><line x1="8" y1="54" x2="24" y2="54" stroke="#eef1f5" stroke-width="0.8"/><line x1="8" y1="60" x2="50" y2="60" stroke="#8b94a3" stroke-width="0.4"/><line x1="8" y1="64" x2="46" y2="64" stroke="#8b94a3" stroke-width="0.4"/></svg></span>
         <div class="tmpl-name">The Minimalist</div>
         <div class="tmpl-desc">Sans-serif, whitespace, pure type</div>
       </div>
       <div class="tmpl-card" data-tmpl="scholar">
         <span class="tmpl-badge">Active</span>
-        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#8b7cf7" stroke-width="1.2" fill="rgba(139,124,247,0.04)"/><line x1="14" y1="12" x2="46" y2="12" stroke="#e8e6f5" stroke-width="1.5"/><line x1="18" y1="17" x2="42" y2="17" stroke="#8b7cf7" stroke-width="0.6"/><line x1="14" y1="22" x2="46" y2="22" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="30" x2="52" y2="30" stroke="#8b7cf7" stroke-width="1"/><line x1="8" y1="36" x2="50" y2="36" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="40" x2="48" y2="40" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="48" x2="52" y2="48" stroke="#8b7cf7" stroke-width="1"/><line x1="12" y1="54" x2="50" y2="54" stroke="#9b97b8" stroke-width="0.4"/><line x1="12" y1="58" x2="48" y2="58" stroke="#9b97b8" stroke-width="0.4"/><line x1="8" y1="66" x2="52" y2="66" stroke="#8b7cf7" stroke-width="1"/><line x1="8" y1="71" x2="46" y2="71" stroke="#9b97b8" stroke-width="0.4"/></svg></span>
+        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#7d8da3" stroke-width="1.2" fill="rgba(148,163,184,0.04)"/><line x1="14" y1="12" x2="46" y2="12" stroke="#eef1f5" stroke-width="1.5"/><line x1="18" y1="17" x2="42" y2="17" stroke="#7d8da3" stroke-width="0.6"/><line x1="14" y1="22" x2="46" y2="22" stroke="#8b94a3" stroke-width="0.4"/><line x1="8" y1="30" x2="52" y2="30" stroke="#7d8da3" stroke-width="1"/><line x1="8" y1="36" x2="50" y2="36" stroke="#8b94a3" stroke-width="0.4"/><line x1="8" y1="40" x2="48" y2="40" stroke="#8b94a3" stroke-width="0.4"/><line x1="8" y1="48" x2="52" y2="48" stroke="#7d8da3" stroke-width="1"/><line x1="12" y1="54" x2="50" y2="54" stroke="#8b94a3" stroke-width="0.4"/><line x1="12" y1="58" x2="48" y2="58" stroke="#8b94a3" stroke-width="0.4"/><line x1="8" y1="66" x2="52" y2="66" stroke="#7d8da3" stroke-width="1"/><line x1="8" y1="71" x2="46" y2="71" stroke="#8b94a3" stroke-width="0.4"/></svg></span>
         <div class="tmpl-name">The Scholar</div>
         <div class="tmpl-desc">Academic CV, publications, grants</div>
       </div>
       <div class="tmpl-card" data-tmpl="executive">
         <span class="tmpl-badge">Active</span>
-        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#f0c96c" stroke-width="1.2" fill="rgba(240,201,108,0.04)"/><rect x="1" y="1" width="58" height="20" rx="3" fill="rgba(26,26,46,0.7)" stroke="none"/><line x1="8" y1="8" x2="36" y2="8" stroke="#fff" stroke-width="1.5"/><line x1="8" y1="13" x2="30" y2="13" stroke="#f0c96c" stroke-width="0.7"/><line x1="8" y1="17" x2="42" y2="17" stroke="rgba(255,255,255,0.4)" stroke-width="0.4"/><line x1="8" y1="28" x2="52" y2="28" stroke="#f0c96c" stroke-width="1"/><line x1="8" y1="34" x2="50" y2="34" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="38" x2="48" y2="38" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="46" x2="52" y2="46" stroke="#f0c96c" stroke-width="1"/><line x1="8" y1="52" x2="50" y2="52" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="56" x2="46" y2="56" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="60" x2="48" y2="60" stroke="#9b97b8" stroke-width="0.5"/><line x1="8" y1="68" x2="52" y2="68" stroke="#f0c96c" stroke-width="1"/></svg></span>
+        <span class="tmpl-icon"><svg viewBox="0 0 60 78" fill="none"><rect x="1" y="1" width="58" height="76" rx="3" stroke="#cbd5e1" stroke-width="1.2" fill="rgba(125,141,163,0.04)"/><rect x="1" y="1" width="58" height="20" rx="3" fill="rgba(14,17,22,0.7)" stroke="none"/><line x1="8" y1="8" x2="36" y2="8" stroke="#fff" stroke-width="1.5"/><line x1="8" y1="13" x2="30" y2="13" stroke="#cbd5e1" stroke-width="0.7"/><line x1="8" y1="17" x2="42" y2="17" stroke="rgba(255,255,255,0.4)" stroke-width="0.4"/><line x1="8" y1="28" x2="52" y2="28" stroke="#cbd5e1" stroke-width="1"/><line x1="8" y1="34" x2="50" y2="34" stroke="#8b94a3" stroke-width="0.5"/><line x1="8" y1="38" x2="48" y2="38" stroke="#8b94a3" stroke-width="0.5"/><line x1="8" y1="46" x2="52" y2="46" stroke="#cbd5e1" stroke-width="1"/><line x1="8" y1="52" x2="50" y2="52" stroke="#8b94a3" stroke-width="0.5"/><line x1="8" y1="56" x2="46" y2="56" stroke="#8b94a3" stroke-width="0.5"/><line x1="8" y1="60" x2="48" y2="60" stroke="#8b94a3" stroke-width="0.5"/><line x1="8" y1="68" x2="52" y2="68" stroke="#cbd5e1" stroke-width="1"/></svg></span>
         <div class="tmpl-name">The Executive</div>
         <div class="tmpl-desc">Bold header, summary-first</div>
       </div>
@@ -962,7 +1000,7 @@ resize(); addEventListener('resize', resize);
 (function draw(){
   ctx.clearRect(0,0,c.width,c.height);
   const isLight = document.documentElement.classList.contains('light');
-  const SOLAR = [[240,201,108],[232,163,48],[245,208,160],[255,180,100]];
+  const SOLAR = [[148,163,184],[100,116,139],[203,213,225],[71,85,105]];
   for (const st of stars){
     st.p += st.s;
     const a = 0.25 + Math.abs(Math.sin(st.p))*0.6;
@@ -976,10 +1014,10 @@ resize(); addEventListener('resize', resize);
       ctx.beginPath(); ctx.arc(st.x,st.y, sz*3, 0, Math.PI*2);
       ctx.fillStyle = glow; ctx.fill();
       ctx.beginPath(); ctx.arc(st.x,st.y, sz*0.5, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(255,248,230,${a*0.7})`; ctx.fill();
+      ctx.fillStyle = `rgba(226,232,240,${a*0.7})`; ctx.fill();
     } else {
       ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(232,230,245,${a})`; ctx.fill();
+      ctx.fillStyle = `rgba(238,241,245,${a})`; ctx.fill();
     }
   }
   requestAnimationFrame(draw);
@@ -1011,12 +1049,12 @@ function toggleTheme() {
   const ANGELS = ['111','222','333','444','555','666','777','888','999',
     '1111','1212','1010','1234','2222','3333','4444','5555','7777','1001','808'];
   const COLORS = [
-    'rgba(240,201,108,',
-    'rgba(139,124,247,',
-    'rgba(232,230,245,',
-    'rgba(95,208,138,',
-    'rgba(226,112,138,',
-    'rgba(180,160,255,',
+    'rgba(125,141,163,',
+    'rgba(148,163,184,',
+    'rgba(238,241,245,',
+    'rgba(203,213,225,',
+    'rgba(100,116,139,',
+    'rgba(71,85,105,',
   ];
   const DRIFTS = ['angelDriftR','angelDriftL','angelDriftD'];
   for (let i = 0; i < 45; i++) {
@@ -1584,7 +1622,7 @@ function renderPreview() {
         ${d.photo ? '<div style="text-align:center;margin-bottom:12px;"><div class="pv-photo" style="margin:0 auto;">Photo</div></div>' : ''}
         <div style="text-align:center;margin-bottom:14px;">
           <div style="font-size:1.1rem;font-weight:700;">${d.name||'Your Name'}</div>
-          <div style="font-size:0.78rem;color:#f0c96c;margin-top:4px;">${d.title||''}</div>
+          <div style="font-size:0.78rem;color:#cbd5e1;margin-top:4px;">${d.title||''}</div>
         </div>
         ${sectionHead('Contact','')}<div style="font-size:0.72rem;line-height:1.8;margin-bottom:14px;">${[d.email,d.phone,d.location,d.linkedin,d.github].filter(x=>x).join('<br>')}</div>
         ${sectionHead('Skills','')}<div style="font-size:0.72rem;line-height:1.8;">${d.skills.join('<br>')||'Skills'}</div>
@@ -1613,7 +1651,7 @@ function renderPreview() {
     el.innerHTML = `
       <div style="text-align:center;margin-bottom:18px;">
         <div class="pv-name" style="color:#1A1A3E;">${d.name||'Your Name'}</div>
-        <div class="pv-title-line" style="color:#8b7cf7;">${d.title||''}</div>
+        <div class="pv-title-line" style="color:#7d8da3;">${d.title||''}</div>
         <div class="pv-contact">${contactHtml}</div>
       </div>
       ${d.profile ? sectionHead('Research Interests','navy') + '<p style="font-size:0.84rem;color:#444;margin-bottom:14px;">' + d.profile + '</p>' : ''}

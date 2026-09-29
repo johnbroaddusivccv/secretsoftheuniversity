@@ -5,7 +5,7 @@ Static website for secretsoftheuniversity.com — an education/insight brand: "t
 ## Brand voice
 - Motto: "The heavens declare what the university withheld." (Psalm 19:1 allusion)
 - Register: minimal, cryptic, wisdom-literature cadence (Proverbs, Ecclesiastes, Matthew's "ask/seek/knock")
-- Visual: cosmic dark theme — navy/ink (#070713), gold (#f0c96c), violet (#8b7cf7), Georgia serif, animated canvas starfield
+- Visual: cool monochrome — bluish black (#0a0d12) and cool white (#eef1f5) with steel accents, sibling to the Broaddus Commerce site; Inter for UI and body, Georgia for headlines and scripture; square corners; animated canvas starfield
 - One-word CTAs: "Knock", "Seek"
 
 ## Files

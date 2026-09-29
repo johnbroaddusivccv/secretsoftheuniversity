@@ -3,37 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>Finance — Secrets of the University</title>
 <meta name="description" content="Live markets and the money lessons school skipped — credit, taxes, negotiation, investing.">
 <style>
   :root {
-    --bg: #070713;
-    --bg2: #0d0d24;
-    --ink: #e8e6f5;
-    --muted: #9b97b8;
-    --gold: #f0c96c;
-    --violet: #8b7cf7;
-    --card: rgba(139,124,247,0.07);
-    --border: rgba(139,124,247,0.22);
+    --bg: #0a0d12;
+    --bg2: #11151c;
+    --ink: #eef1f5;
+    --muted: #8b94a3;
+    --gold: #f5f7fa;
+    --violet: #7d8da3;
+    --card: rgba(148,163,184,0.06);
+    --border: rgba(148,163,184,0.18);
   }
   /* ── Light Mode ──────────────────────────────── */
   html.light {
-    --bg: #f5f3f0;
-    --bg2: #eae8e4;
-    --ink: #1a1a2e;
-    --muted: #6b6889;
-    --gold: #b8860b;
-    --violet: #6b5ce7;
-    --card: rgba(107,92,231,0.05);
-    --border: rgba(107,92,231,0.13);
+    --bg: #f7f8fa;
+    --bg2: #eceff3;
+    --ink: #0e1116;
+    --muted: #5b6472;
+    --gold: #0e1116;
+    --violet: #4a5a70;
+    --card: rgba(15,23,42,0.03);
+    --border: rgba(15,23,42,0.12);
   }
-  html.light .nav-full { background:rgba(245,243,240,0.88); }
+  html.light .nav-full { background:rgba(247,248,250,0.88); }
   html.light .site-footer { background:var(--bg2); }
-  html.light .footer-legal, html.light .footer-legal a { color:rgba(107,104,137,0.5); }
+  html.light .footer-legal, html.light .footer-legal a { color:rgba(91,100,114,0.5); }
   html.light .footer-subscribe input { background:rgba(0,0,0,0.04); }
-  html.light #crypto-ticker { background:linear-gradient(180deg, rgba(234,232,228,0.95), rgba(245,243,240,0.95)); }
+  html.light #crypto-ticker { background:linear-gradient(180deg, rgba(236,239,243,0.95), rgba(247,248,250,0.95)); }
   html.light .angel-overlay { pointer-events:none; }
-  html.light .gate { background:rgba(107,92,231,0.04); }
+  html.light .gate { background:rgba(74,90,112,0.04); }
   .theme-toggle {
     background:none; border:1px solid var(--border); border-radius:50%;
     width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center;
@@ -44,7 +47,7 @@
 
   /* Hamburger button — hidden on desktop */
   .hamburger {
-    display:none; background:none; border:1px solid var(--border); border-radius:8px;
+    display:none; background:none; border:1px solid var(--border); border-radius:0;
     width:40px; height:40px; align-items:center; justify-content:center;
     color:var(--gold); font-size:1.3rem; cursor:pointer; transition:all .3s;
     padding:0; line-height:1;
@@ -54,10 +57,10 @@
   /* Mobile nav overlay */
   .mobile-nav {
     display:none; position:fixed; inset:0; z-index:1000;
-    background:rgba(7,7,19,0.96); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    background:rgba(10,13,18,0.96); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
     flex-direction:column; align-items:center; justify-content:center; gap:28px;
   }
-  html.light .mobile-nav { background:rgba(245,243,240,0.96); }
+  html.light .mobile-nav { background:rgba(247,248,250,0.96); }
   .mobile-nav.open { display:flex; }
   .mobile-nav a {
     font-family:Helvetica,Arial,sans-serif; font-size:1.1rem; letter-spacing:0.18em;
@@ -74,7 +77,7 @@
   }
   .mobile-nav .mobile-close:hover { border-color:var(--gold); color:var(--gold); }
   .mobile-nav .mobile-theme {
-    background:none; border:1px solid var(--border); border-radius:100px;
+    background:none; border:1px solid var(--border); border-radius:0;
     padding:12px 28px; color:var(--gold); font-family:Helvetica,Arial,sans-serif;
     font-size:0.82rem; letter-spacing:0.15em; text-transform:uppercase;
     cursor:pointer; transition:all .3s; margin-top:8px;
@@ -99,7 +102,7 @@
   .nav-full {
     position:relative; z-index:3; width:100%;
     border-bottom:1px solid var(--border);
-    background:rgba(7,7,19,0.7); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    background:rgba(10,13,18,0.7); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
   }
   .nav-inner {
     max-width:1000px; margin:0 auto; padding:20px 24px;
@@ -115,7 +118,7 @@
   }
   .nav-links a:hover { color:var(--gold); }
   .nav-links a.cta-small {
-    color:var(--ink); border:1px solid var(--border); padding:8px 18px; border-radius:100px;
+    color:var(--ink); border:1px solid var(--border); padding:8px 18px; border-radius:0;
     transition:all .3s;
   }
   .nav-links a.cta-small:hover { border-color:var(--gold); color:var(--gold); }
@@ -131,14 +134,14 @@
   /* Stock ticker (horizontal) */
   .stock-ticker-band {
     border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-    background: rgba(13,13,36,0.6); position:relative; z-index:1; margin:0 -24px;
+    background: rgba(17,21,28,0.6); position:relative; z-index:1; margin:0 -24px;
   }
 
   /* Crypto ticker (vertical, right edge) */
   #crypto-ticker {
     position:fixed; top:0; right:0; bottom:0; width:110px; z-index:2;
     border-left:1px solid var(--border);
-    background: linear-gradient(180deg, rgba(13,13,36,0.85), rgba(7,7,19,0.85));
+    background: linear-gradient(180deg, rgba(17,21,28,0.85), rgba(10,13,18,0.85));
     overflow:hidden; font-family:Helvetica,Arial,sans-serif;
   }
   #crypto-ticker .ct-label {
@@ -148,7 +151,7 @@
   }
   .ct-scroll { position:absolute; top:36px; left:0; right:0; animation: ctScroll 30s linear infinite; }
   @keyframes ctScroll { from { transform:translateY(0); } to { transform:translateY(-50%); } }
-  .ct-item { padding:14px 10px; text-align:center; border-bottom:1px solid rgba(139,124,247,0.1); }
+  .ct-item { padding:14px 10px; text-align:center; border-bottom:1px solid rgba(148,163,184,0.1); }
   .ct-item .sym { font-size:0.72rem; letter-spacing:0.12em; color:var(--ink); font-weight:700; }
   .ct-item .price { font-size:0.78rem; color:var(--gold); margin-top:2px; }
   .ct-item .chg { font-size:0.68rem; margin-top:2px; }
@@ -206,7 +209,7 @@
 
   .lessons { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
   .lesson {
-    background:var(--card); border:1px solid var(--border); border-radius:16px; padding:30px 26px;
+    background:var(--card); border:1px solid var(--border); border-radius:0; padding:30px 26px;
     transition:transform .3s, border-color .3s;
   }
   .lesson:hover { transform:translateY(-6px); border-color:var(--gold); }
@@ -219,7 +222,7 @@
 
   /* ── Market Overview Widget ─────────────────────── */
   .market-widget-wrap {
-    border-radius:16px; overflow:hidden; border:1px solid var(--border);
+    border-radius:0; overflow:hidden; border:1px solid var(--border);
     background:var(--card); margin-bottom:0;
   }
   .market-widget-wrap iframe { display:block; }
@@ -227,7 +230,7 @@
   /* ── News Feed ──────────────────────────────────── */
   .feed-tabs {
     display:flex; gap:0; justify-content:center; margin-bottom:28px;
-    border:1px solid var(--border); border-radius:100px; overflow:hidden;
+    border:1px solid var(--border); border-radius:0; overflow:hidden;
     display:inline-flex; margin:0 auto 28px; width:auto;
   }
   .feed-tabs-wrap { text-align:center; }
@@ -237,16 +240,16 @@
     text-transform:uppercase; cursor:pointer; transition:all .3s;
   }
   .feed-tab:hover { color:var(--ink); }
-  .feed-tab.active { background:rgba(240,201,108,0.15); color:var(--gold); }
+  .feed-tab.active { background:rgba(125,141,163,0.15); color:var(--gold); }
 
   .feed-list { max-width:700px; margin:0 auto; }
   .feed-item {
     display:flex; gap:14px; align-items:flex-start; padding:18px 0;
-    border-bottom:1px solid rgba(139,124,247,0.08);
+    border-bottom:1px solid rgba(148,163,184,0.08);
     transition:background .3s;
   }
   .feed-item:last-child { border-bottom:none; }
-  .feed-item:hover { background:rgba(139,124,247,0.03); }
+  .feed-item:hover { background:rgba(148,163,184,0.03); }
   .feed-rank {
     font-family:Helvetica,Arial,sans-serif; font-size:0.68rem; color:var(--violet);
     min-width:24px; text-align:right; padding-top:3px; font-weight:700;
@@ -278,7 +281,7 @@
   /* ── Investor Gates (curated links) ─────────────── */
   .gates { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; max-width:700px; margin:0 auto; }
   .gate {
-    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    background:var(--card); border:1px solid var(--border); border-radius:0;
     padding:18px 16px; text-decoration:none; color:var(--ink);
     transition:transform .3s, border-color .3s;
     display:flex; align-items:center; gap:12px;
@@ -320,19 +323,19 @@
   .footer-subscribe form { display:flex; flex-direction:column; gap:8px; }
   .footer-subscribe input {
     background:rgba(255,255,255,0.05); border:1px solid var(--border);
-    border-radius:8px; padding:10px 14px; color:var(--ink); font-size:0.82rem;
+    border-radius:0; padding:10px 14px; color:var(--ink); font-size:0.82rem;
     font-family:Helvetica,Arial,sans-serif; outline:none; transition:border .3s;
     width:100%; box-sizing:border-box;
   }
   .footer-subscribe input:focus, .footer-subscribe textarea:focus { border-color:var(--gold); }
   .footer-subscribe textarea {
     background:rgba(255,255,255,0.05); border:1px solid var(--border);
-    border-radius:8px; padding:10px 14px; color:var(--ink); font-size:0.82rem;
+    border-radius:0; padding:10px 14px; color:var(--ink); font-size:0.82rem;
     font-family:Georgia,serif; outline:none; transition:border .3s;
     width:100%; box-sizing:border-box; resize:vertical; min-height:50px; max-height:140px;
   }
   .footer-subscribe button {
-    background:var(--gold); color:#1a1305; border:none; border-radius:8px;
+    background:var(--gold); color:var(--bg); border:none; border-radius:0;
     padding:10px 18px; font-size:0.72rem; font-weight:700; letter-spacing:0.08em;
     text-transform:uppercase; cursor:pointer; transition:transform .2s, opacity .3s;
     font-family:Helvetica,Arial,sans-serif; white-space:nowrap;
@@ -345,11 +348,11 @@
     display:flex; justify-content:space-between; align-items:center;
     padding:20px 0; flex-wrap:wrap; gap:12px;
   }
-  .footer-legal { font-size:0.7rem; color:rgba(155,151,184,0.6); }
-  .footer-legal a { color:rgba(155,151,184,0.6); text-decoration:none; transition:color .3s; }
+  .footer-legal { font-size:0.7rem; color:rgba(139,148,163,0.6); }
+  .footer-legal a { color:rgba(139,148,163,0.6); text-decoration:none; transition:color .3s; }
   .footer-legal a:hover { color:var(--muted); }
   .footer-disclaimer {
-    font-size:0.68rem; color:rgba(155,151,184,0.5); max-width:620px;
+    font-size:0.68rem; color:rgba(139,148,163,0.5); max-width:620px;
     text-align:center; margin:0 auto; padding:16px 24px 0; line-height:1.5;
   }
   .footer-socials { display:flex; gap:16px; }
@@ -370,6 +373,41 @@
     .footer-grid { grid-template-columns:1fr; gap:24px; }
     .footer-subscribe { grid-column:span 1; }
     .footer-bottom { flex-direction:column; text-align:center; }
+  }
+
+  /* ── Sibling system (shared with the Broaddus Commerce site) ──────
+     Inter for everything functional; Georgia stays as the University's
+     voice (wordmark, headlines, scripture, fragments, quotes). Square corners. */
+  :root {
+    --font-sans: "Inter", -apple-system, system-ui, "Helvetica Neue", Helvetica, sans-serif;
+    --font-voice: Georgia, "Times New Roman", serif;
+  }
+  body { font-family: var(--font-sans); }
+  h1, h2, h3, .logo, .brand, blockquote, .manifesto, .manifesto p, .teaser,
+  .daily-verse-card, .angel-num, textarea { font-family: var(--font-voice); }
+  .manifesto .sig, .teaser small, .daily-verse-card .verse-ref,
+  .daily-verse-card .verse-source { font-family: var(--font-sans); }
+  .section-label, .eyebrow, .footer-col-title {
+    font-family: var(--font-sans); font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .nav-links a { font-weight: 500; letter-spacing: 0.08em; }
+  .hamburger, .theme-toggle, .mobile-nav .mobile-close { border-radius: 0; }
+  .signup button, .footer-subscribe button, .nav-links a.cta-small, .btn-gold {
+    font-family: var(--font-sans); font-weight: 600; letter-spacing: 0.04em;
+    text-transform: uppercase; background: var(--ink); color: var(--bg);
+    border: 1px solid var(--ink); box-shadow: none;
+  }
+  .signup button:hover, .footer-subscribe button:hover,
+  .nav-links a.cta-small:hover, .btn-gold:hover {
+    background: transparent; color: var(--ink); box-shadow: none; transform: none;
+  }
+  .signup input, .signup textarea, .footer-subscribe input, .footer-subscribe textarea {
+    border: 1px solid var(--border);
+  }
+  .signup input:focus, .signup textarea:focus,
+  .footer-subscribe input:focus, .footer-subscribe textarea:focus {
+    border-color: var(--ink); outline: none;
   }
 </style>
 </head>
@@ -465,15 +503,15 @@
           "showFloatingTooltip": true,
           "width": "100%",
           "height": "550",
-          "plotLineColorGrowing": "rgba(240,201,108, 1)",
+          "plotLineColorGrowing": "rgba(125,141,163, 1)",
           "plotLineColorFalling": "rgba(226,112,138, 1)",
-          "gridLineColor": "rgba(139,124,247, 0.06)",
-          "scaleFontColor": "rgba(155,151,184, 1)",
-          "belowLineFillColorGrowing": "rgba(240,201,108, 0.06)",
+          "gridLineColor": "rgba(148,163,184, 0.06)",
+          "scaleFontColor": "rgba(139,148,163, 1)",
+          "belowLineFillColorGrowing": "rgba(125,141,163, 0.06)",
           "belowLineFillColorFalling": "rgba(226,112,138, 0.06)",
-          "belowLineFillColorGrowingBottom": "rgba(240,201,108, 0)",
+          "belowLineFillColorGrowingBottom": "rgba(125,141,163, 0)",
           "belowLineFillColorFallingBottom": "rgba(226,112,138, 0)",
-          "symbolActiveColor": "rgba(139,124,247, 0.12)"
+          "symbolActiveColor": "rgba(148,163,184, 0.12)"
         }
         </script>
       </div>
@@ -678,7 +716,7 @@
   (function draw(){
     ctx.clearRect(0,0,c.width,c.height);
     const isLight = document.documentElement.classList.contains('light');
-    const SOLAR = [[240,201,108],[232,163,48],[245,208,160],[255,180,100]];
+    const SOLAR = [[148,163,184],[100,116,139],[203,213,225],[71,85,105]];
     for (const st of stars){
       st.p += st.s;
       const a = 0.25 + Math.abs(Math.sin(st.p))*0.6;
@@ -692,10 +730,10 @@
         ctx.beginPath(); ctx.arc(st.x,st.y, sz*3, 0, Math.PI*2);
         ctx.fillStyle = glow; ctx.fill();
         ctx.beginPath(); ctx.arc(st.x,st.y, sz*0.5, 0, Math.PI*2);
-        ctx.fillStyle = `rgba(255,248,230,${a*0.7})`; ctx.fill();
+        ctx.fillStyle = `rgba(226,232,240,${a*0.7})`; ctx.fill();
       } else {
         ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
-        ctx.fillStyle = `rgba(232,230,245,${a})`; ctx.fill();
+        ctx.fillStyle = `rgba(238,241,245,${a})`; ctx.fill();
       }
     }
     requestAnimationFrame(draw);
@@ -726,12 +764,12 @@
     const ANGELS = ['111','222','333','444','555','666','777','888','999',
       '1111','1212','1010','1234','2222','3333','4444','5555','7777','1001','808'];
     const COLORS = [
-      'rgba(240,201,108,',  // gold
-      'rgba(139,124,247,',  // violet
-      'rgba(232,230,245,',  // ink/white
-      'rgba(95,208,138,',   // green
-      'rgba(226,112,138,',  // rose
-      'rgba(180,160,255,',  // lavender
+      'rgba(125,141,163,',  // gold
+      'rgba(148,163,184,',  // violet
+      'rgba(238,241,245,',  // ink/white
+      'rgba(203,213,225,',   // green
+      'rgba(100,116,139,',  // rose
+      'rgba(71,85,105,',  // lavender
     ];
     const DRIFTS = ['angelDriftR','angelDriftL','angelDriftD'];
 
