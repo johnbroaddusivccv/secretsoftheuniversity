@@ -46,9 +46,9 @@
     let sizeIndex = 0;
 
     const proto = protocolById(p.id);
-    const related = stacksWith(p.id);
-    const protoSnippet = (proto || related.length) ? `
-        <div style="border:1px solid #000;margin-top:22px;padding:18px 20px">
+    const relatedStacks = stacksWith(p.id);
+    const protoSnippet = (proto || relatedStacks.length) ? `
+        <div style="border:1px solid var(--line);margin-top:22px;padding:18px 20px">
           <div class="eyebrow" style="margin-bottom:12px">Research Protocol · Reference</div>
           ${proto ? `<table class="spec" style="margin:0">
             <tr><th>Research goal</th><td>${proto.goal}</td></tr>
@@ -56,8 +56,8 @@
             <tr><th>Cycle</th><td>${proto.cycle}</td></tr>
             <tr><th>Vial lasts</th><td>${proto.vialLasts}</td></tr>
           </table>` : `<p class="small muted" style="margin:0">No standardized reference protocol is listed for this compound.</p>`}
-          ${related.length ? `<div style="margin-top:14px"><div class="small" style="text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:8px">Featured in stacks</div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">${related.map(s=>`<a class="tag" style="padding:7px 12px" href="protocols.html">${s.name}</a>`).join("")}</div></div>` : ""}
+          ${relatedStacks.length ? `<div style="margin-top:14px"><div class="small" style="text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:8px">Featured in stacks</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">${relatedStacks.map(s=>`<a class="tag" style="padding:7px 12px" href="protocols.html">${s.name}</a>`).join("")}</div></div>` : ""}
           <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
             <a href="protocols.html" class="btn btn--sm">All protocols &amp; stacks</a>
           </div>
@@ -96,7 +96,7 @@
           <div><b>For laboratory research use only.</b> Not for human or animal consumption. A batch-specific certificate of analysis is included with every order.</div>
         </div>
 
-        <div class="strip" style="margin-top:22px;border-left:1px solid #000;border-right:1px solid #000">
+        <div class="strip" style="margin-top:22px;border-left:1px solid var(--line);border-right:1px solid var(--line)">
           <div><b>≥99%</b><span>Purity</span></div>
           <div><b>COA</b><span>Per batch</span></div>
           <div><b>3rd-Party</b><span>HPLC + MS</span></div>
@@ -144,10 +144,10 @@
       if(st==="out"){
         const ab=document.getElementById("add"); ab.disabled=true; ab.textContent="Sold out";
         const box=document.getElementById("notify-box");
-        box.innerHTML = `<div style="border:1px solid #000;padding:16px 18px">
+        box.innerHTML = `<div style="border:1px solid var(--line);padding:16px 18px">
           <b class="small" style="text-transform:uppercase;letter-spacing:.05em">Notify me when back in stock</b>
           <form id="notify-form" style="display:flex;gap:8px;margin-top:10px">
-            <input type="email" required placeholder="you@lab.edu" aria-label="Email" style="flex:1;border:1px solid #000;padding:10px 12px;font-family:var(--font);font-size:.9rem">
+            <input type="email" required placeholder="you@lab.edu" aria-label="Email" style="flex:1;border:1px solid var(--line);padding:10px 12px;font-family:var(--font);font-size:.9rem">
             <button class="btn btn--sm btn--solid" type="submit">Notify me</button>
           </form></div>`;
         document.getElementById("notify-form").addEventListener("submit", ev=>{
@@ -155,7 +155,7 @@
           const email = ev.target.querySelector("input").value.trim();
           if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ toast("Enter a valid email"); return; }
           saveNotify(p.id, email);
-          box.innerHTML = `<div style="border:1px solid #000;padding:16px 18px"><b>✓ You're on the list.</b><p class="small muted" style="margin:6px 0 0">We'll email ${email} when ${p.name} is back in stock.</p></div>`;
+          box.innerHTML = `<div style="border:1px solid var(--line);padding:16px 18px"><b>✓ You're on the list.</b><p class="small muted" style="margin:6px 0 0">We'll email ${email} when ${p.name} is back in stock.</p></div>`;
         });
       }
     })();

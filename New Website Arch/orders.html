@@ -50,7 +50,7 @@
       const items = o.items.reduce((n,i)=>n+i.qty,0);
       return `<a href="order.html?id=${encodeURIComponent(o.id)}" class="co-item" style="padding:16px 18px;border:1px solid var(--line-soft);margin-bottom:-1px;text-decoration:none">
         <span><b>${o.id}</b> <span class="muted">· ${d} · ${items} item${items===1?"":"s"}</span></span>
-        <span><span class="ruo-flag" style="background:#555">${statusLabel[o.status]||o.status}</span> &nbsp; <b class="mono">${money(o.total)}</b></span>
+        <span><span class="ruo-flag" style="background:var(--muted)">${statusLabel[o.status]||o.status}</span> &nbsp; <b class="mono">${money(o.total)}</b></span>
       </a>`;
     }).join("");
   }
