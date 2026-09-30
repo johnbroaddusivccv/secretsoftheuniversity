@@ -46,6 +46,21 @@ def label_mat(path):
     add_bump(m, b, 0.06, scale=900, detail=3)                     # paper fibre
     return m
 
+def add_prints(m, b):
+    """fingerprint smudges: a few soft blotches that raise roughness and coat roughness"""
+    nt = m.node_tree
+    tc = nt.nodes.new("ShaderNodeTexCoord")
+    v = nt.nodes.new("ShaderNodeTexVoronoi"); v.feature = "SMOOTH_F1"; v.inputs["Scale"].default_value = 2.6; v.inputs["Smoothness"].default_value = 0.8
+    n = nt.nodes.new("ShaderNodeTexNoise"); n.inputs["Scale"].default_value = 60.0; n.inputs["Detail"].default_value = 9.0; n.inputs["Roughness"].default_value = 0.85
+    rm = nt.nodes.new("ShaderNodeMapRange"); rm.inputs["From Min"].default_value = 0.0; rm.inputs["From Max"].default_value = 0.14
+    rm.inputs["To Min"].default_value = 1.0; rm.inputs["To Max"].default_value = 0.0      # near a cell centre -> a print
+    mul = nt.nodes.new("ShaderNodeMath"); mul.operation = "MULTIPLY"
+    rough = nt.nodes.new("ShaderNodeMath"); rough.operation = "MULTIPLY"; rough.inputs[1].default_value = 0.16
+    nt.links.new(tc.outputs["Object"], v.inputs["Vector"]); nt.links.new(tc.outputs["Object"], n.inputs["Vector"])
+    nt.links.new(v.outputs["Distance"], rm.inputs["Value"]); nt.links.new(rm.outputs["Result"], mul.inputs[0]); nt.links.new(n.outputs["Fac"], mul.inputs[1])
+    nt.links.new(mul.outputs["Value"], rough.inputs[0]); nt.links.new(rough.outputs["Value"], b.inputs["Roughness"])
+    return m
+
 def add_scratches(m, b, amount=0.35):
     """fine anisotropic scratches on glass/plastic: stretched noise -> bump + roughness breakup"""
     nt = m.node_tree
@@ -69,8 +84,8 @@ def glass_shadow_fix(m):
 
 def materials(accent):
     return {
-      "glass": glass_shadow_fix((lambda mb: add_scratches(mb[0], mb[1], 0.25))(mat("glass", **{"Base Color":(0.985,0.995,0.99,1), "Transmission Weight":1.0, "Roughness":0.0, "IOR":1.5}))),
-      "amber": glass_shadow_fix(mat("amber", **{"Base Color":(0.42,0.13,0.025,1), "Transmission Weight":1.0, "Roughness":0.02, "IOR":1.5})[0]),
+      "glass": glass_shadow_fix((lambda mb: add_prints(add_scratches(mb[0], mb[1], 0.25), mb[1]))(mat("glass", **{"Base Color":(0.985,0.995,0.99,1), "Transmission Weight":1.0, "Roughness":0.0, "IOR":1.5}))),
+      "amber": glass_shadow_fix((lambda mb: add_prints(mb[0], mb[1]))(mat("amber", **{"Base Color":(0.42,0.13,0.025,1), "Transmission Weight":1.0, "Roughness":0.02, "IOR":1.5}))),
       "hdpe":  (lambda mb: add_bump(add_noise_roughness(mb[0], mb[1], 0.46, 0.14, scale=140), mb[1], 0.05, scale=220))(mat("hdpe",  **{"Base Color":(0.86,0.865,0.87,1), "Roughness":0.46, "Subsurface Weight":0.35, "Subsurface Scale":0.02, "Coat Weight":0.06, "Coat Roughness":0.35})),
       "black": (lambda mb: add_noise_roughness(mb[0], mb[1], 0.36, 0.1, scale=160))(mat("black", **{"Base Color":(0.012,0.013,0.015,1), "Roughness":0.36, "Coat Weight":0.3, "Coat Roughness":0.2})),
       "rubber":mat("rubber",**{"Base Color":(0.05,0.05,0.055,1), "Roughness":0.62})[0],
@@ -177,7 +192,10 @@ def build_vial(M, L):
     lathe("stopper", [(0, 3.05), (0.44, 3.05), (0.46, 3.3), (0, 3.3)], M["stopper"])
     lathe("crimp", [(0, 3.12), (0.52, 3.12), (0.62, 3.16), (0.645, 3.22), (0.645, 3.5), (0.61, 3.54), (0, 3.54)], M["alu"], steps=160, rib=0.012, rib_rows={3, 4})
     lathe("flip", [(0, 3.53), (0.57, 3.53), (0.61, 3.56), (0.615, 3.74), (0.59, 3.79), (0.5, 3.8), (0.47, 3.77), (0.44, 3.71), (0.0, 3.72)], M["flip"])
-    label("label", 0.852, 0.6, 2.35, math.pi*1.35, L)
+    lb = label("label", 0.852, 0.6, 2.35, math.pi*1.35, L)
+    hz, hb = mat("haze", **{"Base Color":(1,1,1,1), "Roughness":0.55, "Alpha":0.09}); hz.blend_method = "BLEND"
+    for z0, z1 in ((0.56, 0.6), (2.35, 2.39)):
+        h_ = lathe("haze", [(0.853, z0), (0.853, z1)], hz, steps=160); h_.visible_shadow = False
     return 3.8, 0.84
 
 def build_dropper(M, L):
@@ -249,8 +267,17 @@ def studio(M, h, w):
     # turn the product a few degrees, as a stylist would
     for o in bpy.context.collection.objects:
         if o.type == "MESH" and o.name not in ("sweep", "table"): o.rotation_euler.z = math.radians(-9)
+    import random as _r; _r.seed((hash(str(bpy.context.scene.render.filepath)) & 0xffff) + int(os.environ.get("JITTER_SEED", "0")))
+    for o in bpy.context.collection.objects:
+        if o.name.startswith("label"):
+            o.rotation_euler.x += math.radians(_r.uniform(-0.6, 0.6)); o.rotation_euler.z += math.radians(_r.uniform(-2.5, 2.5))
+        if o.name in ("flip", "cap", "collar"):
+            o.rotation_euler.x += math.radians(_r.uniform(-0.8, 0.8)); o.rotation_euler.y += math.radians(_r.uniform(-0.8, 0.8))
+            o.location.x += _r.uniform(-0.012, 0.012); o.location.y += _r.uniform(-0.012, 0.012)
+        if o.name == "cake":
+            o.rotation_euler.x += math.radians(_r.uniform(-2.0, 2.0)); o.location.z += _r.uniform(-0.02, 0.03)
     # studio dust: a few tiny specks floating just off the glass/label (caught by the strobe)
-    import random; random.seed(7)
+    import random; random.seed(int(os.environ.get("DUST_SEED","7")))
     dm = mat("dust", **{"Base Color":(1,1,1,1), "Roughness":0.4})[0]
     for _ in range(14):
         ang = random.uniform(-1.1, 1.1); rr = w*1.02
@@ -258,7 +285,7 @@ def studio(M, h, w):
         d = bpy.context.active_object; d.name = "dust"; d.data.materials.append(dm)
     # lights: big key softbox, strip lights for glass edges, rim, top
     # physical key + kicker for crisp shadow shaping; the HDRI supplies everything else (softboxes, window, strips)
-    area("key", (-6.5, -7.5, 7.0), 4.5, 720, size_y=5.5, color=(1.0, 0.975, 0.945))
+    area("key", (-6.5, -7.5, 7.0), 4.5, 720, size_y=5.5, color=(1.0, 0.965, 0.925))
     area("stripL", (-4.4, 2.8, 2.2), 0.45, 520, size_y=7.0, target=(0, 0, 1.8))
     area("stripR", (4.4, 2.8, 2.2), 0.45, 520, size_y=7.0, target=(0, 0, 1.8))
     area("cake", (0, -5.5, 0.5), 2.5, 110, size_y=1.0, color=(1.0, 0.99, 0.97), target=(0, 0, 0.35))
@@ -326,6 +353,7 @@ for spec in SPECS:
     t0 = time.time()
     bpy.ops.wm.read_factory_settings(use_empty=True)
     setup_render()
+    bpy.context.scene.render.filepath = out
     M = materials(spec["accent"])
     L = label_mat(os.path.abspath(f"labels/{spec['sku']}.png"))
     h, w = BUILD[spec["form"]](M, L)

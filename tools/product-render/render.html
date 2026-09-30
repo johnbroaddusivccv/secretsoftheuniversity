@@ -32,9 +32,10 @@ function labelTexture(spec, arcLen, height){
   const c = document.createElement("canvas"); c.width = W; c.height = H;
   const g = c.getContext("2d");
   const ink = "#0e1116";
-  g.fillStyle = "#fbfcfd"; g.fillRect(0,0,W,H);
+  g.fillStyle = "#f7f6f2"; g.fillRect(0,0,W,H);
   // subtle paper grain
-  for(let i=0;i<6000;i++){ g.fillStyle = `rgba(14,17,22,${Math.random()*0.025})`; g.fillRect(Math.random()*W, Math.random()*H, 1.5, 1.5); }
+  for(let i=0;i<9000;i++){ g.fillStyle = `rgba(14,17,22,${Math.random()*0.03})`; g.fillRect(Math.random()*W, Math.random()*H, 1.5, 1.5); }
+  for(let i=0;i<260;i++){ g.fillStyle = `rgba(120,110,95,${Math.random()*0.035})`; g.fillRect(Math.random()*W, Math.random()*H, Math.random()*60+10, 1); }
   const cx = W/2;
   const k = Math.min(1.5, Math.max(1, (W/H)/2.1));   // wider labels get larger type
   const face = Math.min(W*0.5, H*0.95*k);        // visible front width
@@ -73,6 +74,13 @@ function labelTexture(spec, arcLen, height){
     g.font = `600 ${H*0.03}px Inter`; g.fillStyle = "#8b94a3";
     g.fillText("Not for human consumption  ·  Lot tested  ·  ≥99%", cx, ruoY + H*0.045);
   }
+  const c2 = document.createElement("canvas"); c2.width = W; c2.height = H; const g2 = c2.getContext("2d");
+  g2.filter = "blur(0.7px)"; g2.drawImage(c, 0, 0); g2.filter = "none";
+  g.globalAlpha = 0.55; g.drawImage(c2, 0, 0); g.globalAlpha = 1;
+  const seam = W*0.985;
+  const sg = g.createLinearGradient(seam-14, 0, seam, 0); sg.addColorStop(0, "rgba(0,0,0,0)"); sg.addColorStop(1, "rgba(0,0,0,0.22)");
+  g.fillStyle = sg; g.fillRect(seam-14, 0, 14, H);
+  g.fillStyle = "rgba(255,255,255,0.35)"; g.fillRect(seam, 0, 2, H);
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
   return t;
@@ -212,6 +220,7 @@ window.renderProduct = async function(spec){
   scene.traverse(o => { if(o.geometry) o.geometry.dispose(); if(o.material){ if(o.material.map) o.material.map.dispose(); o.material.dispose(); } });
   return url;
 };
+window.__label = labelTexture;
 window.ready = true;
 </script>
 </body></html>
