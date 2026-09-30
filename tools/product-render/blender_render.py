@@ -78,8 +78,8 @@ def materials(accent):
       "alu":   (lambda mb: add_bump(add_noise_roughness(mb[0], mb[1], 0.24, 0.1, scale=90, detail=8), mb[1], 0.12, scale=60, detail=5))(mat("alu",   **{"Base Color":(0.76,0.78,0.81,1), "Metallic":1.0, "Roughness":0.24, "Anisotropic":0.7})),
       "flip":  (lambda mb: add_noise_roughness(mb[0], mb[1], 0.3, 0.08, scale=200))(mat("flip",  **{"Base Color":hex2rgb(accent), "Roughness":0.3, "Coat Weight":0.5, "Coat Roughness":0.12})),
       "cake":  (lambda mb: add_bump(mb[0], mb[1], 0.9, scale=70, detail=8))(mat("cake",  **{"Base Color":(0.94,0.935,0.91,1), "Roughness":0.95, "Subsurface Weight":0.5, "Subsurface Scale":0.04})),
-      "ped":   (lambda mb: add_noise_roughness(mb[0], mb[1], 0.2, 0.06, scale=30, detail=6))(mat("ped",   **{"Base Color":(0.9,0.9,0.905,1), "Roughness":0.2, "Coat Weight":0.5, "Coat Roughness":0.06})),
-      "sweep": mat("sweep", **{"Base Color":(0.74,0.76,0.79,1), "Roughness":0.95})[0],
+      "table": (lambda mb: add_noise_roughness(mb[0], mb[1], 0.09, 0.04, scale=12, detail=5))(mat("table", **{"Base Color":(0.93,0.935,0.94,1), "Roughness":0.09, "Coat Weight":1.0, "Coat Roughness":0.04, "Specular IOR Level":0.6})),
+      "sweep": (lambda mb: add_bump(mb[0], mb[1], 0.03, scale=300, detail=3))(mat("sweep", **{"Base Color":(0.80,0.815,0.835,1), "Roughness":0.9})),
     }
 
 # ---------- geometry ----------
@@ -166,7 +166,8 @@ def build_vial(M, L):
     v = shell("vial", shoulder(rounded(0.84, 2.7, 0.12), 0.84, 2.7, 0.5, 3.18) + [(0.5, 3.24), (0.56, 3.26), (0.56, 3.3)], M["glass"], 0.055)
     v.modifiers["solid"].thickness_clamp = 0; v.modifiers["solid"].use_rim = True
     v.visible_shadow = True
-    ck = lathe("cake", [(0, 0.24), (0.74, 0.24), (0.755, 0.52), (0.70, 0.58), (0.4, 0.6), (0, 0.61)], M["cake"], steps=96)
+    lathe("punt", [(0, 0.02), (0.6, 0.02), (0.72, 0.05), (0.76, 0.2), (0.62, 0.22), (0.0, 0.28)], M["glass"])
+    ck = lathe("cake", [(0, 0.28), (0.74, 0.28), (0.755, 0.56), (0.70, 0.62), (0.4, 0.64), (0, 0.65)], M["cake"], steps=96)
     d = ck.modifiers.new("disp", "DISPLACE"); tx = bpy.data.textures.new("cakeN", "CLOUDS"); tx.noise_scale = 0.12; tx.noise_depth = 3
     d.texture = tx; d.strength = 0.06; d.mid_level = 0.5
     for sx in (-1, 1):   # mold seams
@@ -217,42 +218,50 @@ def area(name, loc, size, power, color=(1, 1, 1), shape="RECTANGLE", size_y=None
     return ob
 
 def studio(M, h, w):
-    # seamless sweep: floor curving up into a back wall
-    prof = []
-    for i in range(24):
-        t = i/23; a = t*math.pi/2
-        prof.append((-40 + 0, 0))
-    me = bpy.data.meshes.new("sweep"); bm = bmesh.new()
-    rows = []
-    R = 9.0
-    pts = [(-30, 0)] + [(10 + R*math.sin(t*math.pi/2 /12*12) if False else 0, 0)]
-    # build as grid: y from -30..(12) floor, then arc radius R up to z=40
-    yz = [(-30 + i*2.0, 0.0) for i in range(22)]  # floor to y=12
-    for k in range(1, 17):
-        a = k/16*math.pi/2
-        yz.append((12 + R*math.sin(a), R - R*math.cos(a)))
-    yz.append((12 + R, 40))
+    # glossy white acrylic tabletop: a thick slab the product sits on, reflects it
+    bpy.ops.mesh.primitive_cube_add(size=1, location=(0, -20, -0.6)); tb = bpy.context.active_object
+    tb.scale = (60, 60, 1.2); tb.name = "table"; tb.data.materials.append(M["table"])
+    bv = tb.modifiers.new("bevel", "BEVEL"); bv.width = 0.03; bv.segments = 4
+    # paper sweep rising behind the table with a soft curve, so the horizon is a gradient not a line
+    me = bpy.data.meshes.new("sweep"); bm = bmesh.new(); rows = []
+    R = 14.0
+    yz = [(9.5, 0.0)]
+    for k in range(0, 25):
+        t = k/24; a = t*math.pi/2
+        yz.append((9.5 + R*math.sin(a), R - R*math.cos(a)))
+    yz.append((9.5 + R, 60))
     for (y, z) in yz:
-        rows.append((bm.verts.new((-40, y, z)), bm.verts.new((40, y, z))))
+        rows.append((bm.verts.new((-60, y, z)), bm.verts.new((60, y, z))))
     for i in range(len(rows)-1):
-        a, b = rows[i], rows[i+1]
-        bm.faces.new((a[0], a[1], b[1], b[0]))
+        r0, r1 = rows[i], rows[i+1]; bm.faces.new((r0[0], r0[1], r1[1], r1[0]))
     bm.to_mesh(me); bm.free()
     ob = bpy.data.objects.new("sweep", me); bpy.context.collection.objects.link(ob)
-    for p in me.polygons: p.use_smooth = True
-    ob.location.z = -0.32; ob.data.materials.append(M["sweep"])
+    for pg in me.polygons: pg.use_smooth = True
+    ob.location.z = -0.001; ob.data.materials.append(M["sweep"])
+    # gradient on the sweep: brighter near the table, darker up high (light falls off from the key)
+    sm = M["sweep"]; nt = sm.node_tree; bsdf = nt.nodes["Principled BSDF"]
+    tc = nt.nodes.new("ShaderNodeTexCoord"); sep = nt.nodes.new("ShaderNodeSeparateXYZ")
+    mr = nt.nodes.new("ShaderNodeMapRange"); mr.inputs["From Min"].default_value = 0.0; mr.inputs["From Max"].default_value = 22.0
+    mr.inputs["To Min"].default_value = 1.0; mr.inputs["To Max"].default_value = 0.55
+    mixc = nt.nodes.new("ShaderNodeMix"); mixc.data_type = "RGBA"; mixc.inputs[6].default_value = (0.5, 0.52, 0.55, 1); mixc.inputs[7].default_value = (0.86, 0.87, 0.89, 1)
+    nt.links.new(tc.outputs["Object"], sep.inputs["Vector"]); nt.links.new(sep.outputs["Z"], mr.inputs["Value"])
+    nt.links.new(mr.outputs["Result"], mixc.inputs["Factor"]); nt.links.new(mixc.outputs[2], bsdf.inputs["Base Color"])
     # turn the product a few degrees, as a stylist would
     for o in bpy.context.collection.objects:
-        if o.type == "MESH" and o.name not in ("sweep",): o.rotation_euler.z = math.radians(-9)
-    # pedestal
-    pr = w*1.45
-    lathe("pedestal", [(0, -0.32), (pr, -0.32), (pr, -0.03), (pr-0.03, 0.0), (0, 0.0)], M["ped"], steps=192)
+        if o.type == "MESH" and o.name not in ("sweep", "table"): o.rotation_euler.z = math.radians(-9)
+    # studio dust: a few tiny specks floating just off the glass/label (caught by the strobe)
+    import random; random.seed(7)
+    dm = mat("dust", **{"Base Color":(1,1,1,1), "Roughness":0.4})[0]
+    for _ in range(14):
+        ang = random.uniform(-1.1, 1.1); rr = w*1.02
+        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1, radius=random.uniform(0.004, 0.009), location=(rr*math.sin(ang), -rr*math.cos(ang), random.uniform(0.3, h*0.85)))
+        d = bpy.context.active_object; d.name = "dust"; d.data.materials.append(dm)
     # lights: big key softbox, strip lights for glass edges, rim, top
     # physical key + kicker for crisp shadow shaping; the HDRI supplies everything else (softboxes, window, strips)
     area("key", (-6.5, -7.5, 7.0), 4.5, 720, size_y=5.5, color=(1.0, 0.975, 0.945))
     area("stripL", (-4.4, 2.8, 2.2), 0.45, 520, size_y=7.0, target=(0, 0, 1.8))
     area("stripR", (4.4, 2.8, 2.2), 0.45, 520, size_y=7.0, target=(0, 0, 1.8))
-    area("cake", (0, -5.5, 0.6), 2.5, 140, size_y=1.2, color=(1.0, 0.99, 0.97), target=(0, 0, 0.4))
+    area("cake", (0, -5.5, 0.5), 2.5, 110, size_y=1.0, color=(1.0, 0.99, 0.97), target=(0, 0, 0.35))
     world = bpy.data.worlds.new("w"); world.use_nodes = True; wn = world.node_tree
     env = wn.nodes.new("ShaderNodeTexEnvironment"); env.image = bpy.data.images.load(os.path.abspath("studio.exr"))
     mp = wn.nodes.new("ShaderNodeMapping"); tc = wn.nodes.new("ShaderNodeTexCoord")
@@ -265,11 +274,11 @@ def studio(M, h, w):
     cam = bpy.data.cameras.new("cam"); cam.lens = 100; cam.sensor_width = 36
     cam.dof.use_dof = True; cam.dof.aperture_fstop = 2.8; cam.dof.aperture_blades = 11; cam.dof.aperture_rotation = math.radians(15)
     ob = bpy.data.objects.new("cam", cam); bpy.context.collection.objects.link(ob)
-    span = max(h + 1.25, w*4.1)
+    span = max(h + 1.5, w*4.2, 4.6)
     dist = (span/2) / math.tan(math.atan(18/100)) * 1.0
-    cz = h*0.44
-    ob.location = (0.35, -dist, cz + dist*0.13)
-    tgt = Vector((0, 0, cz - 0.1))
+    cz = h*0.42
+    ob.location = (0.3, -dist, cz + dist*0.085)
+    tgt = Vector((0, 0, cz - 0.04))
     ob.rotation_euler = (tgt - ob.location).to_track_quat("-Z", "Y").to_euler()
     cam.dof.focus_distance = (tgt - ob.location).length - w*0.92   # focus on the label face
     bpy.context.scene.camera = ob
@@ -277,8 +286,8 @@ def studio(M, h, w):
 def setup_render():
     sc = bpy.context.scene
     sc.render.engine = "CYCLES"; sc.cycles.device = "CPU"
-    sc.cycles.samples = SAMPLES; sc.cycles.use_adaptive_sampling = True; sc.cycles.adaptive_threshold = 0.02
-    sc.cycles.use_denoising = True; sc.cycles.denoiser = "OPENIMAGEDENOISE"
+    sc.cycles.samples = SAMPLES; sc.cycles.use_adaptive_sampling = True; sc.cycles.adaptive_threshold = 0.012
+    sc.cycles.use_denoising = True; sc.cycles.denoiser = "OPENIMAGEDENOISE"; sc.cycles.denoising_prefilter = "ACCURATE"; sc.cycles.denoising_input_passes = "RGB_ALBEDO_NORMAL"
     sc.cycles.max_bounces = 14; sc.cycles.transmission_bounces = 16; sc.cycles.glossy_bounces = 8; sc.cycles.transparent_max_bounces = 16
     sc.cycles.caustics_reflective = False; sc.cycles.caustics_refractive = False
     sc.cycles.blur_glossy = 1.0
