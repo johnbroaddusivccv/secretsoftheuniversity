@@ -2,7 +2,9 @@
 
 Produces the product photos in `New Website Arch/assets/img/products/<SKU>.webp`:
 path-traced Blender (Cycles) renders of glass vials, amber droppers, nasal sprays,
-capsule bottles and powder jars, with the BROADDUS label wrapped on each container,
+capsule bottles and powder jars, with the Broaddus Scientific Group label wrapped on each container (boxed BROADDUS
+wordmark, tracked SCIENTIFIC GROUP beneath, product name, strength, form line and
+research-use notice — layout modelled on EveryChem's understated labels),
 in a synthetic studio (HDRI softboxes + strip lights, 100mm macro at f/2.8, film grain,
 vignette, slight chromatic aberration).
 
@@ -23,3 +25,9 @@ vignette, slight chromatic aberration).
 
 Sizes without a photo fall back to the drawn SVG art automatically.
 `render.html`/`batch.py` are the older real-time three.js renderer, kept for reference.
+
+## Re-rendering a few SKUs
+Dust specks and fingerprints are placed from seeds, so occasionally one lands on the
+wordmark. Put the affected entries in `fix.json` and re-render with different seeds:
+`DUST_SEED=11 JITTER_SEED=5 python3 blender_render.py fix.json fix 64`, then convert
+only those PNGs.

@@ -40,40 +40,40 @@ function labelTexture(spec, arcLen, height){
   const k = Math.min(1.5, Math.max(1, (W/H)/2.1));   // wider labels get larger type
   const face = Math.min(W*0.5, H*0.95*k);        // visible front width
   // accent stripe
-  g.fillStyle = spec.accent; g.fillRect(0, H-H*0.075, W, H*0.075);
-  g.fillStyle = ink; g.fillRect(0, H-H*0.075-6, W, 3);
-  // boxed wordmark
-  const mfs = H*0.075*k;
-  g.font = `800 ${mfs}px Inter`; g.textAlign = "center"; g.textBaseline = "middle";
-  const markW = g.measureText("B R O A D D U S").width;
-  const my = H*0.14;
-  g.lineWidth = H*0.012; g.strokeStyle = ink;
-  g.strokeRect(cx - markW/2 - mfs*0.6, my - mfs*0.85, markW + mfs*1.2, mfs*1.7);
-  g.fillStyle = ink; g.fillText("B R O A D D U S", cx, my + mfs*0.04);
-  // name (1–2 lines, auto-fit)
+  g.fillStyle = spec.accent; g.fillRect(0, H-H*0.05, W, H*0.05);
+  // ---- wordmark block: boxed BROADDUS, "SCIENTIFIC GROUP" tracked beneath (EveryChem-style) ----
+  const mfs = H*0.062*k;
+  g.textAlign = "center"; g.textBaseline = "middle";
+  g.font = `700 ${mfs}px Inter`;
+  const markTxt = "BROADDUS"; const markW = g.measureText(markTxt).width + mfs*0.9;   // letter-spaced via manual tracking below
+  const my = H*0.12;
+  g.lineWidth = H*0.009; g.strokeStyle = ink;
+  g.strokeRect(cx - markW/2 - mfs*0.55, my - mfs*0.78, markW + mfs*1.1, mfs*1.56);
+  g.fillStyle = ink; g.letterSpacing = `${mfs*0.13}px`; g.fillText(markTxt, cx + mfs*0.065, my + mfs*0.04); g.letterSpacing = "0px";
+  g.font = `700 ${H*0.036*k}px Inter`; g.fillStyle = "#222831"; g.letterSpacing = `${H*0.034*k*0.3}px`;
+  g.fillText("SCIENTIFIC GROUP", cx + H*0.005, my + mfs*1.42); g.letterSpacing = "0px";
+  const markBottom = my + mfs*1.75;
+  // ---- product name: medium weight, generous size ----
   const lines = spec.lines;
   const longest = Math.max(...lines.map(s=>s.length));
-  let fs = Math.min(H*(lines.length>1 ? 0.15 : 0.19)*k, face*0.95/(longest*0.62));
-  g.font = `800 ${fs}px Inter`;
+  let fs = Math.min(H*(lines.length>1 ? 0.13 : 0.165)*k, face*0.95/(longest*0.6));
+  g.font = `600 ${fs}px Inter`;
   let widest = Math.max(...lines.map(s=>g.measureText(s).width));
-  if(widest > face*0.95){ fs *= face*0.95/widest; g.font = `800 ${fs}px Inter`; }
-  const markBottom = my + mfs*0.85;
-  const nameTop = Math.max(H*0.36 - (lines.length-1)*fs*0.52, markBottom + fs*0.72);
+  if(widest > face*0.95){ fs *= face*0.95/widest; g.font = `600 ${fs}px Inter`; }
+  const nameTop = Math.max(H*0.43 - (lines.length-1)*fs*0.52, markBottom + fs*0.85);
+  g.fillStyle = ink; g.letterSpacing = `${fs*0.02}px`;
   lines.forEach((s,i)=> g.fillText(s, cx, nameTop + i*fs*1.04));
-  // strength pill
-  const ps = H*0.085*Math.min(k,1.3); g.font = `700 ${ps}px Inter`;
-  const pw = Math.min(face, g.measureText(spec.strength).width + ps*1.4), ph = ps*1.55;
-  const py = nameTop + (lines.length-1)*fs*1.04 + fs*0.62 + H*0.03;
-  g.fillStyle = ink; g.fillRect(cx - pw/2, py, pw, ph);
-  g.fillStyle = "#fff"; g.fillText(spec.strength, cx, py + ph/2 + ps*0.04);
-  // fine print
-  const ruoY = Math.max(H*0.815, py + ph + H*0.07);
-  g.fillStyle = "#5b6472"; g.font = `700 ${H*0.042}px Inter`;
-  g.fillText("R E S E A R C H   U S E   O N L Y", cx, ruoY);
-  if(ruoY + H*0.045 < H*0.9){
-    g.font = `600 ${H*0.03}px Inter`; g.fillStyle = "#8b94a3";
-    g.fillText("Not for human consumption  ·  Lot tested  ·  ≥99%", cx, ruoY + H*0.045);
-  }
+  g.letterSpacing = "0px";
+  // ---- strength: plain line, lighter weight ----
+  const ps = H*0.075*Math.min(k,1.3); g.font = `500 ${ps}px Inter`; g.fillStyle = "#2a313c";
+  const py = nameTop + (lines.length-1)*fs*1.04 + fs*0.58 + ps*0.55;
+  g.fillText(spec.strength.replace(/MG/g,"mg").replace(/ML/g,"mL").replace(/IU/g,"IU").replace(/G$/,"g"), cx, py);
+  // ---- fine print: form / volume line, then RUO ----
+  const descY = Math.max(H*0.80, py + ps*1.1);
+  g.font = `500 ${H*0.036}px Inter`; g.fillStyle = "#5b6472";
+  g.fillText(spec.desc || "Research compound", cx, descY);
+  g.font = `600 ${H*0.03}px Inter`; g.fillStyle = "#8b94a3"; g.letterSpacing = `${H*0.03*0.18}px`;
+  g.fillText("FOR LABORATORY RESEARCH USE ONLY", cx, Math.min(H*0.885, descY + H*0.05)); g.letterSpacing = "0px";
   const c2 = document.createElement("canvas"); c2.width = W; c2.height = H; const g2 = c2.getContext("2d");
   g2.filter = "blur(0.7px)"; g2.drawImage(c, 0, 0); g2.filter = "none";
   g.globalAlpha = 0.55; g.drawImage(c2, 0, 0); g.globalAlpha = 1;
