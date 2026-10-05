@@ -368,6 +368,17 @@
   }
 
   /* ── Storefront card ── */
+  .store-gate { display:block; position:relative; margin:-8px auto 26px; max-width:1040px; overflow:hidden; border:1px solid var(--border); background:#eef0f3; text-decoration:none; color:var(--ink); }
+  .store-gate img { display:block; width:100%; height:auto; transition:transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .store-gate:hover img { transform:scale(1.025); }
+  .store-gate-plate { position:absolute; left:50%; bottom:0; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:4px; padding:14px 28px 16px; min-width:260px; background:rgba(14,17,22,0.86); color:#f7f8fa; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+  .store-gate-mark { font-family:'Inter',system-ui,sans-serif; font-weight:700; font-size:0.95rem; letter-spacing:0.22em; border:1px solid rgba(247,248,250,0.85); padding:5px 12px 4px; }
+  .store-gate-sub { font-family:'Inter',system-ui,sans-serif; font-size:0.62rem; font-weight:600; letter-spacing:0.3em; text-transform:uppercase; color:rgba(247,248,250,0.78); }
+  .store-gate-cta { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:0.85rem; color:var(--gold); margin-top:6px; transition:letter-spacing .3s; }
+  .store-gate:hover .store-gate-cta { letter-spacing:0.04em; }
+  @media (max-width:600px) {
+    .store-gate-plate { position:static; transform:none; width:100%; padding:12px 16px 14px; }
+  }
   .pillar .store-verse { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:1.05rem; color:var(--ink); margin:0 auto 14px; }
   .pillar p { max-width:620px; margin-left:auto; margin-right:auto; }
   .store-doors { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin:20px 0 14px; }
@@ -457,8 +468,15 @@
     <h2>Every merchant has a gate</h2>
     <div class="pillars" style="margin-bottom:48px;">
       <div class="pillar" style="grid-column:1/-1; text-align:center;">
-        <div class="glyph">✦</div>
-        <h3>Broaddus Commerce</h3>
+        <a class="store-gate" href="New%20Website%20Arch/" aria-label="Enter the Broaddus Scientific Group store">
+          <img src="assets/img/store-hero.webp" srcset="assets/img/store-hero-900.webp 900w, assets/img/store-hero.webp 1600w" sizes="(max-width:700px) 100vw, 1040px" width="1600" height="720" alt="Broaddus Scientific Group research peptides, nootropics and longevity compounds" loading="lazy">
+          <span class="store-gate-plate">
+            <span class="store-gate-mark">BROADDUS</span>
+            <span class="store-gate-sub">Scientific Group</span>
+            <span class="store-gate-cta">Enter the store →</span>
+          </span>
+        </a>
+        <h3>Broaddus Scientific Group</h3>
         <p class="store-verse">What the body rebuilds. What the mind sharpens. What the years preserve.</p>
         <p>Research peptides studied in repair and recovery. Nootropics studied for memory, focus, and calm. Longevity compounds for the long road. Every lot third-party tested; every vial with its certificate.</p>
         <div class="store-doors">
