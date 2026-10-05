@@ -7,9 +7,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>Secrets of the University — Practical wisdom the curriculum skipped</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Practical knowledge about money, health, careers, and how systems really work. The curriculum school skipped.">
 <style>
   :root {
@@ -445,6 +442,9 @@
   .pdb-src small { display:block; font-size:0.7rem; color:var(--muted); margin-top:2px; }
   .pdb-src .k { font-family:'Inter',system-ui,sans-serif; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; border:1px solid var(--border); padding:1px 6px; margin-right:6px; }
   .pdb-fine b { color:var(--ink); font-weight:600; }
+  .pdb-shop { display:inline-block; margin-top:6px; font-family:'Inter',system-ui,sans-serif; font-size:0.64rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); text-decoration:none; border-bottom:1px solid transparent; }
+  .pdb-shop:hover { border-bottom-color:var(--gold); }
+  .pdb-row .ap .pdb-shop { display:block; }
   @media (max-width:760px) { .pdb-modes { width:100%; } .pdb-modes button { flex:1; padding:11px 8px; } .pdb-row.cog > summary { grid-template-columns:1fr; } }
 
   /* ── Storefront card ── */
@@ -548,7 +548,7 @@
     <h2>Every merchant has a gate</h2>
     <div class="pillars" style="margin-bottom:48px;">
       <div class="pillar" style="grid-column:1/-1; text-align:center;">
-        <a class="store-gate" href="shop/" aria-label="Enter the Broaddus Scientific Group store">
+        <a class="store-gate" href="/shop/" aria-label="Enter the Broaddus Scientific Group store">
           <img src="assets/img/store-hero.webp" srcset="assets/img/store-hero-900.webp 900w, assets/img/store-hero.webp 1600w" sizes="(max-width:700px) 100vw, 1040px" width="1600" height="720" alt="Broaddus Scientific Group research peptides, nootropics and longevity compounds" loading="lazy">
           <span class="store-gate-plate">
             <span class="store-gate-mark">BROADDUS</span>
@@ -560,12 +560,12 @@
         <p class="store-verse">What the body rebuilds. What the mind sharpens. What the years preserve.</p>
         <p>Research peptides studied in repair and recovery. Nootropics studied for memory, focus, and calm. Longevity compounds for the long road. Every lot third-party tested; every vial with its certificate.</p>
         <div class="store-doors">
-          <a href="shop/shop.html">Peptides</a>
-          <a href="shop/category.html?cat=nootropics">Nootropics</a>
-          <a href="shop/category.html?cat=longevity">Longevity</a>
+          <a href="/shop/shop.html">Peptides</a>
+          <a href="/shop/category.html?cat=nootropics">Nootropics</a>
+          <a href="/shop/category.html?cat=longevity">Longevity</a>
         </div>
         <p class="store-fine">For laboratory research use only.</p>
-        <a class="pillar-link" href="shop/">Enter →</a>
+        <a class="pillar-link" href="/shop/">Enter →</a>
       </div>
     </div>
 
@@ -915,7 +915,8 @@
   const list = document.getElementById('pdb-list'), q = document.getElementById('pdb-q'),
         chips = document.getElementById('pdb-chips'), count = document.getElementById('pdb-count');
   if(!list) return;
-  const STORE = 'shop/product.html?id=';
+  const STORE = '/shop/product.html?id=';
+  const shopUrl = (id, name) => id ? STORE + id : '/shop/shop.html?q=' + encodeURIComponent(name);
   const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   const fm = f => f === '—' ? '—' : esc(f).replace(/(\d+)/g, '<sub>$1</sub>');
   let DATA = [], COG = [], cat = 'All', mode = 'pep';
@@ -952,13 +953,13 @@
       </div>
       <div class="pdb-sheet">${sheet(p.sheets[0])}</div>
       ${p.notes ? `<div class="pdb-block" style="margin-top:22px;"><h4>Notes</h4><p>${esc(p.notes)}</p></div>` : ''}
-      <div class="pdb-foot"><small>Protocol sheets ${p.sheets.map(s => s.id).join(', ')} · For laboratory research use only.</small>${p.store ? `<a href="${STORE}${p.store}">In the store →</a>` : ''}</div>
+      <div class="pdb-foot"><small>Protocol sheets ${p.sheets.map(s => s.id).join(', ')} · For laboratory research use only.</small><a href="${shopUrl(p.store, p.name)}">${p.store ? 'In the store →' : 'Find it in the store →'}</a></div>
     </div>`;
     return `<details class="pdb-row" data-slug="${p.slug}"><summary>
       <div class="nm">${esc(p.name)}<small>${esc(p.subtitle)}</small></div>
       <div class="cls"><b>${esc(p.badge)}</b><br>${esc(p.category)}</div>
       <div class="fm">${f ? fm(f) : '—'}</div><div class="mw">${mw ? esc(mw) + ' Da' : ''}</div>
-      <div class="ap">${p.applications.slice(0,4).map(esc).join(' · ')}</div>
+      <div class="ap">${p.applications.slice(0,4).map(esc).join(' · ')}<a class="pdb-shop" href="${shopUrl(p.store, p.name)}">Shop →</a></div>
     </summary>${body}</details>`;
   }
   function cogRow(d){
@@ -969,10 +970,10 @@
       <div class="forms">${d.forms.map(f => `<span>${esc(f)}</span>`).join('')}</div>
       <div class="txt">${esc(d.what)}</div>
       <div class="txt m">${esc(d.does)}</div>
-      <div><span class="pill s-${d.status}">${ST[d.status]}</span><div class="ap">${esc(d.note)}</div></div>
+      <div><span class="pill s-${d.status}">${ST[d.status]}</span><div class="ap">${esc(d.note)}<a class="pdb-shop" href="${shopUrl(d.store, d.name)}">Shop →</a></div></div>
     </summary><div class="pdb-body"><div class="pdb-grid" style="margin-top:16px;">
       ${links ? `<div class="pdb-block"><h4>Regulatory references</h4><div class="pdb-src">${links}</div></div>` : ''}
-      <div class="pdb-block"><h4>U.S. sourcing</h4><div class="pdb-src">${d.store ? `<div><a href="${STORE}${d.store}">Broaddus Scientific Group — in the store →</a><small><span class="k">Research use only</span>Brooklyn, NY</small></div>` : ''}${src}${d.sourceNote ? `<small>${esc(d.sourceNote)}</small>` : ''}</div></div>
+      <div class="pdb-block"><h4>U.S. sourcing</h4><div class="pdb-src"><div><a href="${shopUrl(d.store, d.name)}">Broaddus Scientific Group — ${d.store ? 'in the store' : 'search the store'} →</a><small><span class="k">Research use only</span>Brooklyn, NY</small></div>${src}${d.sourceNote ? `<small>${esc(d.sourceNote)}</small>` : ''}</div></div>
     </div></div></details>`;
   }
   function cogHay(d){ return [d.name, d.alias, d.cat, d.what, d.does, d.note, d.forms.join(' '), ST[d.status]].join(' ').toLowerCase(); }
