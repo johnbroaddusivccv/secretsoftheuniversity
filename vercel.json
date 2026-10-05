@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/shop", "destination": "/New Website Arch/index.html" },
+    { "source": "/shop/", "destination": "/New Website Arch/index.html" },
+    { "source": "/shop/:path*", "destination": "/New Website Arch/:path*" }
+  ]
+}
