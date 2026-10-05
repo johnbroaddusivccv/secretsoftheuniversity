@@ -31,3 +31,6 @@ Dust specks and fingerprints are placed from seeds, so occasionally one lands on
 wordmark. Put the affected entries in `fix.json` and re-render with different seeds:
 `DUST_SEED=11 JITTER_SEED=5 python3 blender_render.py fix.json fix 64`, then convert
 only those PNGs.
+
+## Storefront banner
+`python3 lab_render.py out.png 64 1600 720` renders the laboratory bench still life used on the homepage storefront card (`assets/img/store-hero.webp`).
