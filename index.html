@@ -367,6 +367,64 @@
     .footer-bottom { flex-direction:column; text-align:center; }
   }
 
+  /* ── Peptide database ── */
+  .pdb { max-width:1040px; margin:0 auto; }
+  .pdb-intro { text-align:center; max-width:680px; margin:0 auto 34px; color:var(--muted); font-size:0.95rem; line-height:1.65; }
+  .pdb-bar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:14px; }
+  .pdb-bar input { flex:1 1 260px; font-family:'Inter',system-ui,sans-serif; font-size:0.9rem; padding:11px 14px; background:var(--card); color:var(--ink); border:1px solid var(--border); border-radius:0; outline:none; }
+  .pdb-bar input:focus { border-color:var(--ink); }
+  .pdb-chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .pdb-chips button { font-family:'Inter',system-ui,sans-serif; font-size:0.66rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; padding:8px 12px; background:transparent; color:var(--muted); border:1px solid var(--border); cursor:pointer; transition:all .2s; }
+  .pdb-chips button:hover { color:var(--ink); border-color:var(--ink); }
+  .pdb-chips button.on { background:var(--ink); color:var(--bg); border-color:var(--ink); }
+  .pdb-count { font-family:'Inter',system-ui,sans-serif; font-size:0.7rem; letter-spacing:0.1em; color:var(--muted); margin-left:auto; }
+  .pdb-head, .pdb-row > summary { display:grid; grid-template-columns:1.5fr 1fr 1.1fr .6fr 1.6fr; gap:14px; align-items:center; padding:12px 16px; }
+  .pdb-head { font-family:'Inter',system-ui,sans-serif; font-size:0.64rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
+  .pdb-row { border-bottom:1px solid var(--border); background:var(--card); }
+  .pdb-row > summary { list-style:none; cursor:pointer; font-size:0.88rem; transition:background .2s; }
+  .pdb-row > summary::-webkit-details-marker { display:none; }
+  .pdb-row > summary:hover, .pdb-row[open] > summary { background:rgba(125,141,163,0.08); }
+  .pdb-row .nm { font-family:Georgia,'Times New Roman',serif; font-size:1.02rem; color:var(--ink); }
+  .pdb-row .nm small { display:block; font-family:'Inter',system-ui,sans-serif; font-size:0.66rem; letter-spacing:0.08em; color:var(--muted); margin-top:2px; }
+  .pdb-row .cls { font-family:'Inter',system-ui,sans-serif; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); }
+  .pdb-row .cls b { display:inline-block; font-weight:600; color:var(--ink); border:1px solid var(--border); padding:3px 7px; margin-bottom:4px; }
+  .pdb-row .fm, .pdb-row .mw { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:0.78rem; color:var(--ink); word-break:break-all; }
+  .pdb-row .fm sub { font-size:0.62em; }
+  .pdb-row .mw { color:var(--muted); }
+  .pdb-row .ap { font-size:0.74rem; color:var(--muted); line-height:1.5; }
+  .pdb-body { padding:6px 16px 28px; border-top:1px dashed var(--border); }
+  .pdb-tabs { display:flex; flex-wrap:wrap; gap:6px; margin:14px 0 18px; }
+  .pdb-tabs button { font-family:'Inter',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.08em; padding:7px 12px; background:transparent; color:var(--muted); border:1px solid var(--border); cursor:pointer; }
+  .pdb-tabs button.on { background:var(--gold); color:#0e1116; border-color:var(--gold); }
+  .pdb-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:22px 36px; }
+  .pdb-block h4 { font-family:'Inter',system-ui,sans-serif; font-size:0.64rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin:0 0 10px; }
+  .pdb-block p { font-size:0.88rem; color:var(--ink); line-height:1.6; margin:0 0 8px; }
+  .pdb-block ol { margin:0; padding-left:1.2em; font-size:0.85rem; line-height:1.6; color:var(--ink); }
+  .pdb-kv { display:grid; grid-template-columns:auto 1fr; gap:4px 14px; font-size:0.84rem; }
+  .pdb-kv dt { color:var(--muted); font-family:'Inter',system-ui,sans-serif; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; padding-top:2px; }
+  .pdb-kv dd { margin:0; color:var(--ink); }
+  .pdb-chem { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:0.8rem; line-height:1.7; color:var(--ink); word-break:break-all; }
+  .pdb-chem span { color:var(--muted); display:inline-block; min-width:74px; font-family:'Inter',system-ui,sans-serif; font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; }
+  .pdb-table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+  .pdb-table th { font-family:'Inter',system-ui,sans-serif; font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); text-align:left; padding:4px 8px 6px 0; border-bottom:1px solid var(--border); font-weight:600; }
+  .pdb-table td { padding:6px 8px 6px 0; border-bottom:1px solid var(--border); color:var(--ink); vertical-align:top; }
+  .pdb-table td:not(:first-child) { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:0.76rem; }
+  .pdb-tags { display:flex; flex-wrap:wrap; gap:6px; }
+  .pdb-tags span { font-size:0.72rem; border:1px solid var(--border); padding:4px 9px; color:var(--ink); }
+  .pdb-foot { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-top:22px; padding-top:14px; border-top:1px solid var(--border); }
+  .pdb-foot small { font-size:0.7rem; color:var(--muted); letter-spacing:0.04em; }
+  .pdb-foot a { font-family:'Inter',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink); text-decoration:none; border:1px solid var(--ink); padding:9px 16px; transition:all .2s; }
+  .pdb-foot a:hover { background:var(--ink); color:var(--bg); }
+  .pdb-fine, .pdb-loading, .pdb-empty { font-size:0.72rem; color:var(--muted); line-height:1.6; margin-top:18px; }
+  .pdb-loading, .pdb-empty { padding:24px 16px; text-align:center; margin:0; }
+  @media (max-width:760px) {
+    .pdb-head { display:none; }
+    .pdb-row > summary { grid-template-columns:1fr 1fr; gap:6px 12px; }
+    .pdb-row .nm { grid-column:1/-1; }
+    .pdb-row .ap { grid-column:1/-1; }
+    .pdb-count { margin-left:0; width:100%; }
+  }
+
   /* ── Storefront card ── */
   .store-gate { display:block; position:relative; margin:-8px auto 26px; max-width:1040px; overflow:hidden; border:1px solid var(--border); background:#eef0f3; text-decoration:none; color:var(--ink); }
   .store-gate img { display:block; width:100%; height:auto; transition:transform 1.2s cubic-bezier(.2,.7,.2,1); }
@@ -504,6 +562,21 @@
         <div class="verse-ref" id="votd-ref"></div>
         <div class="verse-source">Verse of the Day · <a href="https://www.bible.com/verse-of-the-day" target="_blank" rel="noopener">YouVersion</a></div>
       </div>
+    </div>
+
+    <!-- ── Peptide Database ── -->
+    <div class="pdb" id="peptides">
+      <div class="section-label" style="margin-top:72px;">The Peptide Database</div>
+      <h2 style="margin-bottom:18px;">Every compound has a protocol</h2>
+      <p class="pdb-intro">More than 7,000 peptides occur in nature. These are the ones we work with — each entry carries its chemical formula and sequence, then the full reconstitution, storage, administration, dosing and titration sheet from the Broaddus Scientific Group protocol library.</p>
+      <div class="pdb-bar">
+        <input type="search" id="pdb-q" placeholder="Search by name, formula, application…" aria-label="Search the peptide database">
+        <div class="pdb-chips" id="pdb-chips"></div>
+        <span class="pdb-count" id="pdb-count"></span>
+      </div>
+      <div class="pdb-head"><span>Compound</span><span>Class</span><span>Formula</span><span>Mass</span><span>Studied for</span></div>
+      <div class="pdb-list" id="pdb-list"><div class="pdb-loading">Loading the library…</div></div>
+      <p class="pdb-fine">Formulas and masses are reference values for the free peptide (acetate salts weigh more); sequences use one-letter codes where the peptide is unmodified. Protocol sheets are general reference information for laboratory research use only — not for human or veterinary use, and not a prescription or compounding instruction.</p>
     </div>
   </section>
 
@@ -808,6 +881,78 @@
     document.getElementById('votd-text').textContent = '\u201C' + v.t + '\u201D';
     document.getElementById('votd-ref').textContent = '\u2014 ' + v.r;
   })();
+</script>
+<script>
+/* ── Peptide Database ── data: assets/data/peptides.json (built from the protocol library) */
+(function(){
+  const list = document.getElementById('pdb-list'), q = document.getElementById('pdb-q'),
+        chips = document.getElementById('pdb-chips'), count = document.getElementById('pdb-count');
+  if(!list) return;
+  const STORE = 'New%20Website%20Arch/product.html?id=';
+  const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const fm = f => f === '—' ? '—' : esc(f).replace(/(\d+)/g, '<sub>$1</sub>');
+  let DATA = [], cat = 'All';
+
+  function chem(c){
+    if(!c) return '';
+    if(c.parts) return c.parts.map(p => `<div class="pdb-chem"><span>${esc(p.name)}</span>${fm(p.formula)} · ${esc(p.mw)} Da<br><span>Sequence</span>${esc(p.seq)}</div>`).join('');
+    return `<div class="pdb-chem"><span>Formula</span>${fm(c.formula)}<br><span>Mass</span>${esc(c.mw)} Da<br><span>Sequence</span>${esc(c.seq)}${c.aka ? `<br><span>Also</span>${esc(c.aka)}` : ''}</div>`;
+  }
+  const kv = o => `<dl class="pdb-kv">${Object.entries(o).map(([k,v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>`;
+  function sheet(s){
+    const dose = s.dosing.length ? `<table class="pdb-table"><tr><th>Dose</th><th>mL</th><th>Units</th><th>Days</th></tr>${s.dosing.map(r => `<tr><td>${esc(r.dose)}</td><td>${esc(r.vol)}</td><td>${esc(r.units)}</td><td>${esc(r.days)}</td></tr>`).join('')}</table>` : '';
+    return `<div class="pdb-grid">
+      <div class="pdb-block"><h4>Vial</h4>${kv({Strength:s.strength, Concentration:s.concentration, 'Total content':s.total, Diluent:s.diluent})}</div>
+      <div class="pdb-block"><h4>Reconstitution</h4><ol>${s.reconstitution.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>
+      <div class="pdb-block"><h4>Storage</h4>${kv(s.storage)}</div>
+      <div class="pdb-block"><h4>Administration</h4>${kv(s.administration)}</div>
+      <div class="pdb-block"><h4>Dosing reference · U-100: 100 u = 1 mL</h4>${dose}</div>
+      <div class="pdb-block"><h4>Titration schedule</h4>${kv(s.titration)}</div>
+    </div>`;
+  }
+  function row(p){
+    const c = p.chem || {}, f = c.parts ? c.parts.map(x => x.formula).join(' + ') : c.formula, mw = c.parts ? '' : c.mw;
+    const body = `<div class="pdb-body">
+      <div class="pdb-tabs">${p.sheets.map((s,i) => `<button type="button" class="${i ? '' : 'on'}" data-i="${i}">${esc(s.strength)}</button>`).join('')}</div>
+      <div class="pdb-grid" style="margin-bottom:22px;">
+        <div class="pdb-block"><h4>Chemistry</h4>${chem(p.chem)}</div>
+        <div class="pdb-block"><h4>Mechanism &amp; profile</h4><p>${esc(p.mechanism)}</p>${kv({'Half-life':p.halfLife})}</div>
+        <div class="pdb-block"><h4>Studied for</h4><div class="pdb-tags">${p.applications.map(a => `<span>${esc(a)}</span>`).join('')}</div></div>
+      </div>
+      <div class="pdb-sheet">${sheet(p.sheets[0])}</div>
+      ${p.notes ? `<div class="pdb-block" style="margin-top:22px;"><h4>Notes</h4><p>${esc(p.notes)}</p></div>` : ''}
+      <div class="pdb-foot"><small>Protocol sheets ${p.sheets.map(s => s.id).join(', ')} · For laboratory research use only.</small>${p.store ? `<a href="${STORE}${p.store}">In the store →</a>` : ''}</div>
+    </div>`;
+    return `<details class="pdb-row" data-slug="${p.slug}"><summary>
+      <div class="nm">${esc(p.name)}<small>${esc(p.subtitle)}</small></div>
+      <div class="cls"><b>${esc(p.badge)}</b><br>${esc(p.category)}</div>
+      <div class="fm">${f ? fm(f) : '—'}</div><div class="mw">${mw ? esc(mw) + ' Da' : ''}</div>
+      <div class="ap">${p.applications.slice(0,4).map(esc).join(' · ')}</div>
+    </summary>${body}</details>`;
+  }
+  function hay(p){ const c = p.chem || {}; return [p.name, p.subtitle, p.badge, p.category, p.mechanism, p.applications.join(' '), c.formula, c.seq, c.aka, (c.parts||[]).map(x => x.name + ' ' + x.formula).join(' ')].join(' ').toLowerCase(); }
+  function render(){
+    const t = q.value.trim().toLowerCase();
+    const rows = DATA.filter(p => (cat === 'All' || p.category === cat) && (!t || hay(p).includes(t)));
+    list.innerHTML = rows.length ? rows.map(row).join('') : '<div class="pdb-empty">Nothing in the library matches that yet.</div>';
+    count.textContent = `${rows.length} of ${DATA.length} compounds · ${DATA.reduce((n,p) => n + p.sheets.length, 0)} protocol sheets`;
+  }
+  list.addEventListener('click', e => {
+    const b = e.target.closest('.pdb-tabs button'); if(!b) return;
+    const det = b.closest('.pdb-row'), p = DATA.find(x => x.slug === det.dataset.slug);
+    det.querySelectorAll('.pdb-tabs button').forEach(x => x.classList.toggle('on', x === b));
+    det.querySelector('.pdb-sheet').innerHTML = sheet(p.sheets[+b.dataset.i]);
+  });
+  q.addEventListener('input', render);
+  fetch('assets/data/peptides.json').then(r => r.json()).then(d => {
+    DATA = d.compounds;
+    const cats = ['All', ...[...new Set(DATA.map(p => p.category))].sort()];
+    chips.innerHTML = cats.map(c => `<button type="button" class="${c === 'All' ? 'on' : ''}" data-c="${c}">${c}</button>`).join('');
+    chips.addEventListener('click', e => { const b = e.target.closest('button'); if(!b) return; cat = b.dataset.c; chips.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); render(); });
+    render();
+    if(location.hash.length > 1){ const d2 = list.querySelector(`[data-slug="${CSS.escape(location.hash.slice(1))}"]`); if(d2){ d2.open = true; d2.scrollIntoView({block:'start'}); } }
+  }).catch(() => { list.innerHTML = '<div class="pdb-empty">The library could not be loaded.</div>'; });
+})();
 </script>
 </body>
 </html>
