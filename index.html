@@ -379,7 +379,7 @@
   .pdb-chips { display:flex; flex-wrap:wrap; gap:6px; }
   .pdb-chips button { font-family:'Inter',system-ui,sans-serif; font-size:0.66rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; padding:8px 12px; background:transparent; color:var(--muted); border:1px solid var(--border); cursor:pointer; transition:all .2s; }
   .pdb-chips button:hover { color:var(--ink); border-color:var(--ink); }
-  .pdb-chips button.on { background:var(--ink); color:var(--bg); border-color:var(--ink); }
+  .pdb-chips button.on { background:var(--card); color:var(--ink); border-color:var(--ink); box-shadow:inset 0 0 0 1px var(--ink); }
   .pdb-count { font-family:'Inter',system-ui,sans-serif; font-size:0.7rem; letter-spacing:0.1em; color:var(--muted); margin-left:auto; }
   .pdb-head, .pdb-row > summary { display:grid; grid-template-columns:1.5fr 1fr 1.1fr .6fr 1.6fr; gap:14px; align-items:center; padding:12px 16px; }
   .pdb-head { font-family:'Inter',system-ui,sans-serif; font-size:0.64rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
@@ -398,7 +398,7 @@
   .pdb-body { padding:6px 16px 28px; border-top:1px dashed var(--border); }
   .pdb-tabs { display:flex; flex-wrap:wrap; gap:6px; margin:14px 0 18px; }
   .pdb-tabs button { font-family:'Inter',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.08em; padding:7px 12px; background:transparent; color:var(--muted); border:1px solid var(--border); cursor:pointer; }
-  .pdb-tabs button.on { background:var(--gold); color:#0e1116; border-color:var(--gold); }
+  .pdb-tabs button.on { color:var(--ink); background:var(--card); border-color:var(--ink); box-shadow:inset 0 0 0 1px var(--ink); }
   .pdb-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:22px 36px; }
   .pdb-block h4 { font-family:'Inter',system-ui,sans-serif; font-size:0.64rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin:0 0 10px; }
   .pdb-block p { font-size:0.88rem; color:var(--ink); line-height:1.6; margin:0 0 8px; }
@@ -430,7 +430,7 @@
 
   .pdb-modes { display:flex; justify-content:center; gap:0; margin:0 auto 22px; width:max-content; border:1px solid var(--border); }
   .pdb-modes button { font-family:'Inter',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; padding:11px 20px; background:transparent; color:var(--muted); border:0; cursor:pointer; transition:all .2s; }
-  .pdb-modes button.on { background:var(--ink); color:var(--bg); }
+  .pdb-modes button.on { color:var(--ink); background:var(--card); box-shadow:inset 0 -2px 0 var(--ink); }
   .pdb-head.cog, .pdb-row.cog > summary { grid-template-columns:1.3fr .9fr 1.8fr 1.8fr 1fr; }
   .pdb-row .forms { display:flex; flex-wrap:wrap; gap:4px; }
   .pdb-row .forms span { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:0.66rem; border:1px solid var(--border); padding:1px 6px; color:var(--muted); }
@@ -976,8 +976,10 @@
       <div><span class="pill s-${d.status}">${ST[d.status]}</span><div class="ap">${esc(d.note)}<a class="pdb-shop" href="${shopUrl(d.store, d.name)}">Shop →</a></div></div>
     </summary><div class="pdb-body"><div class="pdb-grid" style="margin-top:16px;">
       ${links ? `<div class="pdb-block"><h4>Regulatory references</h4><div class="pdb-src">${links}</div></div>` : ''}
-      <div class="pdb-block"><h4>U.S. sourcing</h4><div class="pdb-src"><div><a href="${shopUrl(d.store, d.name)}">Broaddus Scientific Group — ${d.store ? 'in the store' : 'search the store'} →</a><small><span class="k">Research use only</span>Brooklyn, NY</small></div>${src}${d.sourceNote ? `<small>${esc(d.sourceNote)}</small>` : ''}</div></div>
-    </div></div></details>`;
+      ${src || d.sourceNote ? `<div class="pdb-block"><h4>Other U.S. sourcing</h4><div class="pdb-src">${src}${d.sourceNote ? `<small>${esc(d.sourceNote)}</small>` : ''}</div></div>` : ''}
+    </div>
+    <div class="pdb-foot"><small>${ST[d.status]} · ${esc(d.note)}</small><a href="${shopUrl(d.store, d.name)}">${d.store ? 'In the store →' : 'Find it in the store →'}</a></div>
+    </div></details>`;
   }
   function cogHay(d){ return [d.name, d.alias, d.cat, d.what, d.does, d.note, d.forms.join(' '), ST[d.status]].join(' ').toLowerCase(); }
   function hay(p){ const c = p.chem || {}; return [p.name, p.subtitle, p.badge, p.category, p.mechanism, p.applications.join(' '), c.formula, c.seq, c.aka, (c.parts||[]).map(x => x.name + ' ' + x.formula).join(' ')].join(' ').toLowerCase(); }
