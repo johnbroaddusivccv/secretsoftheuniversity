@@ -425,6 +425,25 @@
     .pdb-count { margin-left:0; width:100%; }
   }
 
+  .pdb-modes { display:flex; justify-content:center; gap:0; margin:0 auto 22px; width:max-content; border:1px solid var(--border); }
+  .pdb-modes button { font-family:'Inter',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; padding:11px 20px; background:transparent; color:var(--muted); border:0; cursor:pointer; transition:all .2s; }
+  .pdb-modes button.on { background:var(--ink); color:var(--bg); }
+  .pdb-head.cog, .pdb-row.cog > summary { grid-template-columns:1.3fr .9fr 1.8fr 1.8fr 1fr; }
+  .pdb-row .forms { display:flex; flex-wrap:wrap; gap:4px; }
+  .pdb-row .forms span { font-family:'SF Mono',Menlo,Consolas,monospace; font-size:0.66rem; border:1px solid var(--border); padding:1px 6px; color:var(--muted); }
+  .pdb-row .txt { font-size:0.8rem; color:var(--ink); line-height:1.5; }
+  .pdb-row .txt.m { color:var(--muted); }
+  .pill { display:inline-block; font-family:'Inter',system-ui,sans-serif; font-size:0.64rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:4px 8px; border:1px solid; margin-bottom:5px; }
+  .s-rx { color:#5b8fd6; border-color:#5b8fd6; } .s-sched { color:#d4687a; border-color:#d4687a; } .s-unap { color:#d9a05b; border-color:#d9a05b; } .s-gray { color:#9d8fd6; border-color:#9d8fd6; } .s-supp { color:#5fb37a; border-color:#5fb37a; }
+  html.light .s-rx { color:#2457a6; border-color:#2457a6; } html.light .s-sched { color:#9b2335; border-color:#9b2335; } html.light .s-unap { color:#a5530f; border-color:#a5530f; } html.light .s-gray { color:#6b5a9b; border-color:#6b5a9b; } html.light .s-supp { color:#2f7a44; border-color:#2f7a44; }
+  .pdb-chips button.s-rx.on { background:#2457a6; color:#fff; border-color:#2457a6; } .pdb-chips button.s-sched.on { background:#9b2335; color:#fff; border-color:#9b2335; } .pdb-chips button.s-unap.on { background:#a5530f; color:#fff; border-color:#a5530f; } .pdb-chips button.s-gray.on { background:#6b5a9b; color:#fff; border-color:#6b5a9b; } .pdb-chips button.s-supp.on { background:#2f7a44; color:#fff; border-color:#2f7a44; }
+  .pdb-src { display:flex; flex-direction:column; gap:8px; }
+  .pdb-src a { color:var(--ink); font-size:0.84rem; text-decoration:underline; text-decoration-color:var(--gold); text-underline-offset:3px; overflow-wrap:anywhere; }
+  .pdb-src small { display:block; font-size:0.7rem; color:var(--muted); margin-top:2px; }
+  .pdb-src .k { font-family:'Inter',system-ui,sans-serif; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; border:1px solid var(--border); padding:1px 6px; margin-right:6px; }
+  .pdb-fine b { color:var(--ink); font-weight:600; }
+  @media (max-width:760px) { .pdb-modes { width:100%; } .pdb-modes button { flex:1; padding:11px 8px; } .pdb-row.cog > summary { grid-template-columns:1fr; } }
+
   /* ── Storefront card ── */
   .store-gate { display:block; position:relative; margin:-8px auto 26px; max-width:1040px; overflow:hidden; border:1px solid var(--border); background:#eef0f3; text-decoration:none; color:var(--ink); }
   .store-gate img { display:block; width:100%; height:auto; transition:transform 1.2s cubic-bezier(.2,.7,.2,1); }
@@ -568,15 +587,20 @@
     <div class="pdb" id="peptides">
       <div class="section-label" style="margin-top:72px;">The Peptide Database</div>
       <h2 style="margin-bottom:18px;">Every compound has a protocol</h2>
-      <p class="pdb-intro">More than 7,000 peptides occur in nature. These are the ones we work with — each entry carries its chemical formula and sequence, then the full reconstitution, storage, administration, dosing and titration sheet from the Broaddus Scientific Group protocol library.</p>
+      <p class="pdb-intro">More than 7,000 peptides occur in nature. These are the ones we work with — each entry carries its chemical formula and sequence, then the full reconstitution, storage, administration, dosing and titration sheet from the Broaddus Scientific Group protocol library. The second shelf is the Cognitive Compound Index: prescription drugs, research compounds and supplements sorted by what they are, what they do, and where each stands with the FDA.</p>
+      <div class="pdb-modes" id="pdb-modes" role="tablist">
+        <button type="button" class="on" data-m="pep" role="tab" aria-selected="true">Peptide protocols</button>
+        <button type="button" data-m="cog" role="tab" aria-selected="false">Cognitive compounds</button>
+      </div>
       <div class="pdb-bar">
         <input type="search" id="pdb-q" placeholder="Search by name, formula, application…" aria-label="Search the peptide database">
         <div class="pdb-chips" id="pdb-chips"></div>
         <span class="pdb-count" id="pdb-count"></span>
       </div>
-      <div class="pdb-head"><span>Compound</span><span>Class</span><span>Formula</span><span>Mass</span><span>Studied for</span></div>
+      <div class="pdb-head" id="pdb-head"><span>Compound</span><span>Class</span><span>Formula</span><span>Mass</span><span>Studied for</span></div>
       <div class="pdb-list" id="pdb-list"><div class="pdb-loading">Loading the library…</div></div>
-      <p class="pdb-fine">Formulas and masses are reference values for the free peptide (acetate salts weigh more); sequences use one-letter codes where the peptide is unmodified. Protocol sheets are general reference information for laboratory research use only — not for human or veterinary use, and not a prescription or compounding instruction.</p>
+      <p class="pdb-fine" id="pdb-fine-cog" hidden>Reading the status column — <b>Rx</b>: FDA-approved, legal only with a prescription filled at a licensed U.S. pharmacy; ordering from overseas sites without one is illegal importation, and modafinil and armodafinil are DEA Schedule IV. <b>Schedule I</b>: no lawful retail channel. <b>Not approved</b>: no FDA-approved product; sold as "research use only", which means not for human consumption. <b>Gray area</b>: sold as a supplement, but the ingredient's status is unsettled. <b>Dietary supplement</b>: lawful to sell; not FDA-reviewed for effectiveness. Status is as of October 2026. This index is reference only and not medical advice; dosing is deliberately left out, and several compounds interact with prescription drugs (methylene blue is an MAO inhibitor; tadalafil must never be combined with nitrates).</p>
+      <p class="pdb-fine" id="pdb-fine-pep">Formulas and masses are reference values for the free peptide (acetate salts weigh more); sequences use one-letter codes where the peptide is unmodified. Protocol sheets are general reference information for laboratory research use only — not for human or veterinary use, and not a prescription or compounding instruction.</p>
     </div>
   </section>
 
@@ -891,7 +915,11 @@
   const STORE = 'New%20Website%20Arch/product.html?id=';
   const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   const fm = f => f === '—' ? '—' : esc(f).replace(/(\d+)/g, '<sub>$1</sub>');
-  let DATA = [], cat = 'All';
+  let DATA = [], COG = [], cat = 'All', mode = 'pep';
+  const ST = {rx:'Rx · FDA-approved', sched:'Schedule I', unap:'Not approved', gray:'Gray area', supp:'Dietary supplement'};
+  const KIND = {retail:'Retail', ruo:'Research use only', rx:'Needs prescription', state:'State program'};
+  const SORDER = ['rx','sched','unap','gray','supp'];
+  const head = document.getElementById('pdb-head'), modes = document.getElementById('pdb-modes');
 
   function chem(c){
     if(!c) return '';
@@ -930,13 +958,51 @@
       <div class="ap">${p.applications.slice(0,4).map(esc).join(' · ')}</div>
     </summary>${body}</details>`;
   }
+  function cogRow(d){
+    const links = d.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join('');
+    const src = d.sources.map(x => `<div><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)}</a><small><span class="k">${KIND[x.kind] || ''}</span>${esc(x.ship)}</small></div>`).join('');
+    return `<details class="pdb-row cog" data-slug="${esc(d.name.toLowerCase().replace(/[^a-z0-9]+/g,'-'))}"><summary>
+      <div class="nm">${esc(d.name)}<small>${esc(d.alias ? d.alias + ' · ' : '')}${esc(d.cat)}</small></div>
+      <div class="forms">${d.forms.map(f => `<span>${esc(f)}</span>`).join('')}</div>
+      <div class="txt">${esc(d.what)}</div>
+      <div class="txt m">${esc(d.does)}</div>
+      <div><span class="pill s-${d.status}">${ST[d.status]}</span><div class="ap">${esc(d.note)}</div></div>
+    </summary><div class="pdb-body"><div class="pdb-grid" style="margin-top:16px;">
+      ${links ? `<div class="pdb-block"><h4>Regulatory references</h4><div class="pdb-src">${links}</div></div>` : ''}
+      <div class="pdb-block"><h4>U.S. sourcing</h4><div class="pdb-src">${d.store ? `<div><a href="${STORE}${d.store}">Broaddus Scientific Group — in the store →</a><small><span class="k">Research use only</span>Brooklyn, NY</small></div>` : ''}${src}${d.sourceNote ? `<small>${esc(d.sourceNote)}</small>` : ''}</div></div>
+    </div></div></details>`;
+  }
+  function cogHay(d){ return [d.name, d.alias, d.cat, d.what, d.does, d.note, d.forms.join(' '), ST[d.status]].join(' ').toLowerCase(); }
   function hay(p){ const c = p.chem || {}; return [p.name, p.subtitle, p.badge, p.category, p.mechanism, p.applications.join(' '), c.formula, c.seq, c.aka, (c.parts||[]).map(x => x.name + ' ' + x.formula).join(' ')].join(' ').toLowerCase(); }
   function render(){
     const t = q.value.trim().toLowerCase();
+    if(mode === 'cog'){
+      const rows = COG.filter(d => (cat === 'All' || d.status === cat) && (!t || cogHay(d).includes(t)))
+        .sort((a,b) => SORDER.indexOf(a.status) - SORDER.indexOf(b.status) || a.name.localeCompare(b.name));
+      list.innerHTML = rows.length ? rows.map(cogRow).join('') : '<div class="pdb-empty">Nothing in the index matches that yet.</div>';
+      count.textContent = `${rows.length} of ${COG.length} compounds · U.S. status as of Oct 2026`;
+      return;
+    }
     const rows = DATA.filter(p => (cat === 'All' || p.category === cat) && (!t || hay(p).includes(t)));
     list.innerHTML = rows.length ? rows.map(row).join('') : '<div class="pdb-empty">Nothing in the library matches that yet.</div>';
     count.textContent = `${rows.length} of ${DATA.length} compounds · ${DATA.reduce((n,p) => n + p.sheets.length, 0)} protocol sheets`;
   }
+  function setChips(items){
+    chips.innerHTML = items.map(c => `<button type="button" class="${c.v === 'All' ? 'on' : ''}${c.cls ? ' ' + c.cls : ''}" data-c="${c.v}">${c.label}</button>`).join('');
+  }
+  function setMode(m){
+    mode = m; cat = 'All';
+    modes.querySelectorAll('button').forEach(b => { const on = b.dataset.m === m; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
+    head.classList.toggle('cog', m === 'cog');
+    head.innerHTML = m === 'cog' ? '<span>Compound</span><span>Forms</span><span>What it is</span><span>What it does</span><span>U.S. status</span>' : '<span>Compound</span><span>Class</span><span>Formula</span><span>Mass</span><span>Studied for</span>';
+    document.getElementById('pdb-fine-cog').hidden = m !== 'cog'; document.getElementById('pdb-fine-pep').hidden = m === 'cog';
+    q.placeholder = m === 'cog' ? 'Search by name, effect, form or status…' : 'Search by name, formula, application…';
+    if(m === 'cog') setChips([{v:'All',label:'All'}, ...SORDER.map(k => ({v:k, label:ST[k], cls:'s-' + k}))]);
+    else setChips([{v:'All',label:'All'}, ...[...new Set(DATA.map(p => p.category))].sort().map(c => ({v:c, label:c}))]);
+    render();
+  }
+  modes.addEventListener('click', e => { const b = e.target.closest('button'); if(b && b.dataset.m !== mode) setMode(b.dataset.m); });
+  chips.addEventListener('click', e => { const b = e.target.closest('button'); if(!b) return; cat = b.dataset.c; chips.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); render(); });
   list.addEventListener('click', e => {
     const b = e.target.closest('.pdb-tabs button'); if(!b) return;
     const det = b.closest('.pdb-row'), p = DATA.find(x => x.slug === det.dataset.slug);
@@ -944,13 +1010,11 @@
     det.querySelector('.pdb-sheet').innerHTML = sheet(p.sheets[+b.dataset.i]);
   });
   q.addEventListener('input', render);
-  fetch('assets/data/peptides.json').then(r => r.json()).then(d => {
-    DATA = d.compounds;
-    const cats = ['All', ...[...new Set(DATA.map(p => p.category))].sort()];
-    chips.innerHTML = cats.map(c => `<button type="button" class="${c === 'All' ? 'on' : ''}" data-c="${c}">${c}</button>`).join('');
-    chips.addEventListener('click', e => { const b = e.target.closest('button'); if(!b) return; cat = b.dataset.c; chips.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); render(); });
-    render();
-    if(location.hash.length > 1){ const d2 = list.querySelector(`[data-slug="${CSS.escape(location.hash.slice(1))}"]`); if(d2){ d2.open = true; d2.scrollIntoView({block:'start'}); } }
+  Promise.all([fetch('assets/data/peptides.json').then(r => r.json()), fetch('assets/data/cognitive.json').then(r => r.json()).catch(() => ({compounds:[]}))]).then(([d, c]) => {
+    DATA = d.compounds; COG = c.compounds;
+    const h = location.hash.slice(1);
+    setMode(h === 'cognitive' ? 'cog' : 'pep');
+    if(h && h !== 'cognitive' && h !== 'peptides'){ const d2 = list.querySelector(`[data-slug="${CSS.escape(h)}"]`); if(d2){ d2.open = true; d2.scrollIntoView({block:'start'}); } }
   }).catch(() => { list.innerHTML = '<div class="pdb-empty">The library could not be loaded.</div>'; });
 })();
 </script>
