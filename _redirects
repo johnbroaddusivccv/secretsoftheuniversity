@@ -1,0 +1,5 @@
+# Old store path -> /shop
+/New%20Website%20Arch/*   /shop/:splat   301!
+/new%20website%20arch/*   /shop/:splat   301!
+/New%20Website%20Arch     /shop/         301!
+/new%20website%20arch     /shop/         301!

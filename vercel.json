@@ -1,6 +1,8 @@
 {
   "redirects": [
+    { "source": "/New Website Arch/:path*", "destination": "/shop/:path*", "permanent": true },
     { "source": "/New%20Website%20Arch/:path*", "destination": "/shop/:path*", "permanent": true },
-    { "source": "/New Website Arch/:path*", "destination": "/shop/:path*", "permanent": true }
+    { "source": "/new website arch/:path*", "destination": "/shop/:path*", "permanent": true },
+    { "source": "/new%20website%20arch/:path*", "destination": "/shop/:path*", "permanent": true }
   ]
 }
