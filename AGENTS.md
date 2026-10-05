@@ -15,7 +15,7 @@ Working rules for AI agents on this codebase. Read README.md first for project o
 - The brand persona is "The Registrar". The site never explains itself directly.
 
 ## Design tokens
-Sibling system: this site and the Broaddus Commerce site (`shop/`) share one visual language — cool monochrome, Inter, square corners. Georgia is the University's voice and is what sets this site apart.
+Sibling system: this site and the Broaddus Commerce site (`shop/`, served at secretsoftheuniversity.com/shop) share one visual language — cool monochrome, Inter, square corners. Georgia is the University's voice and is what sets this site apart.
 - Colors (dark, default): bg #0a0d12, bg2 #11151c, ink #eef1f5, muted #8b94a3, accent (`--gold`) #f5f7fa, steel (`--violet`) #7d8da3
 - Colors (light, `html.light`): bg #f7f8fa, bg2 #eceff3, ink #0e1116, muted #5b6472, accent (`--gold`) #0e1116, steel (`--violet`) #4a5a70
 - `--gold` and `--violet` keep their old names for compatibility; they now hold the monochrome accent and steel blue-gray. Do not reintroduce gold or violet hues.
