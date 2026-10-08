@@ -309,6 +309,19 @@ footer .disc{max-width:80ch;font-size:.78rem}
 #providers h2,#sphere h2{font-size:clamp(1.4rem,2.6vw,1.9rem)}
 #partners{margin-top:12px!important;gap:8px!important}
 #sphere .lede{margin-top:10px!important}
+
+@media (max-width:960px){.watchgrid{grid-template-columns:minmax(0,1fr)}}
+.watchgrid>*,.gpo>*,.split>*,.poly-hero>*{min-width:0}
+@media (max-width:520px){
+  .nav .wrap{flex-wrap:wrap;gap:8px;padding-block:8px}
+  .brand{font-size:.9rem}
+  .readout .ticker li{grid-template-columns:1fr auto}
+  .finder{padding:14px}
+  .tiles{gap:2px}
+  section{padding-block:48px}
+  .hero{padding-block:36px 48px}
+  .panel,.finder,.readout,.ph,.item,.rev,.combo{box-shadow:4px 4px 10px var(--sd),-4px -4px 10px var(--sl)!important}
+}
 /* Neumorphic, square-cornered surfaces */
 *,*::before,*::after{border-radius:0!important}
 .pulse{border-radius:50%!important}

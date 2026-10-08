@@ -439,3 +439,26 @@ input[type=text],input[type=email],input[type=tel],input[type=search],input[type
   border:0!important;background:var(--white);box-shadow:var(--press)}
 .hsearch input:focus,.glossary-search input:focus{outline:2px solid var(--accent)}
 .tag{border:0;background:var(--white);box-shadow:var(--press)}
+
+/* ============================================================
+   MOBILE — keep every layout inside the screen
+   ============================================================ */
+@media(max-width:760px){
+  /* inline two-column layouts on store pages stack */
+  [style*="grid-template-columns"]{grid-template-columns:1fr!important;gap:20px!important}
+  [style*="padding:44px"]{padding:22px!important}
+  [style*="text-align:right"]{text-align:left!important}
+  .container{padding-left:16px;padding-right:16px}
+  .catband,.strip{grid-template-columns:1fr 1fr;gap:10px}
+  .card,.hero__panel,.summary,.calc-out,.gloss-item,.opt,.catband a,.strip div,.pdp__media{
+    box-shadow:4px 4px 10px var(--sd),-4px -4px 10px var(--sl)}
+  .btn{white-space:normal;text-align:center}
+  .cmp-table,.tier-table{display:block;overflow-x:auto;max-width:100%}
+  h1,.hero h1{overflow-wrap:anywhere}
+  img,svg,video{max-width:100%}
+  .tabs{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+  .tabs button,.tabs a{flex:none}
+}
+@media(max-width:400px){
+  .catband,.strip{grid-template-columns:1fr}
+}
