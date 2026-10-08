@@ -19,6 +19,11 @@
       "source": "/new%20website%20arch/:path*",
       "destination": "/shop/:path*",
       "permanent": true
+    },
+    {
+      "source": "/shortage",
+      "destination": "/shortage/",
+      "permanent": false
     }
   ],
   "rewrites": [

@@ -1,0 +1,1030 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Live FDA drug shortage tracker, pharmacy finder and sourcing support for licensed providers.">
+<title>Shortage Watch · Broaddus Scientific Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: ink-blue lab ledger. Sticky nav, data-first hero with live shortage readout, then working tools in sequence. */
+:root{
+  --bg:#dbe7f2; --surface:#dbe7f2; --ink:#14263a; --muted:#46607a; --line:#bfd1e2;
+  --accent:#1d4e6e; --accent-soft:#c9dcee; --on-accent:#f3f7fa; --sky:#a7cbe9;
+  --warn:#9a5b12; --warn-soft:#ecdcc4; --ok:#2d6b4f; --ok-soft:#d3e3da;
+  --sd:rgba(130,160,190,.55); --sl:rgba(255,255,255,.85);
+  --intro:#dbe7f2; --intro-fg:#1d4e6e;
+  --f-display:"Hanken Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1f262d; --surface:#1f262d; --ink:#e3eaf0; --muted:#9aa9b6; --line:#2f3943;
+  --accent:#8fbbd9; --accent-soft:#283745; --on-accent:#13212c; --sky:#2c4558;
+  --warn:#e2ad62; --warn-soft:#3a2f20; --ok:#7cc4a2; --ok-soft:#203229;
+  --sd:rgba(0,0,0,.5); --sl:rgba(255,255,255,.05); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1f262d; --surface:#1f262d; --ink:#e3eaf0; --muted:#9aa9b6; --line:#2f3943;
+  --accent:#8fbbd9; --accent-soft:#283745; --on-accent:#13212c; --sky:#2c4558;
+  --warn:#e2ad62; --warn-soft:#3a2f20; --ok:#7cc4a2; --ok-soft:#203229;
+  --sd:rgba(0,0,0,.5); --sl:rgba(255,255,255,.05); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body);margin:0}
+.wrap{max-width:1160px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--f-display);line-height:1.1;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.8rem,3.4vw,2.6rem);font-weight:800;letter-spacing:-.02em}
+h3{font-size:1.15rem;font-weight:600}
+p{margin:0}
+a{color:var(--accent)}
+.eyebrow{font:500 .75rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.lede{color:var(--muted);max-width:62ch}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);padding:12px 20px;border-radius:6px;font-weight:600;cursor:pointer;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:hover{filter:brightness(1.08)}
+section{padding-block:72px;border-top:1px solid var(--line)}
+
+/* Intro */
+#intro{position:fixed;inset:0;z-index:100;background:var(--bg);color:var(--accent);display:grid;place-items:center;
+  animation:introOut .63s cubic-bezier(.7,0,.2,1) 2.34s forwards}
+#intro .stage{display:grid;justify-items:center;gap:22px}
+#intro svg{width:150px;height:150px;overflow:visible}
+#intro .hex{fill:none;stroke:var(--accent);stroke-width:2;stroke-dasharray:420;stroke-dashoffset:420;animation:draw 1.08s ease-out .09s forwards}
+#intro .bond{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:60;stroke-dashoffset:60;animation:draw .45s ease-out forwards}
+#intro .atom{fill:var(--muted);transform-box:fill-box;transform-origin:center;transform:scale(0);animation:pop .35s ease-out forwards}
+#intro .mono-mark{font:800 34px var(--f-display);fill:var(--accent);letter-spacing:.06em;opacity:0;animation:fade .45s ease 1.08s forwards}
+#intro .word{font:600 clamp(1rem,2.4vw,1.35rem) var(--f-display);letter-spacing:.32em;text-transform:uppercase;overflow:hidden;white-space:nowrap}
+#intro .word span{display:inline-block;transform:translateY(110%);animation:rise .54s cubic-bezier(.2,.8,.2,1) forwards}
+#intro .scan{width:min(320px,70vw);height:2px;background:var(--line);position:relative;overflow:hidden}
+#intro .scan::after{content:"";position:absolute;inset:0;background:var(--accent);transform:translateX(-100%);animation:scan 1.8s ease-in-out .27s forwards}
+#intro .tag{font:400 .72rem var(--f-mono);letter-spacing:.2em;color:var(--muted);opacity:0;animation:fade .45s ease 1.44s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{to{transform:scale(1)}}
+@keyframes fade{to{opacity:1}}
+@keyframes rise{to{transform:none}}
+@keyframes scan{to{transform:none}}
+@keyframes introOut{to{transform:translateY(-100%);visibility:hidden}}
+#intro.done{animation:introOut .5s cubic-bezier(.7,0,.2,1) forwards}
+@media (prefers-reduced-motion:reduce){
+  #intro{animation:fadeAway .3s ease .6s forwards}
+  #intro *,#intro *::after{animation-duration:.01s!important;animation-delay:0s!important}
+  @keyframes fadeAway{to{opacity:0;visibility:hidden}}
+}
+
+/* Nav */
+header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:20px;min-height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font:800 1rem var(--f-display);letter-spacing:.02em;white-space:nowrap}
+.brand svg{width:28px;height:28px;flex:none}
+.nav ul{display:flex;gap:4px;list-style:none;margin:0 0 0 auto;padding:0;overflow-x:auto;scrollbar-width:none}
+.nav ul a{display:block;padding:8px 10px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:.9rem;white-space:nowrap}
+.nav ul a:hover,.nav ul a.on{color:var(--ink);background:var(--accent-soft)}
+#themeBtn{background:none;border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer;color:var(--muted);font:400 .8rem var(--f-mono)}
+@media (max-width:860px){.nav ul{display:none}.nav .wrap{justify-content:space-between}}
+.mnav{display:none}
+@media (max-width:860px){.mnav{display:flex;gap:6px;overflow-x:auto;padding:0 20px 10px;scrollbar-width:none}.mnav a{flex:none;font-size:.85rem;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);text-decoration:none}}
+
+/* Hero */
+.hero{padding-block:64px 72px;border-top:0;background:var(--bg)}
+.hero .grid{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:center}
+@media (max-width:900px){.hero .grid{grid-template-columns:1fr}}
+.hero h1{font-size:clamp(2.4rem,5.6vw,4.4rem);font-weight:800;letter-spacing:-.035em;margin-block:16px 20px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.readout{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0}
+.readout .hd{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font:500 .75rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--warn);display:inline-block;margin-right:8px;box-shadow:0 0 0 0 var(--warn);animation:pl 2s infinite}
+@keyframes pl{70%{box-shadow:0 0 0 8px transparent}}
+.readout .stats{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.readout .stats div{padding:16px 18px;border-right:1px solid var(--line)}
+.readout .stats div:last-child{border-right:0}
+.readout .stats b{display:block;font:600 1.8rem var(--f-mono);font-variant-numeric:tabular-nums}
+.readout .stats small{color:var(--muted);font-size:.75rem}
+.ticker{list-style:none;margin:0;padding:6px 0}
+.ticker li{display:grid;grid-template-columns:1.4fr 1fr auto;gap:12px;padding:10px 18px;font-size:.9rem;border-bottom:1px solid var(--line)}.ticker li:last-child{border-bottom:0}.ticker li span:nth-child(2){color:var(--muted)}@media (max-width:480px){.ticker li{grid-template-columns:1fr auto}.ticker li span:nth-child(2){grid-column:1;grid-row:2;font-size:.8rem}}
+.ticker li span:last-child{color:var(--muted);font:400 .78rem var(--f-mono);white-space:nowrap}
+.readout .ft{padding:12px 18px;border-top:1px solid var(--line);font-size:.75rem;color:var(--muted)}
+
+/* Advantage */
+.adv{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;margin-top:36px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.adv div{padding:24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;gap:8px;align-content:start}
+.adv .k{font:500 .72rem var(--f-mono);color:var(--accent);letter-spacing:.1em}
+.adv p{color:var(--muted);font-size:.93rem}
+
+/* Flow */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px;counter-reset:s}
+@media (max-width:800px){.flow{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.flow{grid-template-columns:1fr}}
+.flow li{list-style:none;border-top:2px solid var(--accent);padding-top:14px;display:grid;gap:6px}
+.flow li::before{counter-increment:s;content:"Step " counter(s);font:500 .72rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.flow p{color:var(--muted);font-size:.93rem}
+.flow{padding:0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:36px}
+@media (max-width:760px){.split{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px;display:grid;gap:12px;align-content:start;min-width:0}
+.panel ul{margin:0;padding-left:18px;color:var(--muted);display:grid;gap:6px}
+
+/* Shortage watch */
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-block:28px 14px}
+.tools input,.tools select{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-width:0}
+.tools input{flex:1 1 240px}
+.chipbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:.82rem;cursor:pointer;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.tablebox{border:1px solid var(--line);border-radius:10px;overflow-x:auto;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);font-size:.9rem;vertical-align:middle}
+th{font:500 .72rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--bg);position:sticky;top:0;cursor:pointer;user-select:none;white-space:nowrap}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--accent-soft)}
+td.d{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--muted)}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font:500 .72rem var(--f-mono);white-space:nowrap}
+.pill.new{background:var(--warn-soft);color:var(--warn)}
+.pill.warn{background:var(--sky);color:var(--ink)}
+.pill.old{background:var(--accent-soft);color:var(--accent)}
+.star{background:none;border:0;cursor:pointer;font-size:1.1rem;color:var(--muted);padding:2px 6px}
+.star[aria-pressed="true"]{color:var(--warn)}
+.meta-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-top:12px;font-size:.82rem;color:var(--muted)}
+.watchbox{margin-top:20px}
+.watchlist{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.watchlist .w{display:flex;align-items:center;gap:6px;background:var(--warn-soft);color:var(--ink);border-radius:6px;padding:6px 10px;font-size:.85rem}
+.watchlist .w button{background:none;border:0;cursor:pointer;color:var(--muted)}
+
+/* Drawer */
+#drawer{position:fixed;inset:0;z-index:50;display:grid;justify-items:end;background:rgba(5,10,20,.45)}
+#drawer .sheet{width:min(440px,100%);height:100%;background:var(--surface);border-left:1px solid var(--line);padding:28px 24px calc(28px + env(safe-area-inset-bottom,0px));display:grid;gap:18px;align-content:start;overflow-y:auto}
+#drawer dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0;font-size:.9rem}
+#drawer dt{color:var(--muted);font:500 .72rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;padding-top:3px}
+#drawer dd{margin:0}
+.x{justify-self:end;background:none;border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer;color:var(--muted)}
+
+/* Membership */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
+@media (max-width:860px){.tiers{grid-template-columns:1fr}}
+.tier{border:1px solid var(--line);border-radius:10px;padding:24px;background:var(--surface);display:grid;gap:12px;align-content:start;cursor:pointer;text-align:left}
+.tier[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.tier .price{font:600 1.9rem var(--f-mono)}
+.tier .price small{font-size:.8rem;color:var(--muted);font-weight:400}
+.tier ul{margin:0;padding-left:18px;color:var(--muted);font-size:.9rem;display:grid;gap:4px}
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:20px}
+@media (max-width:760px){.calc{grid-template-columns:1fr}}
+.field{display:grid;gap:6px}
+.field label{font-size:.85rem;color:var(--muted)}
+.field input[type=range]{accent-color:var(--accent)}
+.field output{font:500 .95rem var(--f-mono)}
+.result{display:grid;gap:10px}
+.result .row{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding-bottom:8px;font-size:.92rem}
+.result .row b{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.result .net{font:600 2rem var(--f-mono);color:var(--ok)}
+.note{font-size:.78rem;color:var(--muted)}
+
+/* Quality */
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:28px}
+.checks label{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;cursor:pointer;font-size:.92rem}
+.checks input{accent-color:var(--accent);margin-top:4px}
+.meter{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:16px}
+.meter i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+
+/* FAQ */
+.faq{margin-top:28px;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line);padding-block:16px}
+.faq summary{cursor:pointer;font:600 1.05rem var(--f-display);list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::after{content:"+";font-family:var(--f-mono);color:var(--accent)}
+.faq details[open] summary::after{content:"−"}
+.faq p{color:var(--muted);margin-top:10px;max-width:70ch}
+
+/* Contact */
+form .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:600px){form .grid2{grid-template-columns:1fr}}
+form input,form select,form textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+form textarea{min-height:110px;resize:vertical}
+.toast{background:var(--ok-soft);color:var(--ok);border-radius:8px;padding:12px 14px;font-size:.9rem}
+.reqlist{display:grid;gap:8px;font-size:.88rem}
+.reqlist div{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:6px;padding:8px 12px}
+.copy{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.copy code{font:400 .9rem var(--f-mono);user-select:all}
+.copy button{background:none;border:1px solid var(--line);border-radius:4px;padding:3px 8px;cursor:pointer;font-size:.75rem;color:var(--muted)}
+
+
+/* Catalog */
+.cat-tools{display:flex;flex-wrap:wrap;gap:10px;margin-block:28px 14px}
+.cat-tools input{flex:1 1 260px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-width:0}
+.cat-tools label{display:flex;align-items:center;gap:6px;font-size:.88rem;color:var(--muted)}
+.catgroup{margin-top:22px}
+.catgroup h3{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding-bottom:8px;border-bottom:2px solid var(--accent)}
+.catgroup h3 small{font:400 .75rem var(--f-mono);color:var(--muted)}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:12px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:6px;align-content:start;min-width:0}
+.item b{font-weight:600;line-height:1.3}
+.item .spec{font:400 .8rem var(--f-mono);color:var(--muted);overflow-wrap:anywhere}
+.item .tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font:500 .68rem var(--f-mono);padding:2px 7px;border-radius:4px;background:var(--accent-soft);color:var(--accent)}
+.tag.cold{background:var(--sky);color:var(--ink)}
+.item button{justify-self:start;margin-top:4px;background:none;border:1px solid var(--accent);color:var(--accent);border-radius:5px;padding:5px 10px;font-size:.8rem;cursor:pointer}
+.item button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.rxnote{margin-top:14px;padding:12px 14px;border-left:3px solid var(--accent);background:var(--accent-soft);font-size:.85rem;color:var(--ink);border-radius:0 6px 6px 0}
+#tray{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--accent);color:var(--on-accent);border-radius:999px;padding:10px 12px 10px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 24px rgba(14,91,156,.3);max-width:calc(100% - 32px)}
+#tray button{background:var(--on-accent);color:var(--accent);border:0;border-radius:999px;padding:6px 14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.sphere{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;margin-top:28px}
+@media (max-width:760px){.sphere{grid-template-columns:1fr}.sphere .amp{justify-self:center}}
+.sphere .amp{font:800 2rem var(--f-display);color:var(--accent)}
+footer{border-top:1px solid var(--line);padding-block:40px;color:var(--muted);font-size:.85rem}
+footer .wrap{display:grid;gap:16px}
+footer .disc{max-width:80ch;font-size:.78rem}
+
+
+/* Polysubstance */
+.poly-hero{display:grid;grid-template-columns:1.1fr 1fr;gap:36px;align-items:center;margin-top:30px}
+@media (max-width:860px){.poly-hero{grid-template-columns:1fr}}
+.bigstat{font:800 clamp(4rem,11vw,7.5rem)/.9 var(--f-display);letter-spacing:-.04em;color:var(--accent);font-variant-numeric:tabular-nums}
+.bigstat small{font-size:.3em;letter-spacing:0;color:var(--muted);font-weight:600;margin-left:6px}
+.poly-q{font:600 1.25rem/1.35 var(--f-display);max-width:30ch;margin-top:10px}
+.dots{display:grid;grid-template-columns:repeat(10,1fr);gap:7px;padding:22px;background:var(--bg);box-shadow:7px 7px 16px var(--sd),-7px -7px 16px var(--sl);max-width:380px;width:100%}
+.dots i{aspect-ratio:1;background:var(--bg);box-shadow:inset 2px 2px 4px var(--sd),inset -2px -2px 4px var(--sl);transition:background .25s,box-shadow .25s}
+.dots i.on{background:var(--accent);box-shadow:none}
+.dot-legend{font-size:.82rem;color:var(--muted);margin-top:12px;max-width:380px}
+.combo-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.trend{display:grid;gap:14px;margin-top:8px}
+.trend .tr{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center;font-size:.88rem}
+@media (max-width:520px){.trend .tr{grid-template-columns:1fr}}
+.trend .bars2{display:grid;gap:4px}
+.trend .b{height:16px;background:var(--accent);display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font:500 .7rem var(--f-mono);color:var(--on-accent);min-width:56px;transition:width .6s ease}
+.trend .b.y24{background:var(--sky);color:var(--ink)}
+.chg{font:600 .78rem var(--f-mono);color:var(--ok)}
+.combos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:20px}
+.combo{padding:20px;display:grid;gap:8px;align-content:start;background:var(--bg);box-shadow:7px 7px 16px var(--sd),-7px -7px 16px var(--sl)}
+.combo .pair{font:700 1.05rem var(--f-display)}
+.combo .pair span{color:var(--accent)}
+.combo p{font-size:.9rem;color:var(--muted)}
+.combo .fig{font:600 .8rem var(--f-mono);color:var(--ink)}
+.parc{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:18px}
+.parc div{padding:16px;background:var(--bg);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+.parc b{display:block;font:700 1.6rem var(--f-mono);color:var(--accent)}
+.parc span{font-size:.82rem;color:var(--muted)}
+.help{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center;margin-top:28px;padding:20px 22px;background:var(--bg);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+.help b{font-family:var(--f-display)}
+.srcs{font-size:.78rem;color:var(--muted);margin-top:16px;display:grid;gap:3px}
+
+/* Sourcing in drawer + rows */
+.rdesc{display:block;font-size:.78rem;color:var(--muted);max-width:52ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srcblock{display:grid;gap:10px}
+.srcblock h3{font-size:.95rem}
+.mk{display:flex;flex-wrap:wrap;gap:6px}
+.mk span{font-size:.78rem;padding:3px 8px;background:var(--bg);box-shadow:inset 2px 2px 4px var(--sd),inset -2px -2px 4px var(--sl)}
+.mk span.lim{color:var(--warn)}
+.weblist{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.weblist a{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;text-decoration:none;color:var(--ink);background:var(--bg);box-shadow:4px 4px 9px var(--sd),-4px -4px 9px var(--sl);font-size:.88rem}
+.weblist a small{font:500 .7rem var(--f-mono);color:var(--accent);white-space:nowrap}
+/* GPO + state map */
+.gpo{display:grid;grid-template-columns:1fr 1.25fr;gap:36px;align-items:start;margin-top:28px}
+@media (max-width:900px){.gpo{grid-template-columns:1fr}}
+.gpo-points{display:grid;gap:14px;margin-top:20px}
+.gpo-points div{padding:16px 18px;background:var(--bg);box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl)}
+.gpo-points b{font-family:var(--f-display)}
+.gpo-points p{font-size:.9rem;color:var(--muted);margin-top:4px}
+.usmap{padding:20px;background:var(--bg);box-shadow:7px 7px 16px var(--sd),-7px -7px 16px var(--sl);min-width:0}
+.usmap .hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.usmap .big{font:800 1.6rem var(--f-display);color:var(--accent)}
+.tiles{display:grid;grid-template-columns:repeat(12,1fr);gap:4px}
+.tiles button{aspect-ratio:1;border:0;padding:0;font:600 clamp(.5rem,1.4vw,.72rem) var(--f-mono);cursor:pointer;color:var(--on-accent);background:var(--accent);box-shadow:2px 2px 5px var(--sd),-2px -2px 5px var(--sl);min-width:0}
+.tiles button.pending{background:var(--sky);color:var(--ink)}
+.tiles button.none{background:var(--bg);color:var(--muted);box-shadow:inset 2px 2px 4px var(--sd),inset -2px -2px 4px var(--sl)}
+.tiles button[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:1px}
+.maplegend{display:flex;flex-wrap:wrap;gap:14px;font-size:.78rem;color:var(--muted);margin-top:12px}
+.maplegend i{display:inline-block;width:11px;height:11px;margin-right:5px;vertical-align:-1px}
+.stpanel{margin-top:16px;padding:16px;background:var(--bg);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl);display:grid;gap:8px}
+.stpanel dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0;font-size:.88rem}
+.stpanel dt{color:var(--muted);font:500 .7rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding-top:3px}
+.stpanel dd{margin:0;overflow-wrap:anywhere}
+.stedit{display:grid;gap:8px}
+.stedit .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:520px){.stedit .row{grid-template-columns:1fr}}
+.stedit input,.stedit select,.stedit textarea{padding:8px 10px;width:100%}
+.combolist{margin:14px 0 0;padding-left:20px;display:grid;gap:8px;max-width:75ch;color:var(--muted)}
+.combolist b{color:var(--ink)}
+#providers,#sphere{padding-block:24px}
+#providers{padding-top:8px}
+#sphere{padding-bottom:8px}
+#providers h2,#sphere h2{font-size:clamp(1.4rem,2.6vw,1.9rem)}
+#partners{margin-top:12px!important;gap:8px!important}
+#sphere .lede{margin-top:10px!important}
+
+/* Finder */
+.watchgrid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:960px){.watchgrid{grid-template-columns:1fr}}
+.watchleft .tablebox{max-height:560px;overflow:auto}
+tbody tr.sel{background:var(--accent-soft)}
+.finder{position:sticky;top:calc(80px + env(safe-area-inset-top,0px));display:grid;gap:10px;padding:20px;background:var(--bg);box-shadow:7px 7px 16px var(--sd),-7px -7px 16px var(--sl);min-width:0}
+@media (max-width:960px){.finder{position:static}}
+.finder h3{font-size:1.25rem}
+.fdesc{font-size:.92rem;color:var(--muted)}
+.ftiles{gap:3px}
+.ftiles button{background:var(--bg);color:var(--muted);box-shadow:inset 1px 1px 3px var(--sd),inset -1px -1px 3px var(--sl);cursor:default}
+.ftiles button.h1{background:var(--sky);color:var(--ink);box-shadow:2px 2px 4px var(--sd);cursor:pointer}
+.ftiles button.h2{background:color-mix(in srgb,var(--accent) 60%,var(--sky));color:var(--on-accent);box-shadow:2px 2px 4px var(--sd);cursor:pointer}
+.ftiles button.h3{background:var(--accent);color:var(--on-accent);box-shadow:2px 2px 4px var(--sd);cursor:pointer}
+.flist{display:grid;gap:6px;max-height:240px;overflow:auto;padding:2px}
+.flist .s{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;font-size:.85rem;background:var(--bg);box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl);color:var(--ink);text-decoration:none}
+.flist .s small{font:500 .7rem var(--f-mono);color:var(--muted);white-space:nowrap}
+.flist .s.lim small{color:var(--warn)}
+.flist .s.web small{color:var(--accent)}
+.flist .grp{font:500 .7rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.factions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+#quality{padding-bottom:20px}
+#faq{padding-top:20px}
+.more{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.more:empty{display:none}
+.more .note{margin-right:auto}
+.watchleft .tablebox{max-height:none}
+/* Directory, alerts, reviews, prices */
+.alert{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:14px 18px;margin-bottom:14px;background:var(--bg);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl);border-left:4px solid var(--warn)!important}
+.alert ul{margin:6px 0 0;padding-left:18px;font-size:.9rem}
+.shipnote{font-size:.85rem;margin:-4px 0 12px;color:var(--muted)}
+.shipnote b{color:var(--ink)}
+.dir-tools{display:flex;flex-wrap:wrap;gap:10px;margin-block:22px 14px}
+.dir-tools input{flex:1 1 240px;padding:10px 12px;min-width:0}
+.dir-tools select{padding:10px 12px}
+.dirlist{display:grid;gap:10px}
+.ph{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;padding:14px 16px;background:var(--bg);box-shadow:5px 5px 12px var(--sd),-5px -5px 12px var(--sl)}
+.ph b{font-family:var(--f-display);font-size:1rem}
+.ph .loc{font-size:.85rem;color:var(--muted)}
+.ph .tags{display:flex;flex-wrap:wrap;gap:6px;grid-column:1/-1}
+.ph .insp{font:400 .75rem var(--f-mono);color:var(--muted);text-align:right}
+@media (max-width:560px){.ph{grid-template-columns:1fr}.ph .insp{text-align:left}}
+.tag.partner{background:var(--accent);color:var(--on-accent)}
+.tag.warn{background:var(--warn-soft);color:var(--warn)}
+.ownerbox{margin-top:16px;padding:16px;background:var(--bg);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl);display:grid;gap:10px}
+.ownerbox .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.ownerbox input,.ownerbox select,.ownerbox textarea{padding:8px 10px;width:100%}
+.price{font:600 .8rem var(--f-mono);color:var(--accent)}
+.revhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-top:10px}
+.stars{color:var(--warn);letter-spacing:2px;font-size:1.05rem}
+.avg{font:800 2.4rem var(--f-display);color:var(--accent)}
+.revs{display:grid;gap:10px;margin-top:16px}
+.rev{padding:14px 16px;background:var(--bg);box-shadow:5px 5px 12px var(--sd),-5px -5px 12px var(--sl);display:grid;gap:6px}
+.rev .who{font-size:.82rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rev p{max-width:72ch}
+.revform{margin-top:18px;display:grid;gap:10px;max-width:640px}
+.revform .rate{display:flex;gap:4px}
+.revform .rate button{background:var(--bg);border:0;font-size:1.4rem;cursor:pointer;color:var(--muted);padding:2px 6px;box-shadow:2px 2px 5px var(--sd),-2px -2px 5px var(--sl)}
+.revform .rate button.on{color:var(--warn)}
+.revform textarea{min-height:90px;padding:10px 12px}
+.revform select{padding:8px 10px}
+/* Neumorphic, square-cornered surfaces */
+*,*::before,*::after{border-radius:0!important}
+.pulse{border-radius:50%!important}
+section{border-top:0}
+header.nav{background:var(--bg);border-bottom:0;box-shadow:0 6px 14px -8px var(--sd)}
+.readout,.adv,.panel,.tablebox,.item,.checks label,.faq details,#drawer .sheet,.toast,.reqlist div,.watchlist .w,.catgroup h3{
+  border:0;background:var(--bg);box-shadow:7px 7px 16px var(--sd),-7px -7px 16px var(--sl)}
+.adv{gap:22px;background:transparent;box-shadow:none;overflow:visible}
+.adv div{border:0;box-shadow:7px 7px 16px var(--sd),-7px -7px 16px var(--sl)}
+.faq{border-top:0;display:grid;gap:14px}
+.faq details{padding:16px 20px}
+.catgroup h3{padding:12px 16px;border-bottom:0;color:var(--accent)}
+.readout .hd,.readout .ft,.ticker li{border-color:var(--line)}
+.btn{border:0;box-shadow:5px 5px 12px var(--sd),-5px -5px 12px var(--sl)}
+.btn.ghost{background:var(--bg)}
+.btn:active,.chip[aria-pressed="true"],.item button[aria-pressed="true"],.star[aria-pressed="true"]{box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+.chip,.item button,#themeBtn{border:0;background:var(--bg);box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl)}
+.chip[aria-pressed="true"]{background:var(--bg);color:var(--accent);font-weight:600}
+.item button[aria-pressed="true"]{background:var(--bg);color:var(--accent)}
+input,select,textarea,.tools input,.tools select,.cat-tools input,form input,form select,form textarea{border:0!important;background:var(--bg)!important;box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+input[type=checkbox]{box-shadow:none}
+.nav ul a.on,.nav ul a:hover{background:var(--bg);box-shadow:inset 2px 2px 5px var(--sd),inset -2px -2px 5px var(--sl)}
+.mnav a{border:0;box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl)}
+th{background:var(--bg)}
+tbody tr:hover{background:var(--accent-soft)}
+.meter{background:var(--bg);box-shadow:inset 2px 2px 5px var(--sd),inset -2px -2px 5px var(--sl);height:10px}
+.rxnote{background:var(--bg);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+.tag{background:var(--accent-soft)}
+#tray{box-shadow:6px 6px 16px var(--sd)}
+.sphere .amp{text-shadow:2px 2px 4px var(--sd),-2px -2px 4px var(--sl)}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+
+
+<div id="intro" role="presentation">
+  <div class="stage">
+    <svg viewBox="-80 -80 160 160" aria-hidden="true">
+      <polygon class="hex" points="0,-62 54,-31 54,31 0,62 -54,31 -54,-31"/>
+      <line class="bond" x1="0" y1="-62" x2="0" y2="-88" style="animation-delay:.81s"/>
+      <line class="bond" x1="54" y1="31" x2="76" y2="44" style="animation-delay:.9s"/>
+      <line class="bond" x1="-54" y1="31" x2="-76" y2="44" style="animation-delay:.99s"/>
+      <circle class="atom" cx="0" cy="-88" r="5" style="animation-delay:1.08s"/>
+      <circle class="atom" cx="76" cy="44" r="5" style="animation-delay:1.17s"/>
+      <circle class="atom" cx="-76" cy="44" r="5" style="animation-delay:1.26s"/>
+      <text class="mono-mark" x="0" y="12" text-anchor="middle">BSG</text>
+    </svg>
+    <div class="word" aria-label="Broaddus Scientific Group"></div>
+    <div class="scan"></div>
+    <div class="tag">ACCESS · PRICING · ACCOUNTABILITY</div>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg viewBox="-70 -70 140 140" aria-hidden="true"><polygon points="0,-60 52,-30 52,30 0,60 -52,30 -52,-30" fill="none" stroke="currentColor" stroke-width="10"/><circle r="16" fill="var(--accent)"/></svg>
+      Broaddus Scientific Group
+    </a>
+    <ul id="navlinks">
+      <li><a href="#model">How it works</a></li>
+      <li><a href="#providers">Providers</a></li>
+      <li><a href="#partners">Partners</a></li>
+      <li><a href="#catalog">Catalog</a></li>
+      <li><a href="#watch">Shortage Watch</a></li>
+      <li><a href="#pharmacies">Pharmacies</a></li>
+      <li><a href="#poly">Polysubstance</a></li>
+      <li><a href="#quality">Quality</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="request.html">Request</a></li>
+    </ul>
+    <button id="themeBtn" type="button" aria-label="Toggle color theme">Theme</button>
+  </div>
+  <nav class="mnav" aria-label="Sections">
+    <a href="#catalog">Catalog</a><a href="#watch">Shortage Watch</a><a href="#model">How it works</a><a href="#pharmacies">Pharmacies</a><a href="#poly">Polysubstance</a><a href="#quality">Quality</a><a href="#faq">FAQ</a><a href="request.html">Request</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap grid">
+      <div>
+        <p class="eyebrow">Broaddus Scientific Group × Skydell Medical</p>
+        <h1>Hard-to-source medications, <em>sourced on the record.</em></h1>
+        <p class="lede">Broaddus Scientific Group connects licensed providers, telehealth teams and health organizations with vetted, state-licensed compounding pharmacies and outsourcing facilities. We coordinate access, pricing and accountability. Licensed partner facilities do the dispensing and shipping.</p>
+        <div class="ctas">
+          <a class="btn" href="request.html" data-intent="Become a member">Become a member</a>
+          <a class="btn ghost" href="request.html" data-intent="Speak to a representative">Speak to a representative</a>
+        </div>
+      </div>
+      <aside class="readout" aria-label="Shortage Watch">
+        <div class="hd"><span><span class="pulse"></span>Shortage Watch &mdash;</span><span id="snapDate"></span></div>
+        <ul class="ticker" id="ticker"></ul>
+        <div class="ft"><a href="#watch">Open the full tracker</a></div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="watch">
+    <div class="wrap">
+      <p class="eyebrow">Shortage Watch</p>
+      <h2>Track the shortages that affect your patients</h2>
+      <p class="lede" style="margin-top:14px">Every drug the FDA currently lists in shortage, refreshed from the FDA database. Search the list, filter by form or therapeutic area, and star the items you care about. Select any row to see details or request sourcing help.</p>
+      <div class="alert" id="alertBox" hidden></div>
+      <div class="tools">
+        <input id="q" type="search" placeholder="Search every shortage, e.g. lidocaine" aria-label="Search drugs">
+        <select id="formSel" aria-label="Dosage form"></select>
+        <select id="shipSel" class="shipSel" aria-label="Ship-to state"><option value="">Ships to: any state</option><option value="AK">Ships to AK</option><option value="AL">Ships to AL</option><option value="AR">Ships to AR</option><option value="AZ">Ships to AZ</option><option value="CA">Ships to CA</option><option value="CO">Ships to CO</option><option value="CT">Ships to CT</option><option value="DC">Ships to DC</option><option value="DE">Ships to DE</option><option value="FL">Ships to FL</option><option value="GA">Ships to GA</option><option value="HI">Ships to HI</option><option value="IA">Ships to IA</option><option value="ID">Ships to ID</option><option value="IL">Ships to IL</option><option value="IN">Ships to IN</option><option value="KS">Ships to KS</option><option value="KY">Ships to KY</option><option value="LA">Ships to LA</option><option value="MA">Ships to MA</option><option value="MD">Ships to MD</option><option value="ME">Ships to ME</option><option value="MI">Ships to MI</option><option value="MN">Ships to MN</option><option value="MO">Ships to MO</option><option value="MS">Ships to MS</option><option value="MT">Ships to MT</option><option value="NC">Ships to NC</option><option value="ND">Ships to ND</option><option value="NE">Ships to NE</option><option value="NH">Ships to NH</option><option value="NJ">Ships to NJ</option><option value="NM">Ships to NM</option><option value="NV">Ships to NV</option><option value="NY">Ships to NY</option><option value="OH">Ships to OH</option><option value="OK">Ships to OK</option><option value="OR">Ships to OR</option><option value="PA">Ships to PA</option><option value="RI">Ships to RI</option><option value="SC">Ships to SC</option><option value="SD">Ships to SD</option><option value="TN">Ships to TN</option><option value="TX">Ships to TX</option><option value="UT">Ships to UT</option><option value="VA">Ships to VA</option><option value="VT">Ships to VT</option><option value="WA">Ships to WA</option><option value="WI">Ships to WI</option><option value="WV">Ships to WV</option><option value="WY">Ships to WY</option></select>
+        <select id="sortSel" aria-label="Sort">
+          <option value="date">Newest revision first</option>
+          <option value="name">Name A–Z</option>
+          <option value="class">Therapeutic area</option>
+        </select>
+      </div>
+      <div class="chipbar" id="chips"></div>
+      <p class="shipnote" id="shipNote" hidden></p>
+      <div class="watchgrid">
+        <div class="watchleft"><div class="tablebox">
+        <table>
+          <thead><tr><th scope="col" aria-label="Watch"></th><th scope="col" data-sort="name">Drug</th><th scope="col" data-sort="form">Form</th><th scope="col" data-sort="class">Area</th><th scope="col" data-sort="date">Revised</th><th scope="col">Availability</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="more" id="moreRows"></div>
+      <div class="meta-row"><span id="count"></span><span><span class="pulse"></span><span id="syncTxt">Loading FDA data</span>. Source: <a href="https://www.accessdata.fda.gov/scripts/drugshortages/default.cfm" target="_blank" rel="noopener">FDA Drug Shortages Database</a> via openFDA. Updates appear here automatically.</span></div>
+      </div>
+        <aside class="finder" id="finder" aria-live="polite">
+          <p class="eyebrow" id="fArea">Pharmacy finder</p>
+          <h3 id="fTitle">Select a drug</h3>
+          <p class="fdesc" id="fDesc">Pick any drug in the list to see what it is, who has it and where to order.</p>
+          <div id="fStatus"></div>
+          <div class="fmap"><div class="tiles ftiles" id="fTiles" role="group" aria-label="Supplier locations"></div></div>
+          <p class="note" id="fMapNote">Darker states have more suppliers based there. Tap a state to filter.</p>
+          <div class="flist" id="fList"></div>
+          <div class="more" id="moreF"></div>
+          <p class="note" id="fCtl"></p>
+          <div class="factions"><button class="btn" type="button" id="fReq" disabled>Request sourcing</button><button class="btn ghost" type="button" id="fWatch" disabled>Watch</button><a class="note" id="fLink" href="https://www.accessdata.fda.gov/scripts/drugshortages/default.cfm" target="_blank" rel="noopener">FDA page</a></div>
+        </aside>
+      </div>
+      <div class="watchbox panel">
+        <h3>Your watchlist</h3>
+        <p class="note" id="watchEmpty">Star a drug above to keep it here. Your list stays in this browser.</p>
+        <div class="watchlist" id="watchlist"></div>
+        <div><button class="btn ghost" id="watchReq" type="button" hidden>Request sourcing for watched items</button></div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="pharmacies" data-view="pharmacies">
+    <div class="wrap">
+      <a href="#top" class="note" data-home>← Back to Shortage Watch</a>
+      <p class="eyebrow" style="margin-top:14px">Pharmacy directory</p>
+      <h2>Find a compounding pharmacy</h2>
+      <p class="lede" style="margin-top:14px">Our partner pharmacies, plus every 503B outsourcing facility registered with the FDA, with each one's last inspection and outcome.</p>
+      <div class="dir-tools">
+        <input id="dq" type="search" placeholder="Search by name or city" aria-label="Search pharmacies">
+        <select id="dState" aria-label="State"><option value="">All states</option><option value="AK">AK</option><option value="AL">AL</option><option value="AR">AR</option><option value="AZ">AZ</option><option value="CA">CA</option><option value="CO">CO</option><option value="CT">CT</option><option value="DC">DC</option><option value="DE">DE</option><option value="FL">FL</option><option value="GA">GA</option><option value="HI">HI</option><option value="IA">IA</option><option value="ID">ID</option><option value="IL">IL</option><option value="IN">IN</option><option value="KS">KS</option><option value="KY">KY</option><option value="LA">LA</option><option value="MA">MA</option><option value="MD">MD</option><option value="ME">ME</option><option value="MI">MI</option><option value="MN">MN</option><option value="MO">MO</option><option value="MS">MS</option><option value="MT">MT</option><option value="NC">NC</option><option value="ND">ND</option><option value="NE">NE</option><option value="NH">NH</option><option value="NJ">NJ</option><option value="NM">NM</option><option value="NV">NV</option><option value="NY">NY</option><option value="OH">OH</option><option value="OK">OK</option><option value="OR">OR</option><option value="PA">PA</option><option value="RI">RI</option><option value="SC">SC</option><option value="SD">SD</option><option value="TN">TN</option><option value="TX">TX</option><option value="UT">UT</option><option value="VA">VA</option><option value="VT">VT</option><option value="WA">WA</option><option value="WI">WI</option><option value="WV">WV</option><option value="WY">WY</option></select>
+        <select id="dType" aria-label="Type"><option value="">All types</option><option value="partner">Our partners</option><option value="503B">FDA-registered 503B</option><option value="clean">No open FDA action</option></select>
+      </div>
+      <div class="dirlist" id="dirList"></div>
+      <div class="more" id="moreDir"></div>
+      <p class="note" style="margin-top:10px">503B list from the FDA's Registered Outsourcing Facilities page, updated Sept 30, 2026. Listing here is not an endorsement. Partner pharmacies are marked.</p>
+      <form class="ownerbox" id="partnerForm" hidden>
+        <b>Owner only: add a partner pharmacy</b>
+        <div class="row">
+          <div class="field"><label for="pName">Pharmacy name</label><input id="pName" required></div>
+          <div class="field"><label for="pType">Type</label><select id="pType"><option>503A</option><option>503B</option></select></div>
+          <div class="field"><label for="pCity">City, state</label><input id="pCity" placeholder="Brooklyn, NY"></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="pStates">Licensed to ship to</label><input id="pStates" placeholder="All, or NY, NJ, CT"></div>
+          <div class="field"><label for="pMakes">What they compound</label><input id="pMakes" placeholder="GLP-1s, hormones, sterile injectables"></div>
+          <div class="field"><label for="pSite">Website</label><input id="pSite" placeholder="https://"></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center"><button class="btn" type="submit">Add partner</button><span class="note" id="pMsg"></span></div>
+      </form>
+    </div>
+  </section>
+
+  <section id="model">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2>What is a GPO?</h2>
+      <div class="gpo">
+        <div>
+          <p class="lede">A group purchasing organization, or GPO, is a buying group. Clinics, practices and health organizations join together so they can buy medications the way a large hospital system does: with negotiated prices, vetted suppliers and one point of contact.</p>
+          <p class="lede" style="margin-top:14px">We coordinate the order. Licensed partner pharmacies make, dispense and ship it.</p>
+        </div>
+        <div class="usmap">
+          <div class="hd"><span class="big" id="licCount">50 states</span><span class="note">Licensed coverage across the U.S. Tap a state.</span></div>
+          <div class="tiles" id="tiles" role="group" aria-label="U.S. states"></div>
+          <div class="maplegend"><span><i style="background:var(--accent)"></i>Licensed</span><span><i style="background:var(--sky)"></i>Pending</span><span><i style="background:var(--bg);box-shadow:inset 1px 1px 3px var(--sd)"></i>Not yet</span></div>
+          <div class="stpanel" id="stPanel">
+            <h3 id="stName">Select a state</h3>
+            <dl id="stInfo"></dl>
+            <a href="#pharmacies" id="stDirLink" class="note" hidden>See pharmacies in this state</a>
+            <form class="stedit" id="stEdit" hidden>
+              <div class="row">
+                <div class="field"><label for="stStatus">Status</label><select id="stStatus"><option value="licensed">Licensed</option><option value="pending">Pending</option><option value="none">Not yet</option></select></div>
+                <div class="field"><label for="stLic">License or permit no.</label><input id="stLic" placeholder="e.g. 12345"></div>
+              </div>
+              <div class="row">
+                <div class="field"><label for="stPartner">Partner facility</label><input id="stPartner" placeholder="503A / 503B partner"></div>
+                <div class="field"><label for="stExp">Expires</label><input id="stExp" type="date"></div>
+              </div>
+              <div class="field"><label for="stNotes">Notes</label><textarea id="stNotes" style="min-height:60px" placeholder="Shipping rules, contacts, anything else"></textarea></div>
+              <div style="display:flex;gap:10px;align-items:center"><button class="btn" type="submit">Save state</button><span class="note" id="stSaved"></span></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="providers">
+    <div class="wrap">
+      <p class="eyebrow">Who we serve</p>
+      <h2>Built for both sides of the order</h2>
+      <div id="partners" style="display:grid;gap:14px;margin-top:20px;max-width:70ch">
+        <p class="lede"><b style="color:var(--ink)">Providers and telehealth teams</b> get one account, contract pricing and help when a drug runs short. <a href="request.html" data-intent="Provider membership">Start onboarding</a></p>
+        <p class="lede"><b style="color:var(--ink)">Compounding pharmacies</b> get verified prescriber orders for the states they're licensed in. <a href="request.html" data-intent="Compounding partner application">Apply as a partner</a></p>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="sphere">
+    <div class="wrap">
+      <p class="eyebrow">One sphere</p>
+      <h2>Working with Skydell Medical</h2>
+      <p class="lede" style="margin-top:14px;max-width:70ch">Skydell Medical helps clinics learn and set up regenerative care. Broaddus Scientific Group sources what they prescribe.</p>
+    </div>
+  </section>
+
+  <section id="catalog">
+    <div class="wrap">
+      <p class="eyebrow">Product catalog</p>
+      <h2>What licensed providers can request</h2>
+      <p class="lede" style="margin-top:14px">Compounded and commercial preparations from licensed 503A pharmacies and 503B outsourcing facilities. Add items to a request and a representative will follow up with pricing for your practice.</p>
+      <div class="cat-tools">
+        <input id="cq" type="search" placeholder="Search by name, form or strength" aria-label="Search catalog">
+        <select id="shipSel2" class="shipSel" aria-label="Ship-to state"><option value="">Ships to: any state</option><option value="AK">Ships to AK</option><option value="AL">Ships to AL</option><option value="AR">Ships to AR</option><option value="AZ">Ships to AZ</option><option value="CA">Ships to CA</option><option value="CO">Ships to CO</option><option value="CT">Ships to CT</option><option value="DC">Ships to DC</option><option value="DE">Ships to DE</option><option value="FL">Ships to FL</option><option value="GA">Ships to GA</option><option value="HI">Ships to HI</option><option value="IA">Ships to IA</option><option value="ID">Ships to ID</option><option value="IL">Ships to IL</option><option value="IN">Ships to IN</option><option value="KS">Ships to KS</option><option value="KY">Ships to KY</option><option value="LA">Ships to LA</option><option value="MA">Ships to MA</option><option value="MD">Ships to MD</option><option value="ME">Ships to ME</option><option value="MI">Ships to MI</option><option value="MN">Ships to MN</option><option value="MO">Ships to MO</option><option value="MS">Ships to MS</option><option value="MT">Ships to MT</option><option value="NC">Ships to NC</option><option value="ND">Ships to ND</option><option value="NE">Ships to NE</option><option value="NH">Ships to NH</option><option value="NJ">Ships to NJ</option><option value="NM">Ships to NM</option><option value="NV">Ships to NV</option><option value="NY">Ships to NY</option><option value="OH">Ships to OH</option><option value="OK">Ships to OK</option><option value="OR">Ships to OR</option><option value="PA">Ships to PA</option><option value="RI">Ships to RI</option><option value="SC">Ships to SC</option><option value="SD">Ships to SD</option><option value="TN">Ships to TN</option><option value="TX">Ships to TX</option><option value="UT">Ships to UT</option><option value="VA">Ships to VA</option><option value="VT">Ships to VT</option><option value="WA">Ships to WA</option><option value="WI">Ships to WI</option><option value="WV">Ships to WV</option><option value="WY">Ships to WY</option></select>
+        <label for="coldOnly"><input type="checkbox" id="coldOnly"> Cold-ship only</label>
+      </div>
+      <p class="shipnote" id="shipNote2" hidden></p>
+      <div class="chipbar" id="catChips"></div>
+      <div id="catList"></div>
+      <div class="more" id="moreCat"></div>
+      
+      <p class="rxnote">Prescription only. Orders require a verified, licensed prescriber and, for 503A items, a patient-specific prescription. Compounded medications are not FDA-approved. Pricing varies by volume and is shared after verification.</p>
+    </div>
+  </section>
+
+
+
+
+  <section id="poly" data-view="poly">
+    <div class="wrap">
+      <a href="#top" class="note" data-home>← Back to Shortage Watch</a>
+      <p class="eyebrow" style="margin-top:14px">Polysubstance use</p>
+      <h2>An overdose is often more than one drug.</h2>
+      <div class="poly-hero">
+        <div>
+          <div class="bigstat" id="polyBig">73<small>%</small></div>
+          <p class="poly-q" id="polyLine">of stimulant overdose deaths also involved an opioid.</p>
+          <div class="combo-tabs" role="group" aria-label="Choose a drug">
+            <button class="chip" type="button" aria-pressed="true" data-p="73" data-l="of stimulant overdose deaths also involved an opioid.">All stimulants</button>
+            <button class="chip" type="button" aria-pressed="false" data-p="79" data-l="of cocaine overdose deaths also involved an opioid.">Cocaine</button>
+            <button class="chip" type="button" aria-pressed="false" data-p="69" data-l="of methamphetamine overdose deaths also involved an opioid.">Methamphetamine</button>
+          </div>
+          <p class="lede" style="margin-top:18px">Across 309,274 U.S. overdose deaths from January 2021 to June 2024, 59% involved a stimulant, and most of those also involved an opioid such as fentanyl. People often don't know a second drug is in what they took.</p>
+        </div>
+        <div>
+          <div class="dots" id="dots" aria-hidden="true"></div>
+          <p class="dot-legend">Each square is 1 in 100 deaths. Filled squares had an opioid on board too.</p>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:36px">
+        <h3>The good news: deaths fell sharply in 2024</h3>
+        <p class="note">U.S. overdose deaths by drug involved. A death can involve more than one drug, so rows overlap.</p>
+        <div class="trend" id="trend"></div>
+      </div>
+
+      <h3 style="margin-top:36px">Combinations that drive the risk</h3>
+      <ul class="combolist">
+        <li><b>Fentanyl + stimulants:</b> cocaine or meth cut with fentanyl. Behind 43% of overdose deaths, 2021–24.</li>
+        <li><b>Opioids + xylazine:</b> a vet sedative naloxone can't reverse. Rose from 3% to 11% of fentanyl deaths, 2019–22.</li>
+        <li><b>Opioids + benzos or alcohol:</b> each slows breathing, and together the effect compounds.</li>
+        <li><b>Counterfeit pills:</b> look like prescriptions but may hold fentanyl. Deaths involving them more than doubled, 2019–21.</li>
+      </ul>
+
+      <div class="help">
+        <div><b>Need help now?</b><br><span class="note">Free, confidential, 24/7. Treatment referrals and support.</span></div>
+        <div class="copy"><span class="note">SAMHSA Helpline</span><code>1-800-662-4357</code><span class="note">· Call or text</span><code>988</code></div>
+      </div>
+      <div class="srcs">
+        <span>Sources: CDC MMWR, "Drug Overdose Deaths Involving Stimulants, United States, January 2018–June 2024" (Aug 2025); CDC NCHS Data Brief No. 549 (Jan 2026); CDC, Polysubstance Overdose.</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="quality">
+    <div class="wrap">
+      <p class="eyebrow">Quality and compliance</p>
+      <h2>What a partner facility has to show us</h2>
+      <p class="lede" style="margin-top:14px">Every partner is reviewed against this checklist. Prescribers can use it too, to vet any facility they already use.</p>
+      <div class="checks" id="checks">
+        <label><input type="checkbox">Active state pharmacy license for each ship-to state</label>
+        <label><input type="checkbox">FDA registration as a 503B outsourcing facility, where applicable</label>
+        <label><input type="checkbox">USP &lt;795&gt; and &lt;797&gt; compliant compounding practices</label>
+        <label><input type="checkbox">Recent state board or FDA inspection results on file</label>
+        <label><input type="checkbox">Certificates of analysis for active ingredients</label>
+        <label><input type="checkbox">Potency, sterility and endotoxin testing for sterile preparations</label>
+        <label><input type="checkbox">Beyond-use dating supported by stability data</label>
+        <label><input type="checkbox">Adverse event and recall procedures in writing</label>
+      </div>
+      <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+      <p class="note" id="meterTxt" style="margin-top:8px"></p>
+    </div>
+  </section>
+
+
+  <section id="reviews" hidden data-view="none">
+    <div class="wrap">
+      <p class="eyebrow">Reviews</p>
+      <h2>What verified providers say</h2>
+      <div class="revhead" id="revHead"><span class="note">No reviews yet. Reviews come only from signed-in, verified providers.</span></div>
+      <div class="revs" id="revList"></div>
+      <div class="more" id="moreRev"></div>
+      <form class="revform" id="revForm" hidden>
+        <b>Leave a review</b>
+        <div class="rate" id="rateBtns" role="group" aria-label="Rating"></div>
+        <select id="revRole" aria-label="Your role"><option>Prescriber</option><option>Clinic or practice manager</option><option>Telehealth company</option><option>Pharmacy partner</option></select>
+        <textarea id="revText" maxlength="600" placeholder="What was your experience sourcing through us?"></textarea>
+        <div style="display:flex;gap:10px;align-items:center"><button class="btn" type="submit">Post review</button><span class="note" id="revMsg"></span></div>
+      </form>
+      <p class="note" id="revSignin" style="margin-top:14px">Signed-in providers can leave one review each.</p>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <p class="eyebrow">FAQs</p>
+      <h2>Common questions</h2>
+      <div class="faq">
+        <details open><summary>Does Broaddus Scientific Group dispense medications?</summary><p>No. We do not manufacture, dispense or take title to any drug. Licensed third-party pharmacies and outsourcing facilities fill and ship every order, within the scope of their state licenses.</p></details>
+        <details><summary>Who can become a member?</summary><p>Licensed prescribers, clinics, telehealth companies and health organizations. We verify licenses and credentials before ordering is turned on.</p></details>
+        <details><summary>What is the difference between 503A and 503B?</summary><p>503A pharmacies compound for individual patients against a prescription and are overseen mainly by state boards. 503B outsourcing facilities register with the FDA, follow current good manufacturing practice, and may compound in bulk without patient-specific prescriptions.</p></details>
+        <details><summary>How is the admin fee disclosed?</summary><p>The fee percentage is written into your member agreement and shown on every contract price, so you can see what you pay and why.</p></details>
+        <details><summary>Can you help when a drug is on the shortage list?</summary><p>Often, yes. Depending on the item, a partner may offer an alternative strength, a different presentation, or a compounded version permitted while the drug is in shortage. Use Shortage Watch to send a request.</p></details>
+        <details><summary>Where do you ship?</summary><p>Orders ship within the United States only, from facilities licensed for the destination state.</p></details>
+      </div>
+    </div>
+  </section>
+
+
+</main>
+<div id="tray" hidden><span id="trayTxt"></span><button type="button" id="trayBtn">Review request</button></div>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><svg viewBox="-70 -70 140 140" aria-hidden="true"><polygon points="0,-60 52,-30 52,30 0,60 -52,30 -52,-30" fill="none" stroke="currentColor" stroke-width="10"/><circle r="16" fill="var(--accent)"/></svg>Broaddus Scientific Group</a>
+    <p class="disc">Broaddus Scientific Group facilitates access to medications through licensed third-party pharmacies and outsourcing facilities. Dispensing and shipping are performed solely by those facilities, within the scope of each facility's state licensure, and for delivery within the United States only. Shortage data is a periodic snapshot; confirm current status with the FDA.</p>
+    <p class="disc">I am an independent sales partner of Skydell Medical and may be compensated for referrals. Product information is intended for licensed healthcare professionals. Compounded medications are not FDA-approved, and nothing on this site is a treatment or cure claim.</p>
+    <p>© 2026 Broaddus Scientific Group LLC · In association with Skydell Medical · <a href="/">Secrets of the University</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* Intro */
+const intro=document.getElementById('intro');
+const word=intro.querySelector('.word');
+"Broaddus Scientific Group".split('').forEach((c,i)=>{const s=document.createElement('span');s.textContent=c===' '?' ':c;s.style.animationDelay=(0.81+i*0.0315)+'s';word.appendChild(s)});
+function endIntro(){intro.classList.add('done');setTimeout(()=>intro.hidden=true,600)}
+intro.addEventListener('animationend',e=>{if(e.target===intro)intro.hidden=true});
+
+/* Theme */
+const root=document.documentElement;
+const savedTheme=store.get('brg-theme',null); if(savedTheme)root.dataset.theme=savedTheme;
+document.getElementById('themeBtn').onclick=()=>{
+  const dark=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme=dark?'light':'dark'; store.set('brg-theme',root.dataset.theme)};
+
+/* Sourcing + descriptions (built-in, refreshed from the database) */
+let SRC={"Amino Acid Injection":{"desc":"IV protein building blocks. Part of total parenteral nutrition for patients who can't eat or absorb food.","fda":{"available":["B. Braun Medical Inc.","Baxter Healthcare","Otsuka ICU Medical LLC"],"limited":[]},"web":[{"name":"Baxter (Travasol)","type":"Manufacturer","url":"https://catalog.baxter.ca/baxterCA/en/Products/Infusion-%26-Nutrition/10%25-TRAVASOL-%28AMINO-ACID%29-INJ-/p/1B6623"},{"name":"Cenmed (Travasol, Rx/restricted)","type":"Wholesaler","url":"https://eandi.cenmed.com/travasol-amino-acid-10-injection-1000-ml-viaflex-plastic-container-not-for-direct-infusion-bulk-12-cs-rx-continental-us-only-excluding-in-nd-and-wy-product-access-restricted-check-with-your-sales-rep-to-verify-eligibility/"}]},"Amphetamine Aspartate Monohydrate, Amphetamine Sulfate, Dextroamphetamine Saccharate, Dextroamphetamine Sulfate Tablet":{"desc":"Mixed amphetamine salts (generic Adderall). A stimulant that treats ADHD and narcolepsy by raising dopamine and norepinephrine.","fda":{"available":["Alvogen","Elite Laboratories, Inc.","Lannett Company, Inc.","Sandoz Inc.","SpecGx LLC","Sunrise Pharmaceutical, Inc.","Teva Pharmaceuticals USA, Inc."],"limited":["Epic Pharma, LLC","SpecGx LLC","Teva Pharmaceuticals USA, Inc."]},"web":[]},"Atropine Sulfate Injection":{"desc":"An anticholinergic. Speeds a dangerously slow heart rate, dries secretions before surgery and treats some poisonings.","fda":{"available":["Accord Healthcare Inc.","American Regent, Inc.","Amphastar Pharmaceuticals, Inc.","Fresenius Kabi USA, LLC","Hikma Pharmaceuticals USA, Inc.","Hospira, Inc., a Pfizer Company","Medefil, Inc.","Somerset Therapeutics, LLC"],"limited":[]},"web":[{"name":"Leiters Health","type":"503B","url":"https://leiters.com/project_category/pre-filled-syringes/"},{"name":"Fresenius Kabi USA","type":"Manufacturer","url":"https://fresenius-kabi.com/us/news-and-events/atropine-sulfate-injection--usp-now-available-from-fresenius-kab"},{"name":"McKesson Medical-Surgical (Hikma)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1245213/Hikma-Pharmaceuticals-USA-00641625110"}]},"Azacitidine Injection":{"desc":"A chemotherapy (hypomethylating agent) for myelodysplastic syndromes and some leukemias. Helps the bone marrow make normal blood cells.","fda":{"available":["Accord Healthcare Inc.","Bristol Myers Squibb Co.","Dr. Reddy's Laboratories, Inc.","Hikma Pharmaceuticals USA, Inc.","Meitheal Pharmaceuticals, Inc."],"limited":["Armas Pharmaceuticals Inc"]},"web":[]},"Bacitracin Ophthalmic Ointment":{"desc":"An antibiotic eye ointment for bacterial infections of the eye and eyelid.","fda":{"available":[],"limited":[]},"web":[{"name":"McKesson Medical-Surgical (Bausch + Lomb)","type":"Wholesaler","url":"https://mms.mckesson.com/product/304901/Bausch-Lomb-24208055555"},{"name":"Henry Schein","type":"Wholesaler","url":"https://www.henryschein.com/en-us/p/bacitracin-ophthalmic-ointment-500u-10mu-gm-tube-3-5gm-each/1410466"}]},"Bupivacaine Hydrochloride Injection":{"desc":"A long-acting local anesthetic. Numbs an area for surgery, nerve blocks, epidurals and spinal anesthesia.","fda":{"available":["Aspiro Pharma Limited","Eugia US LLC","Fresenius Kabi USA, LLC","Hospira, Inc., a Pfizer Company","ONESOURCE SPECIALTY PTE LTD","Somerset Therapeutics, LLC"],"limited":["Hospira, Inc., a Pfizer Company","Kindos Pharmaceuticals Co. Ltd."]},"web":[{"name":"McKesson Medical-Surgical (Pfizer/Hospira bupivacaine)","type":"Wholesaler","url":"https://mms.mckesson.com/product/242454/Pfizer-00409116001"}]},"Bupivacaine Hydrochloride, Epinephrine Bitartrate Injection":{"desc":"Bupivacaine with epinephrine. The epinephrine narrows blood vessels so the numbing lasts longer and bleeding is reduced.","fda":{"available":["Fresenius Kabi USA, LLC","Hospira, Inc., a Pfizer Company"],"limited":[]},"web":[{"name":"Fresenius Kabi USA (Sensorcaine with Epinephrine)","type":"Manufacturer","url":"https://www.myfreseniuskabi.com/us/product/6332346157/sensorcaine-reg-with-epinephrine-bupivacaine-hcl-and-epinephrine-injection-usp-"}]},"Carboplatin Injection":{"desc":"A platinum chemotherapy for ovarian, lung and other cancers. Damages cancer-cell DNA so the cells can't divide.","fda":{"available":["Avyxa Pharma, LLC","Eugia US LLC","Gland Pharma Limited"],"limited":["Gland Pharma Limited","Hospira, Inc., a Pfizer Company","Teva Pharmaceuticals USA, Inc."]},"web":[{"name":"McKesson Medical-Surgical (Teva carboplatin)","type":"Wholesaler","url":"https://mms.mckesson.com/product/740278/Teva-00703424801"},{"name":"McKesson Medical-Surgical (Teva carboplatin)","type":"Wholesaler","url":"https://mms.mckesson.com/product/724931/Teva-00703424401"}]},"Cefotaxime Sodium Powder, for Solution":{"desc":"A third-generation cephalosporin antibiotic for serious infections such as meningitis, pneumonia and sepsis, especially in newborns.","fda":{"available":["SteriMax, Inc."],"limited":[]},"web":[]},"Clindamycin Phosphate Injection":{"desc":"An IV antibiotic for serious skin, bone, lung and abdominal infections, including some MRSA and anaerobic infections.","fda":{"available":["Baxter Healthcare","Pfizer Inc.","Sandoz Inc."],"limited":["Sagent Pharmaceuticals"]},"web":[{"name":"Baxter","type":"Manufacturer","url":"https://catalog.baxter.com/baxterUS/en/Products/Pharmaceuticals/Premixed-Medications/Clindamycin-Injection-USP-in-5%25-Dextrose%2C-600-mg-50-mL-in-GALAXY-Plastic-Container-Liquid-Premix/p/2G3453"}]},"Clonazepam Tablet":{"desc":"A benzodiazepine (Klonopin) for seizure disorders and panic disorder. Calms brain activity by boosting GABA.","fda":{"available":["Accord Healthcare Inc.","Aurobindo Pharma USA","Cheplapharm Arzneimittel GmbH","Prinston Pharmaceutical, Inc.","Rubicon Research Private Limited","Teva Pharmaceuticals USA, Inc."],"limited":["Teva Pharmaceuticals USA, Inc."]},"web":[{"name":"Teva Pharmaceuticals USA","type":"Manufacturer","url":"https://www.tevausa.com/our-products/tevagenerics/teva-generics-catalog/vision-product-page/clonazepamtabletsuspciv"},{"name":"McKesson Medical-Surgical (Teva)","type":"Wholesaler","url":"https://mms.mckesson.com/product/771685/Teva-00093083201"}]},"Conivaptan Hydrochloride Injection":{"desc":"An IV vasopressin blocker (Vaprisol). Raises dangerously low blood sodium in hospitalized patients.","fda":{"available":[],"limited":[]},"web":[]},"Cromolyn Sodium Concentrate":{"desc":"An oral mast-cell stabilizer for mastocytosis. Prevents the release of histamine and other allergy chemicals in the gut.","fda":{"available":["Ailex Pharmaceuticals","Micro Labs LTD","Mylan Specialty, a Viatris Company","Rising Pharma Holdings, Inc."],"limited":["Ailex Pharmaceuticals"]},"web":[]},"Desmopressin Acetate Spray":{"desc":"A synthetic form of the hormone vasopressin. Treats diabetes insipidus and bedwetting by reducing urine output.","fda":{"available":["Apotex Corp."],"limited":[]},"web":[{"name":"Apotex","type":"Manufacturer","url":"https://www.apotex.com/products/us/detail.asp?m=44615"},{"name":"McKesson Medical-Surgical (Apotex desmopressin)","type":"Wholesaler","url":"https://mms.mckesson.com/product/805700/Apotex-60505081500"}]},"Dexamethasone Sodium Phosphate Injection":{"desc":"A strong corticosteroid. Reduces inflammation and swelling in allergic reactions, brain swelling, asthma and many other conditions.","fda":{"available":["Eugia US LLC","Fresenius Kabi USA, LLC","Hikma Pharmaceuticals USA, Inc.","Mylan Institutional, a Viatris Company","Somerset Therapeutics, LLC"],"limited":["Fresenius Kabi USA, LLC"]},"web":[{"name":"McKesson Medical-Surgical (Hikma)","type":"Wholesaler","url":"https://mms.mckesson.com/product/400665/Hikma-Pharmaceuticals-USA-00641036725"},{"name":"McKesson Medical-Surgical (Fresenius Kabi)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1271116/Fresenius-USA-76045021010"}]},"Dexmedetomidine Hydrochloride Injection":{"desc":"An IV sedative (Precedex) for ICU and procedural sedation. Calms patients without stopping their breathing.","fda":{"available":["Amneal Pharmaceuticals","Azurity Pharmaceuticals, Inc","Baxter Healthcare","Eugia US LLC","Gland Pharma Limited","HQ Specialty Pharma","Jiangsu Hengrui Pharmaceuticals Co., Ltd.","Meitheal Pharmaceuticals, Inc.","Mylan Institutional, a Viatris Company","Par Health, USA LLC","Pfizer Inc.","Somerset Therapeutics, LLC"],"limited":[]},"web":[{"name":"QuVa Pharma","type":"503B","url":"https://www.quvapharma.com/dexmedetomidine"},{"name":"Hikma Pharmaceuticals","type":"Manufacturer","url":"https://www.hikma.com/news/hikma-launches-dexmedetomidine-hydrochloride-in-09-sodium-chloride-injection/"}]},"Dextrose Monohydrate 10% Injection":{"desc":"IV sugar solution. Treats low blood sugar and supplies calories and fluid, often for newborns and in IV nutrition.","fda":{"available":["B. Braun Medical Inc.","Baxter Healthcare","Fresenius Kabi USA, LLC","Otsuka ICU Medical LLC"],"limited":[]},"web":[{"name":"Baxter","type":"Manufacturer","url":"https://catalog.baxter.com/baxterUS/en/Products/Infusion-Therapies-%26-Technologies/IV-Solutions/10%25-Dextrose-Injection%2C-USP%2C-1000-mL-VIAFLEX-Plastic-Container/p/2B0164X"},{"name":"McKesson Medical-Surgical (ICU Medical)","type":"Wholesaler","url":"https://mms.mckesson.com/product/229559/ICU-Medical-793002"}]},"Dextrose Monohydrate 5% Injection":{"desc":"The most common IV sugar-water solution. Replaces fluids and dilutes other IV medicines.","fda":{"available":["B. Braun Medical Inc.","Baxter Healthcare","Fresenius Kabi USA, LLC","Otsuka ICU Medical LLC"],"limited":[]},"web":[{"name":"McKesson Medical-Surgical (ICU Medical D5W)","type":"Wholesaler","url":"https://mms.mckesson.com/product/208813/ICU-Medical-792203"},{"name":"McKesson Medical-Surgical (Baxter D5W)","type":"Wholesaler","url":"https://mms.mckesson.com/product/515812/Baxter-2B1074X"}]},"Dextrose Monohydrate 50% Injection":{"desc":"Concentrated IV sugar. Rapidly corrects severe low blood sugar in emergencies.","fda":{"available":["Amphastar Pharmaceuticals, Inc.","Hospira, Inc., a Pfizer Company"],"limited":["Hospira, Inc., a Pfizer Company"]},"web":[{"name":"McKesson Medical-Surgical (Pfizer/Hospira)","type":"Wholesaler","url":"https://mms.mckesson.com/product/473912/Pfizer-00409751716"}]},"Dextrose Monohydrate 70% Injection":{"desc":"Highly concentrated dextrose used as the calorie base when pharmacies mix IV nutrition.","fda":{"available":["B. Braun Medical Inc.","Otsuka ICU Medical LLC"],"limited":["Baxter Healthcare"]},"web":[{"name":"Baxter","type":"Manufacturer","url":"https://catalog.baxter.com/baxterUS/en/Products/Infusion-Therapies-%26-Technologies/IV-Solutions/70%25-Dextrose-Injection%2C-USP-2000-mL-Pharmacy-Bulk-Package%2C-Not-for-Direct-Infusion/p/2B0296H"},{"name":"McKesson Medical-Surgical (B. Braun)","type":"Wholesaler","url":"https://mms.mckesson.com/product/984765/B-Braun-S8705"}]},"Dobutamine Hydrochloride Injection":{"desc":"An IV heart stimulant. Strengthens heart contractions in heart failure and cardiogenic shock.","fda":{"available":["Baxter Healthcare","Hainan Poly Pharm. Co., Ltd.","Hospira, Inc., a Pfizer Company"],"limited":[]},"web":[{"name":"Baxter (Dobutamine in 5% Dextrose, 1000 mg/250 mL)","type":"Manufacturer","url":"https://catalog.baxter.com/baxterUS/zh/Products/Pharmaceuticals/Premixed-Medications/DOBUTamine-Hydrochloride-in-5%25-Dextrose-Injection%2C-1000mg-250-mL-in-VIAFLEX-Plastic-Container-Liquid-Premix-/p/2B0793"},{"name":"Baxter (Dobutamine in 5% Dextrose, 500 mg/250 mL)","type":"Manufacturer","url":"https://catalog.baxter.com/baxterUS/de/Products/Pharmaceuticals/Premixed-Medications/DOButamine-Hydrochloride-in-5%25-Dextrose-Injection%2C-500-mg-250-mL-in-VIAFLEX-Plastic-Container-Liquid-Premix-/p/2B0792"}]},"Dopamine Hydrochloride Injection":{"desc":"An IV vasopressor. Raises blood pressure and heart output in shock.","fda":{"available":["Baxter Healthcare","Hospira, Inc., a Pfizer Company"],"limited":[]},"web":[{"name":"McKesson Medical-Surgical (Hikma dopamine)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1235733/Hikma-Pharmaceuticals-USA-00143925225"}]},"Echothiophate Iodide Ophthalmic Solution":{"desc":"A long-acting eye drop (Phospholine Iodide) for glaucoma and certain types of childhood crossed eyes.","fda":{"available":["Fera Pharmaceuticals"],"limited":[]},"web":[{"name":"Fera Pharmaceuticals (Phospholine Iodide)","type":"Manufacturer","url":"https://www.ferapharma.com/phospholine-iodide/"}]},"Epinephrine Bitartrate, Lidocaine Hydrochloride Injection":{"desc":"Lidocaine with epinephrine. A local anesthetic for dental and minor surgical procedures, with less bleeding and longer numbing.","fda":{"available":["Fresenius Kabi USA, LLC","Hospira, Inc., a Pfizer Company"],"limited":["Hospira, Inc., a Pfizer Company"]},"web":[{"name":"Pfizer Hospital US","type":"Manufacturer","url":"https://www.pfizerhospitalus.com/sites/default/files/news_announcements/Lido-Epi%20Customer%20Launch%20Letter%205-18-26.pdf"}]},"Etomidate Injection":{"desc":"A fast-acting IV anesthetic used to put patients to sleep for intubation, especially when blood pressure is unstable.","fda":{"available":["Caplin Steriles, Ltd.","Gland Pharma Limited","Hikma Pharmaceuticals USA, Inc.","Hospira, Inc., a Pfizer Company","Mylan Institutional, a Viatris Company"],"limited":[]},"web":[{"name":"Hikma","type":"Manufacturer","url":"https://www.hikma.com/news/hikma-receives-fda-approval-for-etomidate-injection/"},{"name":"Pfizer (Amidate)","type":"Manufacturer","url":"https://www.pfizermedical.com/amidate/description"},{"name":"McKesson Medical-Surgical (Hikma)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1079703/Hikma-Pharmaceuticals-USA-00143950610"}]},"Fentanyl Citrate Injection":{"desc":"A potent IV opioid for severe pain and anesthesia in hospitals and surgery. Schedule II.","fda":{"available":["Fresenius Kabi USA, LLC","Hikma Pharmaceuticals USA, Inc.","Hospira, Inc., a Pfizer Company"],"limited":["Hospira, Inc., a Pfizer Company"]},"web":[{"name":"Hikma Pharmaceuticals","type":"Manufacturer","url":"https://www.hikma.com/news/hikma-launches-fentanyl-citrate-injection-usp-in-a-prefilled-syringe-in-the-us/"},{"name":"Fresenius Kabi (Simplist)","type":"Manufacturer","url":"https://www.fresenius-kabi.com/us/news-and-events/fresenius-kabi-introduces-new-simplist--fentanyl-citrate-injecti"}]},"Flurazepam Hydrochloride Capsule":{"desc":"A benzodiazepine sleep aid for short-term treatment of insomnia. Schedule IV.","fda":{"available":["Chartwell Molecular Holdings LLC"],"limited":[]},"web":[]},"Furosemide Injection":{"desc":"An IV loop diuretic (Lasix). Removes excess fluid in heart failure, kidney disease and lung congestion.","fda":{"available":["Avet Pharmaceuticals, Inc.","Baxter Healthcare","Eugia US LLC","Fresenius Kabi USA, LLC","Hospira, Inc., a Pfizer Company","Meitheal Pharmaceuticals, Inc."],"limited":[]},"web":[{"name":"Hikma Pharmaceuticals","type":"Manufacturer","url":"https://www.hikma.com/news/hikma-launches-furosemide-injection-in-the-us/"}]},"Furosemide Oral Solution":{"desc":"Liquid furosemide, often for children and patients who can't swallow pills. Removes excess fluid and lowers blood pressure.","fda":{"available":["Hikma Pharmaceuticals USA, Inc."],"limited":["Hikma Pharmaceuticals USA, Inc."]},"web":[]},"Heparin Sodium Injection":{"desc":"A blood thinner. Prevents and treats clots and keeps IV lines, dialysis and surgery circuits from clotting.","fda":{"available":["Baxter Healthcare","Fresenius Kabi USA, LLC","Hospira, Inc., a Pfizer Company"],"limited":["B. Braun Medical Inc."]},"web":[{"name":"Fresenius Kabi (Simplist)","type":"Manufacturer","url":"https://www.fresenius-kabi.com/us/news/fresenius-kabi-introduces-simplist-heparin-sodium-injection"}]},"Hydromorphone Hydrochloride Injection":{"desc":"A strong opioid (Dilaudid) for severe pain in hospitals. Schedule II.","fda":{"available":["Fresenius Kabi USA, LLC","Hikma Pharmaceuticals USA, Inc.","Hospira, Inc., a Pfizer Company","Teva Pharmaceuticals USA, Inc."],"limited":["Hospira, Inc., a Pfizer Company","Teva Pharmaceuticals USA, Inc."]},"web":[{"name":"Fagron Sterile Services","type":"503B","url":"https://www.fagronsterile.com/products/hydromorphone-hcl-injection-0-2-mg-ml-2mg-10ml"},{"name":"Fagron Sterile Services","type":"503B","url":"https://www.fagronsterile.com/products/hydromorphone-hcl-injection-1mg-ml-30mg-30ml"}]},"Hydroxocobalamin Injection":{"desc":"A form of vitamin B12. Treats B12 deficiency and is the antidote for cyanide poisoning.","fda":{"available":[],"limited":["BTG International Inc."]},"web":[{"name":"McKesson Medical-Surgical (BTG Cyanokit)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1208792/BTG-International-Inc-50633031011"}]},"Ifosfamide Injection":{"desc":"An alkylating chemotherapy for testicular cancer, sarcomas and lymphomas.","fda":{"available":["Baxter Healthcare","SteriMax, Inc."],"limited":["Fresenius Kabi USA, LLC"]},"web":[{"name":"Baxter (IFEX)","type":"Manufacturer","url":"https://catalog.baxter.com/baxterUS/en/Products/Pharmaceuticals/Premixed-Medications/IFEX-%28Ifosfamide-for-Injection%2C-USP%29-1-gm-Single-Dose-Vial/p/0338399101"},{"name":"Baxter (Ifosfamide for Injection)","type":"Manufacturer","url":"https://catalog.baxter.com/baxterUS/en/Products/Pharmaceuticals/Premixed-Medications/Ifosfamide-for-Injection-3-gram-Single-Dose-Vial/p/1001992602"}]},"Isocarboxazid Tablet":{"desc":"An MAO inhibitor antidepressant (Marplan) for depression that hasn't responded to other medicines.","fda":{"available":[],"limited":["Lifsa Drugs LLC"]},"web":[{"name":"Validus Pharmaceuticals (Marplan)","type":"Manufacturer","url":"https://marplan.com/professionals"}]},"Ketorolac Tromethamine Injection":{"desc":"A strong non-opioid anti-inflammatory (NSAID) for short-term moderate to severe pain.","fda":{"available":["Alembic Pharmaceuticals","Baxter Healthcare","Fresenius Kabi USA, LLC","Gland Pharma Limited","Sagent Pharmaceuticals"],"limited":[]},"web":[{"name":"Fresenius Kabi USA (Simplist)","type":"Manufacturer","url":"https://www.fresenius-kabi.com/us/news/ketorolac-injection-now-available-in-15-mg-ml-simplist"}]},"Lidocaine Hydrochloride Injection":{"desc":"The most widely used local anesthetic. Also treats some dangerous heart rhythms.","fda":{"available":["Anthea Pharma","B. Braun Medical Inc.","Baxter Healthcare","Eugia US LLC","Fresenius Kabi USA, LLC","Hikma Pharmaceuticals USA, Inc.","Hospira, Inc., a Pfizer Company"],"limited":["Amphastar Pharmaceuticals, Inc."]},"web":[{"name":"Leiters Health","type":"503B","url":"https://leiters.com/?p=245691"},{"name":"Fagron Sterile Services","type":"503B","url":"https://fagronsterile.com/products/lidocaine-hcl-injection-pf-1-10mg-ml-30-mg-3ml"}]},"Liraglutide Injection":{"desc":"A GLP-1 agonist (Victoza, Saxenda). Lowers blood sugar in type 2 diabetes and helps with weight management.","fda":{"available":["Hikma Pharmaceuticals USA, Inc.","Meitheal Pharmaceuticals, Inc.","Novo Nordisk, Inc."],"limited":["Novo Nordisk, Inc."]},"web":[{"name":"Hikma","type":"Manufacturer","url":"https://www.hikma.com/news/hikma-receives-fda-approval-and-launches-the-generic-version-of-victoza-liraglutide-in-the-us/"},{"name":"McKesson Medical-Surgical (Teva)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1257298/Teva-00480366720"}]},"Lisdexamfetamine Dimesylate Capsule":{"desc":"A long-acting stimulant (Vyvanse) for ADHD and binge-eating disorder. Schedule II.","fda":{"available":["Alvogen","Amneal Pharmaceuticals","Apotex Corp.","Lannett Company, Inc.","Mylan Pharmaceuticals Inc., a Viatris Company","Rhodes Pharmaceuticals L.P.","SpecGx LLC","Takeda Pharmaceuticals USA Inc.","Teva Pharmaceuticals USA, Inc."],"limited":["Elite Laboratories, Inc.","Hikma Pharmaceuticals USA, Inc.","Rhodes Pharmaceuticals L.P.","Solco Healthcare US, LLC","Sun Pharmaceutical Industries, Inc."]},"web":[{"name":"McKesson Medical-Surgical","type":"Wholesaler","url":"https://mms.mckesson.com/product/1279826"}]},"Lisdexamfetamine Dimesylate Tablet, Chewable":{"desc":"Chewable lisdexamfetamine (Vyvanse) for ADHD and binge-eating disorder, for patients who can't swallow capsules. Schedule II.","fda":{"available":["Novadoz Pharmaceuticals LLC","Sun Pharmaceutical Industries, Inc.","Takeda Pharmaceuticals USA Inc."],"limited":[]},"web":[{"name":"Teva Pharmaceuticals USA","type":"Manufacturer","url":"https://www.tevausa.com/our-products/tevagenerics/teva-generics-catalog/vision-product-page/lisdexamfetaminedimesylatechewabletabletscii"}]},"Lorazepam Injection":{"desc":"An IV benzodiazepine (Ativan). Stops active seizures and sedates before procedures.","fda":{"available":["Amphastar Pharmaceuticals, Inc."],"limited":["Hikma Pharmaceuticals USA, Inc.","Hospira, Inc., a Pfizer Company"]},"web":[{"name":"McKesson Medical-Surgical (Hikma lorazepam)","type":"Wholesaler","url":"https://mms.mckesson.com/product/803295/Hikma-Pharmaceuticals-USA-00641600125"},{"name":"McKesson Medical-Surgical (Hospira lorazepam)","type":"Wholesaler","url":"https://mms.mckesson.com/product/546532/Hospira-00409198530"}]},"Meperidine Hydrochloride Injection":{"desc":"An opioid (Demerol) for moderate to severe pain and post-anesthesia shivering. Schedule II.","fda":{"available":["Hikma Pharmaceuticals USA, Inc.","Hospira, Inc., a Pfizer Company"],"limited":[]},"web":[{"name":"Pfizer (Demerol)","type":"Manufacturer","url":"https://labeling.pfizer.com/ShowLabeling.aspx?id=4516"},{"name":"McKesson Medical-Surgical (Hospira)","type":"Wholesaler","url":"https://mms.mckesson.com/product/255553/Hospira-00409118130"},{"name":"McKesson Medical-Surgical (Hikma)","type":"Wholesaler","url":"https://mms.mckesson.com/product/796239/Hikma-Pharmaceuticals-USA-00641605425"}]},"Methotrexate Sodium Injection":{"desc":"A chemotherapy and immune suppressant. Treats certain cancers, rheumatoid arthritis, psoriasis and ectopic pregnancy.","fda":{"available":["Fresenius Kabi USA, LLC","Hospira, Inc., a Pfizer Company"],"limited":["Teva Pharmaceuticals USA, Inc."]},"web":[{"name":"McKesson Medical-Surgical (Teva methotrexate)","type":"Wholesaler","url":"https://mms.mckesson.com/product/825593/Teva-00703367501"},{"name":"McKesson Medical-Surgical (Pfizer methotrexate)","type":"Wholesaler","url":"https://mms.mckesson.com/product/918013/Pfizer-61703035038"}]},"Methylphenidate Film, Extended Release":{"desc":"A once-daily methylphenidate skin patch (Daytrana) for ADHD. Schedule II.","fda":{"available":["Noven Pharmaceuticals, Inc."],"limited":[]},"web":[{"name":"Noven Pharmaceuticals (Daytrana)","type":"Manufacturer","url":"https://www.noven.com/daytrana"}]},"Methylphenidate Hydrochloride Tablet, Extended Release":{"desc":"Long-acting methylphenidate (Concerta and generics), a stimulant for ADHD. Schedule II.","fda":{"available":["Janssen Pharmaceuticals","Lannett Company, Inc.","Teva Pharmaceuticals USA, Inc.","Vertical Pharmaceuticals, LLC"],"limited":["Teva Pharmaceuticals USA, Inc.","Trigen Laboratories, LLC"]},"web":[{"name":"Teva Pharmaceuticals USA","type":"Manufacturer","url":"https://www.tevausa.com/our-products/tevagenerics/teva-generics-catalog/vision-product-page/methylphenidatehydrochlorideextendedreleasetabletsuspcii"}]},"Methylprednisolone Acetate Injection":{"desc":"A depot corticosteroid (Depo-Medrol) injected into joints or muscle to calm arthritis, bursitis and allergic inflammation.","fda":{"available":["Amneal Pharmaceuticals","Pfizer Inc."],"limited":["Amneal Pharmaceuticals","Pfizer Inc.","Sagent Pharmaceuticals"]},"web":[{"name":"Pfizer (Depo-Medrol)","type":"Manufacturer","url":"https://labeling.pfizer.com/showlabeling.aspx?id=550"},{"name":"McKesson Medical-Surgical (Amneal)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1197695/Amneal-Pharmaceuticals-LLC-70121157305?src=WR"},{"name":"Henry Schein (Depo-Medrol)","type":"Wholesaler","url":"https://www.henryschein.com/depo-medrol.aspx"}]},"Metronidazole Injection":{"desc":"An IV antibiotic for anaerobic and abdominal infections, C. difficile, and infection prevention around bowel surgery.","fda":{"available":["Baxter Healthcare"],"limited":["InfoRLife SA"]},"web":[{"name":"Baxter","type":"Manufacturer","url":"https://catalog.baxter.com/baxterUS/en/Products/Pharmaceuticals/Premixed-Medications/Metronidazole-Injection%2C-USP%2C-500-mg-100-mL-in-VIAFLEX-Plastic-Container-Liquid-Premix-/p/2B3421"}]},"Midazolam Hydrochloride Injection":{"desc":"A short-acting benzodiazepine (Versed) for sedation before procedures and to stop seizures. Schedule IV.","fda":{"available":["Avet Pharmaceuticals, Inc.","Fresenius Kabi USA, LLC","Hikma Pharmaceuticals USA, Inc.","Hospira, Inc., a Pfizer Company","WG Critical Care"],"limited":["Hospira, Inc., a Pfizer Company"]},"web":[{"name":"Fagron Sterile Services","type":"503B","url":"https://fagronsterile.com/products/midazolam-injection-1-mg-ml-2mg-2ml"},{"name":"Fagron Sterile Services","type":"503B","url":"https://fagronsterile.com/products/midazolam-injection-1-mg-ml-5mg-5ml"}]},"Morphine Sulfate Injection":{"desc":"The reference opioid for severe pain, heart-attack pain and end-of-life care. Schedule II.","fda":{"available":["Amphastar Pharmaceuticals, Inc.","Fresenius Kabi USA, LLC","Hikma Pharmaceuticals USA, Inc.","Hospira, Inc., a Pfizer Company","Piramal Critical Care Inc."],"limited":["Hospira, Inc., a Pfizer Company"]},"web":[{"name":"McKesson Medical-Surgical (Hikma morphine)","type":"Wholesaler","url":"https://mms.mckesson.com/product/998884/Hikma-Pharmaceuticals-USA-00641612625"}]},"Penicillin G Benzathine Injection":{"desc":"A long-acting penicillin shot (Bicillin L-A). The first-line treatment for syphilis, including in pregnancy, and for preventing rheumatic fever.","fda":{"available":["Laboratorios Atral"],"limited":["Pfizer Inc."]},"web":[{"name":"Pfizer (Bicillin L-A)","type":"Manufacturer","url":"https://labeling.pfizer.com/showlabeling.aspx?id=691"},{"name":"Pfizer Medical (Bicillin L-A)","type":"Manufacturer","url":"https://www.pfizermedical.com/bicillin-la/description"}]},"Pentostatin Injection":{"desc":"A chemotherapy (Nipent) mainly used for hairy cell leukemia.","fda":{"available":[],"limited":[]},"web":[{"name":"Pfizer Hospital US (Nipent)","type":"Manufacturer","url":"https://www.pfizerhospitalus.com/product/00409-0801-01"}]},"Promethazine Hydrochloride Injection":{"desc":"An antihistamine for nausea, vomiting, allergic reactions and sedation.","fda":{"available":["Hikma Pharmaceuticals USA, Inc.","XGen Pharmaceuticals DJB, Inc."],"limited":["Hikma Pharmaceuticals USA, Inc."]},"web":[{"name":"McKesson Medical-Surgical (Hikma)","type":"Wholesaler","url":"https://mms.mckesson.com/product/246065/Hikma-Pharmaceuticals-USA-00641149535"},{"name":"McKesson Medical-Surgical (Hikma)","type":"Wholesaler","url":"https://mms.mckesson.com/product/246066/Hikma-Pharmaceuticals-USA-00641149635"}]},"Propranolol Hydrochloride Injection":{"desc":"An IV beta-blocker. Slows fast heart rhythms and calms the heart in thyroid storm.","fda":{"available":["Fresenius Kabi USA, LLC"],"limited":[]},"web":[{"name":"McKesson Medical-Surgical (Fresenius Kabi propranolol)","type":"Wholesaler","url":"https://mms.mckesson.com/product/570554/Fresenius-USA-63323060401"}]},"Quinapril Hydrochloride Tablet":{"desc":"An ACE inhibitor (Accupril) that lowers blood pressure and helps in heart failure.","fda":{"available":["Chartwell Molecular Holdings LLC"],"limited":[]},"web":[]},"Quinapril/Hydrochlorothiazide Tablet":{"desc":"Quinapril plus a water pill (Accuretic) for high blood pressure.","fda":{"available":["Chartwell Molecular Holdings LLC"],"limited":[]},"web":[{"name":"McKesson Medical-Surgical","type":"Wholesaler","url":"https://mms.mckesson.com/product/1264277"}]},"Remifentanil Hydrochloride Injection":{"desc":"An ultra-short-acting IV opioid (Ultiva) used during general anesthesia. Schedule II.","fda":{"available":["Fresenius Kabi USA, LLC","Hikma Pharmaceuticals USA, Inc.","Mylan Institutional, a Viatris Company"],"limited":[]},"web":[{"name":"McKesson Medical-Surgical (Fresenius Kabi)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1087765/Fresenius-USA-63323072510"},{"name":"McKesson Medical-Surgical (Mylan)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1232156/Mylan-Pharmaceuticals-72078003502"}]},"Rifampin Capsule":{"desc":"An antibiotic used in combination therapy for tuberculosis and to clear meningococcal and staph carriage.","fda":{"available":["Epic Pharma, LLC","Lupin Pharmaceuticals, Inc."],"limited":[]},"web":[{"name":"McKesson Medical-Surgical (Lupin rifampin)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1178416/Lupin-Pharmaceuticals-68180065906"}]},"Rifampin Injection":{"desc":"IV rifampin for tuberculosis and serious staph infections when patients can't take it by mouth.","fda":{"available":[],"limited":["Fresenius Kabi USA, LLC"]},"web":[{"name":"Hikma","type":"Manufacturer","url":"https://hikma.com/media/3xdn54cf/09032016-product-hikma-receives-fda-approval-for-rifampin-injection.pdf"},{"name":"McKesson Medical-Surgical (Mylan)","type":"Wholesaler","url":"https://mms.mckesson.com/product/982221/Mylan-Pharmaceuticals-67457044560"}]},"Riluzole Oral Suspension":{"desc":"Liquid riluzole (Tiglutik) for ALS. Slows disease progression by reducing glutamate activity.","fda":{"available":["EDW Pharma, Inc. (formerly Italfarmaco Pharma, Inc.)"],"limited":[]},"web":[{"name":"Italfarmaco / ITF Pharma (Tiglutik)","type":"Manufacturer","url":"https://italfarmaco.com/Press-Review-PDF/FDA_APPROVAL_OF_TIGLUTIK.pdf"}]},"Rocuronium Bromide Injection":{"desc":"A neuromuscular blocker. Relaxes muscles for intubation and surgery.","fda":{"available":["Baxter Healthcare","Eugia US LLC","Fresenius Kabi USA, LLC","Hikma Pharmaceuticals USA, Inc.","Hospira, Inc., a Pfizer Company","Meitheal Pharmaceuticals, Inc.","Mylan Institutional, a Viatris Company","Piramal Critical Care Inc.","Sagent Pharmaceuticals","Sandoz Inc.","XGen Pharmaceuticals DJB, Inc."],"limited":["Piramal Critical Care Inc."]},"web":[{"name":"B. Braun Medical","type":"Manufacturer","url":"https://www.bbraunusa.com/en/products/b5/rocuronium-bromideinjectionroomtemperaturestable.html"}]},"Ropivacaine Hydrochloride Injection":{"desc":"A long-acting local anesthetic (Naropin) for nerve blocks, epidurals and post-surgery pain.","fda":{"available":["Caplin Steriles, Ltd.","Eugia US LLC","Fresenius Kabi USA, LLC","InfoRLife SA","Somerset Therapeutics, LLC"],"limited":["Caplin Steriles, Ltd.","InfoRLife SA"]},"web":[]},"Sodium Acetate Injection":{"desc":"An electrolyte additive for IV fluids and nutrition. Supplies sodium and helps correct acidic blood.","fda":{"available":["Fresenius Kabi USA, LLC","Hikma Pharmaceuticals USA, Inc.","Hospira, Inc., a Pfizer Company","Milla Pharmaceuticals","Somerset Therapeutics, LLC"],"limited":["Hospira, Inc., a Pfizer Company","Milla Pharmaceuticals"]},"web":[{"name":"Pfizer (Hospira)","type":"Manufacturer","url":"https://pfizermedicalinformation.com/sodium-acetate"},{"name":"McKesson Medical-Surgical (Pfizer)","type":"Wholesaler","url":"https://mms.mckesson.com/product/993510/Pfizer-00409729973"}]},"Sodium Bicarbonate Injection":{"desc":"IV base. Corrects severe metabolic acidosis, treats some overdoses and is used in cardiac arrest.","fda":{"available":["Exela Pharma Sciences, LLC","Fresenius Kabi USA, LLC","Hospira, Inc., a Pfizer Company","Long Grove Pharmaceuticals LLC"],"limited":["Amphastar Pharmaceuticals, Inc.","Hospira, Inc., a Pfizer Company"]},"web":[{"name":"McKesson Medical-Surgical (Pfizer sodium bicarbonate)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1170571/Pfizer-00409663714"},{"name":"McKesson Medical-Surgical (Exela sodium bicarbonate)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1187889/Exela-Pharma-Sciences-51754501104"}]},"Sterile Water Injection":{"desc":"Pure sterile water used to dissolve and dilute powdered injectable drugs.","fda":{"available":["Fresenius Kabi USA, LLC","Hikma Pharmaceuticals USA, Inc.","Hospira, Inc., a Pfizer Company","Medefil, Inc."],"limited":["Nephron Pharmaceuticals Corporation"]},"web":[{"name":"B. Braun Medical","type":"Manufacturer","url":"https://www.bbraunusa.com/en/products/b2/sterile-water-forinjectionusp250ml.html"},{"name":"B. Braun Medical","type":"Manufacturer","url":"https://www.bbraunusa.com/en/products/b2/sterile-water-forinjectionusp1000ml.html"}]},"Sterile Water Irrigant":{"desc":"Sterile water for rinsing wounds, body cavities and surgical sites. Not for injection.","fda":{"available":["B. Braun Medical Inc.","Baxter Healthcare"],"limited":["Baxter Healthcare"]},"web":[{"name":"MAP Medical (Baxter sterile water for irrigation)","type":"Wholesaler","url":"https://www.mymapmedical.com/irrigation-solutions/sterile-water-irrigation/baxter-2b7114x-1142200"},{"name":"VWR (Avantor)","type":"Wholesaler","url":"https://b2b-us.vwr.com/store/product/25654308/null"}]},"Streptozocin Powder, For Solution":{"desc":"A chemotherapy (Zanosar) for pancreatic neuroendocrine tumors.","fda":{"available":["ESTEVE PHARMACEUTICALS, S.A."],"limited":[]},"web":[]},"Sufentanil Citrate Injection":{"desc":"A very potent IV opioid used for anesthesia and surgical pain. Schedule II.","fda":{"available":["Hospira, Inc., a Pfizer Company"],"limited":[]},"web":[{"name":"Pfizer Hospital US","type":"Manufacturer","url":"https://www.pfizerhospitalus.com/product/00409-3382-25"},{"name":"McKesson Medical-Surgical (Hospira sufentanil)","type":"Wholesaler","url":"https://mms.mckesson.com/product/336537/Hospira-00409338221"}]},"Technetium TC-99M Pyrophosphate Kit Injection":{"desc":"A nuclear-imaging agent for bone scans and for diagnosing cardiac amyloidosis.","fda":{"available":[],"limited":["Curium US LLC"]},"web":[{"name":"Curium (Technescan PYP)","type":"Manufacturer","url":"https://www.curiumpharma.com/es/product/technescan-pyp"}]},"Triamcinolone Hexacetonide Injection":{"desc":"A long-acting steroid (Aristospan, Hexatrione) injected into joints, especially for juvenile idiopathic arthritis.","fda":{"available":["Medexus"],"limited":[]},"web":[]},"Valproate Sodium Injection":{"desc":"IV valproic acid (Depacon). Treats seizures when patients can't take medicine by mouth.","fda":{"available":["Fresenius Kabi USA, LLC","Hikma Pharmaceuticals USA, Inc."],"limited":[]},"web":[{"name":"McKesson Medical-Surgical (Fresenius Kabi)","type":"Wholesaler","url":"https://mms.mckesson.com/product/1073414/Fresenius-USA-63323049405"},{"name":"McKesson Medical-Surgical (Hikma)","type":"Wholesaler","url":"https://mms.mckesson.com/product/797844/Hikma-Pharmaceuticals-USA-00143978510"}]}};
+const CTRL=/fentanyl|hydromorphone|morphine|meperidine|sufentanil|remifentanil|amphetamine|lisdexamfetamine|methylphenidate|clonazepam|flurazepam|lorazepam|midazolam/i;
+/* Shortage feed: FDA data, live from the page's database, with a built-in snapshot as fallback */
+const SEED={"syncedAt":"2026-10-08T10:35:00Z","records":1141,"drugs":[["Amino Acid Injection","Injection","Gastroenterology","2026-10-02","2020-12-08",3,0,13,16,3,"Shortage of an active ingredient"],["Amphetamine Aspartate Monohydrate, Amphetamine Sulfate, Dextroamphetamine Saccharate, Dextroamphetamine Sulfate Tablet","Tablet","Psychiatry","2026-10-05","2022-10-12",19,9,45,73,11,"Shortage of an active ingredient"],["Atropine Sulfate Injection","Injection","Anesthesia","2026-10-05","2012-01-01",6,0,11,17,8,"Requirements related to complying with good manufacturing practices"],["Azacitidine Injection","Injection","Oncology","2026-10-06","2020-12-18",3,1,5,9,9,"Other"],["Bacitracin Ophthalmic Ointment","Ophthalmic Ointment","Anti-Infective","2026-06-01","2025-03-03",1,0,0,1,1,"Discontinuation of the manufacture of the drug"],["Bupivacaine Hydrochloride Injection","Injection","Anesthesia","2026-10-06","2018-02-20",4,6,47,57,8,"Discontinuation of the manufacture of the drug"],["Bupivacaine Hydrochloride, Epinephrine Bitartrate Injection","Injection","Anesthesia","2026-10-06","2018-02-20",7,0,13,20,2,"Other"],["Carboplatin Injection","Injection","Oncology","2026-10-06","2023-04-28",16,9,4,29,8,"Other"],["Cefotaxime Sodium Powder, for Solution","Powder, For Solution","Anti-Infective","2026-09-18","2015-02-17",4,0,2,6,2,"Demand increase for the drug"],["Clindamycin Phosphate Injection","Injection","Anti-Infective","2026-10-02","2023-03-21",4,2,11,17,4,"Demand increase for the drug"],["Clonazepam Tablet","Tablet","Neurology","2026-10-03","2023-03-10",0,1,39,40,6,"Other"],["Conivaptan Hydrochloride Injection","Injection","Cardiovascular","2026-09-16","2022-03-14",1,0,0,1,1,"Delay in shipping of the drug"],["Cromolyn Sodium Concentrate","Concentrate","Pulmonary/Allergy","2026-10-05","2023-11-03",0,2,4,6,4,"Other"],["Desmopressin Acetate Spray","Spray","Hematology","2026-09-16","2021-03-12",3,0,1,4,2,"Requirements related to complying with good manufacturing practices"],["Dexamethasone Sodium Phosphate Injection","Injection","Dermatology","2026-10-06","2019-02-08",0,2,17,19,5,"Demand increase for the drug"],["Dexmedetomidine Hydrochloride Injection","Injection","Anesthesia","2026-10-06","2020-04-10",11,0,45,56,16,"Other"],["Dextrose Monohydrate 10% Injection","Injection","Endocrinology/Metabolism","2026-10-06","2022-03-01",1,0,12,13,4,"Discontinuation of the manufacture of the drug"],["Dextrose Monohydrate 5% Injection","Injection","Endocrinology/Metabolism","2026-10-06","2022-02-14",2,0,34,36,4,"Demand increase for the drug"],["Dextrose Monohydrate 50% Injection","Injection","Endocrinology/Metabolism","2026-09-22","2022-01-13",0,1,2,3,2,"Other"],["Dextrose Monohydrate 70% Injection","Injection","Endocrinology/Metabolism","2026-10-02","2024-10-11",0,1,3,4,3,"Other"],["Dobutamine Hydrochloride Injection","Injection","Cardiovascular","2026-10-02","2017-11-06",1,0,9,10,3,"Other"],["Dopamine Hydrochloride Injection","Injection","Cardiovascular","2026-10-02","2017-11-06",3,0,8,11,3,"Demand increase for the drug"],["Echothiophate Iodide Ophthalmic Solution","Ophthalmic Solution","Ophthalmology","2026-09-01","2019-09-24",0,0,1,1,1,"Other"],["Epinephrine Bitartrate, Lidocaine Hydrochloride Injection","Injection","Anesthesia","2026-10-06","2012-02-22",9,3,10,22,2,"Other"],["Etomidate Injection","Injection","Anesthesia","2026-10-05","2022-10-05",3,0,15,18,6,"Demand increase for the drug"],["Fentanyl Citrate Injection","Injection","Analgesia/Addiction","2026-10-06","2012-01-01",4,3,12,19,3,"Other"],["Flurazepam Hydrochloride Capsule","Capsule","Neurology","2026-09-15","2022-08-03",2,0,4,6,2,"Regulatory delay"],["Furosemide Injection","Injection","Cardiovascular","2026-10-06","2020-04-07",11,0,16,27,8,"Other"],["Furosemide Oral Solution","Oral Solution","Cardiovascular","2026-09-18","2026-03-31",0,1,2,3,1,"Shortage of an inactive ingredient component"],["Heparin Sodium Injection","Injection","Hematology","2026-10-06","2017-11-14",1,2,5,8,4,"Other"],["Hydromorphone Hydrochloride Injection","Injection","Analgesia/Addiction","2026-10-06","2017-10-31",9,3,14,26,4,"Other"],["Hydroxocobalamin Injection","Injection","Other","2026-10-01","2024-11-04",1,1,0,2,2,"Other"],["Ifosfamide Injection","Injection","Oncology","2026-10-06","2026-06-12",3,1,4,8,4,"Demand increase for the drug"],["Isocarboxazid Tablet","Tablet","Psychiatry","2026-08-06","2026-04-16",0,1,0,1,1,"Other"],["Ketorolac Tromethamine Injection","Injection","Analgesia/Addiction","2026-10-06","2018-03-23",13,0,12,25,7,"Other"],["Lidocaine Hydrochloride Injection","Injection","Anesthesia","2026-10-06","2012-02-22",19,1,45,65,10,"Demand increase for the drug"],["Liraglutide Injection","Injection","Endocrinology/Metabolism","2026-09-22","2023-07-18",0,3,6,9,3,"Delay in shipping of the drug"],["Lisdexamfetamine Dimesylate Capsule","Capsule","Psychiatry","2026-10-06","2023-07-14",1,33,56,90,13,"Shortage of an active ingredient"],["Lisdexamfetamine Dimesylate Tablet, Chewable","Tablet, Chewable","Psychiatry","2026-09-18","2023-07-14",0,0,18,18,3,""],["Lorazepam Injection","Injection","Neurology","2026-10-05","2018-05-03",7,3,1,11,4,"Other"],["Meperidine Hydrochloride Injection","Injection","Analgesia/Addiction","2026-09-22","2025-05-30",0,0,6,6,2,""],["Methotrexate Sodium Injection","Injection","Rheumatology","2026-10-06","2023-03-13",4,3,7,14,5,"Other"],["Methylphenidate Film, Extended Release","Film, Extended Release","Psychiatry","2026-09-02","2025-02-28",0,0,4,4,1,""],["Methylphenidate Hydrochloride Tablet, Extended Release","Tablet","Psychiatry","2026-10-01","2023-07-26",6,9,19,34,6,"Demand increase for the drug"],["Methylprednisolone Acetate Injection","Injection","Rheumatology","2026-10-02","2021-12-15",7,7,9,23,5,"Other"],["Metronidazole Injection","Injection","Anti-Infective","2026-10-06","2022-01-13",1,2,1,4,3,"Other"],["Midazolam Hydrochloride Injection","Injection","Anesthesia","2026-10-06","2020-04-02",10,2,15,27,6,"Demand increase for the drug"],["Morphine Sulfate Injection","Injection","Analgesia/Addiction","2026-10-06","2017-10-31",11,1,12,24,5,"Other"],["Penicillin G Benzathine Injection","Injection","Anti-Infective","2026-09-21","2023-04-26",1,2,1,4,2,"Other"],["Pentostatin Injection","Injection","Oncology","2026-08-27","2026-08-27",1,0,0,1,1,"Other"],["Promethazine Hydrochloride Injection","Injection","Analgesia/Addiction","2026-09-22","2023-11-21",5,1,4,10,2,"Demand increase for the drug"],["Propranolol Hydrochloride Injection","Injection","Cardiovascular","2026-09-18","2023-10-31",1,0,1,2,2,"Shortage of an active ingredient"],["Quinapril Hydrochloride Tablet","Tablet","Cardiovascular","2026-10-02","2023-01-19",12,0,4,16,4,"Shortage of an active ingredient"],["Quinapril/Hydrochlorothiazide Tablet","Tablet","Cardiovascular","2026-10-02","2023-01-19",3,0,3,6,2,"Discontinuation of the manufacture of the drug"],["Remifentanil Hydrochloride Injection","Injection","Analgesia/Addiction","2026-10-06","2022-06-28",3,0,6,9,3,"Demand increase for the drug"],["Rifampin Capsule","Capsule","Anti-Infective","2026-10-05","2021-12-22",4,0,5,9,2,"Discontinuation of the manufacture of the drug"],["Rifampin Injection","Injection","Anti-Infective","2026-10-06","2021-02-17",2,1,0,3,3,"Other"],["Riluzole Oral Suspension","Oral Suspension","Neurology","2026-10-01","2024-01-26",1,0,3,4,1,"Requirements related to complying with good manufacturing practices"],["Rocuronium Bromide Injection","Injection","Anesthesia","2026-10-06","2023-02-15",2,1,23,26,11,"Delay in shipping of the drug"],["Ropivacaine Hydrochloride Injection","Injection","Anesthesia","2026-10-06","2018-03-23",12,3,34,49,5,"Other"],["Sodium Acetate Injection","Injection","Endocrinology/Metabolism","2026-10-01","2016-02-03",0,2,13,15,5,"Other"],["Sodium Bicarbonate Injection","Injection","Endocrinology/Metabolism","2026-10-06","2017-03-01",1,3,7,11,5,"Other"],["Sterile Water Injection","Injection","Other","2026-10-06","2021-11-23",1,1,10,12,5,"Other"],["Sterile Water Irrigant","Irrigant","Gastroenterology","2026-10-02","2023-04-28",4,1,4,9,3,"Discontinuation of the manufacture of the drug"],["Streptozocin Powder, For Solution","Powder, For Solution","Oncology","2026-10-01","2022-07-12",1,0,1,2,2,"Other"],["Sufentanil Citrate Injection","Injection","Analgesia/Addiction","2026-09-22","2022-05-03",3,0,1,4,2,"Other"],["Technetium TC-99M Pyrophosphate Kit Injection","Injection","Medical Imaging","2026-10-01","2023-12-27",2,1,0,3,2,"Other"],["Triamcinolone Hexacetonide Injection","Injection","Rheumatology","2026-09-15","2021-05-04",0,0,1,1,1,""],["Valproate Sodium Injection","Injection","Neurology","2026-09-18","2020-12-30",0,0,2,2,2,""]]};
+let FEED=SEED, D=[], live=false;
+const day=s=>new Date((s||'1970-01-01')+'T12:00:00');
+const fmt=s=>s?day(s).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
+const ago=iso=>{const m=Math.round((Date.now()-new Date(iso))/6e4);return m<1?'just now':m<60?m+' min ago':m<1440?Math.round(m/60)+' h ago':Math.round(m/1440)+' d ago'};
+const fresh=r=>(Date.now()-day(r.updated))/864e5<=14;
+function sig(r){if(r.unavailable&&!r.available&&!r.limited)return['new','Unavailable'];if(r.unavailable)return['new','Partly unavailable'];if(r.limited)return['warn','Limited'];return['old','Available, still listed']}
+function setFeed(f,isLive){FEED=f;live=isLive;D=(f.drugs||[]).map(x=>({id:x[0]+'|'+x[1],name:x[0],form:x[1],area:x[2]||'Other',updated:x[3],posted:x[4],unavailable:x[5],limited:x[6],available:x[7],presentations:x[8],companies:x[9],reason:x[10]}));buildFilters();render();renderTicker();renderSync();checkAlerts()}
+function renderSync(){const t=FEED.syncedAt?ago(FEED.syncedAt):'';syncTxt.textContent=(live?'Live · ':'Snapshot · ')+'FDA synced '+t;snapDate.textContent=(live?'Live':'Snapshot')+' · '+t}
+setInterval(()=>FEED.syncedAt&&renderSync(),60000);
+function renderTicker(){ticker.innerHTML='';[...D].sort((a,b)=>b.updated.localeCompare(a.updated)||a.name.localeCompare(b.name)).slice(0,6).forEach(r=>{const li=document.createElement('li');[r.name,r.form,fmt(r.updated)].forEach(t=>{const sp=document.createElement('span');sp.textContent=t;li.appendChild(sp)});ticker.appendChild(li)})}
+
+/* Watch tool */
+let watched=new Set(store.get('brg-watch2',[]));
+let area='All', sortKey='date';
+function buildFilters(){const fv=formSel.value||'All forms';formSel.innerHTML='';['All forms',...[...new Set(D.map(r=>r.form))].sort()].forEach(f=>formSel.add(new Option(f,f)));formSel.value=[...formSel.options].some(o=>o.value===fv)?fv:'All forms';
+  chips.innerHTML='';const areas=['All',...[...new Set(D.map(r=>r.area))].sort()];if(!areas.includes(area))area='All';
+  areas.forEach(c=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=c;b.setAttribute('aria-pressed',c===area);
+  b.onclick=()=>{area=c;shown=PAGE;chips.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));render()};chips.appendChild(b)})}
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PAGE=13;
+function moreBar(el,shown,total,set,label){if(total<=PAGE){el.innerHTML='';return}
+  el.innerHTML='';const n=document.createElement('span');n.className='note';n.textContent=`Showing ${Math.min(shown,total)} of ${total} ${label}`;el.appendChild(n);
+  const mk=(t,fn,ghost)=>{const b=document.createElement('button');b.type='button';b.className='btn sm'+(ghost?' ghost':'');b.style.padding='7px 14px';b.textContent=t;b.onclick=fn;el.appendChild(b)};
+  if(shown<total){mk(`Show ${Math.min(PAGE,total-shown)} more`,()=>set(shown+PAGE));mk(`Show all ${total}`,()=>set(total),true)}else mk('Show less',()=>set(PAGE),true)}
+let shown=PAGE;
+function render(){
+  const q=document.getElementById('q').value.trim().toLowerCase(), f=formSel.value||'All forms';
+  let list=D.filter(r=>(area==='All'||r.area===area)&&(f==='All forms'||r.form===f)&&(!q||(r.name+' '+r.form+' '+r.area).toLowerCase().includes(q)));
+  list.sort((a,b)=>sortKey==='date'?b.updated.localeCompare(a.updated)||a.name.localeCompare(b.name):sortKey==='form'?a.form.localeCompare(b.form):sortKey==='class'?a.area.localeCompare(b.area)||a.name.localeCompare(b.name):a.name.localeCompare(b.name));
+  rows.innerHTML='';
+  list.slice(0,shown).forEach(r=>{const tr=document.createElement('tr');const w=watched.has(r.id);const g=sig(r);
+    tr.innerHTML=`<td><button class="star" type="button" aria-pressed="${w}" aria-label="Watch ${esc(r.name)}">${w?'★':'☆'}</button></td><td>${esc(r.name)}${fresh(r)?' <span class="pill new">Updated</span>':''}${SRC[r.name]&&SRC[r.name].desc?`<span class="rdesc">${esc(SRC[r.name].desc)}</span>`:''}</td><td>${esc(r.form)}</td><td>${esc(r.area)}</td><td class="d">${fmt(r.updated)}</td><td><span class="pill ${g[0]}">${g[1]}</span></td>`;
+    tr.querySelector('.star').onclick=e=>{e.stopPropagation();toggle(r.id)};
+    tr.dataset.id=r.id;tr.onclick=()=>openDrawer(r);rows.appendChild(tr)});
+  if(!cur&&list.length){cur=list[0]}if(cur){const f=D.find(x=>x.id===cur.id);if(f)cur=f;drawFinder()}
+  if(!list.length){rows.innerHTML='<tr><td colspan="6" style="color:var(--muted);cursor:default">No matches. Try a shorter search or clear the filters.</td></tr>'}
+  count.textContent=`${list.length} of ${D.length} drugs match (${FEED.records||'—'} FDA listings)`;
+  moreBar(moreRows,shown,list.length,v=>{shown=v;render();if(v===PAGE)document.getElementById('watch').scrollIntoView({behavior:'smooth'})},'drugs');
+  renderWatch();
+}
+function toggle(id){if(watched.has(id))watched.delete(id);else{watched.add(id);const r=D.find(x=>x.id===id);if(r)SEEN[id]=sig(r)[1]}store.set('brg-watch2',[...watched]);store.set('brg-seen',SEEN);syncWatch();render();if(cur&&cur.id===id)setDW()}
+function renderWatch(){watchlist.innerHTML='';const items=D.filter(r=>watched.has(r.id));const gone=[...watched].filter(id=>!D.some(r=>r.id===id));
+  watchEmpty.hidden=!!(items.length||gone.length);watchReq.hidden=!items.length;
+  items.slice(0,PAGE).forEach(r=>{const d=document.createElement('div');d.className='w';d.innerHTML=`<span>${esc(r.name)} · ${esc(r.form)} · <b>${sig(r)[1]}</b></span><button type="button" aria-label="Remove ${esc(r.name)}">✕</button>`;d.querySelector('button').onclick=()=>toggle(r.id);watchlist.appendChild(d)});
+  gone.forEach(id=>{const d=document.createElement('div');d.className='w';d.style.color='var(--ok)';d.innerHTML=`<span>${esc(id.split('|')[0])} · no longer on the FDA list</span><button type="button" aria-label="Remove">✕</button>`;d.querySelector('button').onclick=()=>toggle(id);watchlist.appendChild(d)})}
+document.getElementById('q').oninput=()=>{shown=PAGE;render()}; formSel.onchange=()=>{shown=PAGE;render()};
+sortSel.onchange=()=>{sortKey=sortSel.value;render()};
+document.querySelectorAll('th[data-sort]').forEach(th=>th.onclick=()=>{sortKey=th.dataset.sort;if(sortKey!=='form')sortSel.value=sortKey;render()});
+
+/* Pharmacy finder (inline, replaces the drawer) */
+const HQ={"Accord Healthcare":"NC","Alembic":"NJ","Alvogen":"NJ","American Regent":"NY","Amneal":"NJ","Amphastar":"CA","Apotex":"FL","Aurobindo":"NJ","Avet":"NJ","Azurity":"MA","B. Braun":"PA","BTG":"PA","Baxter":"IL","Bristol Myers":"NJ","Chartwell":"NY","Curium":"MO","Dr. Reddy":"NJ","Elite Laboratories":"NJ","Epic Pharma":"NY","Eugia":"NJ","Exela":"NC","Fera":"NY","Fresenius Kabi":"IL","HQ Specialty":"NJ","Hikma":"NJ","Hospira":"IL","Janssen":"NJ","Lannett":"PA","Long Grove":"IL","Lupin":"MD","Medefil":"IL","Meitheal":"IL","Mylan Institutional":"IL","Mylan Pharmaceuticals":"WV","Mylan Specialty":"WV","Nephron":"SC","Novadoz":"NJ","Noven":"FL","Novo Nordisk":"NJ","Par Health":"NY","Pfizer":"NY","Piramal":"PA","Prinston":"NJ","Rhodes":"RI","Rising":"NJ","Sagent":"IL","Sandoz":"NJ","Solco":"NJ","Somerset":"FL","SpecGx":"MO","Sun Pharmaceutical":"NJ","Sunrise":"NJ","Takeda":"MA","Teva":"NJ","WG Critical":"NJ","XGen":"NY","McKesson":"VA","Henry Schein":"NY","QuVa":"TX","Leiters":"CO","Fagron":"KS","VWR":"PA","Validus":"NJ"};
+const hqOf=n=>{for(const k in HQ)if(n.toLowerCase().includes(k.toLowerCase()))return HQ[k];return ''};
+let cur=null, fState=null, fShown=PAGE;
+function suppliers(r){const sx=SRC[r.name]||{},out=[];((sx.fda&&sx.fda.available)||[]).forEach(c=>out.push({name:c,kind:'fda',st:hqOf(c)}));((sx.fda&&sx.fda.limited)||[]).forEach(c=>out.push({name:c,kind:'lim',st:hqOf(c)}));(sx.web||[]).forEach(w=>out.push({name:w.name,kind:'web',type:w.type,url:w.url,st:hqOf(w.name)}));return out}
+function drawFinder(){if(!cur)return;const sx=SRC[cur.name]||{},sup=suppliers(cur),g=sig(cur);
+  fArea.textContent=cur.area+' · '+cur.form;fTitle.textContent=cur.name;fDesc.textContent=sx.desc||'';
+  fStatus.innerHTML=`<span class="pill ${g[0]}">${g[1]}</span> <span class="note">Updated ${fmt(cur.updated)} · ${esc(cur.reason||'Reason not stated')}</span>`;
+  const cnt={};sup.forEach(x=>{if(x.st)cnt[x.st]=(cnt[x.st]||0)+1});
+  fTiles.innerHTML='';TILE.forEach(([c,r,col])=>{const b=document.createElement('button');b.type='button';b.textContent=c;b.style.gridRow=r+1;b.style.gridColumn=col+1;const n=cnt[c]||0;
+    b.className=n>=4?'h3':n>=2?'h2':n?'h1':'';if(SHIP&&c===SHIP){b.style.outline='2px dashed var(--warn)';b.style.outlineOffset='1px'}b.setAttribute('aria-pressed',c===fState);b.setAttribute('aria-label',SN[c]+': '+n+' supplier'+(n===1?'':'s'));b.disabled=!n;b.onclick=()=>{fState=fState===c?null:c;fShown=PAGE;drawFinder()};fTiles.appendChild(b)});
+  const mapped=Object.values(cnt).reduce((a,b)=>a+b,0);
+  fMapNote.textContent=sup.length?(fState?`Showing suppliers based in ${SN[fState]}. Tap it again to show all.`:`Where the ${sup.length} supplier${sup.length===1?'':'s'} are headquartered${mapped<sup.length?` (${sup.length-mapped} outside the U.S. or unmapped)`:''}. Tap a state to filter.`):'No supplier is reporting stock yet.';
+  const listAll=sup.filter(x=>!fState||x.st===fState);const list=listAll.slice(0,fShown);
+  const grp=(t,arr)=>arr.length?`<div class="grp">${t}</div>`+arr.map(x=>x.kind==='web'?`<a class="s web" href="${esc(x.url)}" target="_blank" rel="noopener"><span>${esc(x.name)}</span><small>${esc(x.type)}${x.st?' · '+x.st:''} ↗</small></a>`:`<div class="s ${x.kind==='lim'?'lim':''}"><span>${esc(x.name)}</span><small>${x.kind==='lim'?'Limited':'In supply'}${x.st?' · '+x.st:''}</small></div>`).join(''):'';
+  fList.innerHTML=grp('Manufacturers reporting supply to the FDA',list.filter(x=>x.kind!=='web'))+grp('Where to order',list.filter(x=>x.kind==='web'))||'<p class="note">No suppliers found yet. Send a sourcing request and we will check our partner pharmacies.</p>';
+  moreBar(moreF,fShown,listAll.length,v=>{fShown=v;drawFinder()},'suppliers');
+  fCtl.textContent=CTRL.test(cur.name)?'Controlled substance: ordering requires DEA registration.':'Licensed buyers only. Map shows supplier headquarters, not local pharmacy stock.';
+  fLink.href='https://www.accessdata.fda.gov/scripts/drugshortages/dsp_ActiveIngredientDetails.cfm?AI='+encodeURIComponent(cur.name)+'&st=c';
+  fReq.disabled=false;fWatch.disabled=false;fWatch.textContent=watched.has(cur.id)?'Watching ★':'Watch';
+  rows.querySelectorAll('tr').forEach(tr=>tr.classList.toggle('sel',tr.dataset.id===cur.id))}
+function openDrawer(r){cur=r;fState=null;fShown=PAGE;drawFinder();if(matchMedia('(max-width:960px)').matches)finder.scrollIntoView({behavior:'smooth',block:'start'})}
+function setDW(){drawFinder()}
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!intro.hidden)endIntro()});
+fWatch.onclick=()=>cur&&toggle(cur.id);
+function prefill(intent,msg){try{localStorage.setItem('brg-prefill',JSON.stringify({intent,msg:msg||''}))}catch(e){}location.href='request.html'}
+fReq.onclick=()=>{if(!cur)return;prefill('Sourcing request',`Sourcing request: ${cur.name} (${cur.form}).\nStrength / quantity needed:\nShip-to state:`)};
+watchReq.onclick=()=>prefill('Sourcing request','Sourcing request for:\n'+D.filter(r=>watched.has(r.id)).map(r=>`- ${r.name} (${r.form})`).join('\n')+'\nShip-to state:');
+document.querySelectorAll('[data-intent]').forEach(a=>a.addEventListener('click',()=>{try{localStorage.setItem('brg-prefill',JSON.stringify({intent:a.dataset.intent,msg:''}))}catch(e){}}));
+
+
+
+/* State licensing map */
+const TILE=[["AK",0,0],["ME",0,11],["VT",1,10],["NH",1,11],["WA",2,1],["ID",2,2],["MT",2,3],["ND",2,4],["MN",2,5],["IL",2,6],["WI",2,7],["MI",2,8],["NY",2,9],["RI",2,10],["MA",2,11],["OR",3,1],["NV",3,2],["WY",3,3],["SD",3,4],["IA",3,5],["IN",3,6],["OH",3,7],["PA",3,8],["NJ",3,9],["CT",3,10],["CA",4,1],["UT",4,2],["CO",4,3],["NE",4,4],["MO",4,5],["KY",4,6],["WV",4,7],["VA",4,8],["MD",4,9],["DE",4,10],["AZ",5,2],["NM",5,3],["KS",5,4],["AR",5,5],["TN",5,6],["NC",5,7],["SC",5,8],["DC",5,9],["OK",6,4],["LA",6,5],["MS",6,6],["AL",6,7],["GA",6,8],["HI",7,0],["TX",7,4],["FL",7,9]];
+const SN={AK:"Alaska",AL:"Alabama",AR:"Arkansas",AZ:"Arizona",CA:"California",CO:"Colorado",CT:"Connecticut",DC:"District of Columbia",DE:"Delaware",FL:"Florida",GA:"Georgia",HI:"Hawaii",IA:"Iowa",ID:"Idaho",IL:"Illinois",IN:"Indiana",KS:"Kansas",KY:"Kentucky",LA:"Louisiana",MA:"Massachusetts",MD:"Maryland",ME:"Maine",MI:"Michigan",MN:"Minnesota",MO:"Missouri",MS:"Mississippi",MT:"Montana",NC:"North Carolina",ND:"North Dakota",NE:"Nebraska",NH:"New Hampshire",NJ:"New Jersey",NM:"New Mexico",NV:"Nevada",NY:"New York",OH:"Ohio",OK:"Oklahoma",OR:"Oregon",PA:"Pennsylvania",RI:"Rhode Island",SC:"South Carolina",SD:"South Dakota",TN:"Tennessee",TX:"Texas",UT:"Utah",VA:"Virginia",VT:"Vermont",WA:"Washington",WI:"Wisconsin",WV:"West Virginia",WY:"Wyoming"};
+let LIC={};TILE.forEach(([c])=>LIC[c]={status:'licensed'});
+let licDb=null,canEdit=false,curSt=null;
+const STL={licensed:'Licensed',pending:'Pending',none:'Not yet'};
+function drawTiles(){tiles.innerHTML='';TILE.forEach(([c,r,col])=>{const b=document.createElement('button');b.type='button';b.textContent=c;b.style.gridRow=r+1;b.style.gridColumn=col+1;
+  const st=(LIC[c]||{}).status||'none';b.className=st==='licensed'?'':st;b.setAttribute('aria-label',SN[c]+': '+STL[st]);b.setAttribute('aria-pressed',c===curSt);b.onclick=()=>pickSt(c);tiles.appendChild(b)});
+  const n=TILE.filter(([c])=>c!=='DC'&&(LIC[c]||{}).status==='licensed').length;licCount.textContent=n===50?'All 50 states':n+' of 50 states';
+  if(curSt)showSt(curSt)}
+function showSt(c){const d=LIC[c]||{};stName.textContent=SN[c];
+  const rows=[['Status',STL[d.status||'none']],['License',d.license],['Partner',d.partner],['Expires',d.expires?fmt(d.expires):''],['Notes',d.notes],['Updated',d.updated?fmt(d.updated.slice(0,10)):'']].filter(x=>x[1]);
+  stInfo.innerHTML=rows.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join('');
+  stDirLink.hidden=false;stDirLink.textContent=`See pharmacies in ${SN[c]}`;stEdit.hidden=!(canEdit&&licDb);if(!stEdit.hidden){stStatus.value=d.status||'none';stLic.value=d.license||'';stPartner.value=d.partner||'';stExp.value=d.expires||'';stNotes.value=d.notes||'';stSaved.textContent=''}}
+function pickSt(c){curSt=c;tiles.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.textContent===c));showSt(c)}
+stEdit.addEventListener('submit',async e=>{e.preventDefault();if(!licDb||!curSt)return;
+  const rec={status:stStatus.value,license:stLic.value.trim(),partner:stPartner.value.trim(),expires:stExp.value,notes:stNotes.value.trim(),updated:new Date().toISOString()};
+  stSaved.textContent='Saving…';
+  try{const ref=licDb.doc('data/licenses');const snap=await ref.get();if(snap.exists)await ref.update({states:{[curSt]:rec}});else await ref.set({states:Object.assign({},LIC,{[curSt]:rec})});LIC[curSt]=rec;drawTiles();stSaved.textContent='Saved'}
+  catch(err){stSaved.textContent=err&&err.code==='permission_denied'?'Only editors can change licensing data.':'Could not save. Try again.'}});
+drawTiles();
+(async()=>{try{const u=window.claude&&await window.claude.use('user');canEdit=!!(u&&((await u.isOwner())||(await u.canEdit())));if(curSt)showSt(curSt)}catch(e){}})();
+
+
+/* ===== Pharmacy directory ===== */
+const FAC=[["503B Outsourcing Facility One, LLC","West Palm Beach","FL","Not yet inspected","N/A","N/A","Yes","1/27/2026"],["Ajenat Pharmaceuticals, LLC","Largo","FL","Not yet inspected","N/A","N/A","Yes","11/26/2025"],["AnazaoHealth Corporation","Las Vegas","NV","8/8/2025","Yes","Open","Yes","12/30/2025"],["Annovex Pharma, Inc.","Lorton","VA","6/3/2026","Yes","Open","Yes","2/13/2026"],["Apertus Compounding, LLC","Maryland Heights","MO","Not yet inspected","N/A","N/A","Yes","11/26/2025"],["Apocus, Inc.","San Antonio","TX","Not yet inspected","N/A","N/A","Yes","1/1/2026"],["Apollo Care","Columbia","MO","7/28/2026","Yes","Open","Yes","12/24/2025"],["Apothecary Pharma, LLC","Cary","NC","9/2/2026","Yes","Open","Yes","1/6/2026"],["Arc Compounding Pharmacy, LLC","Waco","TX","Not yet inspected","N/A","N/A","Yes","2/20/2026"],["Aspire Compounding Pharmacy","Sugar Land","TX","Not yet inspected","N/A","N/A","Yes","2/24/2026"],["Assure Infusions, Inc.","Bartow","FL","9/17/2026","Yes","Open","No","12/5/2025"],["Atilar Pharma Corporation","Houston","TX","Not yet inspected","N/A","N/A","Yes","12/24/2025"],["Aveva Drug Delivery Systems, Inc","Tamarac","FL","Not yet inspected","N/A","N/A","Yes","11/25/2025"],["BayCare Integrated Service Center, LLC dba BayCare Central Pharmacy","Temple Terrace","FL","3/12/2026","Yes","FMD-145 Letter Issued 9/18/","No","2/5/2026"],["Bennett Pharmaceuticals of America LLC","Hudson","WI","Not yet inspected","N/A","N/A","Yes","1/21/2026"],["Bespoke Pharmaceutical, LLC","Las Vegas","NV","Not yet inspected","N/A","N/A","Yes","3/7/2026"],["BPI Labs LLC","Largo","FL","4/17/2026","Yes","Open","Yes","12/3/2025"],["Bravado Pharmaceuticals, LLC","Lutz","FL","Not yet inspected","N/A","N/A","Yes","1/10/2026"],["Brookfield Medical/Surgical Supply, Inc.","Brookfield","CT","7/10/2026","Yes","Open","Yes","12/30/2025"],["BSO LLC","Golden","CO","6/27/2025","483","Open","Yes","11/25/2025"],["BSO LLC","Lakewood","CO","7/16/2025","483","Regulatory Meeting Held 3/3/","Yes","11/26/2025"],["Central Admixture Pharmacy Services, Inc.","Allentown","PA","9/5/2025","Yes","Regulatory Meeting Held 5/5/","Yes","11/21/2025"],["Central Admixture Pharmacy Services","Phoenix","AZ","9/5/2025","Yes","Regulatory Meeting Held 5/5/","Yes","11/21/2025"],["Delta Pharma, Inc.","Ripley","MS","11/21/2025","Yes","Open","Yes","12/31/2025"],["Denver Solutions, LLC, dba Leiters Health","Buena","NJ","Not yet inspected","N/A","N/A","Yes","11/26/2025"],["Denver Solutions, LLC, dba Leiters Health","Englewood","CO","12/11/2025","Yes","Untitled Letter Issued 6/8/","Yes","11/28/2025"],["Eagle Pharma","Birmingham","AL","2/27/2025","Yes","Open","Yes","12/16/2025"],["Empower Clinic Services New Jersey","East Windsor","NJ","Not yet Inspected","N/A","N/A","Yes","11/24/2025"],["Empower Pharma","Houston","TX","11/14/2025","Yes","Open","Yes","11/24/2025"],["F.H. Investments, Inc.","Birmingham","AL","12/19/2025","Yes","Open","Yes","12/2/2025"],["Fagron Compounding Services dba Fagron Sterile Services","Wichita","KS","8/8/2025","483","Regulatory Meeting Held 2/27/","Yes","11/21/2025"],["Farmakeio Outsourcing LLC","Southlake","TX","9/5/2025","Yes","Open","Yes","12/12/2025"],["Fresenius Kabi Compounding LLC dba Fagron Sterile Services","Canton","MA","11/5/2025","Yes","Warning Letter Issued 5/12/","Yes","11/22/2025"],["Galaxy Pharmaceuticals, LLC","Albany","NY","Not yet inspected","N/A","N/A","No","11/26/2025"],["GenoGenix LLC","Raton","FL","7/18/2025","Yes","Open","Yes","2/11/2026"],["GFC Pharma, LLC","Westminster","MD","Not yet inspected","N/A","N/A","Yes","12/30/2025"],["Healthwealth Pharmacy, LLC","Houston","TX","Not yet inspected","N/A","N/A","Yes","7/21/2026"],["Hyalo Technologies Limited Liability Company","Somerset","NJ","Not yet inspected","N/A","N/A","Yes","12/3/2025"],["Hybrid Pharma, LLC","Deerfield Beach","CA","8/27/2026","Yes","Open","Yes","12/16/2025"],["Imprimis NJOF, LLC","Ledgewood","NJ","8/18/2026","Yes","Open","Yes","11/26/2025"],["IntegraDose Compounding Services, LLC","Shoreview","MN","Not yet inspected","N/A","N/A","Yes","2/13/2026"],["Leesar Inc.","Fort Myers","FL","9/28/2026","Yes","Open","No","11/26/2025"],["Mark Cuban Cost Plus Manufacturing and Compounding, LLC","Dallas","TX","1/28/2026","Yes","FMD-145 Letter Issued 6/5/","Yes","12/14/2024"],["Maxhealth Group, LLC dba New Life Rx","Dallas","TX","Not yet inspected","N/A","N/A","Yes","4/29/2026"],["McGuff Pharmaceuticals, Inc. dba McGuff Outsourcing Solutions","Santa Ana","CA","Not yet inspected","N/A","N/A","Yes","12/2/2025"],["Medi-Fare Drug","Blacksburg","SC","6/6/2025","Yes","Open","Yes","12/31/2025"],["Medicinal Sciences Ltd. Co.","Heath","TX","Not yet inspected","N/A","N/A","Yes","9/21/2026"],["MedisourceRx","Los Alamitos","CA","6/10/2025","Yes","Warning Letter Closeout Issued 7/27/2026Warning Letter Issued 12/12/","Yes","1/2/2026"],["Molecular PharmaGroup","New Providence","NJ","8/11/2025","Yes","Untitled Letter Issued 2/5/","Yes","12/30/2025"],["Navinta III Inc.","Boca Raton","FL","Not yet inspected","N/A","N/A","Yes","2/6/2026"],["Nephron Sterile Compounding Center, LLC (NSCC)","West Columbia","SC","8/22/2025","483","Open","Yes","12/15/2025"],["Nexgen Formulations","Folcroft","PA","Not yet inspected","N/A","N/A","Yes","1/15/2026"],["Nivagen Pharmaceuticals, LLC","Sacramento","CA","Not yet inspected","N/A","N/A","Yes","3/13/2026"],["NLRx, LLC","Cookeville","TN","Not yet inspected","N/A","N/A","Yes","8/7/2026"],["Nubratori, Inc.","Torrance","CA","12/11/2025","Yes","Warning Letter Closeout Issued 7/27/2026FMD-145 Letter Issued 7/21/","Yes","12/3/2025"],["Ocyon Bio PR, LLC","Aguadilla","PR","Not yet inspected","N/A","N/A","Yes","4/23/2026"],["Olympia Pharmaceuticals","Orlando","FL","9/3/2026","Yes","Open","Yes","11/20/2025"],["Olyx Pharma","Schertz","TX","Not yet inspected","N/A","N/A","Yes","8/3/2026"],["OSRX, Inc.","Missoula","MT","11/14/2025","Yes","Open","Yes","12/29/2025"],["OurPharma LLC","Fayetteville","AR","9/27/2024","Yes","FMD-145 Letter Issued 6/23/","Yes","11/26/2025"],["Park Avenue Compounding","St. Louis","MO","9/23/2025","Yes","Regulatory Meeting Held 5/7/","No","11/19/2025"],["PGRrx LLC","Exton","PA","Not yet inspected","N/A","N/A","Yes","12/30/2025"],["Pine Pharmaceuticals, LLC","Tonawanda","NY","11/14/2025","Yes","Warning Letter Issued 8/7/","Yes","11/19/2025"],["PQ Pharmacy LLC","Brooksville","FL","6/1/2026","Yes","Open","Yes","12/11/2025"],["ProRx LLC","Exton","PA","9/19/2025","Yes","Warning Letter Issued 4/7/","Yes","2/20/2026"],["Qualgen LLC","Edmond","OK","9/4/2025","Yes","Open","Yes","12/17/2025"],["Quantum Pharmaceuticals, LLC","Mounds","OK","Not yet inspected","N/A","N/A","Yes","11/26/2025"],["Quva Pharma, Inc.","Bloomsbury","NJ","4/4/2025","Yes","Open","Yes","12/4/2025"],["Quva Pharma, Inc.","Sugar Land","TX","5/4/2026","Yes","Open","Yes","12/2/2025"],["Rapha Pharmaceuticals, lnc.","Las Vegas","NV","Not yet inspected","N/A","N/A","Yes","4/28/2026"],["RC Outsourcing, LLC","Lowellville","OH","9/3/2026","Yes","Open","Yes","11/27/2025"],["Right Value Drug Stores, LLC, dba Carie Boyd's Prescription Shop","Irving","TX","7/18/2025","Yes","Regulatory Meeting Held 1/8/","Yes","11/24/2025"],["Sankav Pharmaceuticals, LLC","Hackettstown","NJ","Not yet inspected","N/A","N/A","Yes","12/23/2025"],["SCA Pharmaceuticals","Little Rock","AR","10/30/2025","Yes","Warning Letter Issued 9/14/","Yes","12/5/2025"],["SCA Pharmaceuticals","Windsor","CT","3/13/2026","Yes","Open","Yes","12/8/2025"],["Signature Rx","Delray Beach","FL","Not yet inspected","N/A","N/A","Yes","8/31/2026"],["Simple RX Solutions, P.C.","Lewisburg","TN","Not yet inspected","N/A","N/A","Yes","8/26/2026"],["SKNV formerly registered as Sincerus Florida, LLC","Pompano Beach","FL","5/29/2026","Yes","Open","Yes","12/3/2025"],["STAQ Pharma of Ohio, LLC","Columbus","OH","8/19/2026","Yes","Open","Yes","12/18/2025"],["STAQ Pharma, Inc.","Denver","CO","9/8/2026","Yes","Open","Yes","12/18/2025"],["Staska Pharmaceuticals, Inc.","Bennet","NE","2/20/2026","Yes","Open","Yes","12/12/2025"],["Stokes Healthcare Inc., dba Epicur Pharma","Mt. Laurel","NJ","5/23/2025","Yes","Open","Yes","11/19/2025"],["Tailstorm Health Inc.","Chandler","AZ","8/28/2026","Yes","Open","Yes","12/6/2025"],["Turbare Manufacturing","Conway","AR","5/7/2026","Yes","Open","Yes","12/3/2025"],["University of Tennessee","Memphis","TN","Not yet inspected","N/A","N/A","Yes","3/25/2026"],["US Specialty Formulations LLC","Allentown","PA","1/14/2026","Yes","Open","Yes","12/3/2025"],["Vitae Enim Vitae Scientific, Inc.","San Diego","CA","Not yet inspected","N/A","N/A","No","12/29/2025"],["VitalRx Pharmacy, LLC","Houston","TX","Not yet inspected","N/A","N/A","Yes","1/3/2026"],["Wedgewood Connect Ohio, LLC","Albany","OH","Not yet inspected","N/A","N/A","Yes","12/16/2025"],["Wedgewood Connect, LLC, formerly registered as Leiter's Compounding","San Jose","CA","7/3/2025","Yes","Open","Yes","11/25/2025"],["Wells Pharma of Houston, LLC","Houston","TX","4/13/2026","Yes","Open","Yes","12/3/2025"],["Wells Pharmacy, Inc.","Dyersburg","TN","4/9/2026","Yes","Open","Yes","11/28/2025"],["Wesley Pharmaceuticals","Orlando","FL","3/16/2026","No","FMD-145 Letter Issued 6/17/","Yes","11/22/2025"],["White Label Pharmacy dba Nova Pharmacy","Katy","TX","Not yet inspected","N/A","N/A","Yes","12/16/2025"],["Wilcrest Pharmaceuticals, Inc.","Houston","TX","Not yet inspected","N/A","N/A","Yes","12/2/2025"],["Willowbend Pharma Select, LLC","Houston","TX","Not yet inspected","N/A","N/A","Yes","12/12/2025"],["Xseer Pharmaceuticals, Inc.","Los Angeles","CA","Not yet inspected","N/A","N/A","Yes","12/25/2025"]].map(r=>({name:r[0],city:r[1],st:r[2],insp:r[3],f483:r[4],action:r[5],bulk:r[6],recent:r[7],kind:'503B'}));
+let PARTNERS=[], dShown=PAGE, DB=null, UID=null, IS_OWNER=false;
+const statesOf=p=>/^all$/i.test((p.states||'').trim())?['ALL']:(p.states||'').toUpperCase().split(/[^A-Z]+/).filter(x=>x.length===2);
+function renderDir(){const q=dq.value.trim().toLowerCase(),st=dState.value,ty=dType.value;
+  const parts=PARTNERS.map(p=>({...p,kind:'partner',st:(p.city||'').split(',').pop().trim().toUpperCase().slice(0,2)}));
+  let list=[...parts,...FAC].filter(x=>(!q||(x.name+' '+(x.city||'')).toLowerCase().includes(q))
+    &&(!st||x.st===st||(x.kind==='partner'&&(statesOf(x).includes('ALL')||statesOf(x).includes(st))))
+    &&(!ty||(ty==='partner'?x.kind==='partner':ty==='503B'?x.kind==='503B':x.kind==='partner'||!/open/i.test(x.action))));
+  dirList.innerHTML='';
+  list.slice(0,dShown).forEach(x=>{const d=document.createElement('div');d.className='ph';
+    if(x.kind==='partner'){d.innerHTML=`<div><b></b><div class="loc"></div></div><div class="insp">${IS_OWNER?'<button class="btn ghost sm" type="button">Remove</button>':''}</div><div class="tags"><span class="tag partner">Partner · ${esc(x.type||'')}</span><span class="tag">Ships to ${esc(statesOf(x).includes('ALL')?'all states':statesOf(x).join(', ')||'—')}</span>${x.makes?`<span class="tag">${esc(x.makes)}</span>`:''}${x.site&&/^https:\/\//.test(x.site)?`<a class="tag" href="${esc(x.site)}" target="_blank" rel="noopener">Website ↗</a>`:''}</div>`;
+      d.querySelector('b').textContent=x.name;d.querySelector('.loc').textContent=x.city||'';
+      const rb=d.querySelector('.insp button');if(rb)rb.onclick=()=>removePartner(x.id)}
+    else{const open=/open/i.test(x.action);d.innerHTML=`<div><b></b><div class="loc">${esc(x.city)}, ${x.st}</div></div><div class="insp">Inspected: ${esc(x.insp)}</div><div class="tags"><span class="tag">FDA-registered 503B</span>${x.bulk==='Yes'?'<span class="tag">Sterile from bulk</span>':''}${x.f483==='Yes'?'<span class="tag warn">Form 483 issued</span>':''}${open?'<span class="tag warn">FDA action open</span>':x.action&&x.action!=='N/A'?`<span class="tag">Last action: ${esc(x.action)}</span>`:''}${x.recall==='Yes'?'<span class="tag warn">Recall</span>':''}</div>`;d.querySelector('b').textContent=x.name}
+    dirList.appendChild(d)});
+  if(!list.length)dirList.innerHTML='<p class="note">No pharmacies match. Clear the search or pick another state.</p>';
+  moreBar(moreDir,dShown,list.length,v=>{dShown=v;renderDir();if(v===PAGE)document.getElementById('pharmacies').scrollIntoView({behavior:'smooth'})},'pharmacies')}
+[dq,dState,dType].forEach(el=>el.addEventListener(el===dq?'input':'change',()=>{dShown=PAGE;renderDir()}));
+stDirLink.onclick=()=>{if(curSt){dState.value=curSt;dShown=PAGE;renderDir()}};
+async function savePartners(list){if(!DB)throw new Error('offline');const ref=DB.doc('data/partners');await ref.set({list})}
+partnerForm.addEventListener('submit',async e=>{e.preventDefault();if(!pName.value.trim())return;
+  const p={id:'p'+Date.now(),name:pName.value.trim(),type:pType.value,city:pCity.value.trim(),states:pStates.value.trim(),makes:pMakes.value.trim(),site:pSite.value.trim()};
+  pMsg.textContent='Saving…';try{await savePartners([...PARTNERS,p]);partnerForm.reset();pMsg.textContent='Added'}catch(err){pMsg.textContent='Could not save. Only the owner can add partners.'}});
+async function removePartner(id){try{await savePartners(PARTNERS.filter(p=>p.id!==id))}catch(e){}}
+
+/* ===== Ship-to state filter ===== */
+let SHIP=store.get('brg-ship','');
+function shipLabel(st){if(!st)return '';const lic=(LIC[st]||{}).status||'none';const n=FAC.filter(f=>f.st===st).length;const pp=PARTNERS.filter(p=>{const a=statesOf(p);return a.includes('ALL')||a.includes(st)}).length;
+  return lic==='licensed'?`<b>We can source into ${SN[st]}.</b> ${pp?pp+' partner pharmac'+(pp===1?'y':'ies')+' ship there, and ':''}${n} FDA-registered 503B facilit${n===1?'y is':'ies are'} based there. <a href="#pharmacies" data-ship-dir>See them</a>`:lic==='pending'?`<b>${SN[st]} licensing is pending.</b> Send a request and we'll confirm timing.`:`<b>We don't ship into ${SN[st]} yet.</b> Send a request and we'll look for a licensed partner.`}
+function applyShip(){document.querySelectorAll('.shipSel').forEach(el=>el.value=SHIP);[shipNote,shipNote2].forEach(el=>{el.hidden=!SHIP;el.innerHTML=shipLabel(SHIP)});
+  document.querySelectorAll('[data-ship-dir]').forEach(a=>a.onclick=()=>{dState.value=SHIP;dShown=PAGE;renderDir()});
+  if(cur)drawFinder()}
+document.querySelectorAll('.shipSel').forEach(el=>el.onchange=()=>{SHIP=el.value;store.set('brg-ship',SHIP);applyShip()});
+
+/* ===== Watchlist alerts ===== */
+let SEEN=store.get('brg-seen',{});
+function checkAlerts(){if(!D.length)return;const msgs=[];
+  watched.forEach(id=>{const r=D.find(x=>x.id===id);const now=r?sig(r)[1]:'Off the FDA list';const was=SEEN[id];
+    if(was&&was!==now)msgs.push(`<li><b>${esc(id.split('|')[0])}</b>: ${esc(was)} → ${esc(now)}</li>`);if(!was)SEEN[id]=now});
+  store.set('brg-seen',SEEN);
+  alertBox.hidden=!msgs.length;if(msgs.length){alertBox.innerHTML=`<div><b>${msgs.length} update${msgs.length===1?'':'s'} on drugs you watch</b><ul>${msgs.join('')}</ul></div><button class="btn sm ghost" type="button" id="alertOk">Got it</button>`;
+    alertOk.onclick=()=>{watched.forEach(id=>{const r=D.find(x=>x.id===id);SEEN[id]=r?sig(r)[1]:'Off the FDA list'});store.set('brg-seen',SEEN);syncWatch();alertBox.hidden=true}}}
+async function syncWatch(){if(!DB||!UID)return;try{await DB.doc('data/users/'+UID+'/watch').set({ids:[...watched],seen:SEEN})}catch(e){}}
+
+/* ===== Reviews ===== */
+let REVS=[], HIDDEN=[], myRating=0, revShown=PAGE, USERNS=null;
+for(let k=1;k<=5;k++){const b=document.createElement('button');b.type='button';b.textContent='★';b.setAttribute('aria-label',k+' star'+(k>1?'s':''));b.onclick=()=>{myRating=k;[...rateBtns.children].forEach((x,j)=>x.classList.toggle('on',j<k))};rateBtns.appendChild(b)}
+async function renderRevs(){const vis=REVS.filter(r=>!HIDDEN.includes(r.id)&&r.rating>=1&&r.rating<=5).sort((a,b)=>(b.at||'').localeCompare(a.at||''));
+  if(!vis.length){revHead.innerHTML='<span class="note">No reviews yet. Reviews come only from signed-in, verified providers.</span>';revList.innerHTML='';moreRev.innerHTML='';return}
+  const avg=vis.reduce((a,r)=>a+r.rating,0)/vis.length;
+  revHead.innerHTML=`<span class="avg">${avg.toFixed(1)}</span><span class="stars">${'★'.repeat(Math.round(avg))}${'☆'.repeat(5-Math.round(avg))}</span><span class="note">${vis.length} verified review${vis.length===1?'':'s'}</span>`;
+  let names={};try{if(USERNS)names=await USERNS.profiles(vis.slice(0,revShown).map(r=>r.id))}catch(e){}
+  revList.innerHTML='';vis.slice(0,revShown).forEach(r=>{const d=document.createElement('div');d.className='rev';
+    d.innerHTML=`<div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><p></p><div class="who"><span class="nm"></span><span>· ${esc(r.role||'')}</span><span>· ${r.at?fmt(r.at.slice(0,10)):''}</span><span class="tag">Verified</span>${IS_OWNER?'<button class="btn ghost sm" type="button">Hide</button>':''}</div>`;
+    d.querySelector('p').textContent=r.text||'';d.querySelector('.nm').textContent=(names[r.id]&&names[r.id].name)||'Verified provider';
+    const hb=d.querySelector('.who button');if(hb)hb.onclick=async()=>{try{await DB.doc('data/reviewmod').set({hidden:[...HIDDEN,r.id]})}catch(e){}};
+    revList.appendChild(d)});
+  moreBar(moreRev,revShown,vis.length,v=>{revShown=v;renderRevs()},'reviews')}
+revForm.addEventListener('submit',async e=>{e.preventDefault();if(!myRating){revMsg.textContent='Pick a star rating first.';return}
+  const t=revText.value.trim();if(t.length<10){revMsg.textContent='Write at least a sentence.';return}
+  revMsg.textContent='Posting…';try{await DB.collection('reviews').doc(UID).set({rating:myRating,role:revRole.value,text:t.slice(0,600),at:new Date().toISOString()});revMsg.textContent='Posted. Thank you.'}catch(err){revMsg.textContent='Could not post. Reviews need a signed-in provider account.'}});
+
+/* Pricing is never shown on the public site. */
+let PUBPRICE=null;
+
+/* Polysubstance */
+const dotsEl=document.getElementById('dots');for(let k=0;k<100;k++)dotsEl.appendChild(document.createElement('i'));
+function setDots(p){[...dotsEl.children].forEach((d,k)=>{setTimeout(()=>d.classList.toggle('on',k<p),matchMedia('(prefers-reduced-motion: reduce)').matches?0:k*6)})}
+setDots(73);
+document.querySelectorAll('#poly .combo-tabs .chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('#poly .combo-tabs .chip').forEach(x=>x.setAttribute('aria-pressed',x===b));polyBig.innerHTML=b.dataset.p+'<small>%</small>';polyLine.textContent=b.dataset.l;setDots(+b.dataset.p)});
+const TR=[['All overdose deaths',105007,79384],['Fentanyl & synthetic opioids',72776,47735],['Meth & other stimulants',34855,28722],['Cocaine',29449,21945]];
+const tmax=105007;
+TR.forEach(([n,a,b])=>{const d=document.createElement('div');d.className='tr';d.innerHTML=`<div>${n}<br><span class="chg">−${Math.round((1-b/a)*100)}%</span></div><div class="bars2"><span class="b" style="width:${a/tmax*100}%">2023 · ${a.toLocaleString()}</span><span class="b y24" style="width:${b/tmax*100}%">2024 · ${b.toLocaleString()}</span></div>`;trend.appendChild(d)});
+
+/* Quality meter */
+const cbs=[...checks.querySelectorAll('input')];
+cbs.forEach((c,i)=>c.id='q'+i);
+function meterUp(){const n=cbs.filter(c=>c.checked).length;meter.style.width=(n/cbs.length*100)+'%';meterTxt.textContent=n===cbs.length?'All eight criteria met.':`${n} of ${cbs.length} criteria confirmed.`}
+cbs.forEach(c=>c.onchange=meterUp);meterUp();
+
+
+/* ===== Views: home, pharmacies, polysubstance ===== */
+const VIEWS={pharmacies:1,poly:1};
+function showView(v){const view=VIEWS[v]?v:'home';
+  document.querySelectorAll('main > section, main > .hero').forEach(sec=>{const sv=sec.dataset.view||'home';sec.hidden=sv!==view});
+  document.querySelectorAll('#navlinks a, .mnav a').forEach(a=>a.classList.toggle('on',view!=='home'&&a.getAttribute('href')==='#'+view));
+  return view}
+function route(){const h=location.hash.replace('#','');const view=showView(h);
+  if(view!=='home')window.scrollTo(0,0);else if(h&&document.getElementById(h))document.getElementById(h).scrollIntoView();}
+addEventListener('hashchange',route);
+document.querySelectorAll('[data-home]').forEach(a=>a.onclick=e=>{e.preventDefault();history.pushState(null,'',location.pathname);showView('home');window.scrollTo(0,0)});
+route();
+
+/* Active nav */
+const links=[...document.querySelectorAll('#navlinks a')];
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-40% 0px -55% 0px'});
+document.querySelectorAll('main section[id]').forEach(s=>io.observe(s));
+
+/* Catalog */
+const CAT=[["Semaglutide vials","Semaglutide / B6 or B12","Injectable vial","0.25 mg / 0.5 mg per 0.5 mL","2 mL (1 mg total)","Clinic",0],["Semaglutide vials","Semaglutide / B6 or B12","Injectable vial","0.5 mg / 0.5 mg per 0.5 mL","2 mL (2 mg total)","Clinic",0],["Semaglutide vials","Semaglutide / B6 or B12","Injectable vial","0.75 mg / 0.5 mg per 0.5 mL","2 mL (3 mg total)","Clinic",0],["Semaglutide vials","Semaglutide / B6 or B12","Injectable vial","1 mg / 1 mg per 0.5 mL","2 mL (4 mg total)","Clinic",0],["Semaglutide vials","Semaglutide / B6 or B12","Injectable vial","1.7 mg / 1 mg per 0.5 mL","2 mL (6.8 mg total)","Clinic",0],["Semaglutide vials","Semaglutide / B6 or B12","Injectable vial","2.5 mg / 1 mg per 0.5 mL","2 mL (10 mg total)","Clinic",0],["Semaglutide vials","Semaglutide / B6 or B12","Injectable vial","5 mg / 1 mg per 1 mL","5 mL (25 mg total)","Clinic",0],["Tirzepatide vials","Tirzepatide / B6 or B12","Injectable vial","2.5 mg / 1 mg per 0.5 mL","2 mL (10 mg total)","Clinic",0],["Tirzepatide vials","Tirzepatide / B6 or B12","Injectable vial","5 mg / 1 mg per 0.5 mL","2 mL (20 mg total)","Clinic",0],["Tirzepatide vials","Tirzepatide / B6 or B12","Injectable vial","7.5 mg / 1 mg per 0.5 mL","2 mL (30 mg total)","Clinic",0],["Tirzepatide vials","Tirzepatide / B6 or B12","Injectable vial","10 mg / 1 mg per 0.5 mL","2 mL (40 mg total)","Clinic",0],["Tirzepatide vials","Tirzepatide / B6 or B12","Injectable vial","12.5 mg / 1 mg per 0.5 mL","2 mL (50 mg total)","Clinic",0],["Tirzepatide vials","Tirzepatide / B6 or B12","Injectable vial","15 mg / 1 mg per 0.5 mL","2 mL (60 mg total)","Clinic",0],["Tirzepatide vials","Tirzepatide / B6 or B12","Injectable vial","15 mg / 1 mg per 1 mL","5 mL (75 mg total)","Clinic",0],["Tirzepatide vials","Tirzepatide / B6 or B12","Injectable vial","15 mg / 1 mg per 0.5 mL","5 mL (150 mg total)","Clinic",0],["GLP stack vials","Semaglutide / Tirzepatide","Injectable vial","0.2 mg / 2 mg per 0.5 mL","2 mL (0.8 mg / 8 mg)","Clinic",0],["GLP stack vials","Semaglutide / Tirzepatide","Injectable vial","0.4 mg / 4 mg per 0.5 mL","2 mL (1.6 mg / 16 mg)","Clinic",0],["GLP stack vials","Semaglutide / Tirzepatide","Injectable vial","0.6 mg / 6 mg per 0.5 mL","2 mL (2.4 mg / 24 mg)","Clinic",0],["GLP stack vials","Semaglutide / Tirzepatide","Injectable vial","0.8 mg / 8 mg per 0.5 mL","2 mL (3.2 mg / 32 mg)","Clinic",0],["GLP stack vials","Semaglutide / Tirzepatide","Injectable vial","1 mg / 10 mg per 0.5 mL","2 mL (4 mg / 40 mg)","Clinic",0],["GLP stack vials","Semaglutide / Tirzepatide","Injectable vial","1.5 mg / 12 mg per 0.5 mL","2 mL (6 mg / 48 mg)","Clinic",0],["Peptides & wellness vials","BPC-157","Injectable vial","3 mg / mL","5 mL","Clinic",0],["Peptides & wellness vials","CJC-1295 / Ipamorelin","Injectable vial","1.5 mg / 2.5 mg per mL","6 mL","Clinic",0],["Peptides & wellness vials","NAD+","Injectable vial","100 mg / mL","5 mL","Clinic",0],["Peptides & wellness vials","NAD+","Injectable vial","100 mg / mL","10 mL","Clinic",0],["Peptides & wellness vials","GHK-Cu","Injectable vial","10 mg / mL","5 mL","Clinic",0],["Peptides & wellness vials","Lipo-Mini Mix","Injectable vial","—","10 mL","Clinic",0],["Peptides & wellness vials","Lipo-Mini Mix","Injectable vial","—","30 mL","Clinic",0],["Obesity / GLP-1","Liraglutide","Injectable","6 mg / mL","8 mL vial","503A",1],["Obesity / GLP-1","Liraglutide","Injectable","6 mg / mL","15 mL vial","503A",1],["Obesity / GLP-1","Semaglutide Sublingual","Suspension","2.5 mg / mL","30 mL","503A",0],["Obesity / GLP-1","Semaglutide + Glycine","Injectable","2.5 mg / 7.5 mg per mL","1 mL vial","503A",1],["Obesity / GLP-1","Semaglutide + Glycine","Injectable","2.5 mg / 7.5 mg per mL","2 mL vial","503A",1],["Obesity / GLP-1","Semaglutide + Glycine","Injectable","2.5 mg / 7.5 mg per mL","4.5 mL vial","503A",1],["Obesity / GLP-1","Semaglutide + Niacinamide","Injectable","2.5 mg / 2 mg per mL","1 mL vial","503A",1],["Obesity / GLP-1","Semaglutide + Niacinamide","Injectable","2.5 mg / 2 mg per mL","2 mL vial","503A",1],["Obesity / GLP-1","Semaglutide + Niacinamide","Injectable","2.5 mg / 2 mg per mL","4.5 mL vial","503A",1],["Obesity / GLP-1","Semaglutide / Metformin","Capsule","3 mg / 100 mg","Per capsule","503A",0],["Obesity / GLP-1","Semaglutide / Metformin","Capsule","7 mg / 100 mg","Per capsule","503A",0],["Obesity / GLP-1","Semaglutide / Metformin","Capsule","14 mg / 100 mg","Per capsule","503A",0],["Obesity / GLP-1","Tirzepatide + Glycine","Injectable","16.6 mg / 7.5 mg per mL","2 mL vial","503A",1],["Obesity / GLP-1","Tirzepatide + Glycine","Injectable","16.6 mg / 7.5 mg per mL","4.5 mL vial","503A",1],["Obesity / GLP-1","Tirzepatide + Niacinamide","Injectable","16.6 mg / 2 mg per mL","2 mL vial","503A",1],["Obesity / GLP-1","Tirzepatide + Niacinamide","Injectable","16.6 mg / 2 mg per mL","4.5 mL vial","503A",1],["Obesity / GLP-1","Ondansetron (commercial)","Tablet","4 mg","Per tablet","cGMP",0],["Obesity / GLP-1","Ondansetron (commercial)","Tablet","8 mg","Per tablet","cGMP",0],["Metabolic support","MI / B-Complex + Chromium + Carnitine (Trimtropic II)","Injectable","20/40/5/33/2 mg / 1 mg / 25 mcg / 25 mg per mL","10 mL vial","503A",0],["Metabolic support","Phendimetrazine Tartrate (commercial)","Tablet","35 mg","Per tablet","cGMP",0],["Metabolic support","Phentermine / 7-Keto DHEA / Calcium Pyruvate SR","Capsule","15 mg / 10 mg / 100 mg","Per capsule","503A",0],["Metabolic support","Phentermine / 7-Keto DHEA / Calcium Pyruvate SR","Capsule","30 mg / 10 mg / 100 mg","Per capsule","503A",0],["Metabolic support","Phentermine / 7-Keto DHEA / Calcium Pyruvate SR","Capsule","37.5 mg / 10 mg / 100 mg","Per capsule","503A",0],["Metabolic support","Phentermine HCl (commercial)","Tablet","37.5 mg","Per tablet","cGMP",0],["Metabolic support","Cyanocobalamin B12 (commercial)","Injectable","1,000 mcg / mL","10 mL vial","cGMP",0],["Metabolic support","Cyanocobalamin B12 (commercial)","Injectable","1,000 mcg / mL","30 mL vial","cGMP",0],["Metabolic support","Sermorelin","Lyophilized vial","15 mg / vial","Per kit","503A",0],["Metabolic support","Sermorelin","Rapid dissolve mini-tab","400 mcg","Per tablet","503A",0],["Metabolic support","Sermorelin / Theanine","Rapid dissolve mini-tab","300 mcg / 2.5 mg","Per tablet","503A",0],["Metabolic support","Sermorelin","Injectable solution","3 mg / mL","2 mL vial","503A",1],["Metabolic support","Sermorelin","Injectable solution","3 mg / mL","5 mL vial","503A",1],["Metabolic support","VIP","Nasal spray","500 mcg / mL","12 mL bottle","503A",1],["Metabolic support","Theanine / Magnesium / Melatonin","Capsule","50 mg / 50 mg / 3 mg","Per capsule","503A",0],["Metabolic support","Theanine / Magnesium / Melatonin","Capsule","100 mg / 100 mg / 12 mg","Per capsule","503A",0],["Mitochondria","Methylene Blue (commercial)","Sterile solution","10 mg / mL","10 mL vial","cGMP",0],["Mitochondria","Methylene Blue (commercial)","Sterile solution","10 mg / mL","2 mL syringe (×5)","cGMP",0],["Mitochondria","NAD+","Lyophilized vial","1 g / vial","Per kit","503A",0],["Mitochondria","NAD+","Nasal spray","150 mg / mL","10 mL","503A",0],["Mitochondria","Glutathione-L","Injectable","200 mg / mL","10 mL vial","503A",1],["Mitochondria","Synapsin","Nasal spray","0.2 mg per 0.1 mL spray","15 mL","503A",1],["Mitochondria","Synapsin / Methylcobalamin","Nasal spray","10 mg / 0.2 mg per 0.1 mL spray","15 mL","503A",1],["Mitochondria","Synapsin / B12 / Alpha-GPC","Nasal spray","10 mg / 0.2 mg / 3.75 mg per 0.1 mL spray","15 mL","503A",1],["BHRT pellets","Estradiol pellet","Pellet","6, 10, 12.5, 15, 18, 20 or 25 mg","3 mm","503B",0],["BHRT pellets","Progesterone pellet","Pellet","50 or 100 mg","3 mm","503B",0],["BHRT pellets","Testosterone pellet","Pellet","12.5–87.5 mg","3 mm","503B",0],["BHRT pellets","Testosterone pellet","Pellet","100 mg","3 mm","503B",0],["BHRT pellets","Testosterone pellet","Pellet","200 mg","4.5 mm","503B",0],["BHRT pellets","Testosterone / Anastrozole pellet","Pellet","100 mg / 4 mg","3 mm","503B",0],["BHRT pellets","Testosterone / Anastrozole pellet","Pellet","200 mg / 8 mg","4.5 mm","503B",0],["BHRT pellets","Testosterone / Anastrozole pellet","Pellet","200 mg / 20 mg","4.5 mm","503B",0],["BHRT pellets","Trocar kit, disposable plastic tip","Insertion kit","3.2 mm","Each","503B",0],["BHRT pellets","Trocar kit, disposable stainless tip","Insertion kit","3.2 mm & 4.5 mm","Each","503B",0],["BHRT pellets","Trocar kit, reusable titanium or stainless","Insertion kit","3.2 mm & 4.5 mm","Each","503B",0],["BHRT pellets","Benzocaine / Lidocaine / Tetracaine numbing cream","Cream, Topi-Pump","20% / 6% / 4%","120 g","503B",0],["Male hormone therapies","Anastrozole","Rapid dissolve mini-tab","0.25 mg","Per mini-tab","503A",0],["Male hormone therapies","Anastrozole","Rapid dissolve mini-tab","0.5 mg","Per mini-tab","503A",0],["Male hormone therapies","Anastrozole (commercial)","Tablet","1 mg","Per tablet","cGMP",0],["Male hormone therapies","Clomid (commercial)","Tablet","50 mg","Per tablet","cGMP",0],["Male hormone therapies","Clomiphene Citrate / Pregnenolone","Capsule","45 mg / 20 mg","Per capsule","503A",0],["Male hormone therapies","Clomiphene Citrate / Anastrozole","Capsule","22 mg / 0.25 mg","Per capsule","503A",0],["Male hormone therapies","Clomiphene Citrate / Anastrozole","Capsule","45 mg / 0.25 mg","Per capsule","503A",0],["Male hormone therapies","Depo-Testosterone (commercial, generic available)","Injectable","200 mg / mL","1 mL or 10 mL vial","cGMP",0],["Male hormone therapies","Exemestane","Capsule","20 mg","Per capsule","503A",0],["Male hormone therapies","Enclomiphene Citrate","Capsule","5 mg","Per capsule","503A",0],["Male hormone therapies","Enclomiphene Citrate","Capsule","12.5 mg","Per capsule","503A",0],["Male hormone therapies","Enclomiphene Citrate","Capsule","25 mg","Per capsule","503A",0],["Male hormone therapies","Enclomiphene Citrate","Capsule","50 mg","Per capsule","503A",0],["Male hormone therapies","Finasteride (commercial)","Tablet","5 mg","Per tablet","cGMP",0],["Male hormone therapies","Letrozole (commercial)","Tablet","2.5 mg","Per tablet","cGMP",0],["Male hormone therapies","Nandrolone Decanoate","Injectable","200 mg / mL","5 mL vial","503A",0],["Male hormone therapies","Tamoxifen Citrate (commercial)","Tablet","20 mg","Per tablet","cGMP",0],["Male hormone therapies","Bi-Test (Enanthate 75% / Cypionate 25%)","Injectable","200 mg / mL","5 mL vial","503A",0],["Male hormone therapies","Testosterone Cypionate / Anastrozole","Injectable","200 mg / 1 mg per mL","5 mL vial","503A",0],["Male hormone therapies","Testosterone Cypionate / Anastrozole","Injectable","200 mg / 0.5 mg per mL","5 mL vial","503A",0],["Male hormone therapies","Testosterone Cypionate / Enanthate (90/10)","Injectable","200 mg / mL","4 mL vial","503A",0],["Male hormone therapies","Testosterone Cypionate / Enanthate (90/10)","Injectable","200 mg / mL","5 mL vial","503A",0],["Male hormone therapies","Testosterone Cypionate / DHEA","Injectable","200 mg / 25 mg per mL","4 mL vial","503A",0],["Male hormone therapies","Testosterone Cypionate / DHEA","Injectable","200 mg / 25 mg per mL","5 mL vial","503A",0],["Male hormone therapies","Testosterone Propionate","Injectable","100 mg / mL","5 mL vial","503A",0],["Male hormone therapies","Tri-Test (Cyp 50% / Enan 37.5% / Prop 12.5%)","Injectable","200 mg / mL","4 mL vial","503A",0],["Male hormone therapies","Tri-Test (Cyp 50% / Enan 37.5% / Prop 12.5%)","Injectable","200 mg / mL","5 mL vial","503A",0],["Male hormone therapies","Ultra-Test (Cyp 80% / Prop 20%)","Injectable","200 mg / mL","5 mL vial","503A",0],["Male sexual health","Arginine / Citrulline / Taurine / Vitamin C","Powder packet","1.5 g / 1.5 g / 1 g / 300 mg","Per packet","503A",0],["Male sexual health","Bremelanotide (PT-141)","Nasal spray","10 mg / mL (1 mg / spray)","5 mL","503A",0],["Male sexual health","Oxytocin / Sildenafil","Gel-troche","50 U / 100 mg","Per troche","503A",1],["Male sexual health","Oxytocin / Sildenafil","Gel-troche","125 U / 100 mg","Per troche","503A",1],["Male sexual health","Oxytocin / Sildenafil","Chewable tablet","60 U / 50 mg","Per tablet","503A",0],["Male sexual health","Oxytocin / Tadalafil","Chewable tablet","125 U / 25 mg","Per tablet","503A",0],["Male sexual health","Oxytocin / Tadalafil","Mini-troche","125 U / 20 mg","Per troche","503A",1],["Male sexual health","Oxytocin / Vardenafil","Gel-troche","125 U / 20 mg","Per troche","503A",1],["Male sexual health","Sildenafil","Gel-troche","50 mg","Per troche","503A",1],["Male sexual health","Sildenafil","Gel-troche","100 mg","Per troche","503A",1],["Male sexual health","Tadalafil","Chewable tablet","25 mg","Per tablet","503A",0],["Male sexual health","Tadalafil / Citrulline / B6 / B12 / Zinc (\"Superman\", daily)","Chewable tablet","6 mg / 50 mg / 2 mg / 1 mg / 25 mg","Per tablet","503A",0],["Male sexual health","Tadalafil / Ginger Root (daily)","Capsule","7.5 mg / 190 mg","Per capsule","503A",0],["Male sexual health","Tadalafil / Testosterone (daily)","Mini-troche","2.5 mg / 1 mg","Per mini-troche","503A",1],["Male sexual health","Tadalafil / Testosterone (daily)","Mini-troche","5 mg / 2 mg","Per mini-troche","503A",1],["Male sexual health","Tadalafil / Vardenafil Hard-Tab (mint)","Tablet","20 mg / 8 mg","Per tablet","503A",0],["Male sexual health","PT-141 / Caffeine","Rapid dissolve mini-tab","2 mg / 50 mg","Per mini-tab","503A",0],["Male sexual health","PT-141 / Tadalafil / Oxytocin","Rapid dissolve mini-tab","2 mg / 10 mg / 100 IU","Per mini-tab","503A",0],["Male sexual health","PT-141 / Tadalafil / Oxytocin","Gel-troche","2 mg / 10 mg / 100 IU","Per troche","503A",1],["Male sexual health","PT-141 / Tadalafil / Oxytocin / Testosterone","Gel-troche","2 mg / 10 mg / 100 IU / 25 mg","Per troche","503A",1],["Male sexual health","Phenylephrine HCl","Injectable","1 mg / mL (0.1%)","5 mL vial","503A",0],["Male sexual health","Quad 1 (PAP / PHE / ALP / ATR)","Injectable","0.9 mg / 0.2 mg / 20 mcg / 0.02 mg per mL","1 mL vial","503A",1],["Male sexual health","Quad 2 (PAP / PHE / ALP / ATR)","Injectable","9 mg / 1 mg / 10 mcg / 0.1 mg per mL","1 mL vial","503A",1],["Male sexual health","Quad 3 (PAP / PHE / ALP / ATR)","Injectable","30 mg / 3 mg / 30 mcg / 0.1 mg per mL","1 mL vial","503A",1],["Male sexual health","Quad 4 (PAP / PHE / ALP / ATR)","Injectable","30 mg / 3 mg / 60 mcg / 0.2 mg per mL","1 mL vial","503A",1],["Male sexual health","Trimix 1 (Papaverine / Phentolamine / Alprostadil)","Injectable","30 mg / 1 mg / 10 mcg per mL","1 mL vial","503A",1],["Male sexual health","Trimix 2 (Papaverine / Phentolamine / Alprostadil)","Injectable","30 mg / 2 mg / 20 mcg per mL","1 mL vial","503A",1],["Male sexual health","Trimix 3 (Papaverine / Phentolamine / Alprostadil)","Injectable","30 mg / 3 mg / 60 mcg per mL","1 mL vial","503A",1],["Female hormone therapies","Depo-Estradiol Cypionate (commercial)","Injectable","5 mg / mL","5 mL vial","cGMP",0],["Female hormone therapies","Testosterone Cypionate in Grapeseed Oil (low dose)","Injectable","50 mg / mL","1 mL vial","503A",0],["Female hormone therapies","Testosterone Cypionate in Grapeseed Oil (low dose)","Injectable","50 mg / mL","1.5 mL vial","503A",0],["Female hormone therapies","Testosterone Cypionate in Grapeseed Oil (low dose)","Injectable","20 mg / mL","5 mL vial","503A",0],["Female hormone therapies","BiEst (Estriol 80% / Estradiol 20%) cream","Cream","0.5–1.5 mg / g","Qty 30 / 60 / 90","503A",0],["Female hormone therapies","BiEst (Estriol 80% / Estradiol 20%) cream","Cream","2–5 mg / g","Qty 30 / 60 / 90","503A",0],["Female hormone therapies","BiEst (Estriol 50% / Estradiol 50%) cream","Cream","1, 2 or 2.5 mg / g","Qty 30 / 60 / 90","503A",0],["Female hormone therapies","Estriol cream","Cream","1 mg / g","Qty 30 / 60 / 90","503A",0],["Female hormone therapies","Estriol cream","Cream","2 mg / g","Qty 30 / 60 / 90","503A",0],["Female hormone therapies","Progesterone cream","Cream","20, 30 or 40 mg / g","Qty 30 / 60 / 90","503A",0],["Female hormone therapies","Progesterone cream","Cream","50, 100 or 200 mg / g","Qty 30 / 60 / 90","503A",0],["Female hormone therapies","Progesterone capsules (olive oil, SR or IR)","Capsule","25 or 50 mg","Qty 30 / 60 / 90","503A",0],["Female hormone therapies","Progesterone capsules (olive oil, SR or IR)","Capsule","75, 125 or 150 mg","Qty 30 / 60 / 90","503A",0],["Female hormone therapies","Progesterone capsules (olive oil, SR or IR)","Capsule","175 or 225 mg","Qty 30 / 60 / 90","503A",0],["Female hormone therapies","Progesterone capsules IR (commercial)","Capsule","100 or 200 mg","Each","cGMP",0],["Female hormone therapies","Progesterone gel-troches","Gel-troche","115 mg","Qty 30 / 60 / 90","503A",1],["Female hormone therapies","Progesterone gel-troches","Gel-troche","175 mg","Qty 30 / 60 / 90","503A",1],["Female sexual health","Aminophylline / Arginine","Gel","3% / 6%","8 mL","503A",0],["Female sexual health","Bremelanotide (PT-141)","Nasal spray","10 mg / mL (1 mg / spray)","5 mL","503A",0],["Female sexual health","Hyaluronic Acid / DHEA / Vitamin E","Lubricating gel","0.5% / 1% / 50 IU per mL","8 mL","503A",0],["Female sexual health","Sildenafil / Aminophylline / Arginine","Cream","2% / 3% / 6%","8 mL","503A",0],["Female sexual health","Sildenafil / Aminophylline / Arginine / Testosterone","Cream","2% / 3% / 6% / 0.1%","8 mL","503A",0],["Female sexual health","Sildenafil","Gel","2%","8 mL","503A",0],["Female sexual health","Sildenafil / Arginine","Gel","2% / 3%","8 mL","503A",0],["Female sexual health","Sildenafil / Arginine / Menthol","Gel","2% / 3% / 1%","8 mL","503A",0],["Wellness","EDTA","Nasal spray","0.25% (0.25 mg / spray)","12 mL","503A",1],["Wellness","EDTA","Nasal spray","0.5% (0.5 mg / spray)","12 mL","503A",1],["Wellness","Naltrexone (LDN)","Capsule","1.5 mg","Per capsule","503A",0],["Wellness","Naltrexone (LDN)","Capsule","3 mg","Per capsule","503A",0],["Wellness","Naltrexone (LDN)","Capsule","4.5 mg","Per capsule","503A",0],["Wellness","N-DIM (commercial)","Capsule","200 mg","Per capsule","cGMP",0],["Wellness","Oxytocin","Rapid dissolve mini-tab","100 U","#30 mini-tabs","503A",0],["Wellness","Oxytocin","Mini-troche","50 U","Per mini-troche","503A",1],["Wellness","Oxytocin","Mini-troche","250 U","Per mini-troche","503A",1],["Wellness","Oxytocin","Nasal spray","10 U / spray","8 mL (#80 sprays)","503A",1],["Wellness","Oxytocin","Nasal spray","60 U / spray","8 mL (#80 sprays)","503A",1],["Wellness","DHEA SR (K100M)","Capsule","5 or 10 mg","Qty 30 / 60 / 90","503A",0],["Wellness","DHEA SR (K100M)","Capsule","25 or 50 mg","Qty 30 / 60 / 90","503A",0],["Wellness","DHEA-7-Keto SR (K100M)","Capsule","100 mg","Qty 30 / 60 / 90","503A",0],["Thyroid","Armour Thyroid (commercial)","Tablet","¼ – 4 grain","Per tablet","cGMP",0],["Thyroid","Liothyronine (T3) (commercial)","Tablet","5, 25 or 50 mcg","Per tablet","cGMP",0],["Thyroid","NP Thyroid (commercial)","Tablet","¼ – 2 grain","Per tablet","cGMP",0],["Thyroid","T3 IR or SR","Capsule","7.5–20 mcg stocked; custom strengths","Qty 30 / 60 / 90","503A",0],["Thyroid","T3 / T4 IR or SR","Capsule","4.5/19 to 27/114 mcg stocked; custom strengths","Qty 30 / 60 / 90","503A",0],["Dermatology","Facial: Ascorbic Acid / CoQ10 / Estriol / Tretinoin","Cream","5% / 1% / 0.6% / 0.01%","15 g","503A",0],["Dermatology","Facial: Ascorbic Acid / CoQ10 / Hyaluronic Acid / Lipoic Acid","Cream","5% / 1% / 0.1% / 2%","15 g","503A",0],["Dermatology","Facial: Ascorbic Acid / Estriol","Cream","15% / 0.3%","15 g","503A",0],["Dermatology","Facial: Estriol / Hyaluronic Acid","Gel","0.3% / 0.05%","15 g","503A",0],["Dermatology","Estriol with Aloe Vera","Cream","0.3% / 1%","15 g","503A",0],["Dermatology","Glycolic Acid topical peel","Solution","30%","15 g","503A",0],["Dermatology","GHK-Cu","Facial cream","0.5% (5 mg / g)","7 g","503A",0],["Dermatology","GHK-Cu","Facial cream","2.5% (25 mg / g)","7 g","503A",0],["Dermatology","GHK-Cu / Hyaluronic Acid (clinical strength)","Gel","0.055% / 0.5%","30 mL","503A",0],["Dermatology","Hydroquinone / Hydrocortisone / Tretinoin","Cream","6% / 2.5% / 0.05%","15 g","503A",0],["Dermatology","Hydroquinone with Vitamin D","Cream","4%","15 g","503A",0],["Dermatology","Hydroquinone with Vitamin D","Cream","8%","15 g","503A",0],["Dermatology","Hydroquinone / Kojic Acid","Cream","10% / 2%","15 g","503A",0],["Dermatology","Niacinamide","Gel","4%","15 g","503A",0],["Dermatology","REVIVE: Niacinamide / Panthenol / Estriol / Tretinoin","Facial gel","4% / 1% / 0.3% / 0.01%","15 g","503A",0],["Dermatology","Tretinoin / CoQ10","Gel","0.025% / 1%","15 g","503A",0],["Dermatology","BLT (Benzocaine / Lidocaine / Tetracaine), laser use","Cream","20% / 6% / 4%","30 g","503A",0],["Dermatology","BLT (Benzocaine / Lidocaine / Tetracaine), laser use","Cream","20% / 10% / 4%","30 g","503A",0],["Alopecia","Biotin / Finasteride","Capsule","5 mg / 1 mg","Per capsule","503A",0],["Alopecia","Finasteride (commercial)","Tablet","1 mg","Per tablet","cGMP",0],["Alopecia","GHK-Cu","Scalp foam","0.5%","50 mL","503A",0],["Alopecia","GHK-Cu","Topical spray","0.5%","25 mL","503A",0],["Alopecia","Latanoprost (LatanoSTIM)","Hair cream","0.06%","30 g","503A",0],["Alopecia","Latanoprost (LatanoSTIM)","Hair serum","0.06%","30 g","503A",0],["Alopecia","Latanoprost / Minoxidil","Hair cream","0.06% / 10%","30 g","503A",0],["Alopecia","Latanoprost / Minoxidil","Hair serum","0.06% / 2.2%","30 g","503A",0],["Alopecia","Minoxidil / GHK-Cu","Foam","5% / 0.5%","50 mL pump","503A",0],["Alopecia","Minoxidil / Ketoconazole / Latanoprost / Finasteride","Lotion","5% / 2% / 0.003% / 0.1%","30 mL","503A",0],["Alopecia","Minoxidil / Tretinoin / Progesterone / Finasteride","Solution","5% / 0.025% / 0.25% / 0.1%","50 mL","503A",0],["Alopecia","Minoxidil / Ketoconazole / Latanoprost","Lotion","10% / 2% / 0.06%","30 mL","503A",0],["Alopecia","Minoxidil / Latanoprost","Lotion","10% / 0.06%","30 mL","503A",0],["Alopecia","Radiant BROW (Minoxidil / Latanoprost)","Solution","4% / 0.08%","2 × 15 mL","503A",0],["Alopecia","Radiant HAIR (Minoxidil / Latanoprost)","Solution","4% / 0.08%","60 mL","503A",0],["Alopecia","Valproic Acid","Spray","5%","25 mL","503A",0],["Alopecia","Zinc Thymulin / GHK-Cu","Spray","0.001% / 0.5%","25 mL","503A",1],["Alopecia","Zinc Thymulin","Spray","0.001%","25 mL","503A",1]].map((r,i)=>({id:i,cat:r[0],name:r[1],form:r[2],st:r[3],size:r[4],type:r[5],cold:!!r[6]}));
+let catShown=PAGE, catArea='All', picked=new Set(store.get('brg-picked',[]));
+const cats=['All',...new Set(CAT.map(r=>r.cat))];
+cats.forEach(c=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=c;b.setAttribute('aria-pressed',c==='All');
+  b.onclick=()=>{catArea=c;catShown=PAGE;catChips.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));renderCat()};catChips.appendChild(b)});
+const typeLabel=t=>t==='Clinic'?'Clinic & patient':t==='cGMP'?'Commercial':t;
+function renderCat(){
+  const q=cq.value.trim().toLowerCase(), co=coldOnly.checked;
+  const list=CAT.filter(r=>(catArea==='All'||r.cat===catArea)&&(!co||r.cold)&&(!q||[r.name,r.form,r.st,r.size,r.cat].join(' ').toLowerCase().includes(q)));
+  catList.innerHTML='';
+  const groups={};list.slice(0,catShown).forEach(r=>(groups[r.cat]=groups[r.cat]||[]).push(r));
+  Object.entries(groups).forEach(([g,items])=>{
+    const sec=document.createElement('div');sec.className='catgroup';
+    sec.innerHTML=`<h3>${g}<small>${list.filter(x=>x.cat===g).length} item${list.filter(x=>x.cat===g).length>1?'s':''}</small></h3><div class="items"></div>`;
+    const box=sec.querySelector('.items');
+    items.forEach(r=>{const d=document.createElement('div');d.className='item';const on=picked.has(r.id);
+      d.innerHTML=`<b>${r.name}</b><span class="spec">${r.form} · ${r.st}<br>${r.size}</span>${PUBPRICE&&PUBPRICE[r.id]!=null?`<span class="price">From $${Number(PUBPRICE[r.id]).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2})}</span>`:''}<span class="tags"><span class="tag">${typeLabel(r.type)}</span>${r.cold?'<span class="tag cold">Ships cold</span>':''}</span><button type="button" aria-pressed="${on}">${on?'Added':'Add to request'}</button>`;
+      d.querySelector('button').onclick=()=>{picked.has(r.id)?picked.delete(r.id):picked.add(r.id);store.set('brg-picked',[...picked]);renderCat()};
+      box.appendChild(d)});
+    catList.appendChild(sec)});
+  if(!list.length)catList.innerHTML='<p class="note" style="margin-top:20px">No products match. Clear the search or pick another category.</p>';
+  moreBar(moreCat,catShown,list.length,v=>{catShown=v;renderCat();if(v===PAGE)document.getElementById('catalog').scrollIntoView({behavior:'smooth'})},'products');
+  tray.hidden=!picked.size;trayTxt.textContent=`${picked.size} product${picked.size===1?'':'s'} in your request`;
+}
+cq.oninput=()=>{catShown=PAGE;renderCat()};coldOnly.onchange=()=>{catShown=PAGE;renderCat()};
+trayBtn.onclick=()=>prefill('Product request','Product request:\n'+CAT.filter(r=>picked.has(r.id)).map(r=>`- ${r.name}, ${r.form}, ${r.st}, ${r.size}`).join('\n')+'\nQuantity per item:\nShip-to state:');
+renderCat();
+renderDir();
+applyShip();
+
+
+/* Live FDA data on the public site: read openFDA directly (CORS-enabled) */
+async function fetchLiveFDA(){try{const base='https://api.fda.gov/drug/shortages.json?search=status:%22Current%22&limit=1000&skip=';let all=[],skip=0,total=1;
+  while(skip<total&&skip<5000){const r=await fetch(base+skip);if(!r.ok)throw new Error(r.status);const j=await r.json();total=j.meta.results.total;all=all.concat(j.results);skip+=1000}
+  const iso=d=>{if(!d)return'';const[m,dd,y]=d.split('/');return`${y}-${m}-${dd}`};const g={};
+  all.forEach(r=>{const k=(r.generic_name||'').trim();if(!k)return;const e=g[k]||(g[k]={n:k,f:r.dosage_form||'',a:(r.therapeutic_category||[])[0]||'Other',u:'',p:'9999',un:0,li:0,av:0,c:0,rs:{},co:new Set(),fa:new Set(),fl:new Set()});
+    e.c++;const ud=iso(r.update_date);if(ud>e.u)e.u=ud;const pd=iso(r.initial_posting_date);if(pd&&pd<e.p)e.p=pd;const a=(r.availability||'').toLowerCase();
+    if(a.startsWith('unavail'))e.un++;else if(a.startsWith('limit')){e.li++;r.company_name&&e.fl.add(r.company_name)}else if(a){e.av++;r.company_name&&e.fa.add(r.company_name)}
+    if(r.shortage_reason)e.rs[r.shortage_reason]=(e.rs[r.shortage_reason]||0)+1;if(r.company_name)e.co.add(r.company_name)});
+  const drugs=Object.values(g).sort((a,b)=>a.n.localeCompare(b.n)).map(e=>{if(SRC[e.n]){SRC[e.n].fda={available:[...e.fa],limited:[...e.fl]}}else SRC[e.n]={desc:'',fda:{available:[...e.fa],limited:[...e.fl]},web:[]};
+    return[e.n,e.f,e.a,e.u,e.p==='9999'?'':e.p,e.un,e.li,e.av,e.c,e.co.size,(Object.entries(e.rs).sort((a,b)=>b[1]-a[1])[0]||[''])[0]]});
+  if(drugs.length>=20)setFeed({syncedAt:new Date().toISOString(),records:all.length,drugs},true)}catch(e){}}
+
+setFeed(SEED,false);
+(async()=>{try{const db=window.claude&&window.claude.use?await window.claude.use('db'):null;
+  try{USERNS=window.claude&&window.claude.use?await window.claude.use('user'):null;if(USERNS){IS_OWNER=await USERNS.isOwner();UID=await USERNS.id()}}catch(e){}
+  if(!db){fetchLiveFDA();setInterval(fetchLiveFDA,30*60*1000);return}DB=db;
+  partnerForm.hidden=!IS_OWNER;revForm.hidden=!UID;revSignin.hidden=!!UID;
+  db.doc('data/partners').onSnapshot(sn=>{const f=sn.exists&&sn.data();PARTNERS=(f&&Array.isArray(f.list))?f.list:[];renderDir();applyShip()},()=>{});
+  db.collection('reviews').onSnapshot(qs=>{REVS=qs.docs.map(d=>({id:d.id,...d.data()}));renderRevs()},()=>{});
+  db.doc('data/reviewmod').onSnapshot(sn=>{HIDDEN=(sn.exists&&sn.data().hidden)||[];renderRevs()},()=>{});
+  if(UID){try{const w=await db.doc('data/users/'+UID+'/watch').get();if(w.exists){const v=w.data();(v.ids||[]).forEach(id=>watched.add(id));SEEN=Object.assign({},v.seen||{},SEEN);store.set('brg-watch2',[...watched]);store.set('brg-seen',SEEN);render();checkAlerts()}}catch(e){}}
+  db.doc('data/sourcing').onSnapshot(sn=>{const f=sn.exists&&sn.data();if(f&&f.drugs){SRC=Object.assign({},SRC,f.drugs);render()}},()=>{});
+  db.doc('data/licenses').onSnapshot(sn=>{const f=sn.exists&&sn.data();if(f&&f.states){LIC=Object.assign({},LIC,f.states);licDb=db;drawTiles()}else licDb=db},()=>{});
+  db.doc('data/feed').onSnapshot(snap=>{const f=snap.exists&&snap.data();if(f&&Array.isArray(f.drugs)&&f.drugs.length)setFeed(f,true)},()=>{live=false;renderSync()})}catch(e){}})();
+})();
+</script>
+</body></html>
