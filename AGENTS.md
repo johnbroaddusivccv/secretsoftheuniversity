@@ -15,14 +15,16 @@ Working rules for AI agents on this codebase. Read README.md first for project o
 - The brand persona is "The Registrar". The site never explains itself directly.
 
 ## Design tokens
-Sibling system: this site and the Broaddus Commerce site (`shop/`, served at secretsoftheuniversity.com/shop) share one visual language — cool monochrome, Inter, square corners. Georgia is the University's voice and is what sets this site apart.
-- Colors (dark, default): bg #0a0d12, bg2 #11151c, ink #eef1f5, muted #8b94a3, accent (`--gold`) #f5f7fa, steel (`--violet`) #7d8da3
-- Colors (light, `html.light`): bg #f7f8fa, bg2 #eceff3, ink #0e1116, muted #5b6472, accent (`--gold`) #0e1116, steel (`--violet`) #4a5a70
-- `--gold` and `--violet` keep their old names for compatibility; they now hold the monochrome accent and steel blue-gray. Do not reintroduce gold or violet hues.
+Sibling system: this site, the Broaddus Commerce site (`shop/`, at /shop) and Shortage Watch (`shortage/`, at /shortage) share one visual language — powder blue, Inter, square corners, neumorphic surfaces. Georgia is the University's voice and is what sets this site apart.
+- Shared palette (Oct 2026): the homepage, `shop/` and `shortage/` use one look. Light is the default.
+- Colors (light, default, `html.light`): bg #dbe7f2, bg2 #d1e0ee, ink #14263a, muted #46607a, accent (`--gold`) #1d4e6e, steel (`--violet`) #46607a
+- Colors (dark, cookie theme=dark): bg #1f262d, bg2 #252e37, ink #e3eaf0, muted #9aa9b6, accent (`--gold`) #8fbbd9, steel (`--violet`) #7f9bb5
+- Neumorphism: panels are raised with `--sd`/`--sl` shadows (7px 7px 16px / -7px -7px 16px), fields are pressed in (inset shadows). No borders on panels.
+- `--gold` and `--violet` keep their old names for compatibility.
 - Text on an accent-filled button uses `color: var(--bg)` so it flips with the theme.
 - Semantic colors stay: #5fd08a (up / normal), #e2708a (down / flag). Use them only for meaning, never decoration.
 - Type: Inter (`--font-sans`) for UI, labels, buttons, forms, and body copy. Georgia (`--font-voice`) for the wordmark, headlines, scripture, fragments, and quotes.
-- Shape: square corners (radius 0) on cards, buttons, inputs; 50% only for true circles. 1px rules instead of glows.
+- Shape: square corners (radius 0) on cards, buttons, inputs; 50% only for true circles. Soft neumorphic shadows instead of 1px rules.
 - Motifs: ✦ glyph, ink redaction bars (hover to reveal), solid ink buttons with reversed hover
 
 ## Do not
