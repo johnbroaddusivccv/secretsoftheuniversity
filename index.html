@@ -563,6 +563,14 @@
     radial-gradient(1.5px 1.5px at 22% 85%, #fff 99%, transparent),
     radial-gradient(1px 1px at 66% 82%, #fff 99%, transparent),
     radial-gradient(120% 90% at 70% 20%, #2a4a6e 0%, #0f1c2c 60%, #070d16 100%); }
+
+  /* Peptide database: 13 at a time + collapsible protocol */
+  .pdb-more { display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin:22px 0 0; font-family:'Inter',system-ui,sans-serif; font-size:.8rem; color:var(--muted); }
+  .pdb-more span { margin-right:6px; }
+  .pdb-more button, .pdb-reveal { font-family:'Inter',system-ui,sans-serif; font-size:.74rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); background:var(--bg); border:0; padding:11px 18px; cursor:pointer; box-shadow:4px 4px 10px var(--sd), -4px -4px 10px var(--sl); }
+  .pdb-more button:hover, .pdb-reveal:hover { box-shadow:inset 3px 3px 7px var(--sd), inset -3px -3px 7px var(--sl); }
+  .pdb-reveal { display:block; margin:4px 0 18px; }
+  .pdb-full .pdb-tabs { margin-top:4px; }
 </style>
 </head>
 <body>
@@ -991,7 +999,17 @@
   const shopUrl = (id, name) => id ? STORE + id : '/shop/shop.html?q=' + encodeURIComponent(name);
   const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   const fm = f => f === '—' ? '—' : esc(f).replace(/(\d+)/g, '<sub>$1</sub>');
-  let DATA = [], COG = [], cat = 'All', mode = 'pep';
+  let DATA = [], COG = [], cat = 'All', mode = 'pep', shown = 13, lastKey = '';
+  const PAGE = 13;
+  const more = document.createElement('div'); more.className = 'pdb-more'; list.after(more);
+  function moreBar(total){
+    more.innerHTML = '';
+    if(total <= PAGE) return;
+    const n = document.createElement('span'); n.textContent = `Showing ${Math.min(shown,total)} of ${total}`; more.appendChild(n);
+    const mk = (t, fn) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = t; b.onclick = fn; more.appendChild(b); };
+    if(shown < total){ mk(`See ${Math.min(PAGE,total-shown)} more`, () => { shown += PAGE; render(); }); mk(`See all ${total}`, () => { shown = total; render(); }); }
+    else mk('Show fewer', () => { shown = PAGE; render(); document.getElementById('peptides').scrollIntoView({behavior:'smooth'}); });
+  }
   const ST = {rx:'Rx · FDA-approved', sched:'Schedule I', unap:'Not approved', gray:'Gray area', supp:'Dietary supplement'};
   const KIND = {retail:'Retail', ruo:'Research use only', rx:'Needs prescription', state:'State program'};
   const SORDER = ['rx','sched','unap','gray','supp'];
@@ -1017,14 +1035,17 @@
   function row(p){
     const c = p.chem || {}, f = c.parts ? c.parts.map(x => x.formula).join(' + ') : c.formula, mw = c.parts ? '' : c.mw;
     const body = `<div class="pdb-body">
-      <div class="pdb-tabs">${p.sheets.map((s,i) => `<button type="button" class="${i ? '' : 'on'}" data-i="${i}">${esc(s.strength)}</button>`).join('')}</div>
-      <div class="pdb-grid" style="margin-bottom:22px;">
+      <div class="pdb-grid" style="margin-bottom:18px;">
         <div class="pdb-block"><h4>Chemistry</h4>${chem(p.chem)}</div>
         <div class="pdb-block"><h4>Mechanism &amp; profile</h4><p>${esc(p.mechanism)}</p>${kv({'Half-life':p.halfLife})}</div>
         <div class="pdb-block"><h4>Studied for</h4><div class="pdb-tags">${p.applications.map(a => `<span>${esc(a)}</span>`).join('')}</div></div>
       </div>
-      <div class="pdb-sheet">${sheet(p.sheets[0])}</div>
-      ${p.notes ? `<div class="pdb-block" style="margin-top:22px;"><h4>Notes</h4><p>${esc(p.notes)}</p></div>` : ''}
+      <button type="button" class="pdb-reveal" aria-expanded="false">See full protocol ↓</button>
+      <div class="pdb-full" hidden>
+        <div class="pdb-tabs">${p.sheets.map((s,i) => `<button type="button" class="${i ? '' : 'on'}" data-i="${i}">${esc(s.strength)}</button>`).join('')}</div>
+        <div class="pdb-sheet">${sheet(p.sheets[0])}</div>
+        ${p.notes ? `<div class="pdb-block" style="margin-top:22px;"><h4>Notes</h4><p>${esc(p.notes)}</p></div>` : ''}
+      </div>
       <div class="pdb-foot"><small>Protocol sheets ${p.sheets.map(s => s.id).join(', ')} · For laboratory research use only.</small><a href="${shopUrl(p.store, p.name)}">${p.store ? 'In the store →' : 'Find it in the store →'}</a></div>
     </div>`;
     return `<details class="pdb-row" data-slug="${p.slug}"><summary>
@@ -1054,15 +1075,18 @@
   function hay(p){ const c = p.chem || {}; return [p.name, p.subtitle, p.badge, p.category, p.mechanism, p.applications.join(' '), c.formula, c.seq, c.aka, (c.parts||[]).map(x => x.name + ' ' + x.formula).join(' ')].join(' ').toLowerCase(); }
   function render(){
     const t = q.value.trim().toLowerCase();
+    const key = mode + '|' + cat + '|' + t; if(key !== lastKey){ shown = PAGE; lastKey = key; }
     if(mode === 'cog'){
       const rows = COG.filter(d => (cat === 'All' || d.status === cat) && (!t || cogHay(d).includes(t)))
         .sort((a,b) => SORDER.indexOf(a.status) - SORDER.indexOf(b.status) || a.name.localeCompare(b.name));
-      list.innerHTML = rows.length ? rows.map(cogRow).join('') : '<div class="pdb-empty">Nothing in the index matches that yet.</div>';
+      list.innerHTML = rows.length ? rows.slice(0, shown).map(cogRow).join('') : '<div class="pdb-empty">Nothing in the index matches that yet.</div>';
+      moreBar(rows.length);
       count.textContent = `${rows.length} of ${COG.length} compounds · U.S. status as of Oct 2026`;
       return;
     }
     const rows = DATA.filter(p => (cat === 'All' || p.category === cat) && (!t || hay(p).includes(t)));
-    list.innerHTML = rows.length ? rows.map(row).join('') : '<div class="pdb-empty">Nothing in the library matches that yet.</div>';
+    list.innerHTML = rows.length ? rows.slice(0, shown).map(row).join('') : '<div class="pdb-empty">Nothing in the library matches that yet.</div>';
+    moreBar(rows.length);
     count.textContent = `${rows.length} of ${DATA.length} compounds · ${DATA.reduce((n,p) => n + p.sheets.length, 0)} protocol sheets`;
   }
   function setChips(items){
@@ -1082,6 +1106,8 @@
   modes.addEventListener('click', e => { const b = e.target.closest('button'); if(b && b.dataset.m !== mode) setMode(b.dataset.m); });
   chips.addEventListener('click', e => { const b = e.target.closest('button'); if(!b) return; cat = b.dataset.c; chips.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); render(); });
   list.addEventListener('click', e => {
+    const rv = e.target.closest('.pdb-reveal');
+    if(rv){ const full = rv.nextElementSibling; full.hidden = !full.hidden; rv.setAttribute('aria-expanded', !full.hidden); rv.textContent = full.hidden ? 'See full protocol ↓' : 'Hide protocol ↑'; return; }
     const b = e.target.closest('.pdb-tabs button'); if(!b) return;
     const det = b.closest('.pdb-row'), p = DATA.find(x => x.slug === det.dataset.slug);
     det.querySelectorAll('.pdb-tabs button').forEach(x => x.classList.toggle('on', x === b));
@@ -1092,7 +1118,7 @@
     DATA = d.compounds; COG = c.compounds;
     const h = location.hash.slice(1);
     setMode(h === 'cognitive' ? 'cog' : 'pep');
-    if(h && h !== 'cognitive' && h !== 'peptides'){ const d2 = list.querySelector(`[data-slug="${CSS.escape(h)}"]`); if(d2){ d2.open = true; d2.scrollIntoView({block:'start'}); } }
+    if(h && h !== 'cognitive' && h !== 'peptides'){ let d2 = list.querySelector(`[data-slug="${CSS.escape(h)}"]`); if(!d2){ shown = 9999; render(); d2 = list.querySelector(`[data-slug="${CSS.escape(h)}"]`); } if(d2){ d2.open = true; d2.scrollIntoView({block:'start'}); } }
   }).catch(() => { list.innerHTML = '<div class="pdb-empty">The library could not be loaded.</div>'; });
 })();
 </script>
