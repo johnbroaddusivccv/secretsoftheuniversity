@@ -381,3 +381,61 @@ h1, .hero h1, .section-title, h2 {
   .pdp__media{position:static;max-width:520px;width:100%}
 }
 .product-photo{object-fit:cover;background:#eef1f4}
+
+/* ============================================================
+   SHARED PALETTE + NEUMORPHISM
+   One look across secretsoftheuniversity.com, /shop and /shortage:
+   powder-blue surfaces, deep steel-blue ink, square corners,
+   soft raised panels and pressed-in fields.
+   ============================================================ */
+:root{
+  --black:#14263a;
+  --ink:#14263a;
+  --white:#dbe7f2;
+  --paper:#d3e2ef;
+  --tile:#cfdeec;
+  --studio:radial-gradient(125% 105% at 50% 30%, #eef4fa 0%, #dbe7f2 55%, #c9dbeb 100%);
+  --line:#1d4e6e;
+  --line-soft:#bfd1e2;
+  --muted:#46607a;
+  --muted-2:#6d86a0;
+  --accent:#1d4e6e;
+  --sd:rgba(130,160,190,.55);
+  --sl:rgba(255,255,255,.85);
+  --raise:7px 7px 16px var(--sd),-7px -7px 16px var(--sl);
+  --raise-sm:4px 4px 10px var(--sd),-4px -4px 10px var(--sl);
+  --press:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl);
+}
+body{background:var(--white)}
+.header{background:var(--white);border-bottom:0;box-shadow:0 6px 14px -8px var(--sd)}
+.nav{border-bottom:0}
+.topbar{background:#1d4e6e}
+.hero{border-bottom:0}
+.page-hero{border-bottom:0}
+.footer{border-top:0;background:var(--white);box-shadow:inset 0 8px 16px -10px var(--sd)}
+.footer__bottom{border-top-color:var(--line-soft)}
+
+/* Raised panels */
+.card,.hero__panel,.summary,.calc-out,.gloss-item,.opt,.cmp-chip,.drawer-item,.co-item,
+.catband,.strip,.faq details,.pdp__media,.cmp-table,.cart-row{
+  border-color:transparent!important;background:var(--white);box-shadow:var(--raise)}
+.catband,.strip{gap:16px;background:transparent;box-shadow:none}
+.catband a,.strip div{border:0;background:var(--white);box-shadow:var(--raise)}
+.gloss-item{margin-bottom:16px}
+.faq details{padding:0 18px;margin-bottom:12px}
+.drawer-item,.co-item,.cart-row{padding-left:14px;padding-right:14px;margin-bottom:10px}
+.card:hover{box-shadow:10px 10px 22px var(--sd),-10px -10px 22px var(--sl)}
+.card__media{border-bottom:0}
+
+/* Buttons and controls */
+.btn{border:0;box-shadow:var(--raise-sm)}
+.btn:hover{background:var(--white);color:var(--ink);box-shadow:var(--press)}
+.btn--solid{background:var(--accent);color:#f3f7fa}
+.btn--solid:hover{background:var(--accent);color:#f3f7fa;box-shadow:var(--press)}
+.btn.on,.pill.active{box-shadow:var(--press)}
+.fav-btn,.cmp-btn{border:0;background:var(--white);box-shadow:var(--raise-sm)}
+.hsearch input,.glossary-search input,.calc-field input,.calc-field select,.qty,.qty input,
+input[type=text],input[type=email],input[type=tel],input[type=search],input[type=number],select,textarea{
+  border:0!important;background:var(--white);box-shadow:var(--press)}
+.hsearch input:focus,.glossary-search input:focus{outline:2px solid var(--accent)}
+.tag{border:0;background:var(--white);box-shadow:var(--press)}
