@@ -554,6 +554,8 @@
   /* APOD fallback: a drawn night sky instead of a broken image */
   .apod-sky .img-caption, .apod-sky .img-caption a { color:#cfe3f5; }
   .daily-img-wrap { box-shadow: 7px 7px 16px var(--sd), -7px -7px 16px var(--sl); }
+  .daily-revelation > * { min-width:0; }
+  .daily-img-wrap { width:100%; max-width:100%; }
   .apod-sky { min-height:260px; background:
     radial-gradient(1px 1px at 12% 22%, #fff 99%, transparent),
     radial-gradient(1px 1px at 34% 68%, #fff 99%, transparent),
@@ -571,6 +573,8 @@
   .pdb-more button:hover, .pdb-reveal:hover { box-shadow:inset 3px 3px 7px var(--sd), inset -3px -3px 7px var(--sl); }
   .pdb-reveal { display:block; margin:4px 0 18px; }
   .pdb-full .pdb-tabs { margin-top:4px; }
+  /* On phones the 16:10 ratio sets the height; a fixed min-height would push the width past the screen */
+  @media (max-width:700px) { .apod-sky { min-height:0; } }
 </style>
 </head>
 <body>
