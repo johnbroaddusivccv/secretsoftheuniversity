@@ -253,7 +253,7 @@
   }
   .pillar a.pillar-link:hover { text-decoration:underline; }
 
-  /* Daily Revelation — NASA + Verse */
+  /* Daily Revelation — ESO night sky + Verse */
   .daily-revelation {
     max-width:800px; margin:0 auto;
     display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:center;
@@ -272,7 +272,7 @@
     padding:16px 14px 12px; font-size:0.7rem; color:rgba(238,241,245,0.8);
     font-family:Helvetica,Arial,sans-serif; letter-spacing:0.06em;
   }
-  .daily-img-wrap .img-caption a { color:var(--gold); text-decoration:none; }
+  .daily-img-wrap .img-caption a { color:#cfe3f5; text-decoration:none; }
   .daily-img-wrap .img-caption a:hover { text-decoration:underline; }
   .daily-verse-card {
     background:var(--card); border:1px solid var(--border); border-radius:0;
@@ -551,12 +551,12 @@
   .shortage-gate .store-gate-cta { color: var(--ink); border-top-color: var(--border); }
   @media (max-width: 760px) { .gates { grid-template-columns: 1fr; } }
 
-  /* APOD fallback: a drawn night sky instead of a broken image */
-  .apod-sky .img-caption, .apod-sky .img-caption a { color:#cfe3f5; }
+  /* Sky fallback: a drawn night sky instead of a broken image */
+  .sky-fallback .img-caption, .sky-fallback .img-caption a { color:#cfe3f5; }
   .daily-img-wrap { box-shadow: 7px 7px 16px var(--sd), -7px -7px 16px var(--sl); }
   .daily-revelation > * { min-width:0; }
   .daily-img-wrap { width:100%; max-width:100%; }
-  .apod-sky { min-height:260px; background:
+  .sky-fallback { min-height:260px; background:
     radial-gradient(1px 1px at 12% 22%, #fff 99%, transparent),
     radial-gradient(1px 1px at 34% 68%, #fff 99%, transparent),
     radial-gradient(1.5px 1.5px at 58% 30%, #fff 99%, transparent),
@@ -574,7 +574,7 @@
   .pdb-reveal { display:block; margin:4px 0 18px; }
   .pdb-full .pdb-tabs { margin-top:4px; }
   /* On phones the 16:10 ratio sets the height; a fixed min-height would push the width past the screen */
-  @media (max-width:700px) { .apod-sky { min-height:0; } }
+  @media (max-width:700px) { .sky-fallback { min-height:0; } }
 </style>
 </head>
 <body>
@@ -648,11 +648,11 @@
     <!-- ── Daily Revelation ── -->
     <div class="section-label">Daily Revelation</div>
     <div class="daily-revelation">
-      <div class="daily-img-wrap" id="apod-wrap">
-        <img id="apod-img" src="" alt="NASA Astronomy Picture of the Day" style="opacity:0;">
+      <div class="daily-img-wrap" id="sky-wrap">
+        <img id="sky-img" src="" alt="The night sky, photographed by the European Southern Observatory" style="opacity:0;">
         <div class="img-caption">
-          <span id="apod-title">Loading…</span><br>
-          <a id="apod-link" href="https://apod.nasa.gov" target="_blank" rel="noopener">NASA APOD</a>
+          <span id="sky-title">Loading…</span><br>
+          <a id="sky-link" href="https://www.eso.org/public/images/" target="_blank" rel="noopener">ESO</a>
         </div>
       </div>
       <div class="daily-verse-card">
@@ -912,59 +912,51 @@
   });
 
   // ══════════════════════════════════════════════════
-  // DAILY REVELATION — NASA APOD + Verse of the Day
+  // DAILY REVELATION — ESO night sky + Verse of the Day
   // ══════════════════════════════════════════════════
 
-  // Space image of the day.
-  // 1. /api/space (Vercel function, edge-cached): NASA APOD, falling back to the NASA Image Library.
-  // 2. If that endpoint is unreachable (e.g. opening the file locally), the browser asks the
-  //    NASA Image Library directly — no key, CORS allowed.
-  // 3. If both fail, a drawn night sky.
-  (function loadAPOD() {
-    const img = document.getElementById('apod-img');
-    const wrap = document.getElementById('apod-wrap');
-    const title = document.getElementById('apod-title');
-    const link = document.getElementById('apod-link');
-    let settled = false;
+  // A random night-sky photograph from the European Southern Observatory, served from ESO's CDN.
+  // No API and no key. ESO images are CC BY 4.0: each credit must stay visible and linked.
+  // Every entry was checked on eso.org (Oct 2026). Photos with people in frame are left out,
+  // because ESO restricts commercial use of images showing people.
+  // If an image fails, another is tried; after three failures, a drawn night sky.
+  (function loadSky() {
+    const SKY = [
+      { id: 'paranal_mw_sd',       title: 'Milky Way above Paranal',                                credit: 'S. Deiries/ESO' },
+      { id: 'vlt-panorama-cc',     title: 'Milky Way over Paranal',                                 credit: 'F. Char/ESO' },
+      { id: 'esopia00087sites',    title: 'Milky Way over Paranal',                                 credit: 'ESO/H.H. Heyer' },
+      { id: 'east_side_lasilla',   title: 'Star trails over La Silla',                              credit: 'ESO/J. Pérez' },
+      { id: 'santerne-lasilla-um', title: 'Star trails hanging over La Silla',                      credit: 'ESO/A. Santerne' },
+      { id: 'eso1403a',            title: 'The Lagoon Nebula',                                      credit: 'ESO/VPHAS+ team' },
+      { id: 'eso1719a',            title: 'Three nebulae in one image',                             credit: 'ESO' },
+      { id: 'eso1250a',            title: 'The Carina Nebula',                                      credit: 'ESO. Acknowledgement: VPHAS+ Consortium/Cambridge Astronomical Survey Unit' },
+      { id: 'eso9826a',            title: 'Deep into a spiral galaxy',                              credit: 'ESO' },
+      { id: 'eso0532a',            title: 'The cosmic eye, NGC 1350',                               credit: 'ESO' },
+    ];
+    const img = document.getElementById('sky-img');
+    const wrap = document.getElementById('sky-wrap');
+    const title = document.getElementById('sky-title');
+    const link = document.getElementById('sky-link');
+    const order = SKY.map(s => s).sort(() => Math.random() - 0.5);
+    let tries = 0;
     function showSky() {
-      if (settled) return; settled = true;
       img.removeAttribute('src'); img.style.display = 'none';
-      wrap.classList.add('apod-sky');
-      title.textContent = 'Tonight\u2019s sky is on its way.';
-      link.href = 'https://apod.nasa.gov/apod/astropix.html';
-      link.textContent = 'View today\u2019s picture at NASA \u2192';
+      wrap.classList.add('sky-fallback');
+      title.textContent = 'The heavens keep their own hours.';
+      link.href = 'https://www.eso.org/public/images/';
+      link.textContent = 'ESO image archive →';
     }
-    function showImage(d) {
-      img.onload = () => { settled = true; clearTimeout(timer); img.style.display = ''; img.style.opacity = '1'; };
-      img.onerror = () => {
-        if (d.fallback && img.src !== d.fallback) { img.src = d.fallback; return; }
-        showSky();
-      };
-      img.src = d.src;
-      title.textContent = d.title || 'Astronomy Picture of the Day';
-      link.href = d.href || 'https://apod.nasa.gov/apod/astropix.html';
-      link.textContent = (d.source || 'NASA') + (d.date ? ' \u00b7 ' + d.date : '');
+    function next() {
+      if (tries >= 3) { showSky(); return; }
+      const s = order[tries++];
+      img.onload = () => { img.style.display = ''; img.style.opacity = '1'; };
+      img.onerror = next;
+      img.src = 'https://cdn.eso.org/images/screen/' + s.id + '.jpg';
+      title.textContent = s.title;
+      link.href = 'https://www.eso.org/public/images/' + s.id + '/';
+      link.textContent = 'Credit: ' + s.credit;
     }
-    const getJSON = url => fetch(url).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
-    function fromLibrary() {
-      const q = ['James Webb nebula','Hubble galaxy','Hubble nebula','James Webb galaxy','Hubble star cluster','Webb star forming region','Hubble spiral galaxy','Chandra supernova remnant'];
-      const day = Math.floor(Date.now() / 86400000);
-      return getJSON('https://images-api.nasa.gov/search?media_type=image&page_size=100&q=' + encodeURIComponent(q[day % q.length]))
-        .then(j => {
-          const items = ((j.collection && j.collection.items) || []).filter(i => i.links && i.links[0] && i.links[0].href && i.data && i.data[0] && i.data[0].nasa_id);
-          if (!items.length) throw new Error('empty');
-          const it = items[(day * 7) % items.length], m = it.data[0], thumb = it.links[0].href;
-          return { src: thumb.replace('~thumb.', '~medium.'), fallback: thumb, title: m.title,
-                   href: 'https://images.nasa.gov/details/' + encodeURIComponent(m.nasa_id),
-                   date: (m.date_created || '').slice(0, 10), source: 'NASA Image Library' };
-        });
-    }
-    const timer = setTimeout(showSky, 10000);
-    getJSON('/api/space')
-      .then(d => { if (!d.ok || !d.src) throw new Error('no image'); return d; })
-      .catch(fromLibrary)
-      .then(showImage)
-      .catch(() => { clearTimeout(timer); showSky(); });
+    next();
   })();
 
   // Verse of the Day — curated rotation linked to YouVersion
