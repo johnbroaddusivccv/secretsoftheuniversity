@@ -915,8 +915,11 @@
   // DAILY REVELATION — NASA APOD + Verse of the Day
   // ══════════════════════════════════════════════════
 
-  // NASA Astronomy Picture of the Day
-  // DEMO_KEY is shared and rate-limited; swap in a free key from api.nasa.gov for steadier service.
+  // Space image of the day.
+  // 1. /api/space (Vercel function, edge-cached): NASA APOD, falling back to the NASA Image Library.
+  // 2. If that endpoint is unreachable (e.g. opening the file locally), the browser asks the
+  //    NASA Image Library directly — no key, CORS allowed.
+  // 3. If both fail, a drawn night sky.
   (function loadAPOD() {
     const img = document.getElementById('apod-img');
     const wrap = document.getElementById('apod-wrap');
@@ -931,23 +934,36 @@
       link.href = 'https://apod.nasa.gov/apod/astropix.html';
       link.textContent = 'View today\u2019s picture at NASA \u2192';
     }
-    function showImage(src, t, href, date) {
-      img.onload = () => { settled = true; img.style.display = ''; img.style.opacity = '1'; };
-      img.onerror = showSky;
-      img.src = src;
-      title.textContent = t || 'Astronomy Picture of the Day';
-      link.href = href || 'https://apod.nasa.gov/apod/astropix.html';
-      link.textContent = 'NASA APOD' + (date ? ' \u00b7 ' + date : '');
+    function showImage(d) {
+      img.onload = () => { settled = true; clearTimeout(timer); img.style.display = ''; img.style.opacity = '1'; };
+      img.onerror = () => {
+        if (d.fallback && img.src !== d.fallback) { img.src = d.fallback; return; }
+        showSky();
+      };
+      img.src = d.src;
+      title.textContent = d.title || 'Astronomy Picture of the Day';
+      link.href = d.href || 'https://apod.nasa.gov/apod/astropix.html';
+      link.textContent = (d.source || 'NASA') + (d.date ? ' \u00b7 ' + d.date : '');
     }
-    const timer = setTimeout(showSky, 8000);
-    fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&thumbs=true')
-      .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(d => {
-        clearTimeout(timer);
-        const src = d.media_type === 'image' ? d.url : d.thumbnail_url;
-        if (!src) throw new Error('no image today');
-        showImage(src, d.title, d.hdurl || d.url, d.date);
-      })
+    const getJSON = url => fetch(url).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+    function fromLibrary() {
+      const q = ['James Webb nebula','Hubble galaxy','Hubble nebula','James Webb galaxy','Hubble star cluster','Webb star forming region','Hubble spiral galaxy','Chandra supernova remnant'];
+      const day = Math.floor(Date.now() / 86400000);
+      return getJSON('https://images-api.nasa.gov/search?media_type=image&page_size=100&q=' + encodeURIComponent(q[day % q.length]))
+        .then(j => {
+          const items = ((j.collection && j.collection.items) || []).filter(i => i.links && i.links[0] && i.links[0].href && i.data && i.data[0] && i.data[0].nasa_id);
+          if (!items.length) throw new Error('empty');
+          const it = items[(day * 7) % items.length], m = it.data[0], thumb = it.links[0].href;
+          return { src: thumb.replace('~thumb.', '~medium.'), fallback: thumb, title: m.title,
+                   href: 'https://images.nasa.gov/details/' + encodeURIComponent(m.nasa_id),
+                   date: (m.date_created || '').slice(0, 10), source: 'NASA Image Library' };
+        });
+    }
+    const timer = setTimeout(showSky, 10000);
+    getJSON('/api/space')
+      .then(d => { if (!d.ok || !d.src) throw new Error('no image'); return d; })
+      .catch(fromLibrary)
+      .then(showImage)
       .catch(() => { clearTimeout(timer); showSky(); });
   })();
 
