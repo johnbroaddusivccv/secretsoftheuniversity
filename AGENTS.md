@@ -15,9 +15,9 @@ Working rules for AI agents on this codebase. Read README.md first for project o
 - The brand persona is "The Registrar". The site never explains itself directly.
 
 ## Design tokens
-Sibling system: this site, the Broaddus Commerce site (`shop/`, at /shop) and Shortage Watch (`shortage/`, at /shortage) share one visual language — powder blue, Inter, square corners, neumorphic surfaces. Georgia is the University's voice and is what sets this site apart.
+Sibling system: this site, the Broaddus Commerce site (`shop/`, at /shop) and Shortage Watch (`shortage/`, at /shortage) share one visual language — heaven white, Inter, square corners, neumorphic surfaces. Georgia is the University's voice and is what sets this site apart.
 - Shared palette (Oct 2026): the homepage, `shop/` and `shortage/` use one look. Light is the default.
-- Colors (light, default, `html.light`): bg #dbe7f2, bg2 #d1e0ee, ink #14263a, muted #46607a, accent (`--gold`) #1d4e6e, steel (`--violet`) #46607a
+- Colors (light, default, `html.light`): bg #f6f7f9, bg2 #eceef2, ink #14263a, muted #46607a, accent (`--gold`) #1d4e6e, steel (`--violet`) #46607a
 - Colors (dark, cookie theme=dark): bg #1f262d, bg2 #252e37, ink #e3eaf0, muted #9aa9b6, accent (`--gold`) #8fbbd9, steel (`--violet`) #7f9bb5
 - Neumorphism: panels are raised with `--sd`/`--sl` shadows (7px 7px 16px / -7px -7px 16px), fields are pressed in (inset shadows). No borders on panels.
 - `--gold` and `--violet` keep their old names for compatibility.

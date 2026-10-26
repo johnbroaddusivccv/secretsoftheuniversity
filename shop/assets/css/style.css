@@ -385,22 +385,22 @@ h1, .hero h1, .section-title, h2 {
 /* ============================================================
    SHARED PALETTE + NEUMORPHISM
    One look across secretsoftheuniversity.com, /shop and /shortage:
-   powder-blue surfaces, deep steel-blue ink, square corners,
+   heaven-white surfaces, deep steel-blue ink, square corners,
    soft raised panels and pressed-in fields.
    ============================================================ */
 :root{
   --black:#14263a;
   --ink:#14263a;
-  --white:#dbe7f2;
-  --paper:#d3e2ef;
-  --tile:#cfdeec;
-  --studio:radial-gradient(125% 105% at 50% 30%, #eef4fa 0%, #dbe7f2 55%, #c9dbeb 100%);
+  --white:#f6f7f9;
+  --paper:#eff1f4;
+  --tile:#e9ecf0;
+  --studio:radial-gradient(125% 105% at 50% 30%, #ffffff 0%, #f6f7f9 55%, #e6e9ee 100%);
   --line:#1d4e6e;
-  --line-soft:#bfd1e2;
+  --line-soft:#dfe3e9;
   --muted:#46607a;
   --muted-2:#6d86a0;
   --accent:#1d4e6e;
-  --sd:rgba(130,160,190,.55);
+  --sd:rgba(166,174,188,.5);
   --sl:rgba(255,255,255,.85);
   --raise:7px 7px 16px var(--sd),-7px -7px 16px var(--sl);
   --raise-sm:4px 4px 10px var(--sd),-4px -4px 10px var(--sl);
