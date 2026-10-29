@@ -27,7 +27,9 @@ It merges peptide records into the same `chemdata.js` (keyed by peptide id).
   (amide, acetyl, disulfides, lactam, pyroglutamate), reproduces the published formula. The page's sequence is tried
   first, then the catalog's (this caught a transcription error on Thymosin α1).
 - **record**: lipidated, very large or non-standard-residue molecules; shown as published and labelled so.
-- Held back: TB-500 (catalog = full thymosin β4; public record = Ac-LKKTETQ fragment) and PEG-MGF (record is
-  non-PEGylated MGF). No public record: Kisspeptin-10, Thymalin, Follistatin 344, the blends, Cerebrolysin.
-- Catalog corrections made from this check: Ara-290 sequence, SNAP-8 and Larazotide formulas, IGF-1 DES CAS
+- TB-500 is the Ac-LKKTETQ fragment (thymosin β4 17–23), confirmed by the owner in Oct 2026.
+- Records with a published InChIKey and a plain sequence are also built from the sequence (with N-acetyl / C-amide)
+  and count as **verified** when the full InChIKey matches (TB-500, BPC-157, Sermorelin, MOTS-c, Humanin).
+- Held back: PEG-MGF (record is non-PEGylated MGF). No public record: Kisspeptin-10, Thymalin, Follistatin 344, the blends, Cerebrolysin.
+- Catalog corrections made from this check: TB-500 identity (was full thymosin β4 data), Ara-290 sequence, SNAP-8 and Larazotide formulas, IGF-1 DES CAS
   (old number failed the CAS check digit), Pinealon subtitle.

@@ -86,7 +86,7 @@ import subprocess
 _cat = json.loads(subprocess.check_output(['node', '-e', 'global.window={};require(process.argv[1]);process.stdout.write(JSON.stringify(window.CATALOG.peptides))', os.path.join(repo, 'shop/assets/js/catalog.js')]))
 CAT_SEQ = {p['id']: p.get('sequence', '') for p in _cat}
 NEUTRALISE = {'nad-plus'}
-HOLD = {'tb-500'}   # catalog = full thymosin beta-4, public record = Ac-LKKTETQ fragment: owner to confirm
+HOLD = set()        # TB-500: owner confirmed the Ac-LKKTETQ fragment (Oct 2026), matching the public record
 rows = [r for r in rows if r['key'] not in HOLD]
 existing = open(os.path.join(repo, 'shop/assets/js/chemdata.js')).read()
 data = json.loads(existing[existing.index('window.CHEMDATA = ') + 18:].rstrip().rstrip(';'))
@@ -105,11 +105,26 @@ for r in rows:
         status = 'verified'
         rec['formula'] = rdMolDescriptors.CalcMolFormula(mol); rec['mw'] = f"{Descriptors.MolWt(mol):.2f} g/mol"; rec['inchikey'] = pub
         if Chem.MolToInchiKey(mol) == pub: rec['smiles'] = Chem.MolToSmiles(mol)
-        if mol.GetNumHeavyAtoms() <= 60: draw(mol, key); rec['structure'] = True
+        if mol.GetNumHeavyAtoms() <= 64: draw(mol, key); rec['structure'] = True
     page_seq = clean(r.get('sequence'))
     # Try the page's sequence, then the catalog's; keep whichever reproduces the published formula.
     seq_src = page_seq or CAT_SEQ.get(key, '')
     one, std = parse_seq(seq_src)
+    # Build the peptide from its sequence (plus N-acetyl / C-amide when written) and compare the full
+    # InChIKey with the published one. A match verifies sequence, ends and stereochemistry together.
+    if status != 'verified' and pub and one and std:
+        from rdkit.Chem import AllChem
+        built = Chem.MolFromSequence(one)
+        if re.match(r'\s*Ac-', seq_src):
+            built = AllChem.ReactionFromSmarts('[NH2:1][CH1:2][C:3](=[O:4])>>CC(=O)[NH:1][C:2][C:3]=[O:4]').RunReactants((built,))[0][0]
+        if re.search(r'-NH2\s*$', seq_src):
+            built = AllChem.ReactionFromSmarts('[C:1](=[O:2])[OH1]>>[C:1](=[O:2])N').RunReactants((built,))[-1][0]
+        Chem.SanitizeMol(built)
+        if Chem.MolToInchiKey(built) == pub:
+            status = 'verified'; mol = built
+            rec['formula'] = rdMolDescriptors.CalcMolFormula(built); rec['mw'] = f"{Descriptors.MolWt(built):.2f} g/mol"
+            rec['inchikey'] = pub; rec['smiles'] = Chem.MolToSmiles(built)
+            if built.GetNumHeavyAtoms() <= 64: draw(built, key); rec['structure'] = True
     ok, mods = False, []
     if status != 'verified' and page_formula:
         for cand in [c for c in (page_seq, CAT_SEQ.get(key, '')) if c]:
@@ -127,7 +142,8 @@ for r in rows:
             if mods and std: rec['modifications'] = '; '.join(mods)
     looks_like_seq = bool(seq_src) and not re.search(r'[a-z]{4,}\s+[a-z(]', seq_src) and ('-' in seq_src or '–' in seq_src or re.fullmatch(r'[A-Z]{2,}', seq_src))
     if looks_like_seq and (page_seq or status in ('sequence-checked', 'verified')):
-        rec['sequence3'] = seq_src if (not std or not one) else '-'.join(ONE[c] for c in one)
+        ends = (('Ac-' if re.match(r'\s*Ac-', seq_src) else ''), ('-NH2' if re.search(r'-NH2\s*$', seq_src) else ''))
+        rec['sequence3'] = seq_src if (not std or not one) else ends[0] + '-'.join(ONE[c] for c in one) + ends[1]
         if one and std: rec['sequence1'] = one
         if one: rec['length'] = len(one)
     if status == 'record':

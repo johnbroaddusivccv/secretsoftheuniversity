@@ -2478,7 +2478,7 @@ window.CATALOG = {
    "id": "tb-500",
    "key": "tb-500",
    "name": "TB-500",
-   "aka": "Thymosin Beta-4 Fragment",
+   "aka": "Thymosin Beta-4 Fragment (17–23)",
    "cat": "recovery",
    "form": "Lyophilized vial",
    "sizes": [
@@ -2495,7 +2495,7 @@ window.CATALOG = {
    ],
    "status": "in",
    "featured": true,
-   "summary": "A synthetic fragment of Thymosin Beta-4 studied in cell-migration and repair models.",
+   "summary": "The N-acetylated actin-binding fragment of Thymosin Beta-4 (residues 17–23), studied in cell-migration and repair models.",
    "overview": "TB-500 is a synthetic version of the active region of Thymosin Beta-4, a naturally occurring peptide involved in actin regulation. Research literature examines its role in cell migration, wound healing, and flexibility, with particular interest in actin sequestration and its downstream effect on tissue regeneration and angiogenesis.",
    "research": [
     "Cell migration & actin regulation",
@@ -2503,10 +2503,10 @@ window.CATALOG = {
     "Cardiac tissue repair studies",
     "Flexibility & fibrosis research"
    ],
-   "cas": "77591-33-4",
-   "sequence": "Ac-Ser-Asp-Lys-Pro-Asp-Met-Ala-Glu-Ile-Glu-Lys-Phe-Asp-Lys-Ser-Lys-Leu-Lys-Lys-Thr-Glu-Thr-Gln",
-   "formula": "C212H350N56O78S",
-   "mw": "4963.4 g/mol",
+   "cas": "885340-08-9",
+   "sequence": "Ac-Leu-Lys-Lys-Thr-Glu-Thr-Gln",
+   "formula": "C38H68N10O14",
+   "mw": "889.02 g/mol",
    "halfLife": "~2–3 hours",
    "storage": "Lyophilized: store at -20°C. Reconstituted: refrigerate 2–8°C.",
    "purity": "≥99%"
