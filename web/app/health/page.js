@@ -44,23 +44,6 @@ export default function HealthPage() {
         .vital-value { font-size:1.3rem; color:var(--gold); font-weight:400; font-family:Georgia,serif; }
         .vital-unit { font-size:0.6rem; color:var(--muted); }
 
-        .skydell-section {
-          background:var(--card); border:1px solid var(--border); border-radius:16px;
-          padding:36px 32px; max-width:800px; margin:0 auto;
-        }
-        .skydell-section h3 { font-weight:400; font-size:1.15rem; margin-bottom:16px; text-align:left; }
-        .skydell-section p { font-size:0.92rem; color:var(--muted); margin-bottom:14px; line-height:1.7; }
-        .skydell-disclosure {
-          background:rgba(240,201,108,0.06); border-left:3px solid var(--gold);
-          padding:14px 18px; border-radius:0 8px 8px 0; margin:20px 0;
-          font-size:0.88rem; color:var(--ink); line-height:1.6;
-        }
-        .skydell-disclosure strong { color:var(--gold); }
-        .skydell-link {
-          display:inline-block; margin-top:16px; color:var(--gold); text-decoration:none;
-          font-family:Helvetica,Arial,sans-serif; font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase;
-        }
-        .skydell-link:hover { text-decoration:underline; }
 
         .health-disclaimer {
           text-align:center; font-family:Helvetica,Arial,sans-serif; font-size:0.68rem;
@@ -116,31 +99,6 @@ export default function HealthPage() {
           </div>
         </section>
 
-        {/* Skydell Medical — Declared Interest (compliance language verbatim) */}
-        <section>
-          <div className="section-label">Declared Interest</div>
-          <h2 className="mb-sm">Partnership disclosure</h2>
-          <div className="skydell-section">
-            <h3>Regenerative biologics for licensed practitioners</h3>
-            <p>
-              I am an independent sales partner of <a href="https://skydellmedical.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold)', textDecoration: 'none' }}>Skydell Medical</a> and may be compensated for referrals.
-            </p>
-            <div className="skydell-disclosure">
-              <strong>Audience gate:</strong> Product information is intended for licensed healthcare professionals.
-            </div>
-            <p>
-              Skydell Medical supplies regenerative biologics (including mesenchymal stem cells and exosomes) to licensed practitioners.
-              These products are practitioner-administered and are not FDA-approved to treat, cure, or prevent any specific disease.
-            </p>
-            <p>
-              No pricing is published on this site. No patient testimonials are included. For product information, clinical protocols, or practitioner onboarding, contact directly.
-            </p>
-            <a className="skydell-link" href="mailto:john@secretsoftheuniversity.com">
-              Inquire →
-            </a>
-          </div>
-        </section>
-
         {/* Gates */}
         <section>
           <div className="section-label">Gates</div>
@@ -156,11 +114,10 @@ export default function HealthPage() {
 
       <Footer />
 
-      {/* Health + Skydell disclaimer (compliance-required) */}
+      {/* Health disclaimer */}
       <div className="health-disclaimer">
         This page is educational and does not constitute medical advice. Consult a licensed healthcare professional before making health decisions.
         Peptide and regenerative biologic information is intended for licensed practitioners only. Products referenced are not FDA-approved to treat, cure, or prevent any specific disease.
-        I am an independent sales partner of Skydell Medical and may be compensated for referrals.
       </div>
     </>
   );
