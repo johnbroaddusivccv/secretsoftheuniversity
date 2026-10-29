@@ -583,7 +583,17 @@
   .m31-plate { position:absolute; left:0; right:0; bottom:22px; text-align:center; pointer-events:none; padding:0 16px; }
   .m31-mark { display:block; font-family:var(--font-sans); font-size:.66rem; font-weight:600; letter-spacing:.32em; text-transform:uppercase; color:rgba(207,227,245,.7); }
   .m31-line { display:block; margin-top:6px; font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:1rem; color:rgba(238,241,245,.88); }
-  @media (max-width:700px) { .m31-plate { bottom:16px; } .m31-line { font-size:.92rem; } }
+  .m31-toggle { position:absolute; right:20px; bottom:20px; z-index:2; width:40px; height:40px; padding:0;
+    display:inline-flex; align-items:center; justify-content:center; cursor:pointer; border-radius:0;
+    background:rgba(5,10,18,.45); border:1px solid rgba(207,227,245,.35); color:rgba(238,241,245,.9);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); transition:background .25s, border-color .25s; }
+  .m31-toggle:hover { background:rgba(5,10,18,.7); border-color:rgba(207,227,245,.7); }
+  .m31-toggle:focus-visible { outline:2px solid #cfe3f5; outline-offset:3px; }
+  .m31-toggle svg { width:14px; height:14px; fill:currentColor; }
+  .m31-toggle .i-play { display:none; }
+  .m31-toggle[aria-pressed="true"] .i-play { display:block; }
+  .m31-toggle[aria-pressed="true"] .i-pause { display:none; }
+  @media (max-width:700px) { .m31-plate { bottom:16px; } .m31-line { font-size:.92rem; } .m31-toggle { right:12px; top:12px; bottom:auto; width:36px; height:36px; } }
 </style>
 </head>
 <body>
@@ -620,6 +630,10 @@
 
 <header class="m31" aria-label="The Andromeda Galaxy">
   <canvas id="m31" aria-hidden="true"></canvas>
+  <button type="button" class="m31-toggle" id="m31-toggle" aria-label="Pause animation" aria-pressed="false">
+    <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="2.5" width="3" height="11"/><rect x="9.5" y="2.5" width="3" height="11"/></svg>
+    <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9.5-5.5z"/></svg>
+  </button>
   <div class="m31-plate">
     <span class="m31-mark">M31 &middot; Andromeda</span>
     <span class="m31-line">Two and a half million years, arriving tonight.</span>
@@ -1214,25 +1228,25 @@
     DR[i] = r; DA[i] = arm + Math.log(r / R0) / Math.tan(PITCH) - 0.32 + gauss() * 0.09;
   }
 
-  let W = 0, H = 0, dpr = 1, scale = 1, cx = 0, cy = 0;
+  let W = 0, H = 0, dpr = 1, scale = 1, cx = 0, cy = 0, playing = true, clock = 0;
   function resize() {
     dpr = Math.min(2, window.devicePixelRatio || 1);
     const b = cv.getBoundingClientRect(); W = b.width; H = b.height;
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     scale = Math.min(W * 0.43, H * 0.86); cx = W / 2; cy = H * 0.43;
-    if (reduce) draw(0);
+    if (!playing) draw(clock);
   }
 
   const INC = 1.29, PA = -0.62;                  // tilt and position angle on the sky
-  let spin = 0, tilt = 0, vSpin = 0;
+  let spin = 0, tilt = 0, vSpin = 0, bob = 0, wobble = 0;
   function project(r, a, z, out) {
     const x = r * Math.cos(a), y = r * Math.sin(a);
-    const inc = INC + tilt, ci = Math.cos(inc), si = Math.sin(inc);
+    const inc = INC + tilt + wobble, ci = Math.cos(inc), si = Math.sin(inc);
     const y2 = y * ci - z * si, z2 = y * si + z * ci;
     const cp = Math.cos(PA), sp = Math.sin(PA);
     const k = 1 / (1 + z2 * 0.18);
     out[0] = cx + (x * cp - y2 * sp) * scale * k;
-    out[1] = cy + (x * sp + y2 * cp) * scale * k;
+    out[1] = cy + bob + (x * sp + y2 * cp) * scale * k;
   }
   const P = [0, 0];
   const SAT_POS = [null, [0.06, 0.13, 0.04], [-0.34, -0.42, -0.06]];   // M32, M110 in the galaxy's frame
@@ -1240,7 +1254,10 @@
   function draw(time) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
-    const rot = time * 0.00004 + spin;
+    const rot = time * 0.00007 + spin;
+    bob = Math.sin(time * 0.00035) * H * 0.012;          // a slow float
+    wobble = Math.sin(time * 0.00021) * 0.035;           // a gentle rock toward and away
+    const tw = time * 0.0025;
     ctx.globalCompositeOperation = 'lighter';
     let last = -1;
     for (let i = 0; i < N; i++) {
@@ -1250,14 +1267,14 @@
         project(Math.hypot(s[0] + R[i] * Math.cos(A[i]), s[1] + R[i] * Math.sin(A[i])),
                 Math.atan2(s[1] + R[i] * Math.sin(A[i]), s[0] + R[i] * Math.cos(A[i])) + rot * 0.6, s[2] + Z[i], P);
       } else project(R[i], A[i] + rot, Z[i], P);
-      ctx.globalAlpha = L[i] * 0.8;
       const s = SZ[i];
+      ctx.globalAlpha = s > 1.5 ? L[i] * (0.62 + 0.38 * Math.sin(tw + i * 1.7)) : L[i] * 0.8;   // the bright ones twinkle
       ctx.fillRect(P[0] - s / 2, P[1] - s / 2, s, s);
     }
     // the milky haze of the disc
     ctx.globalAlpha = 1;
-    const ell = Math.max(0.12, Math.abs(Math.cos(INC + tilt)));
-    ctx.save(); ctx.translate(cx, cy); ctx.rotate(PA); ctx.scale(1, ell);
+    const ell = Math.max(0.12, Math.abs(Math.cos(INC + tilt + wobble)));
+    ctx.save(); ctx.translate(cx, cy + bob); ctx.rotate(PA); ctx.scale(1, ell);
     const hz = ctx.createRadialGradient(0, 0, 0, 0, 0, scale * 0.95);
     hz.addColorStop(0, 'rgba(235,215,190,0.20)');
     hz.addColorStop(0.35, 'rgba(180,195,230,0.09)');
@@ -1265,14 +1282,15 @@
     ctx.fillStyle = hz; ctx.beginPath(); ctx.arc(0, 0, scale * 0.95, 0, TAU); ctx.fill();
     ctx.restore();
     // the bright heart
-    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 0.2);
+    const gy = cy + bob;
+    const g = ctx.createRadialGradient(cx, gy, 0, cx, gy, scale * 0.2);
     g.addColorStop(0, 'rgba(255,236,205,0.85)');
     g.addColorStop(0.18, 'rgba(255,214,160,0.32)');
     g.addColorStop(0.55, 'rgba(240,200,160,0.08)');
     g.addColorStop(1, 'rgba(240,200,160,0)');
-    ctx.save(); ctx.translate(cx, cy); ctx.rotate(PA);
-    ctx.scale(1, Math.max(0.35, Math.abs(Math.cos(INC + tilt)) + 0.32)); ctx.translate(-cx, -cy);
-    ctx.fillStyle = g; ctx.fillRect(cx - scale * 0.2, cy - scale * 0.2, scale * 0.4, scale * 0.4);
+    ctx.save(); ctx.translate(cx, gy); ctx.rotate(PA);
+    ctx.scale(1, Math.max(0.35, Math.abs(Math.cos(INC + tilt + wobble)) + 0.32)); ctx.translate(-cx, -gy);
+    ctx.fillStyle = g; ctx.fillRect(cx - scale * 0.2, gy - scale * 0.2, scale * 0.4, scale * 0.4);
     ctx.restore();
     // dust, laid over the light
     ctx.globalCompositeOperation = 'source-over';
@@ -1289,19 +1307,34 @@
     const dx = e.clientX - lx, dy = e.clientY - ly; lx = e.clientX; ly = e.clientY;
     vSpin = dx * 0.006; spin += vSpin;
     tilt = Math.max(-1.05, Math.min(0.2, tilt - dy * 0.004));
-    if (reduce) draw(0);
+    if (!playing) draw(clock);
   });
   const end = () => { dragging = false; };
   cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+
+  // play / pause. Its own clock, so a pause freezes the sky in place and play resumes from there.
+  // Visitors who ask their device for reduced motion start paused; the button still lets them play.
+  const btn = document.getElementById('m31-toggle');
+  function setPlaying(on) {
+    playing = on;
+    btn.setAttribute('aria-pressed', on ? 'false' : 'true');
+    btn.setAttribute('aria-label', on ? 'Pause animation' : 'Play animation');
+    if (!on) draw(clock);
+  }
+  if (btn) btn.addEventListener('click', () => setPlaying(!playing));
 
   let visible = true;
   if ('IntersectionObserver' in window) new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(cv);
   if ('ResizeObserver' in window) new ResizeObserver(resize).observe(cv); else addEventListener('resize', resize);
   resize();
-  if (reduce) { draw(0); return; }
+  setPlaying(!reduce);
+  let lastT = 0;
   function frame(t) {
+    const dt = lastT ? Math.min(50, t - lastT) : 0; lastT = t;
+    const live = visible && !document.hidden;
+    if (playing && live) clock += dt;
     if (!dragging) { spin += vSpin; vSpin *= 0.95; tilt *= 0.97; }   // coast, then settle back
-    if (visible && !document.hidden) draw(t);
+    if (live && (playing || dragging || Math.abs(vSpin) > 1e-4 || Math.abs(tilt) > 1e-3)) draw(clock);
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
