@@ -1270,20 +1270,40 @@
   const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   const mixNow = () => { const t = Math.min(1, (performance.now() - mixT0) / DUR); return mixFrom + (mixTo - mixFrom) * ease(t); };
   const transitioning = () => performance.now() - mixT0 < DUR;
-  function draw(time) {
-    const m = mixNow();
-    if (m <= 0.001) { ctx = mainCtx; drawGalaxy(time); return; }
-    if (m >= 0.999) { ctx = mainCtx; drawSun(time); return; }
-    ctx = ctxG; drawGalaxy(time);
-    ctx = ctxS; drawSun(time);
+  // Dawn and dusk run on the compositor: both scenes are painted once into their own canvases, which are
+  // laid over the header and faded and scaled with CSS transforms (the GPU does the blending). Painting
+  // thousands of stars plus the sun on every frame of the fade is what dropped frames on phones. The
+  // sky's clock holds still for the fade (see frame()) so nothing jumps when it ends.
+  [layerG, layerS].forEach(c => {
+    c.setAttribute('aria-hidden', 'true');
+    c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;display:none;will-change:opacity,transform';
+    cv.after(c);
+  });
+  let anims = [];
+  const sceneG = m => ({ opacity: 1 - m, transform: 'scale(' + (reduce ? 1 : 1 - 0.18 * m) + ')' });
+  const sceneS = m => ({ opacity: m, transform: 'scale(' + (reduce ? 1 : 0.55 + 0.45 * m) + ')' });
+  function startFade(from, to) {
+    anims.forEach(a => a.cancel()); anims = [];
+    ctx = ctxG; drawGalaxy(clock);
+    ctx = ctxS; drawSun(clock);
     ctx = mainCtx;
-    const px = cx * dpr, py = H * 0.44 * dpr, w = cv.width, h = cv.height;
-    const blit = (src, alpha, sc) => { mainCtx.globalAlpha = alpha; mainCtx.drawImage(src, px - px * sc, py - py * sc, w * sc, h * sc); };
-    mainCtx.setTransform(1, 0, 0, 1, 0, 0); mainCtx.globalCompositeOperation = 'source-over';
-    mainCtx.clearRect(0, 0, w, h);
-    blit(layerG, 1 - m, reduce ? 1 : 1 - 0.18 * m);
-    blit(layerS, m, reduce ? 1 : 0.55 + 0.45 * m);
-    mainCtx.globalAlpha = 1;
+    const origin = cx + 'px ' + (H * 0.44) + 'px';
+    const opts = { duration: DUR, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', fill: 'forwards' };
+    [[layerG, sceneG], [layerS, sceneS]].forEach(([el, f]) => {
+      el.style.transformOrigin = origin; el.style.display = 'block';
+      anims.push(el.animate([f(from), f(to)], opts));
+    });
+    cv.style.visibility = 'hidden';
+    anims[0].onfinish = () => {
+      if (performance.now() - mixT0 < DUR - 20) return;          // a newer fade took over
+      cv.style.visibility = ''; draw(clock);
+      requestAnimationFrame(() => { layerG.style.display = layerS.style.display = 'none'; anims.forEach(a => a.cancel()); anims = []; });
+    };
+  }
+  function draw(time) {
+    if (transitioning() && anims.length) return;               // the fade is on the compositor
+    ctx = mainCtx;
+    if (mixTo >= 0.5) drawSun(time); else drawGalaxy(time);
   }
   syncScene();
   const plate = document.querySelector('.m31-plate');
@@ -1292,6 +1312,7 @@
     const target = isLight() ? 1 : 0;
     if (target === mixTo) return;
     mixFrom = mixNow(); mixTo = target; mixT0 = performance.now();
+    if (layerG.animate) startFade(mixFrom, mixTo);
     if (headerEl) { headerEl.classList.remove('is-turning'); void headerEl.offsetWidth; headerEl.classList.add('is-turning'); }
     if (plate) {                                       // caption fades out, changes, fades back in
       plate.style.opacity = '0'; clearTimeout(captionTimer);
@@ -1332,8 +1353,8 @@
   function frame(t) {
     const dt = lastT ? Math.min(50, t - lastT) : 0; lastT = t;
     const live = visible && !document.hidden;
-    if (playing && live) clock += dt;
-    if (!dragging) { spin += vSpin; vSpin *= 0.95; tilt *= 0.97; }   // coast, then settle back
+    if (playing && live && !transitioning()) clock += dt;   // hold the sky still while it fades
+    if (!dragging && !transitioning()) { spin += vSpin; vSpin *= 0.95; tilt *= 0.97; }   // coast, then settle back
     if (live && (playing || dragging || transitioning() || Math.abs(vSpin) > 1e-4 || Math.abs(tilt) > 1e-3)) draw(clock);
     requestAnimationFrame(frame);
   }
