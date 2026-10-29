@@ -127,6 +127,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.8rem;word-break:break-all}
 .struct{margin:0;background:#fbfbfc;box-shadow:var(--press);padding:18px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .struct img{width:100%;max-width:460px;height:auto}
+.struct--pubchem{background:#fff}
+.struct--pubchem img{mix-blend-mode:multiply;max-width:420px}
 .struct figcaption{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:8px}
 .facts sub{font-size:.72em}
 .related h2{font-size:1.15rem;margin:56px 0 0}

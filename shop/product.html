@@ -73,10 +73,17 @@
     const salt = /\b(HCl|HBr|3HCl|sulfate|oxalate|sodium|hexasodium|disodium|potassium|bromide|acetate|salt)\b/i.test(p.name);
     if (!salt) { row('Melting point', CD.melting_point); row('Solubility in water', CD.solubility_water); row('Appearance', CD.appearance); }
     const saltNote = salt;
-    return '<div class="panel"><h2>Chemical data</h2><div class="' + (CD.structure ? 'cols2' : '') + '"><div><table class="facts"><tbody>' + rows.join('') + '</tbody></table>' +
+    // Structure: our own checked drawing if we have one, otherwise PubChem's 2D depiction for the record's CID
+    // (public domain, loaded from PubChem; the box removes itself if PubChem doesn't answer).
+    const cid = (CD.pubchem_cid || '').replace(/\D.*$/, '');
+    const fig = CD.structure
+      ? '<figure class="struct"><img src="assets/img/structures/' + encodeURIComponent(p.key) + '.svg" alt="2D chemical structure of ' + esc(p.name) + '" loading="lazy"><figcaption>2D structure</figcaption></figure>'
+      : cid ? '<figure class="struct struct--pubchem"><a href="https://pubchem.ncbi.nlm.nih.gov/compound/' + cid + '" target="_blank" rel="noopener"><img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/' + cid + '/PNG?image_size=500x500" alt="2D chemical structure of ' + esc(p.name) + ' from PubChem" loading="lazy" width="500" height="500" onerror="var c=this.closest(\'.cols2\');if(c)c.classList.remove(\'cols2\');this.closest(\'figure\').remove()"></a><figcaption>2D structure &middot; PubChem</figcaption></figure>'
+      : '';
+    return '<div class="panel"><h2>Chemical data</h2><div class="' + (fig ? 'cols2' : '') + '"><div><table class="facts"><tbody>' + rows.join('') + '</tbody></table>' +
       '<p class="note">' + (saltNote ? 'Identifiers and structure are for the parent compound; this product is supplied as listed in its name. ' : '') +
       'From public compound records' + (CD.source_url ? ' (<a href="' + esc(CD.source_url) + '" target="_blank" rel="noopener">source</a>)' : '') + (CD.verified ? '; the structure was checked against its published InChIKey' : CD.check === 'sequence-checked' ? '; the sequence was checked against the published molecular formula' : CD.check === 'record' ? '; shown as published, not independently checked' : '') + '. The lot certificate of analysis is the authority for the material you receive.</p></div>' +
-      (CD.structure ? '<figure class="struct"><img src="assets/img/structures/' + encodeURIComponent(p.key) + '.svg" alt="2D chemical structure of ' + esc(p.name) + '" loading="lazy"><figcaption>2D structure</figcaption></figure>' : '<div></div>') +
+      fig +
       '</div></div>';
   }
 
