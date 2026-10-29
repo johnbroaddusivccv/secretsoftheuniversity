@@ -165,6 +165,9 @@
   /* ── Header & footer ── */
   function header(tab) {
     const el = $('#hdr'); if (!el) return;
+    if (!$('.topbar')) el.insertAdjacentHTML('beforebegin',
+      '<div class="topbar"><div class="wrap topbar__row"><a href="/" class="topbar__home"><span aria-hidden="true">\u2190</span> Secrets of the University</a>' +
+      '<span class="topbar__note">Research use only</span></div></div>');
     el.className = 'hdr';
     el.innerHTML = '<div class="wrap"><div class="hdr__row">' +
       '<a class="logo" href="index.html" aria-label="Broaddus Scientific Group, shop home"><b>BROADDUS</b><small>Scientific Group</small></a>' +
