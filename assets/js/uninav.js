@@ -37,8 +37,6 @@
     '.uninav__links{display:flex;gap:20px;align-items:center}' +
     '.uninav__links a{font-size:.75rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--un-muted);text-decoration:none;white-space:nowrap;transition:color .3s}' +
     '.uninav__links a:hover{color:var(--un-gold)}' +
-    '.uninav__links a.uninav__cta{font-weight:600;letter-spacing:.04em;color:var(--un-bg);background:var(--un-ink);border:1px solid var(--un-ink);padding:8px 18px;box-shadow:4px 4px 10px var(--un-sd),-4px -4px 10px var(--un-sl);transition:all .3s}' +
-    '.uninav__links a.uninav__cta:hover{background:transparent;color:var(--un-ink)}' +
     '.uninav__btn{background:var(--un-bg);border:0;border-radius:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;line-height:1;' +
       'box-shadow:3px 3px 7px var(--un-sd),-3px -3px 7px var(--un-sl);transition:color .3s}' +
     '.uninav__theme{width:32px;height:32px;color:var(--un-muted);font-size:1rem}' +
@@ -66,7 +64,7 @@
       '<a class="uninav__brand" href="/">Secrets <span>of the</span> University</a>' +
       '<nav class="uninav__links" aria-label="Secrets of the University">' +
         others.map(function (l) { return '<a href="' + l[0] + '">' + l[1] + '</a>'; }).join('') +
-        '<a class="uninav__cta" href="/systems.html">Systems</a>' +
+        '<a href="/systems.html">Systems</a>' +
         '<button class="uninav__btn uninav__theme" type="button" aria-label="Toggle light mode"></button>' +
         '<button class="uninav__btn uninav__menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="uninav-drop">☰</button>' +
       '</nav>' +
