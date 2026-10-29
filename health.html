@@ -494,13 +494,7 @@
   .lib-card h4 { font-weight:400; font-size:1.02rem; margin-bottom:6px; color:var(--ink); }
   .lib-card .lib-aka { font-size:0.75rem; color:var(--muted); font-style:italic; margin-bottom:8px; }
   .lib-card .lib-desc { font-size:0.84rem; color:var(--muted); line-height:1.55; }
-  .lib-card .lib-detail {
-    max-height:0; overflow:hidden; transition:max-height .4s ease, opacity .3s;
-    opacity:0; margin-top:0;
-  }
-  .lib-card:hover .lib-detail, .lib-card.open .lib-detail {
-    max-height:300px; opacity:1; margin-top:12px;
-  }
+  .lib-card .lib-detail { margin-top:12px; }
   .lib-card .lib-detail p { font-size:0.8rem; color:var(--muted); line-height:1.55; margin-bottom:6px; }
   .lib-card .lib-detail .lib-ref {
     font-family:Helvetica,Arial,sans-serif; font-size:0.65rem; color:var(--violet);
@@ -849,7 +843,7 @@
   <section id="library">
     <div class="section-label">Compound Library</div>
     <h2 class="mb-sm">The peptide index</h2>
-    <p class="section-note">A reference catalog of research peptides and bioactive compounds, organized by category. Hover or tap to expand.</p>
+    <p class="section-note">A reference catalog of research peptides and bioactive compounds, organized by category.</p>
 
     <!-- Glossary -->
     <div class="glossary-grid">
@@ -876,7 +870,7 @@
     <!-- Compound cards -->
     <div class="lib-grid" id="lib-grid">
 
-      <div class="lib-card" data-cat="metabolic" data-top="1" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="metabolic" data-top="1">
         <div class="lib-cat">Metabolic / GLP-1</div>
         <h4>Semaglutide</h4>
         <div class="lib-aka">GLP-1 receptor agonist</div>
@@ -887,7 +881,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="metabolic" data-top="1" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="metabolic" data-top="1">
         <div class="lib-cat">Metabolic / GLP-1</div>
         <h4>Retatrutide</h4>
         <div class="lib-aka">Triple agonist: GLP-1 / GIP / glucagon</div>
@@ -898,7 +892,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="metabolic" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="metabolic">
         <div class="lib-cat">Metabolic / GLP-1</div>
         <h4>Tirzepatide</h4>
         <div class="lib-aka">Dual agonist: GLP-1 / GIP</div>
@@ -909,7 +903,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="metabolic" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="metabolic">
         <div class="lib-cat">Metabolic</div>
         <h4>AOD-9604</h4>
         <div class="lib-aka">Anti-obesity drug fragment 9604</div>
@@ -920,7 +914,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="metabolic" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="metabolic">
         <div class="lib-cat">Metabolic</div>
         <h4>MOTS-c</h4>
         <div class="lib-aka">Mitochondrial-derived peptide</div>
@@ -931,7 +925,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="recovery" data-top="1" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="recovery" data-top="1">
         <div class="lib-cat">Recovery / Regenerative</div>
         <h4>BPC-157</h4>
         <div class="lib-aka">Body Protection Compound-157</div>
@@ -942,7 +936,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="recovery" data-top="1" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="recovery" data-top="1">
         <div class="lib-cat">Recovery / Regenerative</div>
         <h4>TB-500</h4>
         <div class="lib-aka">Thymosin Beta-4 fragment</div>
@@ -953,7 +947,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="recovery" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="recovery">
         <div class="lib-cat">Recovery / Regenerative</div>
         <h4>Pentadecapeptide (BPC Blend)</h4>
         <div class="lib-aka">BPC-157 + TB-500 combination</div>
@@ -963,7 +957,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="growth-hormone" data-top="1" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="growth-hormone" data-top="1">
         <div class="lib-cat">Growth Hormone</div>
         <h4>CJC-1295 + Ipamorelin</h4>
         <div class="lib-aka">GHRH analog + GH secretagogue</div>
@@ -974,7 +968,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="growth-hormone" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="growth-hormone">
         <div class="lib-cat">Growth Hormone</div>
         <h4>Tesamorelin + Ipamorelin</h4>
         <div class="lib-aka">GHRH analog blend</div>
@@ -985,7 +979,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="growth-hormone" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="growth-hormone">
         <div class="lib-cat">Growth Hormone</div>
         <h4>Hexarelin</h4>
         <div class="lib-aka">GH secretagogue hexapeptide</div>
@@ -996,7 +990,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="immune" data-top="1" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="immune" data-top="1">
         <div class="lib-cat">Immune</div>
         <h4>Thymosin Alpha-1</h4>
         <div class="lib-aka">Tα1 · immune modulator</div>
@@ -1007,7 +1001,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="immune" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="immune">
         <div class="lib-cat">Immune / Anti-inflammatory</div>
         <h4>KPV</h4>
         <div class="lib-aka">Alpha-MSH fragment (Lys-Pro-Val)</div>
@@ -1018,7 +1012,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="cognitive" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="cognitive">
         <div class="lib-cat">Cognitive / Anxiolytic</div>
         <h4>Selank</h4>
         <div class="lib-aka">Synthetic tuftsin analog</div>
@@ -1029,7 +1023,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="cognitive" data-top="1" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="cognitive" data-top="1">
         <div class="lib-cat">Cognitive / Neuroprotective</div>
         <h4>Semax</h4>
         <div class="lib-aka">Synthetic ACTH(4-10) analog</div>
@@ -1040,7 +1034,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="longevity" data-top="1" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="longevity" data-top="1">
         <div class="lib-cat">Longevity / Cellular</div>
         <h4>NAD+</h4>
         <div class="lib-aka">Nicotinamide adenine dinucleotide</div>
@@ -1051,7 +1045,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="longevity" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="longevity">
         <div class="lib-cat">Longevity / Telomere</div>
         <h4>Epitalon</h4>
         <div class="lib-aka">Epithalon · Ala-Glu-Asp-Gly</div>
@@ -1062,7 +1056,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="longevity" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="longevity">
         <div class="lib-cat">Longevity / Endocrine</div>
         <h4>PT-141 (Bremelanotide)</h4>
         <div class="lib-aka">Melanocortin receptor agonist</div>
@@ -1073,7 +1067,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="copper" data-top="1" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="copper" data-top="1">
         <div class="lib-cat">Copper Peptides</div>
         <h4>GHK-Cu</h4>
         <div class="lib-aka">Copper tripeptide-1</div>
@@ -1084,7 +1078,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="copper" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="copper">
         <div class="lib-cat">Copper Peptides</div>
         <h4>AHK-Cu</h4>
         <div class="lib-aka">Copper tripeptide (Ala-His-Lys·Cu²⁺)</div>
