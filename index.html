@@ -747,25 +747,6 @@
     </div>
   </section>
 
-  <section>
-    <div class="section-label">Recovered Fragments</div>
-    <h2>From the restricted archive</h2>
-    <div class="teasers">
-      <div class="teaser">
-        "The single phone call that can cut your bills by 20% — <span class="redact">and the exact script to use</span>."
-        <small>Fragment 001 · Finance · Declassified for members</small>
-      </div>
-      <div class="teaser">
-        "Why the best candidate rarely gets the job — <span class="redact">and what gets hired instead</span>."
-        <small>Fragment 002 · Careers · Declassified for members</small>
-      </div>
-      <div class="teaser">
-        "The 5 questions to ask any doctor <span class="redact">before you say yes to anything</span>."
-        <small>Fragment 003 · Health · Declassified for members</small>
-      </div>
-    </div>
-    <div class="teasers-hint">Some redactions lift on closer inspection. The rest require enrollment.</div>
-  </section>
 
   <section>
     <div class="manifesto">
@@ -936,11 +917,6 @@
     e.target.reset();
     return false;
   }
-
-  // Tap-to-reveal for redacted fragments (mobile)
-  document.querySelectorAll('.teaser').forEach(t => {
-    t.addEventListener('click', () => t.classList.toggle('revealed'));
-  });
 
   // ══════════════════════════════════════════════════
   // DAILY REVELATION — ESO night sky + Verse of the Day
