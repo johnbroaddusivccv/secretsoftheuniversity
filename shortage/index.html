@@ -465,6 +465,18 @@ th,#drawer dt,.stpanel dt,.flist .grp,.flow li::before,.adv .k{font-weight:600;l
 .btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
 .btn.ghost:hover{background:var(--ink);color:var(--bg)}
 
+/* Tracker: the drug table runs full width; the pharmacy finder and its map sit below it */
+.watchgrid{grid-template-columns:minmax(0,1fr)!important;gap:28px}
+.watchleft .tablebox{max-height:none;overflow-x:visible}
+.tablebox table{min-width:0;width:100%}
+.finder{position:static}
+@media (min-width:961px){
+  .finder{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:40px;row-gap:10px;align-items:start;padding:28px}
+  .finder>*{grid-column:1}
+  .finder .fside{grid-column:2;grid-row:1 / span 6}
+}
+.fside{display:grid;gap:10px;align-content:start;min-width:0}
+
 /* The University nav bar (/assets/js/uninav.js) carries the theme switch */
 #themeBtn{display:none}
 </style>
@@ -572,10 +584,12 @@ th,#drawer dt,.stpanel dt,.flist .grp,.flow li::before,.adv .k{font-weight:600;l
           <div id="fStatus"></div>
           <div class="fmap"><div class="tiles ftiles" id="fTiles" role="group" aria-label="Supplier locations"></div></div>
           <p class="note" id="fMapNote">Darker states have more suppliers based there. Tap a state to filter.</p>
-          <div class="flist" id="fList"></div>
-          <div class="more" id="moreF"></div>
-          <p class="note" id="fCtl"></p>
-          <div class="factions"><button class="btn" type="button" id="fReq" disabled>Request sourcing</button><button class="btn ghost" type="button" id="fWatch" disabled>Watch</button><a class="note" id="fLink" href="https://www.accessdata.fda.gov/scripts/drugshortages/default.cfm" target="_blank" rel="noopener">FDA page</a></div>
+          <div class="fside">
+            <div class="flist" id="fList"></div>
+            <div class="more" id="moreF"></div>
+            <p class="note" id="fCtl"></p>
+            <div class="factions"><button class="btn" type="button" id="fReq" disabled>Request sourcing</button><button class="btn ghost" type="button" id="fWatch" disabled>Watch</button><a class="note" id="fLink" href="https://www.accessdata.fda.gov/scripts/drugshortages/default.cfm" target="_blank" rel="noopener">FDA page</a></div>
+          </div>
         </aside>
       </div>
       <div class="watchbox panel">
@@ -849,14 +863,15 @@ let area='All', sortKey='date';
 function buildFilters(){const fv=formSel.value||'All forms';formSel.innerHTML='';['All forms',...[...new Set(D.map(r=>r.form))].sort()].forEach(f=>formSel.add(new Option(f,f)));formSel.value=[...formSel.options].some(o=>o.value===fv)?fv:'All forms';
   chips.innerHTML='';const areas=['All',...[...new Set(D.map(r=>r.area))].sort()];if(!areas.includes(area))area='All';
   areas.forEach(c=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=c;b.setAttribute('aria-pressed',c===area);
-  b.onclick=()=>{area=c;shown=PAGE;chips.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));render()};chips.appendChild(b)})}
+  b.onclick=()=>{area=c;shown=DRUG_PAGE;chips.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));render()};chips.appendChild(b)})}
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const PAGE=13;
-function moreBar(el,shown,total,set,label){if(total<=PAGE){el.innerHTML='';return}
+function moreBar(el,shown,total,set,label,step=PAGE){if(total<=step){el.innerHTML='';return}
   el.innerHTML='';const n=document.createElement('span');n.className='note';n.textContent=`Showing ${Math.min(shown,total)} of ${total} ${label}`;el.appendChild(n);
   const mk=(t,fn,ghost)=>{const b=document.createElement('button');b.type='button';b.className='btn sm'+(ghost?' ghost':'');b.style.padding='7px 14px';b.textContent=t;b.onclick=fn;el.appendChild(b)};
-  if(shown<total){mk(`Show ${Math.min(PAGE,total-shown)} more`,()=>set(shown+PAGE));mk(`Show all ${total}`,()=>set(total),true)}else mk('Show less',()=>set(PAGE),true)}
-let shown=PAGE;
+  if(shown<total){mk(`Show ${Math.min(step,total-shown)} more`,()=>set(shown+step));mk(`Show all ${total}`,()=>set(total),true)}else mk('Show less',()=>set(step),true)}
+const DRUG_PAGE=7; /* drugs shown at first in the tracker table */
+let shown=DRUG_PAGE;
 function render(){
   const q=document.getElementById('q').value.trim().toLowerCase(), f=formSel.value||'All forms';
   let list=D.filter(r=>(area==='All'||r.area===area)&&(f==='All forms'||r.form===f)&&(!q||(r.name+' '+r.form+' '+r.area).toLowerCase().includes(q)));
@@ -869,7 +884,7 @@ function render(){
   if(!cur&&list.length){cur=list[0]}if(cur){const f=D.find(x=>x.id===cur.id);if(f)cur=f;drawFinder()}
   if(!list.length){rows.innerHTML='<tr><td colspan="6" style="color:var(--muted);cursor:default">No matches. Try a shorter search or clear the filters.</td></tr>'}
   count.textContent=`${list.length} of ${D.length} drugs match (${FEED.records||'—'} FDA listings)`;
-  moreBar(moreRows,shown,list.length,v=>{shown=v;render();if(v===PAGE)document.getElementById('watch').scrollIntoView({behavior:'smooth'})},'drugs');
+  moreBar(moreRows,shown,list.length,v=>{shown=v;render();if(v===DRUG_PAGE)document.getElementById('watch').scrollIntoView({behavior:'smooth'})},'drugs',DRUG_PAGE);
   renderWatch();
 }
 function toggle(id){if(watched.has(id))watched.delete(id);else{watched.add(id);const r=D.find(x=>x.id===id);if(r)SEEN[id]=sig(r)[1]}store.set('brg-watch2',[...watched]);store.set('brg-seen',SEEN);syncWatch();render();if(cur&&cur.id===id)setDW()}
@@ -877,7 +892,7 @@ function renderWatch(){watchlist.innerHTML='';const items=D.filter(r=>watched.ha
   watchEmpty.hidden=!!(items.length||gone.length);watchReq.hidden=!items.length;
   items.slice(0,PAGE).forEach(r=>{const d=document.createElement('div');d.className='w';d.innerHTML=`<span>${esc(r.name)} · ${esc(r.form)} · <b>${sig(r)[1]}</b></span><button type="button" aria-label="Remove ${esc(r.name)}">✕</button>`;d.querySelector('button').onclick=()=>toggle(r.id);watchlist.appendChild(d)});
   gone.forEach(id=>{const d=document.createElement('div');d.className='w';d.style.color='var(--ok)';d.innerHTML=`<span>${esc(id.split('|')[0])} · no longer on the FDA list</span><button type="button" aria-label="Remove">✕</button>`;d.querySelector('button').onclick=()=>toggle(id);watchlist.appendChild(d)})}
-document.getElementById('q').oninput=()=>{shown=PAGE;render()}; formSel.onchange=()=>{shown=PAGE;render()};
+document.getElementById('q').oninput=()=>{shown=DRUG_PAGE;render()}; formSel.onchange=()=>{shown=DRUG_PAGE;render()};
 sortSel.onchange=()=>{sortKey=sortSel.value;render()};
 document.querySelectorAll('th[data-sort]').forEach(th=>th.onclick=()=>{sortKey=th.dataset.sort;if(sortKey!=='form')sortSel.value=sortKey;render()});
 
