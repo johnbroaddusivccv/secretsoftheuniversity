@@ -520,6 +520,13 @@
   .m31-toggle .i-play { display:none; }
   .m31-toggle[aria-pressed="true"] .i-play { display:block; }
   .m31-toggle[aria-pressed="true"] .i-pause { display:none; }
+  /* Light mode: the header becomes the Sun on a warm white sky */
+  html.light .m31 { background:radial-gradient(120% 95% at 50% 44%, #fff9ea 0%, #fcefd2 30%, #f6f0e6 58%, #f1f3f6 100%); }
+  html.light .m31-mark { color:rgba(122,84,28,.78); }
+  html.light .m31-line { color:#5a4320; }
+  html.light .m31-toggle { background:rgba(255,255,255,.55); border-color:rgba(122,84,28,.35); color:#5a4320; }
+  html.light .m31-toggle:hover { background:rgba(255,255,255,.85); border-color:rgba(122,84,28,.7); }
+  html.light .m31-toggle:focus-visible { outline-color:#7a541c; }
   @media (max-width:700px) { .m31-plate { bottom:16px; } .m31-line { font-size:.92rem; } .m31-toggle { right:12px; top:12px; bottom:auto; width:36px; height:36px; } }
 </style>
 </head>
@@ -562,8 +569,8 @@
     <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9.5-5.5z"/></svg>
   </button>
   <div class="m31-plate">
-    <span class="m31-mark">M31 &middot; Andromeda</span>
-    <span class="m31-line">Two and a half million years, arriving tonight.</span>
+    <span class="m31-mark" id="m31-mark">M31 &middot; Andromeda</span>
+    <span class="m31-line" id="m31-line">Two and a half million years, arriving tonight.</span>
   </div>
 </header>
 
@@ -993,7 +1000,7 @@
   const P = [0, 0];
   const SAT_POS = [null, [0.06, 0.13, 0.04], [-0.34, -0.42, -0.06]];   // M32, M110 in the galaxy's frame
 
-  function draw(time) {
+  function drawGalaxy(time) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
     const rot = time * 0.00007 + spin;
@@ -1040,6 +1047,86 @@
     for (let i = 0; i < D; i++) { project(DR[i], DA[i] + rot, 0, P); ctx.fillRect(P[0] - 1, P[1] - 1, 2, 2); }
     ctx.globalAlpha = 1;
   }
+
+  // ══ THE SUN — light mode ══
+  // Limb-darkened disc, slowly turning granulation and two sunspots, a soft corona, and rays that
+  // turn and breathe. Shares the clock, drag-to-spin and pause with the galaxy.
+  const gran = document.createElement('canvas'); gran.width = gran.height = 512;
+  (function () {
+    const g = gran.getContext('2d');
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, 512, 512);
+    for (let i = 0; i < 2600; i++) {                          // convection cells: bright centres, darker lanes
+      const x = rnd() * 512, y = rnd() * 512, r = 5 + rnd() * 9;
+      const c = g.createRadialGradient(x, y, 0, x, y, r);
+      c.addColorStop(0, 'rgba(255,255,255,0.9)'); c.addColorStop(0.7, 'rgba(236,206,170,0.35)'); c.addColorStop(1, 'rgba(205,150,90,0)');
+      g.fillStyle = c; g.beginPath(); g.arc(x, y, r, 0, TAU); g.fill();
+    }
+  })();
+  const SPOTS = [[0.35, 0.18, 0.055], [1.9, -0.26, 0.035], [3.7, 0.08, 0.045]];   // longitude, latitude, size
+  function drawSun(time) {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    const sx = cx, sy = H * 0.44 + Math.sin(time * 0.00035) * H * 0.008;
+    const R = Math.min(W * 0.17, H * 0.27);
+    const turn = time * 0.00003 + spin;
+    // outer glow
+    let gl = ctx.createRadialGradient(sx, sy, R * 0.8, sx, sy, R * 3.4);
+    gl.addColorStop(0, 'rgba(255,205,110,0.55)'); gl.addColorStop(0.35, 'rgba(255,222,160,0.22)'); gl.addColorStop(1, 'rgba(255,240,215,0)');
+    ctx.fillStyle = gl; ctx.fillRect(0, 0, W, H);
+    // rays
+    ctx.save(); ctx.translate(sx, sy); ctx.rotate(time * 0.00005 + spin * 0.5);
+    for (let i = 0; i < 36; i++) {
+      const a = i / 36 * TAU, len = R * (1.32 + 0.42 * ((i * 7) % 3) / 2) * (1 + 0.07 * Math.sin(time * 0.0011 + i * 1.3));
+      const w = 0.055 - 0.018 * (i % 2);
+      ctx.beginPath(); ctx.moveTo(Math.cos(a - w) * R * 0.96, Math.sin(a - w) * R * 0.96);
+      ctx.lineTo(Math.cos(a) * len, Math.sin(a) * len); ctx.lineTo(Math.cos(a + w) * R * 0.96, Math.sin(a + w) * R * 0.96);
+      ctx.closePath(); ctx.fillStyle = i % 2 ? 'rgba(255,186,72,0.16)' : 'rgba(255,206,110,0.22)'; ctx.fill();
+    }
+    ctx.restore();
+    // corona
+    const co = ctx.createRadialGradient(sx, sy, R * 0.96, sx, sy, R * 1.45);
+    co.addColorStop(0, 'rgba(255,176,64,0.55)'); co.addColorStop(1, 'rgba(255,200,120,0)');
+    ctx.fillStyle = co; ctx.beginPath(); ctx.arc(sx, sy, R * 1.45, 0, TAU); ctx.fill();
+    // disc with limb darkening
+    const d = ctx.createRadialGradient(sx - R * 0.12, sy - R * 0.14, R * 0.05, sx, sy, R);
+    d.addColorStop(0, '#fffbe6'); d.addColorStop(0.45, '#ffe08a'); d.addColorStop(0.8, '#fbb544'); d.addColorStop(1, '#ec8a2c');
+    ctx.fillStyle = d; ctx.beginPath(); ctx.arc(sx, sy, R, 0, TAU); ctx.fill();
+    ctx.save(); ctx.beginPath(); ctx.arc(sx, sy, R, 0, TAU); ctx.clip();
+    // granulation, turning slowly
+    ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = 0.5;
+    ctx.translate(sx, sy); ctx.rotate(turn);
+    ctx.drawImage(gran, -R * 1.5, -R * 1.5, R * 3, R * 3);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // sunspots ride the rotation, foreshortened toward the limb
+    ctx.globalAlpha = 1;
+    for (const [lon0, lat, size] of SPOTS) {
+      const lon = lon0 + turn * 6; const x = Math.sin(lon), z = Math.cos(lon);
+      if (z < 0.05) continue;
+      const px = sx + x * R * Math.cos(lat), py = sy + Math.sin(lat) * R;
+      const r = size * R;
+      ctx.save(); ctx.translate(px, py); ctx.scale(Math.max(0.15, z), 1);
+      const sp = ctx.createRadialGradient(0, 0, 0, 0, 0, r * 1.8);
+      sp.addColorStop(0, 'rgba(90,40,10,0.75)'); sp.addColorStop(0.45, 'rgba(150,70,20,0.45)'); sp.addColorStop(1, 'rgba(200,110,40,0)');
+      ctx.fillStyle = sp; ctx.beginPath(); ctx.arc(0, 0, r * 1.8, 0, TAU); ctx.fill(); ctx.restore();
+    }
+    ctx.restore();
+    ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+    ctx.strokeStyle = 'rgba(255,236,190,0.7)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(sx, sy, R, 0, TAU); ctx.stroke();
+  }
+
+  // Which sky: the light theme gets the Sun, the dark theme Andromeda. Switches live with the toggle.
+  const isLight = () => document.documentElement.classList.contains('light');
+  const headerEl = cv.closest('header');
+  function syncScene() {
+    const light = isLight();
+    const mark = document.getElementById('m31-mark'), line = document.getElementById('m31-line');
+    if (mark) mark.innerHTML = light ? 'The Sun &middot; Sol' : 'M31 &middot; Andromeda';
+    if (line) line.textContent = light ? 'Eight minutes old, and already here.' : 'Two and a half million years, arriving tonight.';
+    if (headerEl) headerEl.setAttribute('aria-label', light ? 'The Sun' : 'The Andromeda Galaxy');
+  }
+  function draw(time) { (isLight() ? drawSun : drawGalaxy)(time); }
+  syncScene();
+  new MutationObserver(() => { syncScene(); draw(clock); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
   // drag to turn, like a globe
   let dragging = false, lx = 0, ly = 0;
