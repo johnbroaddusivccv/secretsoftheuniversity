@@ -36,7 +36,7 @@
     '.uninav__brand span{color:var(--un-muted)}' +
     '.uninav__links{display:flex;gap:20px;align-items:center}' +
     '.uninav__links a{font-size:.75rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--un-muted);text-decoration:none;white-space:nowrap;transition:color .3s}' +
-    '.uninav__links a:hover{color:var(--un-gold)}' +
+    '.uninav__links a:hover,.uninav__links a.is-current{color:var(--un-gold)}' +
     '.uninav__btn{background:var(--un-bg);border:0;border-radius:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;line-height:1;' +
       'box-shadow:3px 3px 7px var(--un-sd),-3px -3px 7px var(--un-sl);transition:color .3s}' +
     '.uninav__theme{width:32px;height:32px;color:var(--un-muted);font-size:1rem}' +
@@ -47,15 +47,14 @@
     '.uninav__drop a{display:block;padding:11px 26px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--un-ink);text-decoration:none}' +
     '.uninav__drop a:hover{background:var(--un-bg2);color:var(--un-gold)}' +
     '.uninav__droptheme{display:none;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--un-bg2);margin-top:8px;padding:14px 26px 6px;font:inherit;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--un-gold);cursor:pointer}' +
-    '@media (max-width:1000px){.uninav__droptheme{display:block}}' +
+    '@media (max-width:1080px){.uninav__droptheme{display:block}}' +
     '@media (max-width:1180px){.uninav__links{gap:15px}}' +
-    '@media (max-width:1000px){.uninav__links a,.uninav__links .uninav__theme{display:none}}' +
+    '@media (max-width:1080px){.uninav__links a,.uninav__links .uninav__theme{display:none}}' +
     '@media (max-width:700px){.uninav__in{gap:12px}.uninav__brand{flex:1 1 auto;min-width:0;font-size:.84rem;letter-spacing:.14em;overflow:hidden;text-overflow:ellipsis}.uninav__drop{right:16px}}' +
     '@media (max-width:380px){.uninav__in{padding:16px}.uninav__brand{font-size:.74rem;letter-spacing:.1em}}';
 
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
-  var others = LINKS.filter(function (l) { return !l[2].test(path); });
   var all = LINKS.concat([['/systems.html', 'Systems']]);
   var nav = document.createElement('div');
   nav.className = 'uninav';
@@ -63,8 +62,7 @@
     '<div class="uninav__in">' +
       '<a class="uninav__brand" href="/">Secrets <span>of the</span> University</a>' +
       '<nav class="uninav__links" aria-label="Secrets of the University">' +
-        others.map(function (l) { return '<a href="' + l[0] + '">' + l[1] + '</a>'; }).join('') +
-        '<a href="/systems.html">Systems</a>' +
+        all.map(function (l) { var on = l[2] && l[2].test(path); return '<a href="' + l[0] + '"' + (on ? ' class="is-current" aria-current="page"' : '') + '>' + l[1] + '</a>'; }).join('') +
         '<button class="uninav__btn uninav__theme" type="button" aria-label="Toggle light mode"></button>' +
         '<button class="uninav__btn uninav__menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="uninav-drop">☰</button>' +
       '</nav>' +

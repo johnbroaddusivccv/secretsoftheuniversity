@@ -758,16 +758,18 @@
   .brand, .nav-links a { white-space:nowrap; }
   .nav-links { gap:20px; }
   @media (max-width:1180px) { .nav-links { gap:15px; } .nav-links a { letter-spacing:.08em; } }
-  @media (max-width:1000px) { .nav-links a, .nav-links .theme-toggle { display:none; } .hamburger { display:inline-flex; } }
+  @media (max-width:1080px) { .nav-links a, .nav-links .theme-toggle { display:none; } .hamburger { display:inline-flex; } }
 
   /* Menu button: always shown at the top right. On desktop the menu drops down beneath it. */
   .hamburger { display:inline-flex !important; }
-  @media (min-width:1001px) {
+  @media (min-width:1081px) {
     .mobile-nav { inset:auto; top:78px; right:max(24px, calc((100vw - 1160px) / 2 + 24px)); width:250px; height:auto; padding:14px 0; gap:0; align-items:stretch; justify-content:flex-start; background:var(--bg) !important; backdrop-filter:none; -webkit-backdrop-filter:none; box-shadow:7px 7px 16px var(--sd), -7px -7px 16px var(--sl); }
     .mobile-nav a { font-family:var(--font-sans, 'Inter', system-ui, sans-serif); font-size:.72rem; letter-spacing:.16em; padding:11px 26px; }
     .mobile-nav a:hover { background:var(--bg2); }
     .mobile-nav .mobile-close, .mobile-nav .mobile-theme { display:none; }
   }
+  /* Nav: every page lists every link; the page you are on is marked */
+  .nav-links a.is-current { color:var(--gold); }
 </style>
 </head>
 <body>
@@ -781,6 +783,7 @@
       <a href="/shop/">Store</a>
       <a href="/shortage/">Shortage Watch</a>
       <a href="finance.html">Finance</a>
+      <a href="health.html" class="is-current" aria-current="page">Health</a>
       <a href="careers.html">Careers</a>
       <a href="systems.html">Systems</a>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light mode">☾</button>
