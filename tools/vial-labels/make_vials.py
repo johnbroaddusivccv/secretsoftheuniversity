@@ -140,19 +140,43 @@ def render_jar(name, strength, form, path):
     img = img.crop((round(cx - side / 2), 0, round(cx + side / 2), side))
     img.resize((720, 720), Image.LANCZOS).save(path, 'WEBP', quality=82, method=6)
 
+SPRAYPATH = os.path.join(os.path.dirname(photo), 'spray.jpg')
+SPRAY = Image.open(SPRAYPATH).convert('RGB') if os.path.exists(SPRAYPATH) else None
+
+def render_spray(name, strength, form, path):
+    """White nasal-spray bottle (the unlabeled one on the right of the stock image) with a printed wrap label."""
+    k = SPRAY.width / 1400                               # measurements below are on a 1400px-wide preview
+    P = lambda *v: tuple(round(x * k) for x in v)
+    img = SPRAY.copy()
+    lx0, ly0, lx1, ly1 = P(892, 560, 1169, 850)          # straight part of the bottle body
+    lw, lh = lx1 - lx0, ly1 - ly0
+    art = label(name, strength, form, H=round(W * lh / lw)).resize((lw, lh), Image.LANCZOS)
+    img.paste(ImageChops.multiply(img.crop((lx0, ly0, lx1, ly1)), art), (lx0, ly0))   # keeps the bottle's own shading
+    d = ImageDraw.Draw(img)
+    for y in (ly0, ly1):                                 # faint label edges
+        d.line([lx0 + 4, y, lx1 - 4, y], fill=(214, 216, 220), width=max(2, round(k)))
+    img = img.point([round(v * 0.951) for v in range(256)] * 3)   # white backdrop -> the studio grey of the other photos
+    # right bottle only, centred on a square grey canvas
+    region = img.crop(P(600, 60, 1400, 1150))
+    cx = 1010 * k - 600 * k                              # bottle centre inside the region
+    side = round(965 * k / 0.82)
+    canvas = Image.new('RGB', (side, side), (243, 243, 243))
+    canvas.paste(region, (round(side / 2 - cx), round(side * 0.5 - (605 - 60) * k)))
+    canvas.resize((720, 720), Image.LANCZOS).save(path, 'WEBP', quality=82, method=6)
+
 os.makedirs(outdir, exist_ok=True)
 jobs = []
 for c in cat['chemicals']:
     form = {'Spray Solution': 'Spray solution', 'Gel Dispenser': 'Topical gel', 'Aliquot Solution': 'Aliquot solution'}.get(c['form'], c['form'])
     nm = re.sub(r'\s*\(.*?\)\s*', ' ', c['name']).strip() if len(c['name']) > 22 else c['name']
-    jobs.append((c['id'], nm, c['size'], form, 'drop' if c['form'] == 'Solution' else 'jar' if c['form'] in ('Powder', 'Capsules') else 'vial'))
+    jobs.append((c['id'], nm, c['size'], form, 'drop' if c['form'] == 'Solution' else 'jar' if c['form'] in ('Powder', 'Capsules') else 'spray' if c['form'] == 'Spray Solution' else 'vial'))
 for p in cat['peptides']:
     for z in p['sizes']:
         form = 'Sterile solution' if p['id'] == 'bac-water' else 'Kit' if p['cat'] == 'supplies' else 'Solution' if p['form'] == 'Solution' else 'Lyophilized powder'
         jobs.append((p['id'] + '--' + slug(z['label']), p['name'], z['label'], form, 'drop' if p['form'] == 'Solution' else 'vial'))
 if only: jobs = [j for j in jobs if re.search(only, j[0])]
 for fid, nm, st, fm, kind in jobs:
-    fn = render_dropper if (kind == 'drop' and DROPPER) else render_jar if (kind == 'jar' and JAR) else render
+    fn = render_dropper if (kind == 'drop' and DROPPER) else render_jar if (kind == 'jar' and JAR) else render_spray if (kind == 'spray' and SPRAY) else render
     fn(nm, st, fm, os.path.join(outdir, fid + '.webp'))
-print('droppers', sum(1 for j in jobs if j[4] == 'drop' and DROPPER), '| jars', sum(1 for j in jobs if j[4] == 'jar' and JAR))
+print('droppers', sum(1 for j in jobs if j[4] == 'drop' and DROPPER), '| jars', sum(1 for j in jobs if j[4] == 'jar' and JAR), '| sprays', sum(1 for j in jobs if j[4] == 'spray' and SPRAY))
 print('rendered', len(jobs))
