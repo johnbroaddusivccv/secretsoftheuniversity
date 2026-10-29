@@ -1,82 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Order Confirmation — Broaddus Scientific Group</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="assets/css/style.css?v=5">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Order received — Broaddus Scientific Group</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="favicon.ico" sizes="any"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/shop.css">
 </head>
-<body data-page="">
-<div id="chrome-top"></div>
-
-<main class="container" id="order-mount" style="padding:40px 0"></main>
-
-<div id="chrome-bottom"></div>
-<script src="assets/js/data.js?v=5"></script>
-<script src="assets/js/app.js?v=5"></script>
+<body>
+<header id="hdr"></header>
+<main class="wrap" id="main"></main>
+<footer id="ftr"></footer>
+<script src="assets/js/catalog.js"></script>
+<script src="assets/js/shop.js"></script>
 <script>
-  const order = orderById(qs("id"));
-  const mount = document.getElementById("order-mount");
-
-  if(!order){
-    mount.innerHTML = `<div class="center" style="padding:40px 0">
-      <h1>Order not found</h1>
-      <p class="muted">We couldn't find that order in this browser.</p>
-      <a href="shop.html" class="btn">Back to shop</a></div>`;
-  } else {
-    const d = new Date(order.date);
-    const dateStr = d.toLocaleDateString(undefined, {year:"numeric",month:"long",day:"numeric"});
-    const s = order.shipDetails, c = order.customer;
-    mount.innerHTML = `
-      <div style="max-width:820px;margin:0 auto">
-        <div style="border:1px solid var(--line);padding:32px;margin-bottom:24px">
-          <div class="eyebrow" style="margin-bottom:10px">✓ Order received</div>
-          <h1 style="margin-bottom:8px">Thank you, ${c.firstName}.</h1>
-          <p class="muted" style="margin:0">Your order <b>${order.id}</b> was placed on ${dateStr}. A confirmation has been recorded — check your inbox at <b>${c.email}</b>.</p>
-        </div>
-
-        <div class="notice" style="margin-bottom:24px">
-          <span class="ruo-flag">Next</span>
-          <div><b>Completing payment.</b> Card checkout is being finalized, so no charge was made today. Our team will email you secure payment instructions and the batch Certificate of Analysis; your items are reserved until then.</div>
-        </div>
-
-        <div class="grid grid--2" style="margin-bottom:24px">
-          <div>
-            <div class="eyebrow" style="margin-bottom:10px">Shipping to</div>
-            <p class="small" style="margin:0;line-height:1.7">
-              ${c.firstName} ${c.lastName}<br>
-              ${s.address}${s.address2 ? "<br>"+s.address2 : ""}<br>
-              ${s.city}, ${s.state} ${s.zip}<br>
-              ${s.country}${c.phone ? "<br>"+c.phone : ""}
-            </p>
-          </div>
-          <div>
-            <div class="eyebrow" style="margin-bottom:10px">Method</div>
-            <p class="small" style="margin:0">${s.method==="express" ? "Express (2-day) cold-chain" : "Standard (3–5 business days)"}</p>
-          </div>
-        </div>
-
-        <div class="eyebrow" style="margin-bottom:10px">Items</div>
-        <div style="border:1px solid var(--line-soft);margin-bottom:20px">
-          ${order.items.map(i=>`<div class="co-item" style="padding:14px 18px"><span>${i.name} <span class="muted">· ${i.size} × ${i.qty}</span></span><span class="mono">${money(i.price*i.qty)}</span></div>`).join("")}
-        </div>
-
-        <div class="summary" style="max-width:340px;margin-left:auto">
-          <div class="row" style="display:flex;justify-content:space-between;padding:8px 0"><span>Subtotal</span><b>${money(order.subtotal)}</b></div>
-          ${(order.discounts || (order.discount ? [order.discount] : [])).map(d=>`<div class="row" style="display:flex;justify-content:space-between;padding:8px 0"><span>${d.label || ("Discount ("+d.code+")")}</span><b>${d.amount ? "−"+money(d.amount) : "Free shipping"}</b></div>`).join("")}
-          <div class="row" style="display:flex;justify-content:space-between;padding:8px 0"><span>Shipping</span><b>${order.shipping===0 ? "FREE" : money(order.shipping)}</b></div>
-          <div class="row total" style="display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:8px;padding-top:14px;font-weight:800;font-size:1.15rem"><span>Total</span><b>${money(order.total)}</b></div>
-        </div>
-
-        <div style="text-align:center;margin-top:32px">
-          <a href="shop.html" class="btn btn--solid">Continue shopping</a>
-          <a href="about.html#contact" class="btn">Contact support</a>
-        </div>
-      </div>`;
+(function () {
+  const S = window.SHOP, { esc, money, $ } = S;
+  S.header(false); S.footer();
+  let o = null;
+  try { o = JSON.parse(sessionStorage.getItem('bsg_last_order')); } catch (e) {}
+  const main = $('#main');
+  if (!o || o.id !== S.qs('id')) {
+    main.innerHTML = '<div class="pagehead"><h1>Order</h1><p>We can’t show this order here. If you placed one, check your email, or <a href="help.html#contact">contact us</a> with your order number.</p></div>';
+    return;
   }
+  const summary = [
+    'Order ' + o.id, '',
+    ...o.items.map(i => i.qty + ' x ' + i.name + ' (' + i.label + ') ' + money(i.total)),
+    '', 'Subtotal: ' + money(o.subtotal),
+    'Shipping (' + o.ship.method + '): ' + (o.shipping == null ? 'quote needed' : money(o.shipping)),
+    '', o.customer.first + ' ' + o.customer.last + ' · ' + o.customer.email + (o.customer.phone ? ' · ' + o.customer.phone : ''),
+    o.ship.addr1 + (o.ship.addr2 ? ', ' + o.ship.addr2 : ''), o.ship.city + ', ' + o.ship.state + ' ' + o.ship.zip, o.ship.country,
+    o.notes ? '\nNotes: ' + o.notes : ''
+  ].join('\n');
+  const mailto = 'mailto:' + S.SITE.email + '?subject=' + encodeURIComponent('Order ' + o.id) + '&body=' + encodeURIComponent(summary);
+
+  main.innerHTML = '<div class="pagehead"><h1>' + (o.sent ? 'Order received' : 'One more step') + '</h1>' +
+    '<p>Order number <b>' + esc(o.id) + '</b></p></div>' +
+    '<div class="layout"><div class="box">' +
+      (o.sent
+        ? '<p style="margin-top:0">Thank you, ' + esc(o.customer.first) + '. Your order is in. We’ll email <b>' + esc(o.customer.email) + '</b> with payment instructions and the lot certificate of analysis. Your items are held until then.</p>'
+        : '<div class="msg" style="margin-bottom:16px">Your order didn’t reach us automatically. Tap the button below to email it to us. Your cart is still saved.</div>' +
+          '<a class="btn btn--solid" href="' + mailto + '">Email this order to us</a>' +
+          '<p class="note">Or write to <a href="mailto:' + S.SITE.email + '">' + S.SITE.email + '</a> with your order number.</p>') +
+      '<h2 style="font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;margin:26px 0 8px">Ship to</h2>' +
+      '<p style="margin:0">' + esc(o.customer.first + ' ' + o.customer.last) + '<br>' + esc(o.ship.addr1) + (o.ship.addr2 ? '<br>' + esc(o.ship.addr2) : '') + '<br>' + esc(o.ship.city + ', ' + o.ship.state + ' ' + o.ship.zip) + '<br>' + esc(o.ship.country) + '</p>' +
+      '<a class="btn" href="index.html" style="margin-top:22px;max-width:260px">Back to the shop</a>' +
+    '</div><aside class="box"><h2>Summary</h2>' +
+      o.items.map(i => '<div class="row"><span>' + i.qty + ' × ' + esc(i.name) + '<br><small style="color:var(--muted)">' + esc(i.label) + '</small></span><span>' + money(i.total) + '</span></div>').join('') +
+      '<div class="row" style="border-top:1px solid var(--hair);margin-top:6px;padding-top:12px"><span>Subtotal</span><span>' + money(o.subtotal) + '</span></div>' +
+      '<div class="row"><span>Shipping</span><span>' + (o.shipping == null ? 'Quoted by email' : o.shipping ? money(o.shipping) : 'Free') + '</span></div>' +
+      '<div class="row row--total"><span>Total</span><span>' + (o.shipping == null ? money(o.subtotal) + ' + shipping' : money(o.total)) + '</span></div>' +
+    '</aside></div>';
+})();
 </script>
 </body>
 </html>

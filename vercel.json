@@ -24,6 +24,56 @@
       "source": "/shortage",
       "destination": "/shortage/",
       "permanent": false
+    },
+    {
+      "source": "/shop/shop.html",
+      "destination": "/shop/",
+      "permanent": true
+    },
+    {
+      "source": "/shop/category.html",
+      "destination": "/shop/",
+      "permanent": true
+    },
+    {
+      "source": "/shop/glossary.html",
+      "destination": "/shop/",
+      "permanent": true
+    },
+    {
+      "source": "/shop/protocols.html",
+      "destination": "/shop/",
+      "permanent": true
+    },
+    {
+      "source": "/shop/compare.html",
+      "destination": "/shop/",
+      "permanent": true
+    },
+    {
+      "source": "/shop/favorites.html",
+      "destination": "/shop/",
+      "permanent": true
+    },
+    {
+      "source": "/shop/orders.html",
+      "destination": "/shop/",
+      "permanent": true
+    },
+    {
+      "source": "/shop/about.html",
+      "destination": "/shop/help.html#about",
+      "permanent": true
+    },
+    {
+      "source": "/shop/faq.html",
+      "destination": "/shop/help.html#faq",
+      "permanent": true
+    },
+    {
+      "source": "/shop/preview-:page.html",
+      "destination": "/shop/",
+      "permanent": true
     }
   ],
   "rewrites": [

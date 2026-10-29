@@ -1,148 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Broaddus Scientific Group — Research-Grade Peptides & Reference Data</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="description" content="Research-grade peptides with third-party COAs, an educational peptide glossary, and reconstitution tools. For laboratory research use only.">
-<link rel="stylesheet" href="assets/css/style.css?v=5">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Broaddus Scientific Group — Research Compounds &amp; Peptides</title>
+<meta name="description" content="Research nootropics, chemicals and peptides with lot certificates of analysis. For laboratory research use only.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="favicon.ico" sizes="any"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/shop.css">
 </head>
-<body data-page="home">
-<div id="chrome-top"></div>
-
-<!-- HERO -->
-<section class="hero"><div class="container">
-  <div class="hero__grid">
-    <div>
-      <div class="eyebrow">Research Use Only · ≥99% Purity · COA per batch</div>
-      <h1>Research-grade peptides, backed by reference-grade data.</h1>
-      <p class="lead">Browse a curated catalog of research peptides — each one paired with an educational glossary entry, structural data, and a third-party certificate of analysis.</p>
-      <div class="hero__cta">
-        <a href="shop.html" class="btn btn--solid">Shop Peptides</a>
-        <a href="glossary.html" class="btn">Explore the Glossary</a>
-      </div>
-    </div>
-    <div class="hero__panel">
-      <h4>Why researchers order here</h4>
-      <ul class="checklist">
-        <li>Batch-specific Certificates of Analysis (COA) on every compound</li>
-        <li>Third-party HPLC & mass-spec verification, ≥99% purity standard</li>
-        <li>Educational glossary — data, sequence & research context per peptide</li>
-        <li>Free 2-day shipping on orders over $150, cold-chain packed</li>
-      </ul>
-    </div>
-  </div>
-</div></section>
-
-<!-- FEATURE STRIP -->
-<div class="strip container" style="max-width:none;padding:0">
-  <div class="container" style="display:contents"></div>
-</div>
-<div class="strip">
-  <div><b>Third-Party Tested</b><span>HPLC + MS on every batch</span></div>
-  <div><b>COA Included</b><span>Downloadable per lot</span></div>
-  <div><b>Fast US Shipping</b><span>Free over $150</span></div>
-  <div><b>Research Support</b><span>Reconstitution tools & data</span></div>
-</div>
-
-<!-- FEATURED PRODUCTS -->
-<section class="section"><div class="container">
-  <div class="section__head">
-    <div>
-      <div class="eyebrow">Catalog</div>
-      <h2>Featured research compounds</h2>
-      <p>A selection of the most-referenced peptides across our research categories.</p>
-    </div>
-    <a href="shop.html" class="btn btn--sm">View all</a>
-  </div>
-  <div class="grid grid--4" id="featured-grid"></div>
-</div></section>
-
-<!-- CATEGORIES -->
-<section class="section" style="padding-top:0"><div class="container">
-  <div class="section__head">
-    <div>
-      <div class="eyebrow">Browse by research area</div>
-      <h2>Research categories</h2>
-    </div>
-    <a href="category.html" class="btn btn--sm">View all</a>
-  </div>
-  <div class="catband" id="cat-band"></div>
-</div></section>
-
-<!-- FEATURED STACKS -->
-<section class="section" style="padding-top:0"><div class="container">
-  <div class="section__head">
-    <div>
-      <div class="eyebrow">Plan the study</div>
-      <h2>Popular research stacks</h2>
-      <p>Curated multi-peptide combinations with reference dosing — add a whole stack in one click.</p>
-    </div>
-    <a href="protocols.html" class="btn btn--sm">All protocols</a>
-  </div>
-  <div class="grid grid--3" id="home-stacks"></div>
-</div></section>
-
-<!-- GLOSSARY CTA -->
-<section class="section" style="padding-top:0"><div class="container">
-  <div style="border:1px solid var(--line);padding:44px;display:grid;grid-template-columns:1.3fr .7fr;gap:32px;align-items:center">
-    <div>
-      <div class="eyebrow">Informational first</div>
-      <h2 style="margin-bottom:12px">Every product is also a glossary entry.</h2>
-      <p class="muted" style="max-width:52ch">We built the catalog on top of a peptide encyclopedia. Read the mechanism, research areas, sequence, and structural data before you ever add to cart — then buy the exact size you need.</p>
-    </div>
-    <div style="text-align:right">
-      <a href="glossary.html" class="btn btn--solid">Open Peptide Glossary</a>
-    </div>
-  </div>
-</div></section>
-
-<!-- RECENTLY VIEWED -->
-<section class="section" id="home-rv" style="padding-top:0;display:none"><div class="container">
-  <div class="section__head">
-    <div><div class="eyebrow">Recently viewed</div><h2>Back to what you were looking at</h2></div>
-    <a href="shop.html" class="btn btn--sm">Shop all</a>
-  </div>
-  <div class="grid grid--4" id="home-recent"></div>
-</div></section>
-
-<!-- RUO NOTICE -->
-<section class="section" style="padding-top:0"><div class="container">
-  <div class="notice">
-    <span class="ruo-flag">RUO</span>
-    <div><b>Research Use Only.</b> All products listed on this website are intended strictly for in-vitro laboratory and research use. They are not drugs, foods, or cosmetics, are not for human or animal consumption, and no statements on this site should be interpreted as medical advice or a therapeutic claim.</div>
-  </div>
-</div></section>
-
-<div id="chrome-bottom"></div>
-<script src="assets/js/data.js?v=5"></script>
-<script src="assets/js/app.js?v=5"></script>
+<body>
+<header id="hdr"></header>
+<main class="wrap">
+  <nav class="chips" id="chips" aria-label="Categories"></nav>
+  <div class="listhead"><h1 id="listtitle">Featured products</h1><span id="listcount"></span></div>
+  <p class="catnote" id="catnote" hidden></p>
+  <section class="grid" id="grid" aria-labelledby="listtitle"></section>
+</main>
+<footer id="ftr"></footer>
+<script src="assets/js/catalog.js"></script>
+<script src="assets/js/shop.js"></script>
 <script>
-  // Featured products
-  const featured = PRODUCTS.filter(p=>p.featured).slice(0,8);
-  document.getElementById("featured-grid").innerHTML = featured.map(cardHTML).join("");
-  // Category band (first 8)
-  document.getElementById("cat-band").innerHTML = CATEGORIES.filter(c=>c.id!=="supplies").slice(0,8).map(c=>
-    `<a href="category.html?cat=${c.id}"><h4>${c.name}</h4><p>${c.blurb}</p></a>`).join("");
-  // Featured stacks
-  // Recently viewed
-  const rvHome = getRecent().map(productById).filter(Boolean).slice(0,4);
-  if(rvHome.length){
-    document.getElementById("home-rv").style.display = "";
-    document.getElementById("home-recent").innerHTML = rvHome.map(cardHTML).join("");
+(function () {
+  const S = window.SHOP, { C, ITEMS, esc, qs, $ } = S;
+  const q = (qs('q') || '').trim();
+  const tab = qs('tab') === 'peptides' ? 'pep' : 'chem';
+  const cats = tab === 'pep' ? C.pepCats : C.chemCats;
+  const cat = cats.some(c => c[0] === qs('cat')) ? qs('cat') : cats[0][0];
+
+  S.header(q ? null : tab);
+  S.footer();
+  S.gate();
+
+  // Category chips (hidden for search results)
+  const chips = $('#chips');
+  if (q) chips.hidden = true;
+  else chips.innerHTML = cats.map(c => '<a class="chip" href="index.html?' + (tab === 'pep' ? 'tab=peptides&' : '') + 'cat=' + c[0] + '"' + (c[0] === cat ? ' aria-current="true"' : '') + '>' + esc(c[1]) + '</a>').join('');
+  const on = chips.querySelector('[aria-current="true"]');
+  if (on) chips.scrollLeft = Math.max(0, on.offsetLeft - chips.clientWidth / 2 + on.clientWidth / 2);
+
+  // Which products
+  const order = p => (p.status === 'out' ? 1 : 0);
+  let list;
+  if (q) {
+    const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+    list = ITEMS.filter(p => { const hay = (p.title + ' ' + (p.aka || '') + ' ' + (p.summary || '') + ' ' + (p.cats || []).join(' ')).toLowerCase(); return words.every(w => hay.includes(w)); });
+  } else if (tab === 'pep') {
+    list = ITEMS.filter(p => p.type === 'pep' && (cat === 'all' || p.cat === cat));
+  } else {
+    const chem = ITEMS.filter(p => p.type === 'chem');
+    list = cat === 'featured' ? chem.filter(p => p.featured) : cat === 'new' ? chem.filter(p => p.isNew) : chem.filter(p => p.cats.includes(cat));
   }
-  document.getElementById("home-stacks").innerHTML = STACKS.filter(s=>s.featured).slice(0,3).map(s=>{
-    const comps = s.components.map(c=>{const p=productById(c.id);return p?p.name:"";}).filter(Boolean).join(" + ");
-    return `<a class="card" href="protocols.html" style="padding:22px">
-      <div class="card__cat">${s.goal}</div>
-      <div class="card__title" style="margin:4px 0 8px">${s.name}</div>
-      <div class="card__desc">${comps}</div>
-      <div class="card__foot"><span class="price">${money(stackPrice(s))} <small>stack</small></span><span class="btn btn--sm">View</span></div>
-    </a>`;
-  }).join("");
+  list = list.slice().sort((a, b) => order(a) - order(b));
+
+  const meta = cats.find(c => c[0] === cat);
+  $('#listtitle').textContent = q ? 'Results for “' + q + '”' : meta[1];
+  $('#listcount').textContent = list.length + (list.length === 1 ? ' product' : ' products');
+  if (!q && meta[2]) { $('#catnote').textContent = meta[2]; $('#catnote').hidden = false; }
+  document.title = (q ? 'Search: ' + q : meta[1]) + ' — Broaddus Scientific Group';
+
+  $('#grid').innerHTML = list.length ? list.map(S.card).join('')
+    : '<p class="empty">Nothing matches that search. Try a shorter name, or <a href="index.html">browse everything</a>.</p>';
+})();
 </script>
 </body>
 </html>

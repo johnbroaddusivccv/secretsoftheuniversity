@@ -15,8 +15,8 @@ Working rules for AI agents on this codebase. Read README.md first for project o
 - The brand persona is "The Registrar". The site never explains itself directly.
 
 ## Design tokens
-Sibling system: this site, the Broaddus Commerce site (`shop/`, at /shop) and Shortage Watch (`shortage/`, at /shortage) share one visual language — heaven white, Inter, square corners, neumorphic surfaces. Georgia is the University's voice and is what sets this site apart.
-- Shared palette (Oct 2026): the homepage, `shop/` and `shortage/` use one look. Dark is the default (Oct 2026); light is opt-in and remembered (cookie theme=light on the main pages, localStorage brg-theme on /shortage). /shop has no dark mode yet.
+Sibling system: this site and Shortage Watch (`shortage/`, at /shortage) share one visual language — heaven white, Inter, square corners, neumorphic surfaces. Georgia is the University's voice and is what sets this site apart. The Broaddus Scientific Group shop (`shop/`, at /shop) was rebuilt in Oct 2026 as a plain white-and-black chemical-supplier layout (modeled on EveryChem's structure, with our own copy and branding) using the same square corners and neumorphic raised/pressed surfaces; see shop/README.md.
+- Shared palette (Oct 2026): the homepage and `shortage/` use one look. Dark is the default (Oct 2026); light is opt-in and remembered (cookie theme=light on the main pages, localStorage brg-theme on /shortage). /shop is light only by design.
 - Colors (light, opt-in, `html.light`): bg #f6f7f9, bg2 #eceef2, ink #14263a, muted #46607a, accent (`--gold`) #1d4e6e, steel (`--violet`) #46607a
 - Colors (dark, default): bg #1f262d, bg2 #252e37, ink #e3eaf0, muted #9aa9b6, accent (`--gold`) #8fbbd9, steel (`--violet`) #7f9bb5
 - Neumorphism: panels are raised with `--sd`/`--sl` shadows (7px 7px 16px / -7px -7px 16px), fields are pressed in (inset shadows). No borders on panels.
