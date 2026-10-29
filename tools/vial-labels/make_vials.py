@@ -164,19 +164,59 @@ def render_spray(name, strength, form, path):
     canvas.paste(region, (round(side / 2 - cx), round(side * 0.5 - (605 - 60) * k)))
     canvas.resize((720, 720), Image.LANCZOS).save(path, 'WEBP', quality=82, method=6)
 
+GELPATH = os.path.join(os.path.dirname(photo), 'gel_src.png')
+GEL = None
+if os.path.exists(GELPATH):
+    # The source photo also holds a flower, a stone and a tube; keep only the pump bottle,
+    # strip the warm colour cast and lift it to a clean neutral white.
+    import numpy as np
+    from scipy import ndimage
+    _src = Image.open(GELPATH).convert('RGBA')
+    _a = np.asarray(_src).astype(float)
+    _lab, _ = ndimage.label(_a[..., 3] > 40)
+    _keep = _lab == _lab[1100, 890]                          # the blob under the bottle body
+    _y = 0.2126 * _a[..., 0] + 0.7152 * _a[..., 1] + 0.0722 * _a[..., 2]
+    _lo, _hi = np.percentile(_y[_keep], 2), np.percentile(_y[_keep], 97)
+    _n = np.clip((_y - _lo) / (_hi - _lo), 0, 1) ** 0.85      # levels + gentle gamma
+    _v = 150 + _n * 102                                         # shading lives between 150 and 252
+    _rgb = np.stack([_v, _v, _v * 1.004], -1)                   # neutral, a hair cool
+    _alpha = np.where(_keep, _a[..., 3], 0)
+    GEL = Image.fromarray(np.dstack([_rgb, _alpha]).clip(0, 255).astype('uint8'), 'RGBA').crop((741, 448, 1046, 1476))
+
+def render_gel(name, strength, form, path):
+    """Airless pump bottle on studio grey with a printed label."""
+    from PIL import ImageFilter
+    k = 3
+    bot = GEL.resize((GEL.width * k, GEL.height * k), Image.LANCZOS)
+    lx0, ly0, lx1, ly1 = 12 * k, 470 * k, 292 * k, 940 * k   # straight body below the collar (crop coords)
+    lw, lh = lx1 - lx0, ly1 - ly0
+    art = label(name, strength, form, H=round(W * lh / lw)).resize((lw, lh), Image.LANCZOS)
+    body = bot.crop((lx0, ly0, lx1, ly1))
+    rgb = ImageChops.multiply(body.convert('RGB'), art)
+    body.paste(rgb, (0, 0), body.getchannel('A'))
+    bot.paste(body, (lx0, ly0))
+    side = round(bot.height / 0.82)
+    canvas = Image.new('RGB', (side, side), (243, 243, 243))
+    sh = Image.new('L', (side, side), 0)
+    bx, by = round(side / 2 - bot.width / 2), round(side * 0.91 - bot.height)
+    ImageDraw.Draw(sh).ellipse((bx - bot.width * 0.15, by + bot.height - 40, bx + bot.width * 1.15, by + bot.height + 60), fill=120)
+    canvas.paste(Image.new('RGB', (side, side), (200, 200, 202)), (0, 0), sh.filter(ImageFilter.GaussianBlur(40)))
+    canvas.paste(bot, (bx, by), bot)
+    canvas.resize((720, 720), Image.LANCZOS).save(path, 'WEBP', quality=82, method=6)
+
 os.makedirs(outdir, exist_ok=True)
 jobs = []
 for c in cat['chemicals']:
     form = {'Spray Solution': 'Spray solution', 'Gel Dispenser': 'Topical gel', 'Aliquot Solution': 'Aliquot solution'}.get(c['form'], c['form'])
     nm = re.sub(r'\s*\(.*?\)\s*', ' ', c['name']).strip() if len(c['name']) > 22 else c['name']
-    jobs.append((c['id'], nm, c['size'], form, 'drop' if c['form'] == 'Solution' else 'jar' if c['form'] in ('Powder', 'Capsules') else 'spray' if c['form'] == 'Spray Solution' else 'vial'))
+    jobs.append((c['id'], nm, c['size'], form, 'drop' if c['form'] == 'Solution' else 'jar' if c['form'] in ('Powder', 'Capsules') else 'spray' if c['form'] == 'Spray Solution' else 'gel' if c['form'] == 'Gel Dispenser' else 'vial'))
 for p in cat['peptides']:
     for z in p['sizes']:
         form = 'Sterile solution' if p['id'] == 'bac-water' else 'Kit' if p['cat'] == 'supplies' else 'Solution' if p['form'] == 'Solution' else 'Lyophilized powder'
         jobs.append((p['id'] + '--' + slug(z['label']), p['name'], z['label'], form, 'drop' if p['form'] == 'Solution' else 'vial'))
 if only: jobs = [j for j in jobs if re.search(only, j[0])]
 for fid, nm, st, fm, kind in jobs:
-    fn = render_dropper if (kind == 'drop' and DROPPER) else render_jar if (kind == 'jar' and JAR) else render_spray if (kind == 'spray' and SPRAY) else render
+    fn = render_dropper if (kind == 'drop' and DROPPER) else render_jar if (kind == 'jar' and JAR) else render_spray if (kind == 'spray' and SPRAY) else render_gel if (kind == 'gel' and GEL is not None) else render
     fn(nm, st, fm, os.path.join(outdir, fid + '.webp'))
-print('droppers', sum(1 for j in jobs if j[4] == 'drop' and DROPPER), '| jars', sum(1 for j in jobs if j[4] == 'jar' and JAR), '| sprays', sum(1 for j in jobs if j[4] == 'spray' and SPRAY))
+print('droppers', sum(1 for j in jobs if j[4] == 'drop' and DROPPER), '| jars', sum(1 for j in jobs if j[4] == 'jar' and JAR), '| sprays', sum(1 for j in jobs if j[4] == 'spray' and SPRAY), '| gels', sum(1 for j in jobs if j[4] == 'gel' and GEL is not None))
 print('rendered', len(jobs))

@@ -1,4 +1,4 @@
-# Product labels for the shop (vial, dropper, jar, nasal spray)
+# Product labels for the shop (vial, dropper, jar, nasal spray, gel pump)
 
 Every product photo in `shop/assets/img/vials/` is one of two bottles with the product's
 name, strength and form printed onto its label:
@@ -7,7 +7,10 @@ name, strength and form printed onto its label:
 - **Powders and capsules** (chemicals): the black screw-top jar, `jar.jpg`, with a white wrap label.
 - **Intranasal sprays** (form "Spray Solution"): the white nasal-spray bottle, `spray.jpg`
   (the unlabeled bottle on the right of stock image 14598), with a printed wrap label.
-- **Everything else** (gels, aliquots, lyophilized peptides): the glass vial photo.
+- **Topical gels** (form "Gel Dispenser"): the airless pump bottle cut out of `gel_src.png`
+  (transparent PNG; the flower, stone and tube in that photo are dropped automatically), neutralised
+  to a clean white and placed on studio grey. Needs numpy and scipy.
+- **Everything else** (the aliquot and lyophilized peptides): the glass vial photo.
 
 Photo: "Injection bottle glass vial with blank white label" by rawpixel.com on Magnific
 (free license, attribution required; the credit is in the shop footer). The original photo is
@@ -18,7 +21,7 @@ from https://www.magnific.com/free-photo/injection-bottle-glass-vial-with-blank-
 
     python3 tools/vial-labels/make_vials.py . path/to/vial.jpg shop/assets/img/vials
 
-Put `dropper.png`, `jar.jpg` and `spray.jpg` in the same folder as `vial.jpg`; without them, those products fall back to the vial.
+Put `dropper.png`, `jar.jpg`, `spray.jpg` and `gel_src.png` in the same folder as `vial.jpg`; without them, those products fall back to the vial.
 
 Add a regex as a fourth argument to render only matching files, e.g. `'^bpc-157'`.
 Needs Python 3 with Pillow, Node (to read `catalog.js`) and the Inter font.
