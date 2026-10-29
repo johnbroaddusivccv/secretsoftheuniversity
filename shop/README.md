@@ -1,12 +1,13 @@
 # Broaddus Scientific Group shop (/shop)
 
-A plain, informative storefront: two departments (Chemicals and Peptides), category chips,
+A plain, informative storefront: two departments (Peptides first, then Chemicals), category chips,
 a four-across product grid, product pages with full specifications, a cart and a checkout
 that emails the order to you. White and black with soft neumorphic surfaces and square corners.
 No build step and no dependencies.
 
 ## Pages
-- `index.html` — the shop. `?cat=<id>` picks a category, `?tab=peptides` opens Peptides, `?q=` searches.
+- `index.html` — the shop, opening on Peptides. `?tab=chemicals` opens Chemicals, `?cat=<id>` picks a category
+  (a chemical category also opens Chemicals), `?q=` searches.
 - `product.html?id=<id>` — product page. Old one-per-compound ids (e.g. `piracetam`) still resolve.
 - `cart.html`, `checkout.html`, `order.html` — cart, checkout, confirmation.
 - `help.html` — contact, ordering, shipping, returns, testing & COAs, FAQ, about, terms, privacy.

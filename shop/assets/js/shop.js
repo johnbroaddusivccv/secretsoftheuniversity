@@ -175,7 +175,7 @@
         '<button class="iconbtn" type="button" id="searchbtn" aria-label="Search" aria-expanded="false" aria-controls="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button>' +
       '</nav></div>' +
       '<div class="search" id="search"><form action="index.html" role="search"><label class="sr" for="q">Search products</label><input id="q" name="q" type="search" placeholder="Search by name, e.g. Semax, Piracetam, BPC-157" value="' + esc(qs('q') || '') + '"><button class="btn btn--solid" type="submit">Search</button></form></div>' +
-      (tab !== false ? '<nav class="tabs" aria-label="Departments"><a href="index.html"' + (tab === 'chem' ? ' aria-current="page"' : '') + '>Chemicals</a><a href="index.html?tab=peptides"' + (tab === 'pep' ? ' aria-current="page"' : '') + '>Peptides</a></nav>' : '') +
+      (tab !== false ? '<nav class="tabs" aria-label="Departments"><a href="index.html"' + (tab === 'pep' ? ' aria-current="page"' : '') + '>Peptides</a><a href="index.html?tab=chemicals"' + (tab === 'chem' ? ' aria-current="page"' : '') + '>Chemicals</a></nav>' : '') +
       '</div>';
     const sb = $('#searchbtn'), box = $('#search');
     if (qs('q')) { box.classList.add('open'); sb.setAttribute('aria-expanded', 'true'); }
@@ -185,9 +185,9 @@
   function footer() {
     const el = $('#ftr'); if (!el) return;
     el.className = 'ftr';
-    const chem = C.chemCats.map(c => '<li><a href="index.html?cat=' + c[0] + '">' + esc(c[1]) + '</a></li>').join('');
+    const chem = C.chemCats.map(c => '<li><a href="index.html?tab=chemicals&cat=' + c[0] + '">' + esc(c[1]) + '</a></li>').join('');
     el.innerHTML = '<div class="wrap"><div class="ftr__grid">' +
-      '<div><h4>All products</h4><ul>' + chem + '<li><a href="index.html?tab=peptides">Peptides</a></li></ul></div>' +
+      '<div><h4>All products</h4><ul><li><a href="index.html">Peptides</a></li>' + chem + '</ul></div>' +
       '<div><h4>Support</h4><ul><li><a href="help.html">Help center</a></li><li><a href="help.html#contact">Contact us</a></li><li><a href="help.html#shipping">Shipping &amp; delivery</a></li><li><a href="help.html#returns">Refunds &amp; returns</a></li><li><a href="help.html#testing">Testing &amp; COAs</a></li></ul></div>' +
       '<div><a class="logo" href="index.html"><b>BROADDUS</b><small>Scientific Group</small></a><ul><li><a href="help.html#about">About</a></li><li><a href="help.html#terms">Terms &amp; conditions</a></li><li><a href="help.html#privacy">Privacy policy</a></li><li><a href="/">Secrets of the University</a></li></ul></div>' +
       '</div><p class="ftr__legal">All products are sold strictly for laboratory research use only. They are not drugs, dietary supplements, foods or cosmetics, and are not for human or veterinary use. Nothing on this site is medical advice. &copy; ' + new Date().getFullYear() + ' ' + SITE.name + '. Vial photo by <a href="https://www.magnific.com/free-photo/injection-bottle-glass-vial-with-blank-white-label_26678775.htm" rel="noopener">rawpixel.com</a> on Magnific.</p></div>';

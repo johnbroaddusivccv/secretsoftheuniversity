@@ -29,9 +29,9 @@
     return;
   }
   document.title = p.title + ' — Broaddus Scientific Group';
-  const dept = p.type === 'pep' ? '<a href="index.html?tab=peptides">Peptides</a>' : '<a href="index.html">Chemicals</a>';
+  const dept = p.type === 'pep' ? '<a href="index.html">Peptides</a>' : '<a href="index.html?tab=chemicals">Chemicals</a>';
   const firstCat = (p.cats || [])[0];
-  const catLink = firstCat ? ' / <a href="index.html?' + (p.type === 'pep' ? 'tab=peptides&' : '') + 'cat=' + firstCat + '">' + esc(S.catName(p.type, firstCat)) + '</a>' : '';
+  const catLink = firstCat ? ' / <a href="index.html?' + (p.type === 'pep' ? '' : 'tab=chemicals&') + 'cat=' + firstCat + '">' + esc(S.catName(p.type, firstCat)) + '</a>' : '';
   let s = 0, q = 1;
 
   const CD = (window.CHEMDATA && window.CHEMDATA[p.key]) || null;

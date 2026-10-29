@@ -25,7 +25,10 @@
 (function () {
   const S = window.SHOP, { C, ITEMS, esc, qs, $ } = S;
   const q = (qs('q') || '').trim();
-  const tab = qs('tab') === 'peptides' ? 'pep' : 'chem';
+  // Peptides is the default department. Chemicals opens with ?tab=chemicals, or with any chemical
+  // category (?cat=nootropics etc.), so older links keep landing on the right shelf.
+  const isChemCat = C.chemCats.some(c => c[0] === qs('cat')) && !C.pepCats.some(c => c[0] === qs('cat'));
+  const tab = qs('tab') === 'chemicals' || (qs('tab') !== 'peptides' && isChemCat) ? 'chem' : 'pep';
   const cats = tab === 'pep' ? C.pepCats : C.chemCats;
   const cat = cats.some(c => c[0] === qs('cat')) ? qs('cat') : cats[0][0];
 
@@ -36,7 +39,7 @@
   // Category chips (hidden for search results)
   const chips = $('#chips');
   if (q) chips.hidden = true;
-  else chips.innerHTML = cats.map(c => '<a class="chip" href="index.html?' + (tab === 'pep' ? 'tab=peptides&' : '') + 'cat=' + c[0] + '"' + (c[0] === cat ? ' aria-current="true"' : '') + '>' + esc(c[1]) + '</a>').join('');
+  else chips.innerHTML = cats.map(c => '<a class="chip" href="index.html?' + (tab === 'pep' ? '' : 'tab=chemicals&') + 'cat=' + c[0] + '"' + (c[0] === cat ? ' aria-current="true"' : '') + '>' + esc(c[1]) + '</a>').join('');
   const on = chips.querySelector('[aria-current="true"]');
   if (on) chips.scrollLeft = Math.max(0, on.offsetLeft - chips.clientWidth / 2 + on.clientWidth / 2);
 
