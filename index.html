@@ -595,6 +595,9 @@
   }
   /* Nav: every page lists every link; the page you are on is marked */
   .nav-links a.is-current { color:var(--gold); }
+  /* Phones and tablets: keep the light/dark switch in the bar, next to the menu (dark is the default) */
+  @media (max-width:1080px) { .nav-links .theme-toggle { display:inline-flex !important; width:40px; height:40px; } .nav-links { gap:10px; } }
+  @media (max-width:440px) { .brand { font-size:0.74rem !important; letter-spacing:0.1em !important; } .nav-inner { gap:10px !important; padding-left:16px; padding-right:16px; } }
 </style>
 </head>
 <body>

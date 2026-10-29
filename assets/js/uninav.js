@@ -47,11 +47,11 @@
     '.uninav__drop a{display:block;padding:11px 26px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--un-ink);text-decoration:none}' +
     '.uninav__drop a:hover{background:var(--un-bg2);color:var(--un-gold)}' +
     '.uninav__droptheme{display:none;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--un-bg2);margin-top:8px;padding:14px 26px 6px;font:inherit;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--un-gold);cursor:pointer}' +
-    '@media (max-width:1080px){.uninav__droptheme{display:block}}' +
+    '' +
     '@media (max-width:1180px){.uninav__links{gap:15px}}' +
-    '@media (max-width:1080px){.uninav__links a,.uninav__links .uninav__theme{display:none}}' +
+    '@media (max-width:1080px){.uninav__links a{display:none}.uninav__links{gap:10px}.uninav__theme{width:40px;height:40px}}' +
     '@media (max-width:700px){.uninav__in{gap:12px}.uninav__brand{flex:1 1 auto;min-width:0;font-size:.84rem;letter-spacing:.14em;overflow:hidden;text-overflow:ellipsis}.uninav__drop{right:16px}}' +
-    '@media (max-width:380px){.uninav__in{padding:16px}.uninav__brand{font-size:.74rem;letter-spacing:.1em}}';
+    '@media (max-width:440px){.uninav__in{padding:16px;gap:10px}.uninav__brand{font-size:.74rem;letter-spacing:.1em}}';
 
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
