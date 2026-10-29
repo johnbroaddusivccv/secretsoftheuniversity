@@ -10,7 +10,7 @@ Working rules for AI agents on this codebase. Read README.md first for project o
 
 ## Voice rules (strict)
 - Register: minimal, cryptic, wisdom-literature cadence. Short declarative lines. No exclamation points, no marketing hype words ("amazing", "unlock your potential").
-- Scripture allusions are woven in, never preachy: they must read as pure copy to someone who doesn't know the source. Only ONE visible citation exists on the site (Proverbs 25:2 in the manifesto) — do not add chapter-and-verse citations elsewhere.
+- Scripture allusions are woven in, never preachy: they must read as pure copy to someone who doesn't know the source. Do not add chapter-and-verse citations to page copy. (The Proverbs 25:2 manifesto was removed from the homepage in Oct 2026; the Daily Revelation verse card, which names its verse, is the deliberate exception.)
 - CTAs are one word where possible ("Knock", "Seek", "Enter").
 - The brand persona is "The Registrar". The site never explains itself directly.
 
