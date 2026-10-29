@@ -503,11 +503,23 @@
   /* On phones the 16:10 ratio sets the height; a fixed min-height would push the width past the screen */
   @media (max-width:700px) { .sky-fallback { min-height:0; } }
   /* ── Andromeda header: a live M31 drawn on canvas (drag to turn it) ── */
-  .m31 { position:relative; z-index:1; height:clamp(320px, 48vw, 520px); overflow:hidden;
-    background:radial-gradient(120% 95% at 50% 45%, #13253b 0%, #0a1422 55%, #050a12 100%); }
-  .m31 canvas { position:absolute; inset:0; width:100%; height:100%; display:block; cursor:grab; touch-action:pan-y; }
+  .m31 { position:relative; z-index:1; height:clamp(320px, 48vw, 520px); overflow:hidden; background:#0a1422; }
+  /* Night and day skies are stacked and cross-fade with the theme (gradients can't be animated directly) */
+  .m31::before, .m31::after { content:""; position:absolute; inset:0; z-index:0; transition:opacity 1.4s ease; }
+  .m31::before { background:radial-gradient(120% 95% at 50% 45%, #13253b 0%, #0a1422 55%, #050a12 100%); }
+  .m31::after { background:radial-gradient(120% 95% at 50% 44%, #fff9ea 0%, #fcefd2 30%, #f6f0e6 58%, #f1f3f6 100%); opacity:0; }
+  .m31 canvas { position:absolute; inset:0; z-index:1; width:100%; height:100%; display:block; cursor:grab; touch-action:pan-y; }
+  /* Dawn / dusk glow: swells while the skies change over so the switch passes through a sunrise, not grey */
+  .m31-glow { position:absolute; inset:0; z-index:1; pointer-events:none; opacity:0;
+    background:radial-gradient(85% 75% at 50% 78%, rgba(255,176,112,.95) 0%, rgba(244,132,138,.55) 38%, rgba(196,120,170,.22) 62%, rgba(196,120,170,0) 80%),
+               linear-gradient(180deg, rgba(120,110,170,.35) 0%, rgba(255,190,140,.25) 100%); }
+  .m31.is-turning .m31-glow { animation:m31Dawn 1.4s ease-in-out; }
+  @keyframes m31Dawn { 0% { opacity:0; } 45% { opacity:.9; } 100% { opacity:0; } }
+  @media (prefers-reduced-motion: reduce) { .m31.is-turning .m31-glow { animation-duration:.6s; } }
   .m31 canvas:active { cursor:grabbing; }
-  .m31-plate { position:absolute; left:0; right:0; bottom:22px; text-align:center; pointer-events:none; padding:0 16px; }
+  .m31-plate { position:absolute; z-index:2; left:0; right:0; bottom:22px; text-align:center; pointer-events:none; padding:0 16px; transition:opacity .42s ease; }
+  .m31-mark, .m31-line { transition:color 1.4s ease; }
+  @media (prefers-reduced-motion: reduce) { .m31::before, .m31::after { transition-duration:.6s; } }
   .m31-mark { display:block; font-family:var(--font-sans); font-size:.66rem; font-weight:600; letter-spacing:.32em; text-transform:uppercase; color:rgba(207,227,245,.7); }
   .m31-line { display:block; margin-top:6px; font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:1rem; color:rgba(238,241,245,.88); }
   .m31-toggle { position:absolute; right:20px; bottom:20px; z-index:2; width:40px; height:40px; padding:0;
@@ -521,7 +533,8 @@
   .m31-toggle[aria-pressed="true"] .i-play { display:block; }
   .m31-toggle[aria-pressed="true"] .i-pause { display:none; }
   /* Light mode: the header becomes the Sun on a warm white sky */
-  html.light .m31 { background:radial-gradient(120% 95% at 50% 44%, #fff9ea 0%, #fcefd2 30%, #f6f0e6 58%, #f1f3f6 100%); }
+  html.light .m31::before { opacity:0; }
+  html.light .m31::after { opacity:1; }
   html.light .m31-mark { color:rgba(122,84,28,.78); }
   html.light .m31-line { color:#5a4320; }
   html.light .m31-toggle { background:rgba(255,255,255,.55); border-color:rgba(122,84,28,.35); color:#5a4320; }
@@ -563,6 +576,7 @@
 <div class="angel-overlay" id="angel-overlay" aria-hidden="true"></div>
 
 <header class="m31" aria-label="The Andromeda Galaxy">
+  <div class="m31-glow" aria-hidden="true"></div>
   <canvas id="m31" aria-hidden="true"></canvas>
   <button type="button" class="m31-toggle" id="m31-toggle" aria-label="Pause animation" aria-pressed="false">
     <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="2.5" width="3" height="11"/><rect x="9.5" y="2.5" width="3" height="11"/></svg>
@@ -925,7 +939,10 @@
 (function andromeda() {
   const cv = document.getElementById('m31');
   if (!cv || !cv.getContext) return;
-  const ctx = cv.getContext('2d');
+  const mainCtx = cv.getContext('2d');
+  let ctx = mainCtx;                                   // the scene painters draw into whichever context this points at
+  const layerG = document.createElement('canvas'), layerS = document.createElement('canvas');
+  const ctxG = layerG.getContext('2d'), ctxS = layerS.getContext('2d');
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const N = innerWidth < 700 ? 7000 : 12000;
   const TAU = Math.PI * 2;
@@ -981,7 +998,8 @@
   function resize() {
     dpr = Math.min(2, window.devicePixelRatio || 1);
     const b = cv.getBoundingClientRect(); W = b.width; H = b.height;
-    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    cv.width = layerG.width = layerS.width = Math.round(W * dpr);
+    cv.height = layerG.height = layerS.height = Math.round(H * dpr);
     scale = Math.min(W * 0.43, H * 0.86); cx = W / 2; cy = H * 0.43;
     if (!playing) draw(clock);
   }
@@ -1124,9 +1142,41 @@
     if (line) line.textContent = light ? 'Eight minutes old, and already here.' : 'Two and a half million years, arriving tonight.';
     if (headerEl) headerEl.setAttribute('aria-label', light ? 'The Sun' : 'The Andromeda Galaxy');
   }
-  function draw(time) { (isLight() ? drawSun : drawGalaxy)(time); }
+  // Dawn and dusk: 0 = galaxy, 1 = sun. On a theme change the two scenes cross-fade over 1.4 s;
+  // the galaxy draws back a little as it fades and the sun swells up into place (plain fade for reduced motion).
+  const DUR = 1400;
+  let mixFrom = isLight() ? 1 : 0, mixTo = mixFrom, mixT0 = -1e9;
+  const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const mixNow = () => { const t = Math.min(1, (performance.now() - mixT0) / DUR); return mixFrom + (mixTo - mixFrom) * ease(t); };
+  const transitioning = () => performance.now() - mixT0 < DUR;
+  function draw(time) {
+    const m = mixNow();
+    if (m <= 0.001) { ctx = mainCtx; drawGalaxy(time); return; }
+    if (m >= 0.999) { ctx = mainCtx; drawSun(time); return; }
+    ctx = ctxG; drawGalaxy(time);
+    ctx = ctxS; drawSun(time);
+    ctx = mainCtx;
+    const px = cx * dpr, py = H * 0.44 * dpr, w = cv.width, h = cv.height;
+    const blit = (src, alpha, sc) => { mainCtx.globalAlpha = alpha; mainCtx.drawImage(src, px - px * sc, py - py * sc, w * sc, h * sc); };
+    mainCtx.setTransform(1, 0, 0, 1, 0, 0); mainCtx.globalCompositeOperation = 'source-over';
+    mainCtx.clearRect(0, 0, w, h);
+    blit(layerG, 1 - m, reduce ? 1 : 1 - 0.18 * m);
+    blit(layerS, m, reduce ? 1 : 0.55 + 0.45 * m);
+    mainCtx.globalAlpha = 1;
+  }
   syncScene();
-  new MutationObserver(() => { syncScene(); draw(clock); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  const plate = document.querySelector('.m31-plate');
+  let captionTimer;
+  new MutationObserver(() => {
+    const target = isLight() ? 1 : 0;
+    if (target === mixTo) return;
+    mixFrom = mixNow(); mixTo = target; mixT0 = performance.now();
+    if (headerEl) { headerEl.classList.remove('is-turning'); void headerEl.offsetWidth; headerEl.classList.add('is-turning'); }
+    if (plate) {                                       // caption fades out, changes, fades back in
+      plate.style.opacity = '0'; clearTimeout(captionTimer);
+      captionTimer = setTimeout(() => { syncScene(); plate.style.opacity = '1'; }, 450);
+    } else syncScene();
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
   // drag to turn, like a globe
   let dragging = false, lx = 0, ly = 0;
@@ -1163,7 +1213,7 @@
     const live = visible && !document.hidden;
     if (playing && live) clock += dt;
     if (!dragging) { spin += vSpin; vSpin *= 0.95; tilt *= 0.97; }   // coast, then settle back
-    if (live && (playing || dragging || Math.abs(vSpin) > 1e-4 || Math.abs(tilt) > 1e-3)) draw(clock);
+    if (live && (playing || dragging || transitioning() || Math.abs(vSpin) > 1e-4 || Math.abs(tilt) > 1e-3)) draw(clock);
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
