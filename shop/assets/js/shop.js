@@ -163,11 +163,23 @@
   });
 
   /* ── Header & footer ── */
+  /* Site menu in the black top bar: links back to every page of Secrets of the University */
+  document.addEventListener('click', e => {
+    const m = document.getElementById('unimenu'), b = document.querySelector('.topbar__menu'); if (!m || !b) return;
+    if (e.target.closest('.topbar__menu')) { m.hidden = !m.hidden; b.setAttribute('aria-expanded', String(!m.hidden)); return; }
+    if (!m.hidden && !m.contains(e.target)) { m.hidden = true; b.setAttribute('aria-expanded', 'false'); }
+  });
+  document.addEventListener('keydown', e => {
+    const m = document.getElementById('unimenu');
+    if (e.key === 'Escape' && m && !m.hidden) { m.hidden = true; document.querySelector('.topbar__menu').setAttribute('aria-expanded', 'false'); }
+  });
   function header(tab) {
     const el = $('#hdr'); if (!el) return;
     if (!$('.topbar')) el.insertAdjacentHTML('beforebegin',
       '<div class="topbar"><div class="wrap topbar__row"><a href="/" class="topbar__home"><span aria-hidden="true">\u2190</span> Secrets of the University</a>' +
-      '<span class="topbar__note">Research use only</span></div></div>');
+      '<span class="topbar__right"><span class="topbar__note">Research use only</span>' +
+      '<button class="topbar__menu" type="button" aria-label="Site menu" aria-expanded="false" aria-controls="unimenu">\u2630</button></span>' +
+      '<nav class="unimenu" id="unimenu" hidden aria-label="Secrets of the University"><a href="/">Home</a><a href="/shop/">Store</a><a href="/shortage/">Shortage Watch</a><a href="/finance.html">Finance</a><a href="/health.html">Health</a><a href="/careers.html">Careers</a><a href="/systems.html">Systems</a></nav></div></div>');
     el.className = 'hdr';
     el.innerHTML = '<div class="wrap"><div class="hdr__row">' +
       '<a class="logo" href="index.html" aria-label="Broaddus Scientific Group, shop home"><b>BROADDUS</b><small>Scientific Group</small></a>' +
