@@ -28,20 +28,6 @@ button,input,select,textarea{font:inherit;color:inherit}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ── Top bar: way back to the main site ── */
-.topbar{background:#000;color:#fff;font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
-.topbar__row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:36px}
-.topbar a{color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:8px 0}
-.topbar a:hover{text-decoration:underline;text-underline-offset:3px}
-.topbar__note{color:#a8a9ad}
-@media (max-width:420px){.topbar__note{display:none}}
-.topbar__row{position:relative}
-.topbar__right{display:inline-flex;align-items:center;gap:16px}
-.topbar__menu{background:none;border:0;color:#fff;font-size:1.05rem;line-height:1;padding:6px 2px;cursor:pointer}
-.topbar__menu:hover,.topbar__menu[aria-expanded="true"]{color:#a8a9ad}
-.unimenu{position:absolute;right:0;top:100%;z-index:60;width:230px;background:#fff;padding:10px 0;box-shadow:0 14px 30px -10px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.06)}
-.unimenu[hidden]{display:none}
-.unimenu a{display:block;color:#0e1116;padding:10px 22px;font-size:.7rem;letter-spacing:.16em}
-.unimenu a:hover{background:#f2f2f2;text-decoration:none}
 
 /* ── Header ── */
 .hdr{padding:28px 0 0}

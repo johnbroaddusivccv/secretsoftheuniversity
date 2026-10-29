@@ -6,6 +6,7 @@ Working rules for AI agents on this codebase. Read README.md first for project o
 - Single-file pages: all CSS and JS stay inline in each .html file. No build step, no frameworks, no npm.
 - No localStorage/sessionStorage. External scripts from CDN only (currently: TradingView embed on finance.html, CodeMirror 5 on careers.html).
 - Pages link relatively — keep all .html files in the root directory.
+- The nav bar is the same everywhere. The five root pages carry it inline; /shop and /shortage get it from `assets/js/uninav.js` (first thing in `<body>`). Change both together.
 - Every page must include the canvas starfield and the shared CSS variables (copy the `:root` block and starfield script from index.html).
 
 ## Voice rules (strict)

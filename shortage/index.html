@@ -440,20 +440,13 @@ tbody tr:hover{background:var(--accent-soft)}
 #tray{box-shadow:6px 6px 16px var(--sd)}
 .sphere .amp{text-shadow:2px 2px 4px var(--sd),-2px -2px 4px var(--sl)}
 
-/* Site menu: links back to every page of Secrets of the University */
-header.nav .wrap{position:relative}
-.unimenu-btn{margin-left:10px;border:0;background:var(--bg);box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl);color:var(--ink);width:36px;height:32px;font-size:1rem;line-height:1;cursor:pointer;border-radius:0}
-.unimenu-btn:hover,.unimenu-btn[aria-expanded="true"]{color:var(--accent)}
-.unimenu{position:absolute;right:20px;top:calc(100% + 8px);z-index:40;width:230px;background:var(--bg);padding:10px 0;box-shadow:7px 7px 16px var(--sd),-7px -7px 16px var(--sl)}
-.unimenu[hidden]{display:none}
-.unimenu a{display:block;padding:10px 22px;color:var(--ink);text-decoration:none;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
-.unimenu a:hover{color:var(--accent)}
-@media (max-width:860px){.nav .wrap{flex-wrap:nowrap;gap:10px}#themeBtn{margin-left:auto}.unimenu-btn{margin-left:0;flex:none}}
-@media (max-width:380px){.brand{font-size:.84rem;gap:8px}.brand svg{width:24px;height:24px}#themeBtn{padding:6px 8px}}
-@media (max-width:350px){.nav .wrap{gap:8px}.brand{font-size:.74rem;gap:6px}.brand svg{width:20px;height:20px}#themeBtn{padding:5px 6px;font-size:.72rem}.unimenu-btn{width:32px}}
+
+/* The University nav bar (/assets/js/uninav.js) carries the theme switch */
+#themeBtn{display:none}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
+<script src="/assets/js/uninav.js"></script>
 
 
 <div id="intro" role="presentation">
@@ -481,7 +474,6 @@ header.nav .wrap{position:relative}
       Broaddus Scientific Group
     </a>
     <ul id="navlinks">
-      <li><a href="/" title="Back to Secrets of the University">← University</a></li>
       <li><a href="#model">How it works</a></li>
       <li><a href="#providers">Providers</a></li>
       <li><a href="#partners">Partners</a></li>
@@ -495,11 +487,9 @@ header.nav .wrap{position:relative}
       <li><a href="request.html">Request</a></li>
     </ul>
     <button id="themeBtn" type="button" aria-label="Toggle color theme">Theme</button>
-    <button class="unimenu-btn" id="unimenuBtn" type="button" aria-label="Site menu" aria-expanded="false" aria-controls="unimenu">&#9776;</button>
-    <nav class="unimenu" id="unimenu" hidden aria-label="Secrets of the University"><a href="/">Home</a><a href="/shop/">Store</a><a href="/shortage/">Shortage Watch</a><a href="/finance.html">Finance</a><a href="/health.html">Health</a><a href="/careers.html">Careers</a><a href="/systems.html">Systems</a></nav>
   </div>
   <nav class="mnav" aria-label="Sections">
-    <a href="/">← University</a><a href="#catalog">Catalog</a><a href="#watch">Shortage Watch</a><a href="#model">How it works</a><a href="#pharmacies">Pharmacies</a><a href="#poly">Polysubstance</a><a href="#quality">Quality</a><a href="#faq">FAQ</a><a href="request.html">Request</a>
+    <a href="#catalog">Catalog</a><a href="#watch">Shortage Watch</a><a href="#model">How it works</a><a href="#pharmacies">Pharmacies</a><a href="#poly">Polysubstance</a><a href="#quality">Quality</a><a href="#faq">FAQ</a><a href="request.html">Request</a>
   </nav>
 </header>
 
@@ -1078,17 +1068,6 @@ setFeed(SEED,false);
   db.doc('data/sourcing').onSnapshot(sn=>{const f=sn.exists&&sn.data();if(f&&f.drugs){SRC=Object.assign({},SRC,f.drugs);render()}},()=>{});
   db.doc('data/licenses').onSnapshot(sn=>{const f=sn.exists&&sn.data();if(f&&f.states){LIC=Object.assign({},LIC,f.states);licDb=db;drawTiles()}else licDb=db},()=>{});
   db.doc('data/feed').onSnapshot(snap=>{const f=snap.exists&&snap.data();if(f&&Array.isArray(f.drugs)&&f.drugs.length)setFeed(f,true)},()=>{live=false;renderSync()})}catch(e){}})();
-})();
-</script>
-<script>
-(function(){
-  var b = document.getElementById('unimenuBtn'), m = document.getElementById('unimenu'); if (!b || !m) return;
-  function set(open){ m.hidden = !open; b.setAttribute('aria-expanded', String(open)); }
-  document.addEventListener('click', function(e){
-    if (e.target.closest('#unimenuBtn')) { set(m.hidden); return; }
-    if (!m.hidden && !m.contains(e.target)) set(false);
-  });
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') set(false); });
 })();
 </script>
 </body></html>
