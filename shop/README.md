@@ -17,8 +17,9 @@ No build step and no dependencies.
 - **peptides**: one entry per compound with a `sizes` list; `cat` is its peptide group.
 - **status** on any product: `in`, `out` (badge, no add button), `backorder` (badge, "Pre order"),
   `delay` (badge "1–3 day delay").
-- **Photos**: `img` (chemicals) or `sizes[].img` (peptides) is a file name in `assets/img/products/`
-  without `.webp`. Leave it empty and the shop draws a labeled stand-in in the same style.
+- **Photos**: `img` (chemicals) or `sizes[].img` (peptides) is a path under `assets/img/` without
+  `.webp`, normally `vials/<file>`. The vial images are generated with `tools/vial-labels/`;
+  run it again after adding a product. Leave `img` empty and the shop draws a stand-in instead.
 - Category names and the line under each category are in `chemCats` / `pepCats`.
 
 ## Settings: top of `assets/js/shop.js`

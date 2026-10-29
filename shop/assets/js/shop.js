@@ -80,7 +80,7 @@
   let artSeq = 0;
   function art(p, s = 0, eager = false) {
     const z = p.sizes[s] || p.sizes[0];
-    if (z.img) return '<img src="assets/img/products/' + esc(z.img) + '.webp" alt="' + esc(p.title) + '" width="720" height="720"' + (eager ? '' : ' loading="lazy" decoding="async"') + '>';
+    if (z.img) return '<img src="assets/img/' + esc(z.img.includes('/') ? z.img : 'products/' + z.img) + '.webp" alt="' + esc(p.title) + '" width="720" height="720"' + (eager ? '' : ' loading="lazy" decoding="async"') + '>';
     return drawn(p, z);
   }
   function drawn(p, z) {
@@ -190,7 +190,7 @@
       '<div><h4>All products</h4><ul>' + chem + '<li><a href="index.html?tab=peptides">Peptides</a></li></ul></div>' +
       '<div><h4>Support</h4><ul><li><a href="help.html">Help center</a></li><li><a href="help.html#contact">Contact us</a></li><li><a href="help.html#shipping">Shipping &amp; delivery</a></li><li><a href="help.html#returns">Refunds &amp; returns</a></li><li><a href="help.html#testing">Testing &amp; COAs</a></li></ul></div>' +
       '<div><a class="logo" href="index.html"><b>BROADDUS</b><small>Scientific Group</small></a><ul><li><a href="help.html#about">About</a></li><li><a href="help.html#terms">Terms &amp; conditions</a></li><li><a href="help.html#privacy">Privacy policy</a></li><li><a href="/">Secrets of the University</a></li></ul></div>' +
-      '</div><p class="ftr__legal">All products are sold strictly for laboratory research use only. They are not drugs, dietary supplements, foods or cosmetics, and are not for human or veterinary use. Nothing on this site is medical advice. &copy; ' + new Date().getFullYear() + ' ' + SITE.name + '.</p></div>';
+      '</div><p class="ftr__legal">All products are sold strictly for laboratory research use only. They are not drugs, dietary supplements, foods or cosmetics, and are not for human or veterinary use. Nothing on this site is medical advice. &copy; ' + new Date().getFullYear() + ' ' + SITE.name + '. Vial photo by <a href="https://www.magnific.com/free-photo/injection-bottle-glass-vial-with-blank-white-label_26678775.htm" rel="noopener">rawpixel.com</a> on Magnific.</p></div>';
   }
 
   /* ── Research-use gate (once per browser) ── */

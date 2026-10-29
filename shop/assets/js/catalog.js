@@ -1,5 +1,6 @@
 /* Broaddus Scientific Group catalog. Generated; edit prices, sizes or status here.
-   status: 'in' | 'out' | 'backorder' | 'delay'  (badge + button follow it) */
+   status: 'in' | 'out' | 'backorder' | 'delay'  (badge + button follow it)
+   img: path under assets/img/ without .webp (vial photos are generated per product and size) */
 window.CATALOG = {
  "chemicals": [
   {
@@ -17,7 +18,7 @@ window.CATALOG = {
    "isNew": true,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "ATIC-SOL",
+   "img": "vials/aticaprant-solution-10mg-ml",
    "aka": "JNJ-67953964 · CERC-501",
    "summary": "A selective kappa-opioid receptor antagonist studied for anhedonia.",
    "overview": "Aticaprant blocks the kappa-opioid receptor, whose activation by dynorphin is linked to stress, dysphoria, and loss of reward sensitivity. It has been studied as an add-on treatment in depression with prominent anhedonia.",
@@ -46,7 +47,7 @@ window.CATALOG = {
    "isNew": true,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/rac-af710b-powder-1-5g",
    "aka": "ANAVEX 3-71 (racemate)",
    "summary": "A muscarinic M1 positive modulator and sigma-1 agonist studied in Alzheimer's models.",
    "overview": "AF710B is a small molecule that combines positive allosteric modulation of the M1 muscarinic receptor with sigma-1 receptor agonism. Preclinical work has examined it in models of synaptic loss, amyloid and tau pathology, and memory.",
@@ -74,7 +75,7 @@ window.CATALOG = {
    "isNew": true,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "GB115-NAS",
+   "img": "vials/gb-115-spray-solution-2mg-ml",
    "aka": "Cholecystokinin-4 analog",
    "summary": "A dipeptide CCK-4 analog studied as an anxiolytic in Russia.",
    "overview": "GB-115 is a dipeptide analog of the tetrapeptide cholecystokinin-4 (CCK-4), which induces panic-like anxiety. By acting as a CCK-B receptor antagonist, GB-115 was developed at the Zakusov Institute as a non-sedating anxiolytic and studied in generalized anxiety models.",
@@ -103,7 +104,7 @@ window.CATALOG = {
    "isNew": true,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "",
+   "img": "vials/kw-6356-solution-6mg-ml",
    "aka": "Adenosine A2A antagonist",
    "summary": "An adenosine A2A receptor antagonist / inverse agonist studied in Parkinson's research.",
    "overview": "KW-6356 was developed by Kyowa Kirin as a selective adenosine A2A receptor antagonist with inverse-agonist activity. It has been studied in Parkinson's disease, where A2A blockade is used to modulate striatal motor circuits.",
@@ -131,7 +132,7 @@ window.CATALOG = {
    "isNew": true,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "GB115-SOL",
+   "img": "vials/gb-115-solution-6mg-ml",
    "aka": "Cholecystokinin-4 analog",
    "summary": "A dipeptide CCK-4 analog studied as an anxiolytic in Russia.",
    "overview": "GB-115 is a dipeptide analog of the tetrapeptide cholecystokinin-4 (CCK-4), which induces panic-like anxiety. By acting as a CCK-B receptor antagonist, GB-115 was developed at the Zakusov Institute as a non-sedating anxiolytic and studied in generalized anxiety models.",
@@ -159,7 +160,7 @@ window.CATALOG = {
    "isNew": true,
    "status": "in",
    "storage": "Store at room temperature away from heat and direct light. Keep the pump closed.",
-   "img": "",
+   "img": "vials/3hp-gel-dispenser-0-05",
    "aka": "Topical research formulation",
    "summary": "A 0.05% topical research gel supplied in a metered dispenser.",
    "overview": "3HP is supplied as a 0.05% gel in an airless metered dispenser for topical research applications. Identity and concentration are documented on the lot certificate of analysis.",
@@ -185,7 +186,7 @@ window.CATALOG = {
    "isNew": true,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "PPAP-SOL",
+   "img": "vials/ppap-hcl-solution-50mg-ml",
    "aka": "Phenylpropylaminopentane",
    "summary": "A catecholaminergic activity enhancer related to selegiline research.",
    "overview": "PPAP was described by Knoll as a catecholaminergic activity enhancer: it increases impulse-driven release of dopamine and noradrenaline without acting as a classic releasing agent. It was derived from work on selegiline and is studied alongside BPAP in models of learning and drive.",
@@ -214,7 +215,7 @@ window.CATALOG = {
    "isNew": true,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/enantiopure-potassium-3r-bhb-powder-150g",
    "aka": "Potassium (R)-3-hydroxybutyrate",
    "summary": "The single-enantiomer (R) form of the ketone body beta-hydroxybutyrate, as its potassium salt.",
    "overview": "(R)-3-hydroxybutyrate is the enantiomer the body produces during fasting and ketosis. Supplied as the enantiopure potassium salt, it is used in research on ketone metabolism, energy substrates and HCAR2 signaling.",
@@ -242,7 +243,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "",
+   "img": "vials/asp-4345-solution-45mg-ml",
    "aka": "Astellas investigational compound",
    "summary": "An Astellas compound studied for cognitive impairment associated with schizophrenia.",
    "overview": "ASP-4345 is an investigational small molecule from Astellas that reached clinical study for cognitive impairment associated with schizophrenia. It is supplied here for in-vitro and preclinical cognition research.",
@@ -269,7 +270,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/itpp-hexasodium-powder-5g",
    "aka": "myo-Inositol trispyrophosphate",
    "summary": "An allosteric hemoglobin effector that increases oxygen release to tissue.",
    "overview": "ITPP enters red blood cells and lowers hemoglobin's oxygen affinity, shifting the dissociation curve so more oxygen is released to tissue. It has been studied in hypoxia, tumor oxygenation and exercise-capacity models.",
@@ -297,7 +298,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/atx-304-sodium-powder-3g",
    "aka": "O304 sodium",
    "summary": "A pan-AMPK activator studied in metabolic and cardiovascular research.",
    "overview": "ATX-304 (O304) activates AMP-activated protein kinase by protecting it from dephosphorylation. It has been studied for glucose uptake, insulin sensitivity and cardiac function in metabolic disease models.",
@@ -324,7 +325,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "ACD856-SOL",
+   "img": "vials/acd856-solution-10mg-ml",
    "aka": "Trk-receptor positive modulator",
    "summary": "A small molecule that enhances neurotrophin signaling at Trk receptors.",
    "overview": "ACD856 is a positive allosteric modulator of the Trk family of neurotrophin receptors (TrkA, TrkB, TrkC), developed by AlzeCure Pharma. Rather than activating the receptors directly, it amplifies the signal from endogenous NGF and BDNF; early clinical research explored Alzheimer's disease and depression.",
@@ -352,7 +353,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/neohesperidin-powder-5g",
    "aka": "Hesperetin 7-O-neohesperidoside",
    "summary": "A bitter citrus flavanone glycoside studied for antioxidant activity.",
    "overview": "Neohesperidin is a flavanone glycoside found in bitter orange. It is studied as an antioxidant and anti-inflammatory flavonoid and is the starting material for the sweetener neohesperidin dihydrochalcone.",
@@ -379,7 +380,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "",
+   "img": "vials/art27-13-solution-400mcg-ml",
    "aka": "Peripheral cannabinoid agonist",
    "summary": "A peripherally restricted CB1/CB2 agonist studied for appetite and weight loss in cachexia.",
    "overview": "ART27.13 is a dual CB1/CB2 receptor agonist designed to stay largely outside the central nervous system. It has been studied in cancer-associated anorexia and weight loss.",
@@ -405,7 +406,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/salicin-powder-9g",
    "aka": "Willow bark glucoside",
    "summary": "A beta-glucoside from willow bark that is metabolized to salicylic acid.",
    "overview": "Salicin is an alcoholic beta-glucoside isolated from willow bark. It is converted in the gut and liver to salicylic acid and is studied as the natural precursor to the salicylate class.",
@@ -432,7 +433,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/magnesium-acetate-powder-100g",
    "aka": "Magnesium diacetate",
    "summary": "A water-soluble magnesium salt.",
    "overview": "Magnesium acetate is a highly soluble magnesium salt used as a magnesium source in buffer preparation and in research on magnesium-dependent enzymes and signaling.",
@@ -458,7 +459,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "SELT-SOL",
+   "img": "vials/seltorexant-solution-10mg-ml",
    "aka": "JNJ-42847922",
    "summary": "A selective orexin-2 receptor antagonist studied in depression with insomnia.",
    "overview": "Seltorexant blocks the orexin-2 receptor, part of the brain's wake-promoting system. It has been studied in late-stage clinical research for major depressive disorder with insomnia symptoms, where normalizing hyperarousal is the proposed mechanism.",
@@ -486,7 +487,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/ecdysterone-20-hydroxyecdysone-powder-9g",
    "aka": "20-Hydroxyecdysone, beta-ecdysone",
    "summary": "A plant ecdysteroid studied for anabolic effects in muscle.",
    "overview": "Ecdysterone is the most abundant phytoecdysteroid, found in spinach and Cyanotis species. It is studied for protein synthesis and muscle hypertrophy through pathways distinct from the androgen receptor.",
@@ -514,7 +515,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/cordycepin-powder-1-5g",
    "aka": "3'-Deoxyadenosine",
    "summary": "An adenosine analog from Cordyceps studied in AMPK and inflammation research.",
    "overview": "Cordycepin is a nucleoside analog isolated from Cordyceps fungi. Lacking the 3' hydroxyl, it interferes with polyadenylation and has been studied for AMPK activation, inflammation and cell proliferation.",
@@ -543,7 +544,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "BROM-NAS",
+   "img": "vials/bromantane-spray-solution-90mg-ml",
    "aka": "Ladasten",
    "summary": "An adamantane actoprotector studied for dopamine synthesis and fatigue.",
    "overview": "Bromantane was developed in Russia as an actoprotector, a compound meant to raise physical and mental work capacity under stress. Its studied mechanism is up-regulation of tyrosine hydroxylase and dopamine synthesis rather than dopamine release; it is on the WADA prohibited list.",
@@ -571,7 +572,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "ACD856-500",
+   "img": "vials/acd856-powder-500mg",
    "aka": "Trk-receptor positive modulator",
    "summary": "A small molecule that enhances neurotrophin signaling at Trk receptors.",
    "overview": "ACD856 is a positive allosteric modulator of the Trk family of neurotrophin receptors (TrkA, TrkB, TrkC), developed by AlzeCure Pharma. Rather than activating the receptors directly, it amplifies the signal from endogenous NGF and BDNF; early clinical research explored Alzheimer's disease and depression.",
@@ -600,7 +601,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "PIN-NAS",
+   "img": "vials/pinealon-spray-solution-10mg-ml",
    "aka": "Ala-Glu-Asp-Gly bioregulator",
    "summary": "A short peptide bioregulator studied in neuroprotection and brain-aging models.",
    "overview": "Pinealon is a synthetic tripeptide bioregulator studied for neuroprotective effects and roles in brain cellular function and aging. It belongs to the family of short-peptide bioregulators researched for tissue-specific gene-expression modulation.",
@@ -627,7 +628,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "USMA-2G",
+   "img": "vials/usmarapride-oxalate-powder-2g",
    "aka": "SUVN-D4010 (oxalate)",
    "summary": "A selective serotonin 5-HT4 receptor partial agonist studied for memory.",
    "overview": "Usmarapride is a 5-HT4 receptor partial agonist developed by Suven Life Sciences. 5-HT4 activation increases acetylcholine release and promotes non-amyloidogenic processing of amyloid precursor protein, making it a target in Alzheimer's research.",
@@ -656,7 +657,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "TAK653-SOL",
+   "img": "vials/tak-653-solution-4mg-ml",
    "aka": "AMPA positive allosteric modulator",
    "summary": "A newer AMPA-receptor potentiator studied in depression and cognition.",
    "overview": "TAK-653 is an AMPA-receptor positive allosteric modulator designed to have minimal agonist activity of its own, aiming to reduce seizure risk compared with earlier ampakines. It has been studied in depression models and in human cortical-excitability research.",
@@ -684,7 +685,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/mirodenafil-powder-1-5g",
    "aka": "PDE5 inhibitor",
    "summary": "A PDE5 inhibitor also studied in Alzheimer's disease research.",
    "overview": "Mirodenafil is a phosphodiesterase-5 inhibitor developed in Korea. Beyond its original use, it has been investigated in Alzheimer's models for effects on cGMP signaling, amyloid and tau.",
@@ -710,7 +711,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "BPN-SOL",
+   "img": "vials/bpn14770-solution-10mg-ml",
    "aka": "Zatolmilast",
    "summary": "A PDE4D allosteric inhibitor studied in Fragile X and memory research.",
    "overview": "BPN14770 (zatolmilast) selectively inhibits the PDE4D enzyme, raising cAMP signaling involved in memory formation while aiming to avoid the nausea common to broader PDE4 inhibitors. It has been studied clinically in Fragile X syndrome and in Alzheimer's-disease models.",
@@ -739,7 +740,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/neboglamine-powder-1-5g",
    "aka": "Glycine-site NMDA modulator",
    "summary": "A positive modulator of the NMDA receptor's glycine site.",
    "overview": "Neboglamine is a positive allosteric modulator at the glycine binding site of the NMDA receptor, developed by Rottapharm. It has been studied in schizophrenia and cognition research.",
@@ -767,7 +768,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "PARA-15G",
+   "img": "vials/paraxanthine-powder-15g",
    "aka": "1,7-Dimethylxanthine",
    "summary": "The primary metabolite of caffeine, studied as a cleaner stimulant.",
    "overview": "Paraxanthine accounts for most of the caffeine the body metabolizes. Like caffeine it antagonizes adenosine receptors, and it also inhibits PDE9. Research has compared it with caffeine for alertness, attention, and physical performance with less anxiety and blood-pressure effect.",
@@ -796,7 +797,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "",
+   "img": "vials/epitalon-acetate-spray-solution-4mg-ml",
    "aka": "Epitalon / AEDG",
    "summary": "A tetrapeptide studied in telomerase and cellular-aging research.",
    "overview": "Epithalon is a synthetic tetrapeptide based on epithalamin, a pineal-gland extract. It is studied in longevity research for its reported effect on telomerase activity, telomere length, and circadian/melatonin regulation in aging models.",
@@ -825,7 +826,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "",
+   "img": "vials/tropisetron-hcl-solution-20mg-ml",
    "aka": "5-HT3 antagonist, alpha-7 nAChR partial agonist",
    "summary": "A 5-HT3 antagonist that is also an alpha-7 nicotinic partial agonist.",
    "overview": "Tropisetron is a serotonin 5-HT3 receptor antagonist with partial agonist activity at alpha-7 nicotinic acetylcholine receptors. That second action has made it a subject of cognition and neuroinflammation research.",
@@ -853,7 +854,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/slu-pp-332-powder-1g",
    "aka": "ERR agonist",
    "summary": "A pan estrogen-related receptor agonist studied as an exercise mimetic.",
    "overview": "SLU-PP-332 activates the estrogen-related receptors (ERR alpha, beta and gamma), which drive mitochondrial and oxidative metabolism in muscle. In mouse studies it increased endurance and fatty-acid oxidation.",
@@ -880,7 +881,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/sialic-acid-powder-30g",
    "aka": "N-Acetylneuraminic acid (Neu5Ac)",
    "summary": "The main sialic acid in humans, found at the ends of cell-surface glycans.",
    "overview": "N-acetylneuraminic acid caps glycoproteins and gangliosides on cell surfaces and is concentrated in brain tissue and milk. It is studied in glycobiology, neurodevelopment and cell recognition.",
@@ -907,7 +908,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/carnosic-acid-powder-10g-99-5-pure",
    "aka": "Rosemary diterpene",
    "summary": "A rosemary diterpene that activates the Nrf2 antioxidant pathway.",
    "overview": "Carnosic acid is a phenolic diterpene from rosemary and sage. It acts as an electrophilic activator of the Keap1/Nrf2 pathway and is studied for antioxidant and neuroprotective effects.",
@@ -935,7 +936,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/acipimox-powder-10g",
    "aka": "Nicotinic acid analog",
    "summary": "A nicotinic acid analog that suppresses lipolysis through HCAR2.",
    "overview": "Acipimox is a nicotinic acid derivative that activates the HCAR2 (GPR109A) receptor on fat cells, lowering free fatty-acid release. It is used in research on lipolysis, insulin sensitivity and NAD+ metabolism.",
@@ -962,7 +963,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/alpha-mannans-powder-150g",
    "aka": "Yeast cell-wall mannans",
    "summary": "Polysaccharides from yeast cell walls studied as prebiotics and immunomodulators.",
    "overview": "Alpha mannans are mannose polymers from the outer cell wall of yeast. They are studied for interaction with gut bacteria, pathogen binding and innate immune recognition.",
@@ -988,7 +989,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "OXI-60G",
+   "img": "vials/oxiracetam-powder-60g",
    "aka": "4-hydroxy-2-oxopyrrolidine-N-acetamide",
    "summary": "A hydroxylated piracetam analog studied for memory and attention.",
    "overview": "Oxiracetam adds a hydroxyl group to the piracetam scaffold. It has been studied for effects on acetylcholine and glutamate release, protein kinase C activity, and performance in spatial-memory and attention tasks, including clinical research in vascular and degenerative cognitive impairment.",
@@ -1016,7 +1017,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "",
+   "img": "vials/lgd4-solution-10mg-ml",
    "aka": "LGD-4033, Ligandrol",
    "summary": "A nonsteroidal selective androgen receptor modulator (SARM).",
    "overview": "LGD-4033 binds the androgen receptor with high selectivity for muscle and bone over other tissues. It has been studied for lean mass in early clinical research. It is prohibited in sport by WADA.",
@@ -1042,7 +1043,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/lgd4-powder-1g",
    "aka": "LGD-4033, Ligandrol",
    "summary": "A nonsteroidal selective androgen receptor modulator (SARM).",
    "overview": "LGD-4033 binds the androgen receptor with high selectivity for muscle and bone over other tissues. It has been studied for lean mass in early clinical research. It is prohibited in sport by WADA.",
@@ -1068,7 +1069,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "PIRA-150G",
+   "img": "vials/piracetam-powder-150g",
    "aka": "2-oxo-1-pyrrolidineacetamide",
    "summary": "The original racetam and the reference compound for the entire class.",
    "overview": "Piracetam was synthesized in the 1960s and gave the word 'nootropic' its first example. It is a cyclic derivative of GABA that does not act as a GABA agonist; research has focused instead on membrane fluidity, AMPA-receptor modulation, and cerebral microcirculation in models of learning and age-related cognitive decline.",
@@ -1096,7 +1097,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "GALA-SOL",
+   "img": "vials/galantamine-hbr-solution-16mg-ml",
    "aka": "Galantamine hydrobromide",
    "summary": "A plant alkaloid acetylcholinesterase inhibitor and nicotinic modulator.",
    "overview": "Galantamine is an alkaloid first isolated from snowdrop bulbs. It inhibits acetylcholinesterase and allosterically sensitizes nicotinic acetylcholine receptors. It is an approved medicine in several countries for Alzheimer's-type dementia and is supplied here strictly for laboratory research.",
@@ -1125,7 +1126,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/spermidine-3hcl-powder-1-5g",
    "aka": "Spermidine trihydrochloride",
    "summary": "A natural polyamine studied as an inducer of autophagy.",
    "overview": "Spermidine is a polyamine present in every cell and in foods such as wheat germ. It induces autophagy and has been studied for lifespan extension in yeast, worms, flies and mice.",
@@ -1153,7 +1154,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "AGMA-120G",
+   "img": "vials/agmatine-sulfate-powder-120g",
    "aka": "Decarboxylated arginine",
    "summary": "An endogenous arginine metabolite studied as a neuromodulator.",
    "overview": "Agmatine is produced from arginine and acts at several targets, including NMDA receptors, imidazoline receptors, α2-adrenoceptors, and nitric-oxide synthase. It has been studied in depression, neuropathic pain, and opioid-tolerance models.",
@@ -1182,7 +1183,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/roxadustat-powder-1-5g",
    "aka": "FG-4592",
    "summary": "A HIF prolyl hydroxylase inhibitor that raises endogenous erythropoietin.",
    "overview": "Roxadustat inhibits the enzymes that mark hypoxia-inducible factor for breakdown, mimicking low oxygen and raising erythropoietin and red-cell production. It is prohibited in sport by WADA.",
@@ -1209,7 +1210,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "PRAM-18G",
+   "img": "vials/pramiracetam-hcl-powder-18g",
    "aka": "Pramiracetam HCl",
    "summary": "A lipophilic racetam studied for high-affinity choline uptake and memory.",
    "overview": "Pramiracetam is a fat-soluble racetam that is active at much lower amounts than piracetam. Its best-characterized research effect is an increase in high-affinity choline uptake in the hippocampus, and it has been examined in memory-formation and memory-retrieval models.",
@@ -1237,7 +1238,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "NOOP-SOL",
+   "img": "vials/noopept-solution-20mg-ml",
    "aka": "Omberacetam · GVS-111",
    "summary": "A dipeptide-derived nootropic active at milligram amounts.",
    "overview": "Noopept (omberacetam) is a Russian-developed dipeptide compound often grouped with the racetams, though it is structurally distinct. It is metabolized to cycloprolylglycine and has been studied for increases in NGF and BDNF expression, AMPA-receptor effects, and neuroprotection.",
@@ -1266,7 +1267,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "IDEB-6G",
+   "img": "vials/idebenone-powder-6g",
    "aka": "Short-chain CoQ10 analog",
    "summary": "A synthetic CoQ10 analog studied in mitochondrial disease research.",
    "overview": "Idebenone is a shorter-chain, more water-soluble analog of coenzyme Q10 that can bypass complex I of the respiratory chain. It has been studied in Leber's hereditary optic neuropathy, Friedreich's ataxia, and Duchenne muscular dystrophy.",
@@ -1295,7 +1296,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/tudca-powder-15g",
    "aka": "Tauroursodeoxycholic acid",
    "summary": "A taurine-conjugated bile acid studied as a chemical chaperone.",
    "overview": "TUDCA is a hydrophilic bile acid that reduces endoplasmic-reticulum stress. It is studied in liver, metabolic and neurodegenerative disease models.",
@@ -1322,7 +1323,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "PRL-SOL",
+   "img": "vials/prl-8-53-solution-10mg-ml",
    "aka": "Methyl 3-(2-(benzyl(methyl)amino)ethyl)benzoate",
    "summary": "A benzoic-acid derivative from a single 1970s human memory study.",
    "overview": "PRL-8-53 was synthesized in the 1970s and evaluated in one small human study for verbal-recall performance. Its mechanism is not well characterized; proposed effects include cholinergic potentiation and dopamine modulation. The research record remains very limited.",
@@ -1351,7 +1352,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "NSI-SOL",
+   "img": "vials/nsi-189-freebase-solution-40mg-ml",
    "aka": "Amdiglurax",
    "summary": "A compound studied for hippocampal neurogenesis in depression research.",
    "overview": "NSI-189 was identified in a screen for compounds that stimulate neurogenesis from human hippocampal stem cells. It has been studied in major depressive disorder, where cognitive endpoints were of particular interest, and in models of diabetic neuropathy and stroke.",
@@ -1379,7 +1380,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/l-serine-powder-200g",
    "aka": "(S)-2-Amino-3-hydroxypropanoic acid",
    "summary": "A non-essential amino acid and precursor to D-serine and sphingolipids.",
    "overview": "L-serine is a building block for proteins, phospholipids and sphingolipids, and the precursor of the NMDA co-agonist D-serine. It is studied in neurological and metabolic research.",
@@ -1407,7 +1408,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/lemairamin-wgx-50-powder-2g",
    "aka": "WGX-50",
    "summary": "A plant-derived amide studied in Alzheimer's disease models.",
    "overview": "Lemairamin (WGX-50) is an amide isolated from Zanthoxylum plants. It has been studied for effects on amyloid toxicity, neuroinflammation and memory in Alzheimer's models.",
@@ -1435,7 +1436,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/urolithin-b-powder-2g",
    "aka": "Ellagitannin gut metabolite",
    "summary": "A gut-microbial metabolite of ellagitannins studied in muscle research.",
    "overview": "Urolithin B is produced by gut bacteria from ellagitannins in pomegranate, berries and walnuts. It has been studied for protein synthesis and muscle atrophy.",
@@ -1461,7 +1462,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/palmitoylethanolamide-powder-75g",
    "aka": "PEA",
    "summary": "An endogenous fatty-acid amide that activates PPAR-alpha.",
    "overview": "Palmitoylethanolamide is a lipid mediator the body makes on demand. It activates PPAR-alpha and is studied for inflammation, pain signaling and mast-cell regulation.",
@@ -1489,7 +1490,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/tetramethoxyluteolin-powder-15g",
    "aka": "3',4',5,7-Tetramethoxyflavone",
    "summary": "A methylated luteolin flavone studied for mast-cell and microglia inhibition.",
    "overview": "Tetramethoxyluteolin is a methylated derivative of the flavone luteolin, with better stability and absorption. It has been studied for inhibiting mast-cell and microglial activation.",
@@ -1517,7 +1518,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "ANI-50G",
+   "img": "vials/aniracetam-powder-50g",
    "aka": "1-(4-methoxybenzoyl)-2-pyrrolidinone",
    "summary": "A fat-soluble racetam and positive AMPA-receptor modulator.",
    "overview": "Aniracetam is a lipophilic racetam that slows AMPA-receptor desensitization, making it one of the earliest compounds studied as an ampakine. Research has covered memory, attention, and anxiolytic-like effects, including interactions with dopamine and serotonin signaling.",
@@ -1545,7 +1546,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "",
+   "img": "vials/androstadienone-spray-solution-1mg-ml",
    "aka": "Androsta-4,16-dien-3-one",
    "summary": "A steroid found in human sweat and studied as a putative chemosignal.",
    "overview": "Androstadienone is a 16-androstene steroid present in human sweat and axillary hair. It is studied as a candidate human chemosignal for effects on mood, attention and autonomic arousal.",
@@ -1572,7 +1573,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "NASLK-NAS",
+   "img": "vials/na-selank-spray-solution-2mg-ml",
    "aka": "N-Acetyl Selank Amidate",
    "summary": "A stabilized Selank analog with N-acetyl and amidate modifications.",
    "overview": "NA-Selank carries N-acetyl and amide caps on the Selank heptapeptide, a tuftsin analog. The changes aim to improve stability against peptidases. Research interest follows Selank: GABAergic anxiolytic effects, enkephalin metabolism, and immunomodulation.",
@@ -1601,7 +1602,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "NASMX-NAS",
+   "img": "vials/na-semax-spray-solution-2mg-ml",
    "aka": "N-Acetyl Semax Amidate",
    "summary": "A stabilized Semax analog with N-acetyl and amidate modifications.",
    "overview": "NA-Semax adds an N-terminal acetyl group and a C-terminal amide to Semax, the ACTH(4–10) analog. The modifications are intended to slow enzymatic breakdown and extend activity. Research interest follows Semax: BDNF expression, attention, and neuroprotection.",
@@ -1630,7 +1631,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "SEL-NAS",
+   "img": "vials/selank-spray-solution-2mg-ml",
    "aka": "TP-7",
    "summary": "A tuftsin-derived peptide studied in anxiolytic and immune-modulation models.",
    "overview": "Selank is a synthetic analog of the immunomodulatory peptide tuftsin. Research literature examines it in anxiolytic (anti-anxiety) models, as well as effects on BDNF, immune signaling, and neurotransmitter balance.",
@@ -1659,7 +1660,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "SEMX-NAS",
+   "img": "vials/semax-spray-solution-2mg-ml",
    "aka": "ACTH(4-10) Analog",
    "summary": "A nootropic peptide studied for BDNF modulation and neuroprotection.",
    "overview": "Semax is a synthetic peptide derived from a fragment of ACTH (adrenocorticotropic hormone). It is studied primarily in neuroscience for reported effects on BDNF (brain-derived neurotrophic factor) expression, cognition, and neuroprotection in CNS models.",
@@ -1688,7 +1689,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "PQQ-2G",
+   "img": "vials/pqq-disodium-salt-powder-2g",
    "aka": "Pyrroloquinoline quinone disodium salt",
    "summary": "A redox cofactor studied for mitochondrial biogenesis.",
    "overview": "PQQ is a redox-active quinone found in foods. It has been studied for stimulating mitochondrial biogenesis through PGC-1α signaling, for antioxidant capacity, and for effects on memory and attention in older adults.",
@@ -1716,7 +1717,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "FASO-2G",
+   "img": "vials/fasoracetam-powder-2g",
    "aka": "NS-105 · LAM-105",
    "summary": "A racetam studied for metabotropic glutamate-receptor and GABA-B modulation.",
    "overview": "Fasoracetam was developed in Japan for vascular dementia and later studied in ADHD associated with variants in metabotropic glutamate-receptor (mGluR) network genes. Research interest centers on mGluR activation, GABA-B receptor up-regulation, and cholinergic effects.",
@@ -1745,7 +1746,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "",
+   "img": "vials/indolepropionamide-solution-6mg-ml",
    "aka": "Indole-3-propionamide",
    "summary": "An indole related to the gut metabolite indole-3-propionic acid, studied in aging research.",
    "overview": "Indolepropionamide is an indole derivative closely related to indole-3-propionic acid, a metabolite made by gut bacteria. It has been studied for effects on mitochondrial function and lifespan.",
@@ -1772,7 +1773,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/oleoylethanolamide-powder-5g",
    "aka": "Oleoylethanolamide",
    "summary": "An endogenous lipid that activates PPAR-alpha and signals satiety.",
    "overview": "Oleoylethanolamide is made in the small intestine after fat intake. It activates PPAR-alpha and is studied for satiety, fat oxidation and lipid metabolism.",
@@ -1799,7 +1800,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "COLU-2G",
+   "img": "vials/coluracetam-powder-2g",
    "aka": "MKC-231 · BCI-540",
    "summary": "A racetam-class compound studied for choline uptake after cholinergic injury.",
    "overview": "Coluracetam enhances high-affinity choline uptake, and in animal models it reversed memory deficits caused by cholinergic neurotoxins. It was later studied clinically for major depressive disorder with comorbid anxiety.",
@@ -1828,7 +1829,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "CITI-20G",
+   "img": "vials/citicoline-cdp-choline-powder-20g",
    "aka": "CDP-Choline",
    "summary": "A choline donor studied for membrane repair and neuroprotection.",
    "overview": "Citicoline (cytidine diphosphate-choline) is an intermediate in phosphatidylcholine synthesis that supplies both choline and cytidine, which converts to uridine. It has been studied in stroke, traumatic brain injury, glaucoma, and attention research.",
@@ -1856,7 +1857,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/mepb-powder-6g",
    "aka": "Research compound",
    "summary": "A research compound supplied as powder.",
    "overview": "MEPB is supplied as a research powder. Identity, purity and structure are documented on the lot certificate of analysis.",
@@ -1881,7 +1882,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "",
+   "img": "vials/org-43902-powder-1-5g",
    "aka": "Research compound",
    "summary": "A research compound supplied as powder.",
    "overview": "ORG-43902 is supplied as a research powder. Identity, purity and structure are documented on the lot certificate of analysis.",
@@ -1906,7 +1907,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Store at room temperature away from heat and direct light. Keep the pump closed.",
-   "img": "",
+   "img": "vials/pp30-gel-dispenser-0-05",
    "aka": "Topical research formulation",
    "summary": "A 0.05% topical research gel supplied in a metered dispenser.",
    "overview": "PP30 is supplied as a 0.05% gel in an airless metered dispenser for topical research applications. Identity and concentration are documented on the lot certificate of analysis.",
@@ -1932,7 +1933,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "",
+   "img": "vials/vesugen-acetate-spray-solution-2mg-ml",
    "aka": "Lys-Glu-Asp (KED)",
    "summary": "A tripeptide bioregulator studied in vascular aging research.",
    "overview": "Vesugen is the tripeptide Lys-Glu-Asp, one of the short peptide bioregulators developed in Russian gerontology research. It has been studied for effects on the vascular wall and endothelial gene expression.",
@@ -1960,7 +1961,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "",
+   "img": "vials/vilon-acetate-spray-solution-2mg-ml",
    "aka": "Lys-Glu (KE)",
    "summary": "A dipeptide bioregulator studied in immune and aging research.",
    "overview": "Vilon is the dipeptide Lys-Glu, among the shortest of the peptide bioregulators from Russian gerontology research. It has been studied for thymus function, immune signaling and chromatin structure.",
@@ -1987,7 +1988,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "ABT089-SOL",
+   "img": "vials/abt-089-hcl-solution-4mg-ml",
    "aka": "Pozanicline HCl",
    "summary": "A selective nicotinic-receptor partial agonist studied in attention research.",
    "overview": "ABT-089 (pozanicline) is a partial agonist at α4β2 nicotinic acetylcholine receptors developed by Abbott. It was studied clinically in adult ADHD and cognitive impairment associated with schizophrenia, with interest in its low cardiovascular and gastrointestinal side-effect profile.",
@@ -2016,7 +2017,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "PHPIR-SOL",
+   "img": "vials/phenylpiracetam-solution-50mg-ml",
    "aka": "Fonturacetam",
    "summary": "A phenylated piracetam studied for cognition and physical endurance.",
    "overview": "Phenylpiracetam adds a phenyl group to piracetam, increasing its potency and blood-brain-barrier penetration. It was developed in Russia and studied for cognition, cold tolerance, and physical performance; it appears on the WADA prohibited list as a stimulant.",
@@ -2045,7 +2046,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "SARC-100G",
+   "img": "vials/sarcosine-powder-100g",
    "aka": "N-Methylglycine",
    "summary": "A glycine-transporter inhibitor studied for NMDA-receptor function.",
    "overview": "Sarcosine is a natural amino-acid derivative that inhibits the type-1 glycine transporter (GlyT1), raising synaptic glycine and enhancing NMDA-receptor function. It has been studied as an add-on in schizophrenia and depression research.",
@@ -2074,7 +2075,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "J147-SOL",
+   "img": "vials/j-147-solution-45mg-ml",
    "aka": "Curcumin / cyclohexyl-bisphenol A hybrid",
    "summary": "A curcumin-derived compound studied in Alzheimer's and aging models.",
    "overview": "J-147 was developed at the Salk Institute from curcumin and cyclohexyl-bisphenol A through phenotypic screening for neuroprotection. Its identified target is mitochondrial ATP synthase, and it has been studied for memory, neurotrophic signaling, and markers of aging in mouse models.",
@@ -2102,7 +2103,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "MK-30",
+   "img": "vials/mk-677-solution-25mg-ml",
    "aka": "Ibutamoren",
    "summary": "A non-peptide ghrelin-mimetic studied as an orally active GH secretagogue.",
    "overview": "MK-677 (Ibutamoren) is a non-peptide, orally active growth-hormone secretagogue that mimics ghrelin at its receptor. It is widely studied for sustained elevation of GH and IGF-1 without the injection requirement of peptide secretagogues, making it a common oral reference compound.",
@@ -2130,7 +2131,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "IDRA-SOL",
+   "img": "vials/idra-21-solution-45mg-ml",
    "aka": "Benzothiadiazine ampakine",
    "summary": "A long-acting AMPA-receptor modulator studied in learning models.",
    "overview": "IDRA-21 is a benzothiadiazine derivative that reduces AMPA-receptor desensitization with a notably long duration of action. Primate research reported improved performance on delayed-matching memory tasks; its safety margin under neurotoxic conditions is an active research question.",
@@ -2158,7 +2159,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "TBG-500",
+   "img": "vials/tabernanthalog-powder-500mg",
    "aka": "TBG",
    "summary": "A non-hallucinogenic ibogaine analog studied as a psychoplastogen.",
    "overview": "Tabernanthalog was designed at UC Davis as a simplified, water-soluble analog of ibogaine intended to keep neuroplasticity-promoting effects without hallucinogenic or cardiotoxic liability. It has been studied in rodent models of addiction and depression and for dendritic-spine growth.",
@@ -2187,7 +2188,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Refrigerate at 2–8 °C and protect from light. Keep the cap closed between uses.",
-   "img": "",
+   "img": "vials/skq1-bromide-aliquot-solution-5mg-0-5ml",
    "aka": "Plastoquinonyl-decyl-triphenylphosphonium bromide",
    "summary": "A mitochondria-targeted antioxidant.",
    "overview": "SkQ1 links the antioxidant plastoquinone to a lipophilic cation that concentrates it inside mitochondria. It has been studied for oxidative damage, eye disease and aging. Supplied as a ready-made aliquot.",
@@ -2214,7 +2215,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "SUNI-10G",
+   "img": "vials/sunifiram-powder-10g",
    "aka": "DM-235",
    "summary": "A piperazine ampakine-like compound active at very low amounts.",
    "overview": "Sunifiram is structurally related to piracetam but far more potent in animal models. Its studied mechanism involves AMPA-receptor stimulation via the glycine site of NMDA receptors and PKC-alpha activation; it has no human clinical research record.",
@@ -2243,7 +2244,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "AGPC-50G",
+   "img": "vials/alpha-gpc-50-powder-50g",
    "aka": "L-alpha-glycerylphosphorylcholine (50%)",
    "summary": "A highly bioavailable choline source studied for acetylcholine synthesis.",
    "overview": "Alpha-GPC is a phospholipid metabolite that delivers choline across the blood-brain barrier efficiently. It is studied as an acetylcholine precursor in cognitive-decline research and for growth-hormone response and power output in exercise research. This grade is a 50% standardized powder.",
@@ -2272,7 +2273,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "EUTRO-C60",
+   "img": "vials/eutropoflavin-capsules-10mg-60",
    "aka": "4'-DMA-7,8-DHF",
    "summary": "A potent 7,8-DHF analog studied as a TrkB-receptor agonist.",
    "overview": "Eutropoflavin (4'-dimethylamino-7,8-dihydroxyflavone) is a derivative of 7,8-dihydroxyflavone, a small-molecule mimic of BDNF at the TrkB receptor. The dimethylamino substitution was reported to increase TrkB potency in preclinical research on neurogenesis and neuroprotection.",
@@ -2301,7 +2302,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "9MBC-C60",
+   "img": "vials/9-me-bc-capsules-15mg-60",
    "aka": "9-Methyl-β-carboline",
    "summary": "A β-carboline studied for dopaminergic neuron growth and protection.",
    "overview": "9-Methyl-β-carboline has been studied in cell and animal models for stimulating the differentiation and survival of dopaminergic neurons, increasing neurotrophic factor expression, and inhibiting monoamine oxidase. Its photosensitivity and long-term safety remain open research questions.",
@@ -2329,7 +2330,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "BEME-C60",
+   "img": "vials/bemethyl-capsules-100mg-60",
    "aka": "2-ethylthiobenzimidazole HBr",
    "summary": "A Soviet-era actoprotector studied for endurance and recovery.",
    "overview": "Bemethyl is a synthetic actoprotector developed in the USSR to increase work capacity under physical and environmental stress. Research attributes its effects to increased synthesis of RNA and proteins, including mitochondrial and gluconeogenic enzymes. It is on the WADA monitoring program.",
@@ -2358,7 +2359,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "MB-C60",
+   "img": "vials/methylene-blue-capsules-10mg-60",
    "aka": "Methylthioninium chloride",
    "summary": "A redox dye studied as a mitochondrial electron carrier at low amounts.",
    "overview": "Methylene blue is a phenothiazine dye with a long medical history. At low concentrations it can shuttle electrons in the mitochondrial respiratory chain, which drives research into memory and neuroprotection. It is a potent MAO-A inhibitor, and combining it with serotonergic agents can cause serotonin toxicity.",
@@ -2387,7 +2388,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "THEA-100G",
+   "img": "vials/l-theanine-powder-100g",
    "aka": "N-ethyl-L-glutamine",
    "summary": "The tea amino acid studied for calm focus and alpha-wave activity.",
    "overview": "L-theanine is an amino acid found in tea leaves. It has been studied for increasing alpha-band brain activity, attenuating stress responses, and — alongside caffeine — improving attention-switching performance.",
@@ -2415,7 +2416,7 @@ window.CATALOG = {
    "isNew": false,
    "status": "in",
    "storage": "Keep sealed in a cool, dry place away from light. For long-term storage, refrigerate.",
-   "img": "PHEN-C60",
+   "img": "vials/phenibut-hcl-capsules-250mg-60",
    "aka": "β-phenyl-GABA",
    "summary": "A phenyl-substituted GABA analog and GABA-B receptor agonist.",
    "overview": "Phenibut is a GABA derivative whose phenyl ring lets it cross the blood-brain barrier. It acts mainly at GABA-B receptors and at α2δ subunits of voltage-gated calcium channels. Tolerance and withdrawal are well documented, and it is a controlled substance in some US states and other countries.",
@@ -2442,17 +2443,17 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 40.2,
-     "img": "BPC-5"
+     "img": "vials/bpc-157--5mg"
     },
     {
      "label": "10mg",
      "price": 39,
-     "img": "BPC-10"
+     "img": "vials/bpc-157--10mg"
     },
     {
      "label": "20mg",
      "price": 75,
-     "img": "BPC-20"
+     "img": "vials/bpc-157--20mg"
     }
    ],
    "status": "in",
@@ -2484,12 +2485,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 46,
-     "img": "TB5-5"
+     "img": "vials/tb-500--5mg"
     },
     {
      "label": "10mg",
      "price": 69,
-     "img": "TB5-10"
+     "img": "vials/tb-500--10mg"
     }
    ],
    "status": "in",
@@ -2521,22 +2522,22 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 50,
-     "img": "SEMA-5"
+     "img": "vials/semaglutide--5mg"
     },
     {
      "label": "10mg",
      "price": 95,
-     "img": "SEMA-10"
+     "img": "vials/semaglutide--10mg"
     },
     {
      "label": "20mg",
      "price": 190,
-     "img": "SEMA-20"
+     "img": "vials/semaglutide--20mg"
     },
     {
      "label": "60mg",
      "price": 425,
-     "img": "SEMA-60"
+     "img": "vials/semaglutide--60mg"
     }
    ],
    "status": "in",
@@ -2568,32 +2569,32 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 99.99,
-     "img": "TIRZ-5"
+     "img": "vials/tirzepatide--5mg"
     },
     {
      "label": "10mg",
      "price": 80,
-     "img": "TIRZ-10"
+     "img": "vials/tirzepatide--10mg"
     },
     {
      "label": "15mg",
      "price": 229.99,
-     "img": "TIRZ-15"
+     "img": "vials/tirzepatide--15mg"
     },
     {
      "label": "30mg",
      "price": 175,
-     "img": "TIRZ-30"
+     "img": "vials/tirzepatide--30mg"
     },
     {
      "label": "60mg",
      "price": 320,
-     "img": "TIRZ-60"
+     "img": "vials/tirzepatide--60mg"
     },
     {
      "label": "90mg",
      "price": 425,
-     "img": "TIRZ-90"
+     "img": "vials/tirzepatide--90mg"
     }
    ],
    "status": "in",
@@ -2625,12 +2626,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 42.99,
-     "img": "IPA-5"
+     "img": "vials/ipamorelin--5mg"
     },
     {
      "label": "10mg",
      "price": 52,
-     "img": "IPA-10"
+     "img": "vials/ipamorelin--10mg"
     }
    ],
    "status": "in",
@@ -2662,17 +2663,17 @@ window.CATALOG = {
     {
      "label": "2mg",
      "price": 44.99,
-     "img": "CJC-2"
+     "img": "vials/cjc-1295-dac--2mg"
     },
     {
      "label": "5mg",
      "price": 84.99,
-     "img": "CJC-5"
+     "img": "vials/cjc-1295-dac--5mg"
     },
     {
      "label": "10mg",
      "price": 105,
-     "img": "CJC-10"
+     "img": "vials/cjc-1295-dac--10mg"
     }
    ],
    "status": "in",
@@ -2704,12 +2705,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 74.99,
-     "img": "TES-5"
+     "img": "vials/tesamorelin--5mg"
     },
     {
      "label": "10mg",
      "price": 75,
-     "img": "TES-10"
+     "img": "vials/tesamorelin--10mg"
     }
    ],
    "status": "in",
@@ -2741,7 +2742,7 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 49.99,
-     "img": "HEX-5"
+     "img": "vials/hexarelin--5mg"
     }
    ],
    "status": "in",
@@ -2773,12 +2774,12 @@ window.CATALOG = {
     {
      "label": "50mg",
      "price": 32,
-     "img": "GHK-50"
+     "img": "vials/ghk-cu--50mg"
     },
     {
      "label": "100mg",
      "price": 48,
-     "img": "GHK-100"
+     "img": "vials/ghk-cu--100mg"
     }
    ],
    "status": "in",
@@ -2810,7 +2811,7 @@ window.CATALOG = {
     {
      "label": "10mg",
      "price": 45,
-     "img": "PT1-10"
+     "img": "vials/pt-141--10mg"
     }
    ],
    "status": "in",
@@ -2841,7 +2842,7 @@ window.CATALOG = {
     {
      "label": "10mg",
      "price": 40,
-     "img": "MT2-10"
+     "img": "vials/melanotan-2--10mg"
     }
    ],
    "status": "in",
@@ -2872,12 +2873,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 56.67,
-     "img": "SER-5"
+     "img": "vials/sermorelin--5mg"
     },
     {
      "label": "10mg",
      "price": 85,
-     "img": "SER-10"
+     "img": "vials/sermorelin--10mg"
     }
    ],
    "status": "in",
@@ -2908,12 +2909,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 64.99,
-     "img": "TA1-5"
+     "img": "vials/thymosin-alpha-1--5mg"
     },
     {
      "label": "10mg",
      "price": 100,
-     "img": "TA1-10"
+     "img": "vials/thymosin-alpha-1--10mg"
     }
    ],
    "status": "in",
@@ -2945,12 +2946,12 @@ window.CATALOG = {
     {
      "label": "10mg",
      "price": 42,
-     "img": "EPI-10"
+     "img": "vials/epithalon--10mg"
     },
     {
      "label": "50mg",
      "price": 89.99,
-     "img": "EPI-50"
+     "img": "vials/epithalon--50mg"
     }
    ],
    "status": "in",
@@ -2982,12 +2983,12 @@ window.CATALOG = {
     {
      "label": "11mg",
      "price": 62.1,
-     "img": "SEMX-11"
+     "img": "vials/semax--11mg"
     },
     {
      "label": "30mg",
      "price": 69,
-     "img": "SEMX-30"
+     "img": "vials/semax--30mg"
     }
    ],
    "status": "in",
@@ -3019,12 +3020,12 @@ window.CATALOG = {
     {
      "label": "10mg",
      "price": 75,
-     "img": "SEL-10"
+     "img": "vials/selank--10mg"
     },
     {
      "label": "11mg",
      "price": 79.3,
-     "img": "SEL-11"
+     "img": "vials/selank--11mg"
     }
    ],
    "status": "in",
@@ -3056,12 +3057,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 50,
-     "img": "DSIP-5"
+     "img": "vials/dsip--5mg"
     },
     {
      "label": "10mg",
      "price": 75,
-     "img": "DSIP-10"
+     "img": "vials/dsip--10mg"
     }
    ],
    "status": "in",
@@ -3092,12 +3093,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 75,
-     "img": "AOD-5"
+     "img": "vials/aod-9604--5mg"
     },
     {
      "label": "10mg",
      "price": 112.5,
-     "img": "AOD-10"
+     "img": "vials/aod-9604--10mg"
     }
    ],
    "status": "in",
@@ -3128,12 +3129,12 @@ window.CATALOG = {
     {
      "label": "10mg",
      "price": 50,
-     "img": "MOTS-10"
+     "img": "vials/mots-c--10mg"
     },
     {
      "label": "40mg",
      "price": 112.51,
-     "img": "MOTS-40"
+     "img": "vials/mots-c--40mg"
     }
    ],
    "status": "in",
@@ -3165,7 +3166,7 @@ window.CATALOG = {
     {
      "label": "50mg/mL (30mL)",
      "price": 69.99,
-     "img": "AMQ-30"
+     "img": "vials/5-amino-1mq--50mg-ml-30ml"
     }
    ],
    "status": "in",
@@ -3196,7 +3197,7 @@ window.CATALOG = {
     {
      "label": "10mg",
      "price": 45,
-     "img": "KPV-10"
+     "img": "vials/kpv--10mg"
     }
    ],
    "status": "in",
@@ -3227,42 +3228,42 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 109.99,
-     "img": "RETA-5"
+     "img": "vials/retatrutide--5mg"
     },
     {
      "label": "10mg",
      "price": 134.82,
-     "img": "RETA-10"
+     "img": "vials/retatrutide--10mg"
     },
     {
      "label": "12mg",
      "price": 150,
-     "img": "RETA-12"
+     "img": "vials/retatrutide--12mg"
     },
     {
      "label": "20mg",
      "price": 238.19,
-     "img": "RETA-20"
+     "img": "vials/retatrutide--20mg"
     },
     {
      "label": "24mg",
      "price": 265,
-     "img": "RETA-24"
+     "img": "vials/retatrutide--24mg"
     },
     {
      "label": "30mg",
      "price": 352.3,
-     "img": "RETA-30"
+     "img": "vials/retatrutide--30mg"
     },
     {
      "label": "50mg",
      "price": 475,
-     "img": "RETA-50"
+     "img": "vials/retatrutide--50mg"
     },
     {
      "label": "60mg",
      "price": 528.46,
-     "img": "RETA-60"
+     "img": "vials/retatrutide--60mg"
     }
    ],
    "status": "in",
@@ -3294,12 +3295,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 80,
-     "img": "CAGRI-5"
+     "img": "vials/cagrilintide--5mg"
     },
     {
      "label": "10mg",
      "price": 120,
-     "img": "CAGRI-10"
+     "img": "vials/cagrilintide--10mg"
     }
    ],
    "status": "in",
@@ -3331,17 +3332,17 @@ window.CATALOG = {
     {
      "label": "2mg",
      "price": 39.99,
-     "img": "MGRF-2"
+     "img": "vials/mod-grf-1-29--2mg"
     },
     {
      "label": "5mg",
      "price": 74.99,
-     "img": "MGRF-5"
+     "img": "vials/mod-grf-1-29--5mg"
     },
     {
      "label": "10mg",
      "price": 45,
-     "img": "MGRF-10"
+     "img": "vials/mod-grf-1-29--10mg"
     }
    ],
    "status": "in",
@@ -3372,12 +3373,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 39.99,
-     "img": "GHRP2-5"
+     "img": "vials/ghrp-2--5mg"
     },
     {
      "label": "10mg",
      "price": 42.66,
-     "img": "GHRP2-10"
+     "img": "vials/ghrp-2--10mg"
     }
    ],
    "status": "in",
@@ -3408,12 +3409,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 37.99,
-     "img": "GHRP6-5"
+     "img": "vials/ghrp-6--5mg"
     },
     {
      "label": "10mg",
      "price": 59.99,
-     "img": "GHRP6-10"
+     "img": "vials/ghrp-6--10mg"
     }
    ],
    "status": "in",
@@ -3445,7 +3446,7 @@ window.CATALOG = {
     {
      "label": "1mg",
      "price": 126.21,
-     "img": "IGF-1"
+     "img": "vials/igf-1-lr3--1mg"
     }
    ],
    "status": "in",
@@ -3477,12 +3478,12 @@ window.CATALOG = {
     {
      "label": "10mg",
      "price": 80,
-     "img": "SS31-10"
+     "img": "vials/ss-31--10mg"
     },
     {
      "label": "50mg",
      "price": 205.11,
-     "img": "SS31-50"
+     "img": "vials/ss-31--50mg"
     }
    ],
    "status": "in",
@@ -3514,7 +3515,7 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 69.99,
-     "img": "HN-5"
+     "img": "vials/humanin--5mg"
     }
    ],
    "status": "in",
@@ -3546,12 +3547,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 54.99,
-     "img": "KP10-5"
+     "img": "vials/kisspeptin-10--5mg"
     },
     {
      "label": "10mg",
      "price": 85,
-     "img": "KP10-10"
+     "img": "vials/kisspeptin-10--10mg"
     }
    ],
    "status": "in",
@@ -3583,12 +3584,12 @@ window.CATALOG = {
     {
      "label": "2mg",
      "price": 39.99,
-     "img": "GONA-2"
+     "img": "vials/gonadorelin--2mg"
     },
     {
      "label": "10mg",
      "price": 89.99,
-     "img": "GONA-10"
+     "img": "vials/gonadorelin--10mg"
     }
    ],
    "status": "in",
@@ -3619,12 +3620,12 @@ window.CATALOG = {
     {
      "label": "2mg",
      "price": 24.3,
-     "img": "OXY-2"
+     "img": "vials/oxytocin--2mg"
     },
     {
      "label": "5mg",
      "price": 49.99,
-     "img": "OXY-5"
+     "img": "vials/oxytocin--5mg"
     }
    ],
    "status": "in",
@@ -3656,7 +3657,7 @@ window.CATALOG = {
     {
      "label": "10mg",
      "price": 40,
-     "img": "MT1-10"
+     "img": "vials/melanotan-1--10mg"
     }
    ],
    "status": "in",
@@ -3687,12 +3688,12 @@ window.CATALOG = {
     {
      "label": "4mg",
      "price": 90,
-     "img": "LL37-4"
+     "img": "vials/ll-37--4mg"
     },
     {
      "label": "5mg",
      "price": 102.55,
-     "img": "LL37-5"
+     "img": "vials/ll-37--5mg"
     }
    ],
    "status": "in",
@@ -3724,17 +3725,17 @@ window.CATALOG = {
     {
      "label": "100mg",
      "price": 44.99,
-     "img": "NAD-100"
+     "img": "vials/nad-plus--100mg"
     },
     {
      "label": "500mg",
      "price": 65,
-     "img": "NAD-500"
+     "img": "vials/nad-plus--500mg"
     },
     {
      "label": "1000mg",
      "price": 80,
-     "img": "NAD-1000"
+     "img": "vials/nad-plus--1000mg"
     }
    ],
    "status": "in",
@@ -3766,12 +3767,12 @@ window.CATALOG = {
     {
      "label": "2mg",
      "price": 54.99,
-     "img": "PMGF-2"
+     "img": "vials/peg-mgf--2mg"
     },
     {
      "label": "5mg",
      "price": 99.99,
-     "img": "PMGF-5"
+     "img": "vials/peg-mgf--5mg"
     }
    ],
    "status": "in",
@@ -3802,7 +3803,7 @@ window.CATALOG = {
     {
      "label": "1mg",
      "price": 109.99,
-     "img": "IGFD-1"
+     "img": "vials/igf-1-des--1mg"
     }
    ],
    "status": "in",
@@ -3833,7 +3834,7 @@ window.CATALOG = {
     {
      "label": "1mg",
      "price": 189.99,
-     "img": "FST-1"
+     "img": "vials/follistatin-344--1mg"
     }
    ],
    "status": "low",
@@ -3864,12 +3865,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 99.99,
-     "img": "ADIPO-5"
+     "img": "vials/adipotide--5mg"
     },
     {
      "label": "10mg",
      "price": 169.99,
-     "img": "ADIPO-10"
+     "img": "vials/adipotide--10mg"
     }
    ],
    "status": "out",
@@ -3900,12 +3901,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 109.99,
-     "img": "SURV-5"
+     "img": "vials/survodutide--5mg"
     },
     {
      "label": "10mg",
      "price": 189.99,
-     "img": "SURV-10"
+     "img": "vials/survodutide--10mg"
     }
    ],
    "status": "in",
@@ -3936,12 +3937,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 104.99,
-     "img": "MAZ-5"
+     "img": "vials/mazdutide--5mg"
     },
     {
      "label": "10mg",
      "price": 179.99,
-     "img": "MAZ-10"
+     "img": "vials/mazdutide--10mg"
     }
    ],
    "status": "in",
@@ -3972,17 +3973,17 @@ window.CATALOG = {
     {
      "label": "10mg/mL (10mL)",
      "price": 79.99,
-     "img": "DIHEXA-10"
+     "img": "vials/dihexa--10mg-ml-10ml"
     },
     {
      "label": "Capsules · 5mg × 60",
      "price": 69.99,
-     "img": "DIHEXA-C60"
+     "img": "vials/dihexa--capsules-5mg-60"
     },
     {
      "label": "Powder · 500mg",
      "price": 97.99,
-     "img": "DIHEXA-500"
+     "img": "vials/dihexa--powder-500mg"
     }
    ],
    "status": "in",
@@ -4013,17 +4014,17 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 26.67,
-     "img": "PIN-5"
+     "img": "vials/pinealon--5mg"
     },
     {
      "label": "10mg",
      "price": 40,
-     "img": "PIN-10"
+     "img": "vials/pinealon--10mg"
     },
     {
      "label": "20mg",
      "price": 60,
-     "img": "PIN-20"
+     "img": "vials/pinealon--20mg"
     }
    ],
    "status": "in",
@@ -4054,7 +4055,7 @@ window.CATALOG = {
     {
      "label": "10mg",
      "price": 59.99,
-     "img": "THYM-10"
+     "img": "vials/thymalin--10mg"
     }
    ],
    "status": "in",
@@ -4085,7 +4086,7 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 74.99,
-     "img": "VIP-5"
+     "img": "vials/vip--5mg"
     }
    ],
    "status": "in",
@@ -4117,7 +4118,7 @@ window.CATALOG = {
     {
      "label": "10mg/mL (30mL)",
      "price": 44.99,
-     "img": "ARG-30"
+     "img": "vials/argireline--10mg-ml-30ml"
     }
    ],
    "status": "in",
@@ -4148,7 +4149,7 @@ window.CATALOG = {
     {
      "label": "10mg/mL (30mL)",
      "price": 49.99,
-     "img": "MTX-30"
+     "img": "vials/matrixyl--10mg-ml-30ml"
     }
    ],
    "status": "in",
@@ -4179,12 +4180,12 @@ window.CATALOG = {
     {
      "label": "5mg",
      "price": 79.99,
-     "img": "LIRA-5"
+     "img": "vials/liraglutide--5mg"
     },
     {
      "label": "10mg",
      "price": 139.99,
-     "img": "LIRA-10"
+     "img": "vials/liraglutide--10mg"
     }
    ],
    "status": "in",
@@ -4216,12 +4217,12 @@ window.CATALOG = {
     {
      "label": "10 IU",
      "price": 79.99,
-     "img": "HGH-10"
+     "img": "vials/hgh-191--10-iu"
     },
     {
      "label": "15 IU",
      "price": 109.99,
-     "img": "HGH-15"
+     "img": "vials/hgh-191--15-iu"
     }
    ],
    "status": "low",
@@ -4253,12 +4254,12 @@ window.CATALOG = {
     {
      "label": "5mL × 5 amp",
      "price": 99.99,
-     "img": "CERE-5"
+     "img": "vials/cerebrolysin--5ml-5-amp"
     },
     {
      "label": "1200mg",
      "price": 120,
-     "img": "CERE-1200"
+     "img": "vials/cerebrolysin--1200mg"
     }
    ],
    "status": "in",
@@ -4289,7 +4290,7 @@ window.CATALOG = {
     {
      "label": "10mg/mL (30mL)",
      "price": 44.99,
-     "img": "SNAP-30"
+     "img": "vials/snap-8--10mg-ml-30ml"
     }
    ],
    "status": "in",
@@ -4320,12 +4321,12 @@ window.CATALOG = {
     {
      "label": "600mg",
      "price": 39.99,
-     "img": "GSH-600"
+     "img": "vials/glutathione--600mg"
     },
     {
      "label": "1500mg",
      "price": 75,
-     "img": "GSH-1500"
+     "img": "vials/glutathione--1500mg"
     }
    ],
    "status": "in",
@@ -4357,7 +4358,7 @@ window.CATALOG = {
     {
      "label": "10mg/mL (10mL)",
      "price": 59.99,
-     "img": "LARA-10"
+     "img": "vials/larazotide--10mg-ml-10ml"
     }
    ],
    "status": "in",
@@ -4388,17 +4389,17 @@ window.CATALOG = {
     {
      "label": "5mg + 5mg",
      "price": 103.37,
-     "img": "BLND-TI-5-5"
+     "img": "vials/tesa-ipa-blend--5mg-5mg"
     },
     {
      "label": "10mg + 2mg",
      "price": 115,
-     "img": "BLND-TI-10-2"
+     "img": "vials/tesa-ipa-blend--10mg-2mg"
     },
     {
      "label": "12mg + 6mg",
      "price": 145.78,
-     "img": "BLND-TI"
+     "img": "vials/tesa-ipa-blend--12mg-6mg"
     }
    ],
    "status": "in",
@@ -4429,7 +4430,7 @@ window.CATALOG = {
     {
      "label": "50mg",
      "price": 59.99,
-     "img": "AICAR-50"
+     "img": "vials/aicar--50mg"
     }
    ],
    "status": "in",
@@ -4461,7 +4462,7 @@ window.CATALOG = {
     {
      "label": "GHK 50mg + BPC 10mg + TB 10mg",
      "price": 115,
-     "img": "BLND-GLOW"
+     "img": "vials/glow-blend--ghk-50mg-bpc-10mg-tb-10mg"
     }
    ],
    "status": "in",
@@ -4492,12 +4493,12 @@ window.CATALOG = {
     {
      "label": "BPC 5mg + TB 5mg",
      "price": 88.8,
-     "img": "BLND-REC-5-5"
+     "img": "vials/recovery-blend--bpc-5mg-tb-5mg"
     },
     {
      "label": "BPC 10mg + TB 10mg",
      "price": 95,
-     "img": "BLND-REC"
+     "img": "vials/recovery-blend--bpc-10mg-tb-10mg"
     }
    ],
    "status": "in",
@@ -4528,7 +4529,7 @@ window.CATALOG = {
     {
      "label": "CJC 5mg + IPA 5mg",
      "price": 69,
-     "img": "BLND-CI"
+     "img": "vials/cjc-ipa-blend--cjc-5mg-ipa-5mg"
     }
    ],
    "status": "in",
@@ -4559,12 +4560,12 @@ window.CATALOG = {
     {
      "label": "30mL",
      "price": 16.99,
-     "img": "BAC-30"
+     "img": "vials/bac-water--30ml"
     },
     {
      "label": "3-pack (30mL)",
      "price": 39.99,
-     "img": "BAC-3PK"
+     "img": "vials/bac-water--3-pack-30ml"
     }
    ],
    "status": "in",
@@ -4594,7 +4595,7 @@ window.CATALOG = {
     {
      "label": "Starter kit",
      "price": 24.99,
-     "img": "KIT-STD"
+     "img": "vials/recon-kit--starter-kit"
     }
    ],
    "status": "in",
@@ -4624,7 +4625,7 @@ window.CATALOG = {
     {
      "label": "10mg",
      "price": 66,
-     "img": "ARA-10"
+     "img": "vials/ara-290--10mg"
     }
    ],
    "status": "in",
@@ -4656,12 +4657,12 @@ window.CATALOG = {
     {
      "label": "GHK 25mg + BPC 10mg + KPV 10mg + TB 10mg",
      "price": 130,
-     "img": "BLND-KLOW-25-10-10-10"
+     "img": "vials/klow-blend--ghk-25mg-bpc-10mg-kpv-10mg-tb-10mg"
     },
     {
      "label": "GHK 50mg + BPC 10mg + KPV 10mg + TB 10mg",
      "price": 130,
-     "img": "BLND-KLOW-50-10-10-10"
+     "img": "vials/klow-blend--ghk-50mg-bpc-10mg-kpv-10mg-tb-10mg"
     }
    ],
    "status": "in",
@@ -4693,7 +4694,7 @@ window.CATALOG = {
     {
      "label": "Selank 10mg + Semax 10mg",
      "price": 125.73,
-     "img": "BLND-SSN-10-10"
+     "img": "vials/selank-semax-nasal--selank-10mg-semax-10mg"
     }
    ],
    "status": "in",
@@ -4725,7 +4726,7 @@ window.CATALOG = {
     {
      "label": "Solution · 6mg/mL",
      "price": 24.99,
-     "img": "GB115-SOL"
+     "img": "vials/gb-115--solution-6mg-ml"
     }
    ],
    "status": "in",
