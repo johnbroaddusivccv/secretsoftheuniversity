@@ -507,26 +507,23 @@
   }
   .glossary-term dd { font-size:0.82rem; color:var(--muted); line-height:1.5; margin:0; }
 
-  /* ── Supplier Gates ────────────────────────────── */
-  .supplier-gates {
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px;
-    max-width:700px; margin:20px auto 0;
-  }
-  .supplier-gate {
-    background:linear-gradient(135deg, rgba(125,141,163,0.06), rgba(148,163,184,0.06));
-    border:1px solid var(--border); border-radius:0; padding:24px 22px;
-    text-decoration:none; color:var(--ink); transition:all .35s;
-  }
-  .supplier-gate:hover { border-color:var(--gold); transform:translateY(-4px); box-shadow:0 8px 30px rgba(125,141,163,0.08); }
-  .supplier-gate .sg-name {
-    font-family:Helvetica,Arial,sans-serif; font-size:0.8rem; letter-spacing:0.12em;
-    text-transform:uppercase; color:var(--gold); font-weight:700; margin-bottom:8px;
-  }
-  .supplier-gate .sg-desc { font-size:0.85rem; color:var(--muted); line-height:1.55; margin-bottom:12px; }
-  .supplier-gate .sg-cta {
-    font-family:Helvetica,Arial,sans-serif; font-size:0.68rem; letter-spacing:0.1em;
-    text-transform:uppercase; color:var(--violet);
-  }
+  /* ── Our shop (same panel as the homepage store) ── */
+  .shop-panel { max-width:760px; margin:20px auto 0; display:flex; flex-direction:column; background:var(--bg); box-shadow:7px 7px 16px var(--sd), -7px -7px 16px var(--sl); transition:transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
+  .shop-panel:hover { transform:translateY(-3px); box-shadow:10px 10px 22px var(--sd), -10px -10px 22px var(--sl); }
+  .shop-shelf { display:block; overflow:hidden; background:#f2f2f2; }
+  .shop-shelf img { display:block; width:100%; height:auto; transition:transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .shop-panel:hover .shop-shelf img { transform:scale(1.02); }
+  .shop-body { display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; padding:30px 28px 26px; }
+  .shop-mark { font-family:var(--font-sans); font-weight:700; font-size:1rem; letter-spacing:.26em; text-indent:.26em; line-height:1; padding:9px 15px 8px; border:1.5px solid var(--ink); color:var(--ink); }
+  .shop-sub { font-family:var(--font-sans); font-size:.6rem; font-weight:600; letter-spacing:.34em; text-indent:.34em; text-transform:uppercase; color:var(--muted); }
+  .shop-copy { font-size:.95rem; line-height:1.65; color:var(--muted); max-width:52ch; margin:8px auto 2px; }
+  .shop-doors { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin:8px 0 4px; }
+  .shop-doors a { font-family:var(--font-sans); font-size:.7rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink); text-decoration:none; padding:9px 16px; background:var(--bg); box-shadow:3px 3px 7px var(--sd), -3px -3px 7px var(--sl); transition:box-shadow .2s, color .2s; }
+  .shop-doors a:hover { color:var(--gold); box-shadow:inset 2px 2px 5px var(--sd), inset -2px -2px 5px var(--sl); }
+  .shop-btn { margin-top:10px; font-family:var(--font-sans); font-size:.78rem; font-weight:600; letter-spacing:.2em; text-indent:.2em; text-transform:uppercase; text-decoration:none; padding:12px 36px; background:var(--ink); color:var(--bg); border:1.5px solid var(--ink); transition:background .2s, color .2s; }
+  .shop-btn:hover { background:transparent; color:var(--ink); }
+  .shop-fine { font-size:.7rem; letter-spacing:.08em; color:var(--muted); margin:4px 0 0; }
+  @media (max-width:760px) { .shop-body { padding:24px 18px 22px; } }
 
   /* ── Palantir-style Footer ──────────────────── */
   .site-footer {
@@ -1081,23 +1078,28 @@
 
     </div>
 
-    <!-- Supplier Gates -->
+    <!-- Our shop -->
     <div style="text-align:center; margin-top:40px;">
-      <div class="section-label" style="margin-bottom:8px;">Trusted Suppliers</div>
-      <p class="section-note" style="margin-bottom:20px;">Where practitioners and researchers source their compounds.</p>
+      <div class="section-label" style="margin-bottom:8px;">Our Shop</div>
+      <p class="section-note" style="margin-bottom:20px;">Where we source our own. Third-party tested, certificate with every vial.</p>
     </div>
-    <div class="supplier-gates">
-      <a class="supplier-gate" href="https://ruohub.com" target="_blank" rel="noopener noreferrer">
-        <div class="sg-name">RuoHub</div>
-        <div class="sg-desc">Research-use-only peptide marketplace. Verified suppliers, batch documentation, and transparent sourcing.</div>
-        <div class="sg-cta">Browse catalog →</div>
+    <article class="shop-panel">
+      <a class="shop-shelf" href="/shop/?tab=peptides" tabindex="-1" aria-hidden="true">
+        <img src="assets/img/store-lineup.webp" srcset="assets/img/store-lineup-900.webp 900w, assets/img/store-lineup.webp 2000w" sizes="(max-width:760px) 100vw, 760px" width="2000" height="670" alt="" loading="lazy">
       </a>
-      <a class="supplier-gate" href="https://northwestpeptides.com" target="_blank" rel="noopener noreferrer">
-        <div class="sg-name">Northwest Peptides</div>
-        <div class="sg-desc">Trusted research peptide supplier. Third-party tested, COA on every order, 2-day shipping across the USA. Categories span GLP-1, recovery, immune, growth hormone, and more.</div>
-        <div class="sg-cta">View products →</div>
-      </a>
-    </div>
+      <div class="shop-body">
+        <span class="shop-mark">BROADDUS</span>
+        <span class="shop-sub">Scientific Group</span>
+        <p class="shop-copy">Research peptides studied in repair and recovery. Nootropics for memory, focus, and calm. Longevity compounds for the long road. Every lot third-party tested; every vial with its certificate.</p>
+        <div class="shop-doors">
+          <a href="/shop/?tab=peptides">Peptides</a>
+          <a href="/shop/?cat=nootropics">Nootropics</a>
+          <a href="/shop/?cat=geroprotectors">Longevity</a>
+        </div>
+        <a class="shop-btn" href="/shop/" aria-label="Enter the Broaddus Scientific Group store">Enter</a>
+        <p class="shop-fine">For laboratory research use only.</p>
+      </div>
+    </article>
 
     <div class="callout-box" style="margin-top:30px;">
       <div>
