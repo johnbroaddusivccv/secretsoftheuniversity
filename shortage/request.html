@@ -2,7 +2,7 @@
 <title>Request · Broaddus Scientific Group</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <script>/* Dark is the default; a saved choice wins. Set early so light never flashes first. */try{if(!localStorage.getItem('brg-theme'))document.documentElement.dataset.theme='dark'}catch(e){document.documentElement.dataset.theme='dark'}</script>
 <style>
 /* Layout: ink-blue lab ledger. Sticky nav, data-first hero with live shortage readout, then working tools in sequence. */
@@ -353,6 +353,30 @@ tbody tr:hover{background:var(--accent-soft)}
 .tag{background:var(--accent-soft)}
 #tray{box-shadow:6px 6px 16px var(--sd)}
 .sphere .amp{text-shadow:2px 2px 4px var(--sd),-2px -2px 4px var(--sl)}
+
+/* ── Same voice as the homepage and the store ──
+   Georgia for headlines and big figures, Inter for everything else (labels, data, buttons). */
+:root{
+  --f-display:Georgia,"Times New Roman",serif;
+  --f-body:"Inter",-apple-system,system-ui,"Helvetica Neue",Helvetica,sans-serif;
+  --f-mono:"Inter",-apple-system,system-ui,"Helvetica Neue",Helvetica,sans-serif;
+}
+body{font-feature-settings:"tnum" 0}
+h1,h2,h3,.hero h1{font-weight:400;letter-spacing:0}
+.hero h1{font-size:clamp(2.4rem,5vw,3.8rem);line-height:1.08}
+h2{font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.15}
+.hero h1 em{font-style:italic}
+.eyebrow{font:700 .72rem/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.mono,td.d,.readout .stats b,.tier .price,.result .net,.parc b,.trend .b,.chg,.price{font-variant-numeric:tabular-nums}
+.bigstat,.sphere .amp,.usmap .big,.avg,.poly-q,.combo .pair{font-weight:400;letter-spacing:0}
+.faq summary{font-weight:400;font-size:1.1rem}
+.brand{font:700 .95rem var(--f-body);letter-spacing:.04em}
+th,#drawer dt,.stpanel dt,.flist .grp,.flow li::before,.adv .k{font-weight:600;letter-spacing:.12em}
+/* Buttons: solid ink with reversed hover, like the homepage */
+.btn{background:var(--ink);color:var(--bg);border:1.5px solid var(--ink);box-shadow:none;font:600 .78rem/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;padding:14px 26px;justify-content:center;transition:background .2s,color .2s}
+.btn:hover{filter:none;background:transparent;color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--bg)}
 
 /* The University nav bar (/assets/js/uninav.js) carries the theme switch */
 #themeBtn{display:none}
