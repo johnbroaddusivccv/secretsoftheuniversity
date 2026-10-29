@@ -34,14 +34,14 @@
   const catLink = firstCat ? ' / <a href="index.html?' + (p.type === 'pep' ? 'tab=peptides&' : '') + 'cat=' + firstCat + '">' + esc(S.catName(p.type, firstCat)) + '</a>' : '';
   let s = 0, q = 1;
 
-  const CD = (p.type === 'chem' && window.CHEMDATA && window.CHEMDATA[p.key]) || null;
+  const CD = (window.CHEMDATA && window.CHEMDATA[p.key]) || null;
   const facts = [];
   const add = (k, v) => { if (v) facts.push('<tr><th>' + k + '</th><td>' + esc(v) + '</td></tr>'); };
   if (p.type === 'chem') { add('Form', p.form); add(/solution|spray|gel/i.test(p.form) ? 'Concentration' : 'Amount', p.size); }
   else { add('Form', p.form); add('Sizes', p.sizes.map(z => z.label).join(', ')); }
   add('Also known as', p.aka);
   if (!CD) { add('CAS number', p.cas); add('Molecular formula', p.formula); add('Molecular weight', p.mw); }
-  add('Sequence', p.sequence);
+  if (!CD || !CD.sequence3) add('Sequence', p.sequence);
   add('Half-life', p.halfLife);
   add('Purity', p.purity || 'Lot-specific; see the certificate of analysis');
   add('Storage', p.storage);
@@ -50,15 +50,20 @@
 
   function chemPanel() {
     if (!CD) return '';
-    if (!(CD.cas || CD.formula || CD.iupac || CD.pubchem_cid)) return '';
+    if (!(CD.cas || CD.formula || CD.iupac || CD.pubchem_cid || CD.sequence3)) return '';
     const sub = f => esc(f).replace(/(\d+)/g, '<sub>$1</sub>').replace(/·<sub>(\d+)<\/sub>/g, '·$1');
     const rows = [];
     const row = (k, v, raw) => { if (v) rows.push('<tr><th>' + k + '</th><td>' + (raw ? v : esc(v)) + '</td></tr>'); };
-    row('IUPAC name', CD.iupac);
+    if (CD.sequence3) row('Sequence', '<code class="mono">' + esc(CD.sequence3) + '</code>', true);
+    if (CD.sequence1) row('One-letter code', '<code class="mono">' + esc(CD.sequence1) + '</code>', true);
+    if (CD.length) row('Length', CD.length + ' residues');
+    row('Modifications', CD.modifications);
+    if (p.type !== 'pep' || (CD.iupac && CD.iupac.length < 160)) row('IUPAC name', CD.iupac);
     row('CAS number', CD.cas);
     if (CD.pubchem_cid) row('PubChem CID', '<a href="https://pubchem.ncbi.nlm.nih.gov/compound/' + encodeURIComponent(CD.pubchem_cid.replace(/\D.*$/, '')) + '" target="_blank" rel="noopener">' + esc(CD.pubchem_cid) + '</a>', true);
     row('ChemSpider ID', CD.chemspider);
     row('UNII', CD.unii);
+    if (CD.drugbank) row('DrugBank', '<a href="https://go.drugbank.com/drugs/' + encodeURIComponent(CD.drugbank) + '" target="_blank" rel="noopener">' + esc(CD.drugbank) + '</a>', true);
     if (CD.formula) row('Molecular formula', sub(CD.formula), true);
     row('Molecular weight', CD.mw);
     if (CD.smiles) row('SMILES', '<code class="mono" id="smiles">' + esc(CD.smiles) + '</code> <button type="button" class="link" id="copysmiles">Copy</button>', true);
@@ -68,9 +73,9 @@
     const salt = /\b(HCl|HBr|3HCl|sulfate|oxalate|sodium|hexasodium|disodium|potassium|bromide|acetate|salt)\b/i.test(p.name);
     if (!salt) { row('Melting point', CD.melting_point); row('Solubility in water', CD.solubility_water); row('Appearance', CD.appearance); }
     const saltNote = salt;
-    return '<div class="panel"><h2>Chemical data</h2><div class="cols2"><div><table class="facts"><tbody>' + rows.join('') + '</tbody></table>' +
+    return '<div class="panel"><h2>Chemical data</h2><div class="' + (CD.structure ? 'cols2' : '') + '"><div><table class="facts"><tbody>' + rows.join('') + '</tbody></table>' +
       '<p class="note">' + (saltNote ? 'Identifiers and structure are for the parent compound; this product is supplied as listed in its name. ' : '') +
-      'From public compound records' + (CD.source_url ? ' (<a href="' + esc(CD.source_url) + '" target="_blank" rel="noopener">source</a>)' : '') + (CD.verified ? '; the structure was checked against its published InChIKey' : '') + '. The lot certificate of analysis is the authority for the material you receive.</p></div>' +
+      'From public compound records' + (CD.source_url ? ' (<a href="' + esc(CD.source_url) + '" target="_blank" rel="noopener">source</a>)' : '') + (CD.verified ? '; the structure was checked against its published InChIKey' : CD.check === 'sequence-checked' ? '; the sequence was checked against the published molecular formula' : CD.check === 'record' ? '; shown as published, not independently checked' : '') + '. The lot certificate of analysis is the authority for the material you receive.</p></div>' +
       (CD.structure ? '<figure class="struct"><img src="assets/img/structures/' + encodeURIComponent(p.key) + '.svg" alt="2D chemical structure of ' + esc(p.name) + '" loading="lazy"><figcaption>2D structure</figcaption></figure>' : '<div></div>') +
       '</div></div>';
   }

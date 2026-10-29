@@ -18,3 +18,16 @@ structure drawings in `shop/assets/img/structures/` are generated here.
 Run: `python3 tools/chem-data/verify.py tools/chem-data .`
 No public record (left without the panel): GB-115, ATX-304, ACD856 (structure undisclosed), ART27.13,
 Lemairamin, Tetramethoxyluteolin, NA-Selank, NA-Semax, Vilon, SkQ1, MEPB, ORG-43902, 3HP, PP30, Alpha Mannans.
+
+## Peptides (`peptides/`)
+Run after `verify.py`: `python3 tools/chem-data/peptides/pep_verify.py tools/chem-data/peptides . tools/chem-data`
+It merges peptide records into the same `chemdata.js` (keyed by peptide id).
+- **verified**: SMILES reproduces the published InChIKey (small and short molecules; drawing if ≤60 heavy atoms).
+- **sequence-checked**: the sequence, built residue by residue with RDKit plus common end-modifications
+  (amide, acetyl, disulfides, lactam, pyroglutamate), reproduces the published formula. The page's sequence is tried
+  first, then the catalog's (this caught a transcription error on Thymosin α1).
+- **record**: lipidated, very large or non-standard-residue molecules; shown as published and labelled so.
+- Held back: TB-500 (catalog = full thymosin β4; public record = Ac-LKKTETQ fragment) and PEG-MGF (record is
+  non-PEGylated MGF). No public record: Kisspeptin-10, Thymalin, Follistatin 344, the blends, Cerebrolysin.
+- Catalog corrections made from this check: Ara-290 sequence, SNAP-8 and Larazotide formulas, IGF-1 DES CAS
+  (old number failed the CAS check digit), Pinealon subtitle.
