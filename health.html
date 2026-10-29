@@ -340,6 +340,24 @@
   .fact-card span { font-size:0.82rem; color:var(--muted); }
 
   /* ── Catalog ────────────────────────────────── */
+  .carry-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:22px; margin-top:28px; }
+  .carry-card { display:flex; flex-direction:column; text-decoration:none; color:var(--ink); background:var(--bg); box-shadow:6px 6px 14px var(--sd), -6px -6px 14px var(--sl); transition:transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s; }
+  .carry-card:hover { transform:translateY(-3px); box-shadow:9px 9px 20px var(--sd), -9px -9px 20px var(--sl); }
+  .carry-img { position:relative; display:block; background:#fff; aspect-ratio:1; overflow:hidden; }
+  .carry-img img { display:block; width:100%; height:100%; object-fit:cover; transition:transform .8s cubic-bezier(.2,.7,.2,1); }
+  .carry-card:hover .carry-img img { transform:scale(1.04); }
+  .carry-badge { position:absolute; top:10px; left:10px; z-index:1; font-family:var(--font-sans); font-size:.6rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; padding:4px 8px; background:#14263a; color:#fff; }
+  .carry-name { font-family:var(--font-sans); font-weight:600; font-size:.92rem; padding:14px 14px 0; }
+  .carry-sub { font-size:.76rem; color:var(--muted); padding:4px 14px 0; line-height:1.4; }
+  .carry-price { font-family:var(--font-sans); font-size:.84rem; color:var(--gold); padding:8px 14px 14px; margin-top:auto; }
+  .carry-more { display:flex; justify-content:center; align-items:center; gap:24px; flex-wrap:wrap; margin-top:34px; }
+  .carry-btn { font-family:var(--font-sans); font-size:.78rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; padding:12px 30px; cursor:pointer; background:var(--ink); color:var(--bg); border:1.5px solid var(--ink); border-radius:0; transition:background .2s, color .2s; }
+  .carry-btn:hover { background:transparent; color:var(--ink); }
+  .carry-btn[hidden] { display:none; }
+  .carry-all { font-family:var(--font-sans); font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); text-decoration:none; }
+  .carry-all:hover { text-decoration:underline; }
+  @media (max-width:900px) { .carry-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+  @media (max-width:640px) { .carry-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; } .carry-name { font-size:.84rem; padding:10px 10px 0; } .carry-sub { padding:3px 10px 0; } .carry-price { padding:6px 10px 10px; } }
   .cat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
   .cat-col h4 {
     font-size:1.05rem; font-weight:400; margin-bottom:14px; padding-bottom:10px;
@@ -1168,28 +1186,56 @@
   <section id="catalog">
     <div class="section-label">Full Catalog</div>
     <h2 class="mb-sm">Everything we carry</h2>
-    <p class="section-note">Peptides, supplements, and the supplies to administer them.</p>
-    <div class="cat-grid">
-      <div class="cat-col"><h4>Peptides &amp; Compounds</h4><ul>
-        <li>NAD+ 1,000 mg <em>Injectable</em></li>
-        <li>Retatrutide 16.78 mg <em>GLP-1 / GIP / glucagon</em></li>
-        <li>BPC-157 10 mg <em>Regenerative</em></li>
-        <li>Methylcobalamin (B12) <em>1 mg/mL · 10 ml injectable</em></li>
-      </ul></div>
-      <div class="cat-col"><h4>Supplements</h4><ul>
-        <li>Bergamet Mega+O <em>90 ct · citrus bergamot</em></li>
-        <li>Red Yeast Rice + CoQ10 <em>cholesterol support</em></li>
-        <li>10X Health TMG <em>60 ct · methyl donor</em></li>
-        <li>Professional Formulas Joint Plus <em>Boswellia + celery seed</em></li>
-      </ul></div>
-      <div class="cat-col"><h4>Supplies &amp; Service</h4><ul>
-        <li>60-Unit Reusable Peptide Auto-Injector</li>
-        <li>Auto-Injector Needles 14×32</li>
-        <li>Bacteriostatic Water 30 ml <em>Hospira (Pfizer)</em></li>
-        <li>Alcohol Pads + 3 ml Cartridge &amp; Case</li>
-        <li>Expedited / overnight shipping</li>
-      </ul></div>
+    <p class="section-note">Peptides, research compounds, and the supplies to handle them. Straight from our shop.</p>
+    <div class="carry-grid" id="carry-grid" aria-live="polite"></div>
+    <div class="carry-more">
+      <button class="carry-btn" type="button" id="carry-more">See more</button>
+      <a class="carry-all" href="/shop/">Full store →</a>
     </div>
+    <noscript><p class="section-note"><a href="/shop/" style="color:var(--gold);">Browse the full catalog in our shop →</a></p></noscript>
+    <!-- Product list comes straight from the shop's catalog so this section always matches what we carry -->
+    <script src="/shop/assets/js/catalog.js"></script>
+    <script>
+    (function(){
+      var C = window.CATALOG; if (!C) return;
+      var esc = function(t){ return String(t).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
+      var money = function(n){ return '$' + n.toFixed(2); };
+      var items = [];
+      C.peptides.forEach(function(p){
+        var withImg = p.sizes.filter(function(z){ return z.img; }); if (!withImg.length) return;
+        items.push({ id:p.id, name:p.name, sub:(p.cat === 'supplies' ? '' : p.form.replace('Lyophilized ', '') + ' · ') + p.sizes.map(function(z){ return z.label; }).join(' / '),
+          price:Math.min.apply(null, p.sizes.map(function(z){ return z.price; })), multi:p.sizes.length > 1, img:withImg[0].img, status:p.status, featured:p.featured, rank:0 });
+      });
+      C.chemicals.forEach(function(c){
+        if (!c.img) return;
+        items.push({ id:c.id, name:c.name, sub:c.form + ' · ' + c.size, price:c.price, multi:false, img:c.img, status:c.status, featured:c.featured, rank:1 });
+      });
+      // Featured peptides first, then featured compounds, then everything else; in-stock before out
+      items.sort(function(x, y){
+        return (x.status === 'out') - (y.status === 'out') || (!x.featured) - (!y.featured) || x.rank - y.rank;
+      });
+      var BADGE = { out:'Out of stock', backorder:'Backorder', delay:'1–3 day delay' };
+      var grid = document.getElementById('carry-grid'), more = document.getElementById('carry-more'), shown = 0, STEP = 12;
+      function render(){
+        var html = '';
+        items.slice(shown, shown + STEP).forEach(function(p){
+          var href = '/shop/product.html?id=' + encodeURIComponent(p.id);
+          html += '<a class="carry-card" href="' + href + '">' +
+            '<span class="carry-img">' + (BADGE[p.status] ? '<span class="carry-badge">' + BADGE[p.status] + '</span>' : '') +
+            '<img src="/shop/assets/img/' + esc(p.img.indexOf('/') > -1 ? p.img : 'products/' + p.img) + '.webp" alt="" width="720" height="720" loading="lazy" decoding="async"></span>' +
+            '<span class="carry-name">' + esc(p.name) + '</span>' +
+            '<span class="carry-sub">' + esc(p.sub.charAt(0).toUpperCase() + p.sub.slice(1)) + '</span>' +
+            '<span class="carry-price">' + (p.multi ? 'From ' : '') + money(p.price) + '</span></a>';
+        });
+        grid.insertAdjacentHTML('beforeend', html);
+        shown = Math.min(shown + STEP, items.length);
+        more.hidden = shown >= items.length;
+        more.textContent = 'See more (' + (items.length - shown) + ')';
+      }
+      more.addEventListener('click', render);
+      render();
+    })();
+    </script>
   </section>
 
   <!-- ═══ OUR STANDARDS ═══ -->
