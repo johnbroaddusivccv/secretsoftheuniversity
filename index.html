@@ -388,28 +388,31 @@
     .footer-bottom { flex-direction:column; text-align:center; }
   }
 
-  /* ── Storefront card ── */
-  .store-gate { display:block; position:relative; margin:-8px auto 26px; max-width:1040px; overflow:hidden; border:1px solid var(--border); background:#eef0f3; text-decoration:none; color:var(--ink); }
-  .store-gate img { display:block; width:100%; height:auto; transition:transform 1.2s cubic-bezier(.2,.7,.2,1); }
-  .store-gate:hover img { transform:scale(1.025); }
-  .store-gate-plate { position:absolute; left:50%; bottom:26px; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; padding:22px 40px 0; min-width:300px; background:rgba(247,248,250,0.94); color:#0e1116; border:1px solid rgba(14,17,22,0.22); box-shadow:0 18px 40px -18px rgba(14,17,22,0.45), 0 1px 0 rgba(255,255,255,0.8) inset; backdrop-filter:blur(8px) saturate(1.1); -webkit-backdrop-filter:blur(8px) saturate(1.1); transition:transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s; }
-  .store-gate:hover .store-gate-plate { transform:translateX(-50%) translateY(-4px); box-shadow:0 26px 48px -18px rgba(14,17,22,0.55), 0 1px 0 rgba(255,255,255,0.8) inset; }
-  .store-gate-mark { font-family:'Inter',system-ui,sans-serif; font-weight:700; font-size:1.05rem; letter-spacing:0.26em; text-indent:0.26em; line-height:1; padding:9px 16px 8px; border:1.5px solid #0e1116; }
-  .store-gate-sub { font-family:'Inter',system-ui,sans-serif; font-size:0.6rem; font-weight:600; letter-spacing:0.34em; text-indent:0.34em; text-transform:uppercase; color:#5b6472; margin-top:9px; }
-  .store-gate-cta { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:0.9rem; color:#0e1116; margin-top:14px; padding:10px 0 14px; width:100%; text-align:center; border-top:1px solid rgba(14,17,22,0.14); transition:letter-spacing .3s; }
-  .store-gate-plate::after { content:""; display:block; width:calc(100% + 80px); height:4px; margin:0 -40px; background:#3b82a0; }
-  .store-gate:hover .store-gate-cta { letter-spacing:0.04em; }
-  @media (max-width:600px) {
-    .store-gate-plate { position:static; transform:none; width:100%; min-width:0; padding:16px 20px 0; border-left:0; border-right:0; border-bottom:0; box-shadow:none; }
-    .store-gate-plate::after { width:calc(100% + 40px); margin:0 -20px; }
-    .store-gate:hover .store-gate-plate { transform:none; }
+  /* ── Science Among Other Things: two flex panels ── */
+  .sci-row { display:flex; gap:28px; margin:28px 0 56px; align-items:stretch; }
+  .sci-panel { display:flex; flex-direction:column; background:var(--bg); box-shadow:7px 7px 16px var(--sd), -7px -7px 16px var(--sl); transition:transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
+  .sci-panel:hover { transform:translateY(-3px); box-shadow:10px 10px 22px var(--sd), -10px -10px 22px var(--sl); }
+  .store-panel { flex:1.75 1 0; min-width:0; }
+  .watch-panel { flex:1 1 0; min-width:0; }
+  .store-shelf { display:block; overflow:hidden; background:#f2f2f2; }
+  .store-shelf img { display:block; width:100%; height:auto; transition:transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .store-panel:hover .store-shelf img { transform:scale(1.02); }
+  .sci-body { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:10px; padding:30px 28px 26px; }
+  .sci-mark { font-family:var(--font-sans,'Inter',system-ui,sans-serif); font-weight:700; font-size:1rem; letter-spacing:.26em; text-indent:.26em; line-height:1; padding:9px 15px 8px; border:1.5px solid var(--ink); color:var(--ink); }
+  .sci-sub { font-family:var(--font-sans,'Inter',system-ui,sans-serif); font-size:.6rem; font-weight:600; letter-spacing:.34em; text-indent:.34em; text-transform:uppercase; color:var(--muted); }
+  .sci-copy { font-size:.95rem; line-height:1.65; color:var(--muted); max-width:52ch; margin:8px auto 2px; }
+  .watch-panel .sci-copy { max-width:30ch; }
+  .sg-glyph { color:var(--gold); font-size:1.4rem; }
+  .store-doors { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin:8px 0 4px; }
+  .store-doors a { font-size:.7rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink); text-decoration:none; padding:9px 16px; background:var(--bg); box-shadow:3px 3px 7px var(--sd), -3px -3px 7px var(--sl); transition:box-shadow .2s, color .2s; }
+  .store-doors a:hover { color:var(--gold); box-shadow:inset 2px 2px 5px var(--sd), inset -2px -2px 5px var(--sl); }
+  .sci-btn { margin-top:10px; font-family:var(--font-sans,'Inter',system-ui,sans-serif); font-size:.78rem; font-weight:600; letter-spacing:.2em; text-indent:.2em; text-transform:uppercase; text-decoration:none; padding:12px 36px; background:var(--ink); color:var(--bg); border:1.5px solid var(--ink); transition:background .2s, color .2s; }
+  .sci-btn:hover { background:transparent; color:var(--ink); }
+  .sci-fine { font-size:.7rem; letter-spacing:.08em; color:var(--muted); margin:4px 0 0; }
+  @media (max-width:760px) {
+    .sci-row { flex-direction:column; gap:24px; }
+    .sci-body { padding:24px 18px 22px; }
   }
-  .pillar .store-verse { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:1.05rem; color:var(--ink); margin:0 auto 14px; }
-  .pillar p { max-width:620px; margin-left:auto; margin-right:auto; }
-  .store-doors { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin:20px 0 14px; }
-  .store-doors a { font-size:0.72rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink); text-decoration:none; border:1px solid var(--border); padding:9px 16px; transition:border-color .2s; }
-  .store-doors a:hover { border-color:var(--ink); }
-  .pillar .store-fine { font-size:0.72rem; letter-spacing:0.08em; color:var(--muted); margin-bottom:6px; }
 
   /* ── Sibling system (shared with the Broaddus Commerce site) ──────
      Inter for everything functional; Georgia stays as the University's
@@ -473,17 +476,7 @@
   }
   .signup button, .footer-subscribe button, .nav-links a.cta-small, .btn-gold { box-shadow: 4px 4px 10px var(--sd), -4px -4px 10px var(--sl); }
   .theme-toggle, .hamburger { border-color: transparent; box-shadow: 3px 3px 7px var(--sd), -3px -3px 7px var(--sl); }
-  .gates { display:grid; grid-template-columns: minmax(0,1.7fr) minmax(0,1fr); gap:22px; max-width:1040px; margin:-8px auto 26px; align-items:stretch; }
-  .gates .store-gate { margin:0; border:0; box-shadow: 7px 7px 16px var(--sd), -7px -7px 16px var(--sl); }
-  .shortage-gate { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:10px; padding:28px 22px; text-decoration:none; color:var(--ink); background:var(--bg); box-shadow: 7px 7px 16px var(--sd), -7px -7px 16px var(--sl); transition: box-shadow .3s, transform .3s; }
-  .shortage-gate:hover { transform: translateY(-4px); box-shadow: 10px 10px 22px var(--sd), -10px -10px 22px var(--sl); }
   .sg-glyph { color: var(--gold); font-size: 1.4rem; }
-  .sg-mark { font-family:'Inter',system-ui,sans-serif; font-weight:700; font-size:.95rem; letter-spacing:.22em; text-indent:.22em; padding:9px 14px 8px; border:1.5px solid var(--ink); }
-  .sg-sub { font-family:'Inter',system-ui,sans-serif; font-size:.6rem; font-weight:600; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); }
-  .sg-line { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:1rem; text-align:center; }
-  .sg-meta { font-size:.84rem; color:var(--muted); text-align:center; max-width:30ch; }
-  .shortage-gate .store-gate-cta { color: var(--ink); border-top-color: var(--border); }
-  @media (max-width: 760px) { .gates { grid-template-columns: 1fr; } }
 
   /* Sky fallback: a drawn night sky instead of a broken image */
   .sky-fallback .img-caption, .sky-fallback .img-caption a { color:#cfe3f5; }
@@ -600,35 +593,35 @@
   <section style="padding-top:64px;">
     <!-- ── Broaddus Commerce ── -->
     <div class="section-label">Science Among Other Things</div>
-    <div class="pillars" style="margin:28px 0 48px;">
-      <div class="pillar" style="grid-column:1/-1; text-align:center;">
-        <div class="gates">
-          <a class="store-gate" href="/shop/" aria-label="Enter the Broaddus Scientific Group store">
-          <img src="assets/img/store-hero.webp" srcset="assets/img/store-hero-900.webp 900w, assets/img/store-hero.webp 1600w" sizes="(max-width:700px) 100vw, 1040px" width="1600" height="720" alt="Laboratory bench with flasks, beakers and test tubes — Broaddus Scientific Group" loading="lazy">
-          <span class="store-gate-plate">
-            <span class="store-gate-mark">BROADDUS</span>
-            <span class="store-gate-sub">Scientific Group</span>
-            <span class="store-gate-cta">Enter the store →</span>
-          </span>
+    <div class="sci-row">
+      <!-- Store: its own panel, our own products on the shelf -->
+      <article class="sci-panel store-panel">
+        <a class="store-shelf" href="/shop/" tabindex="-1" aria-hidden="true">
+          <img src="assets/img/store-lineup.webp" srcset="assets/img/store-lineup-900.webp 900w, assets/img/store-lineup.webp 2000w" sizes="(max-width:760px) 100vw, 640px" width="2000" height="670" alt="" loading="lazy">
         </a>
-          <a class="shortage-gate" href="/shortage/" aria-label="Enter Shortage Watch">
-            <span class="sg-glyph" aria-hidden="true">✦</span>
-            <span class="sg-mark">SHORTAGE WATCH</span>
-            <span class="sg-sub">Broaddus Scientific Group</span>
-            <span class="sg-meta">Every drug the FDA lists in shortage, live. Who still supplies it. Where to order.</span>
-            <span class="store-gate-cta">Enter the watch →</span>
-          </a>
+        <div class="sci-body">
+          <span class="sci-mark">BROADDUS</span>
+          <span class="sci-sub">Scientific Group</span>
+          <p class="sci-copy">Research peptides studied in repair and recovery. Nootropics for memory, focus, and calm. Longevity compounds for the long road. Every lot third-party tested; every vial with its certificate.</p>
+          <div class="store-doors">
+            <a href="/shop/?tab=peptides">Peptides</a>
+            <a href="/shop/?cat=nootropics">Nootropics</a>
+            <a href="/shop/?cat=geroprotectors">Longevity</a>
+          </div>
+          <a class="sci-btn" href="/shop/" aria-label="Enter the Broaddus Scientific Group store">Enter</a>
+          <p class="sci-fine">For laboratory research use only.</p>
         </div>
-        <h3>Broaddus Scientific Group</h3>
-        <p>Research peptides studied in repair and recovery. Nootropics studied for memory, focus, and calm. Longevity compounds for the long road. Every lot third-party tested; every vial with its certificate.</p>
-        <div class="store-doors">
-          <a href="/shop/?tab=peptides">Peptides</a>
-          <a href="/shop/?cat=nootropics">Nootropics</a>
-          <a href="/shop/?cat=geroprotectors">Longevity</a>
+      </article>
+      <!-- Shortage Watch -->
+      <article class="sci-panel watch-panel">
+        <div class="sci-body">
+          <span class="sg-glyph" aria-hidden="true">✦</span>
+          <span class="sci-mark">SHORTAGE WATCH</span>
+          <span class="sci-sub">Broaddus Scientific Group</span>
+          <p class="sci-copy">Every drug the FDA lists in shortage, live. Who still supplies it. Where to order.</p>
+          <a class="sci-btn" href="/shortage/" aria-label="Enter Shortage Watch">Enter</a>
         </div>
-        <p class="store-fine">For laboratory research use only.</p>
-        <a class="pillar-link" href="/shop/">Enter →</a>
-      </div>
+      </article>
     </div>
 
     <!-- ── Daily Revelation ── -->
