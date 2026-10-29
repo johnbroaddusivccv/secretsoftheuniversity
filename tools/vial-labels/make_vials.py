@@ -41,7 +41,7 @@ def spaced(draw, xy, text, f, track, anchor_center=True):
         draw.text((x, xy[1]), c, font=f, fill=INK); x += w + track
     return total
 
-def label(name, strength, form):
+def label(name, strength, form, H=H):
     layer = Image.new('RGB', (W, H), (255, 255, 255))
     d = ImageDraw.Draw(layer)
     cx, maxw = W / 2, W * 0.78
@@ -55,7 +55,7 @@ def label(name, strength, form):
     # name
     lines, fn = wrap_name(d, name.upper(), maxw)
     lh = fn.size * 1.12
-    y = 470 - (len(lines) * lh) / 2
+    y = H * 0.5 - (len(lines) * lh) / 2
     for ln in lines:
         d.text((cx, y), ln, font=fn, fill=INK, anchor='mt'); y += lh
     # strength and form
@@ -75,17 +75,55 @@ def render(name, strength, form, path):
     img = img.crop((208, 196, 2368, 2356)).resize((720, 720), Image.LANCZOS)
     img.save(path, 'WEBP', quality=82, method=6)
 
+DROPPER = Image.open(os.path.join(os.path.dirname(photo), 'dropper.png')).convert('RGBA') if os.path.exists(os.path.join(os.path.dirname(photo), 'dropper.png')) else None
+BG = (242, 242, 242)
+
+def render_dropper(name, strength, form, path):
+    """Amber dropper bottle (transparent PNG) on the vial photo's studio grey, with a printed label."""
+    from PIL import ImageFilter
+    k = 3.2                                            # work at 3.2x the source photo
+    bot = DROPPER.resize((round(DROPPER.width * k), round(DROPPER.height * k)), Image.LANCZOS)
+    # label sits on the bottle body, below the liquid line and above the base
+    lx0, ly0, lx1, ly1 = [round(v * k) for v in (199, 368, 313, 505)]
+    lw, lh = lx1 - lx0, ly1 - ly0
+    art = label(name, strength, form, H=round(W * lh / lw)).resize((lw, lh), Image.LANCZOS)
+    # paper with cylindrical shading: brighter in the middle, darker toward both edges
+    shade = Image.new('L', (lw, 1))
+    for x in range(lw):
+        t = (x - lw * 0.42) / (lw / 2)
+        shade.putpixel((x, 0), max(170, min(255, round(255 - 70 * t * t))))
+    shade = shade.resize((lw, lh))
+    paper = ImageChops.multiply(art, Image.merge('RGB', (shade, shade, shade)))
+    body = bot.convert('RGB').crop((lx0, ly0, lx1, ly1))
+    paper = Image.blend(paper, ImageChops.multiply(paper, body.point(lambda v: min(255, v + 150))), 0.12)
+    bot.paste(paper, (lx0, ly0))
+    # square studio canvas, bottle centred, soft contact shadow
+    side = 2160
+    canvas = Image.new('RGB', (side, side), BG)
+    sh = Image.new('L', (side, side), 0)
+    ImageDraw.Draw(sh).ellipse((side * 0.22, side * 0.885, side * 0.80, side * 0.93), fill=110)
+    canvas.paste(Image.new('RGB', (side, side), (205, 205, 205)), (0, 0), sh.filter(ImageFilter.GaussianBlur(28)))
+    x0, y0, x1, y1 = bot.getchannel('A').getbbox()     # trim the empty transparent margins
+    bot = bot.crop((x0, y0, x1, y1))
+    scale = (side * 0.80) / bot.height
+    bot = bot.resize((round(bot.width * scale), round(bot.height * scale)), Image.LANCZOS)
+    bx = round(side * 0.53 - (252 * k - x0) * scale)   # bottle body just right of centre; the dropper leans left
+    by = round(side * 0.905 - bot.height)              # base sits on the contact shadow
+    canvas.paste(bot, (bx, by), bot)
+    canvas.resize((720, 720), Image.LANCZOS).save(path, 'WEBP', quality=82, method=6)
+
 os.makedirs(outdir, exist_ok=True)
 jobs = []
 for c in cat['chemicals']:
     form = {'Spray Solution': 'Spray solution', 'Gel Dispenser': 'Topical gel', 'Aliquot Solution': 'Aliquot solution'}.get(c['form'], c['form'])
     nm = re.sub(r'\s*\(.*?\)\s*', ' ', c['name']).strip() if len(c['name']) > 22 else c['name']
-    jobs.append((c['id'], nm, c['size'], form))
+    jobs.append((c['id'], nm, c['size'], form, c['form'] == 'Solution'))
 for p in cat['peptides']:
     for z in p['sizes']:
         form = 'Sterile solution' if p['id'] == 'bac-water' else 'Kit' if p['cat'] == 'supplies' else 'Solution' if p['form'] == 'Solution' else 'Lyophilized powder'
-        jobs.append((p['id'] + '--' + slug(z['label']), p['name'], z['label'], form))
+        jobs.append((p['id'] + '--' + slug(z['label']), p['name'], z['label'], form, p['form'] == 'Solution'))
 if only: jobs = [j for j in jobs if re.search(only, j[0])]
-for fid, nm, st, fm in jobs:
-    render(nm, st, fm, os.path.join(outdir, fid + '.webp'))
+for fid, nm, st, fm, drop in jobs:
+    (render_dropper if (drop and DROPPER) else render)(nm, st, fm, os.path.join(outdir, fid + '.webp'))
+print('droppers', sum(1 for j in jobs if j[4] and DROPPER))
 print('rendered', len(jobs))
