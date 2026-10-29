@@ -112,18 +112,47 @@ def render_dropper(name, strength, form, path):
     canvas.paste(bot, (bx, by), bot)
     canvas.resize((720, 720), Image.LANCZOS).save(path, 'WEBP', quality=82, method=6)
 
+JARPATH = os.path.join(os.path.dirname(photo), 'jar.jpg')
+JAR = Image.open(JARPATH).convert('RGB') if os.path.exists(JARPATH) else None
+if JAR:   # lift the grey studio backdrop toward the vial photo's light grey; the black jar (dark pixels) is untouched
+    _lut = [v if v < 120 else round(v + (243 - v) * min(1, (v - 120) / 60) * 0.7) for v in range(256)]
+    JAR = JAR.point(_lut * 3)
+
+def render_jar(name, strength, form, path):
+    """Black powder jar with a white wrap label on the front of the body."""
+    img = JAR.copy()
+    jx0, jx1 = 857, 1718                               # jar body edges on the 2576x1717 photo
+    lw = round((jx1 - jx0) * 0.68); lh = round(lw * 0.95)
+    lx0 = round((jx0 + jx1) / 2 - lw / 2); ly0 = 862
+    art = label(name, strength, form, H=round(W * lh / lw)).resize((lw, lh), Image.LANCZOS)
+    # wrap shading: the label turns away from the light toward both edges, a little more on the right
+    shade = Image.new('L', (lw, 1))
+    for x in range(lw):
+        t = (x - lw * 0.46) / (lw / 2)
+        shade.putpixel((x, 0), max(150, min(255, round(250 - 78 * t * t))))
+    shade = shade.resize((lw, lh))
+    paper = ImageChops.multiply(art, Image.merge('RGB', (shade, shade, shade)))
+    img.paste(paper, (lx0, ly0))
+    # hairline shadow under the label's bottom edge so it reads as a sticker, not a cut-out
+    d = ImageDraw.Draw(img)
+    d.line([lx0, ly0 + lh, lx0 + lw, ly0 + lh], fill=(20, 20, 22), width=3)
+    side = 1717; cx = (jx0 + jx1) / 2                 # full photo height: the jar fills about half the card, like the bottles
+    img = img.crop((round(cx - side / 2), 0, round(cx + side / 2), side))
+    img.resize((720, 720), Image.LANCZOS).save(path, 'WEBP', quality=82, method=6)
+
 os.makedirs(outdir, exist_ok=True)
 jobs = []
 for c in cat['chemicals']:
     form = {'Spray Solution': 'Spray solution', 'Gel Dispenser': 'Topical gel', 'Aliquot Solution': 'Aliquot solution'}.get(c['form'], c['form'])
     nm = re.sub(r'\s*\(.*?\)\s*', ' ', c['name']).strip() if len(c['name']) > 22 else c['name']
-    jobs.append((c['id'], nm, c['size'], form, c['form'] == 'Solution'))
+    jobs.append((c['id'], nm, c['size'], form, 'drop' if c['form'] == 'Solution' else 'jar' if c['form'] in ('Powder', 'Capsules') else 'vial'))
 for p in cat['peptides']:
     for z in p['sizes']:
         form = 'Sterile solution' if p['id'] == 'bac-water' else 'Kit' if p['cat'] == 'supplies' else 'Solution' if p['form'] == 'Solution' else 'Lyophilized powder'
-        jobs.append((p['id'] + '--' + slug(z['label']), p['name'], z['label'], form, p['form'] == 'Solution'))
+        jobs.append((p['id'] + '--' + slug(z['label']), p['name'], z['label'], form, 'drop' if p['form'] == 'Solution' else 'vial'))
 if only: jobs = [j for j in jobs if re.search(only, j[0])]
-for fid, nm, st, fm, drop in jobs:
-    (render_dropper if (drop and DROPPER) else render)(nm, st, fm, os.path.join(outdir, fid + '.webp'))
-print('droppers', sum(1 for j in jobs if j[4] and DROPPER))
+for fid, nm, st, fm, kind in jobs:
+    fn = render_dropper if (kind == 'drop' and DROPPER) else render_jar if (kind == 'jar' and JAR) else render
+    fn(nm, st, fm, os.path.join(outdir, fid + '.webp'))
+print('droppers', sum(1 for j in jobs if j[4] == 'drop' and DROPPER), '| jars', sum(1 for j in jobs if j[4] == 'jar' and JAR))
 print('rendered', len(jobs))
