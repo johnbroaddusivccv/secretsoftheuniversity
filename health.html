@@ -1536,7 +1536,7 @@
     if (dt) dt.textContent = isLight ? '☀' : '☾';
     if (mt) mt.textContent = isLight ? '☀ Light Mode' : '☾ Dark Mode';
   }
-  if (!document.cookie.includes('theme=dark')) {
+  if (document.cookie.includes('theme=light')) {   // dark is the default; light only by choice
     document.documentElement.classList.add('light');
     syncThemeUI(true);
   }
