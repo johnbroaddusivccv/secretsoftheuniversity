@@ -22,6 +22,11 @@ No build step and no dependencies.
   run it again after adding a product. Leave `img` empty and the shop draws a stand-in instead.
 - Category names and the line under each category are in `chemCats` / `pepCats`.
 
+## Chemical data
+`assets/js/chemdata.js` holds identity data per compound (IUPAC name, CAS, PubChem CID, formula,
+weight, SMILES, InChIKey) and `assets/img/structures/` the 2D drawings. Both are generated and checked by
+`tools/chem-data/`; see its README before editing by hand.
+
 ## Settings: top of `assets/js/shop.js`
 `SITE.email` (contact and order fallback), `freeShip` threshold and shipping rates.
 
