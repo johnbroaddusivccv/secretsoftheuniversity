@@ -763,6 +763,13 @@
   .tg-desc { font-size:.92rem; color:var(--muted); max-width:36ch; line-height:1.6; }
   .tg-fine { font-family:'Inter',system-ui,sans-serif; font-size:.7rem; color:var(--muted); }
   .tg-cta { font-family:Georgia,'Times New Roman',serif; font-style:italic; color:var(--ink); padding-top:12px; border-top:1px solid var(--border); width:100%; }
+
+  /* Nav: every label on one line; below 1000px the links fold into the menu button */
+  .nav-inner { max-width:1160px; gap:32px; }
+  .brand, .nav-links a { white-space:nowrap; }
+  .nav-links { gap:20px; }
+  @media (max-width:1180px) { .nav-links { gap:15px; } .nav-links a { letter-spacing:.08em; } }
+  @media (max-width:1000px) { .nav-links a, .nav-links .theme-toggle { display:none; } .hamburger { display:inline-flex; } }
 </style>
 </head>
 <body>
@@ -775,6 +782,8 @@
       <a href="index.html">Home</a>
       <a href="finance.html">Finance</a>
       <a href="careers.html">Careers</a>
+      <a href="/shop/">Store</a>
+      <a href="/shortage/">Shortage Watch</a>
       <a class="cta-small" href="#contact">Seek</a>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light mode">☾</button>
       <button class="hamburger" onclick="document.getElementById('mobile-nav').classList.add('open')" aria-label="Open menu">☰</button>
@@ -788,6 +797,8 @@
   <a href="finance.html">Finance</a>
   <a href="health.html" onclick="this.parentElement.classList.remove('open')">Health</a>
   <a href="careers.html">Careers</a>
+  <a href="/shop/">Store</a>
+  <a href="/shortage/">Shortage Watch</a>
   <a href="#contact" onclick="this.parentElement.classList.remove('open')">Seek</a>
   <button class="mobile-theme" onclick="toggleTheme(); this.textContent = document.documentElement.classList.contains('light') ? '☀ Light Mode' : '☾ Dark Mode';">☾ Dark Mode</button>
 </div>

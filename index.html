@@ -541,6 +541,13 @@
   html.light .m31-toggle:hover { background:rgba(255,255,255,.85); border-color:rgba(122,84,28,.7); }
   html.light .m31-toggle:focus-visible { outline-color:#7a541c; }
   @media (max-width:700px) { .m31-plate { bottom:16px; } .m31-line { font-size:.92rem; } .m31-toggle { right:12px; top:12px; bottom:auto; width:36px; height:36px; } }
+
+  /* Nav: every label on one line; below 1000px the links fold into the menu button */
+  .nav-inner { max-width:1160px; gap:32px; }
+  .brand, .nav-links a { white-space:nowrap; }
+  .nav-links { gap:20px; }
+  @media (max-width:1180px) { .nav-links { gap:15px; } .nav-links a { letter-spacing:.08em; } }
+  @media (max-width:1000px) { .nav-links a, .nav-links .theme-toggle { display:none; } .hamburger { display:inline-flex; } }
 </style>
 </head>
 <body>

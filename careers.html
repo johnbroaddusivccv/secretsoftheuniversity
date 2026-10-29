@@ -701,6 +701,13 @@
   @media (max-width: 600px) {
     .form-panel, .lab-container, .lesson, .tmpl-card { box-shadow: 4px 4px 10px var(--sd), -4px -4px 10px var(--sl); }
   }
+
+  /* Nav: every label on one line; below 1000px the links fold into the menu button */
+  .nav-inner { max-width:1160px; gap:32px; }
+  .brand, .nav-links a { white-space:nowrap; }
+  .nav-links { gap:20px; }
+  @media (max-width:1180px) { .nav-links { gap:15px; } .nav-links a { letter-spacing:.08em; } }
+  @media (max-width:1000px) { .nav-links a, .nav-links .theme-toggle { display:none; } .hamburger { display:inline-flex; } }
 </style>
 </head>
 <body>
@@ -713,6 +720,8 @@
       <a href="index.html">Home</a>
       <a href="finance.html">Finance</a>
       <a href="health.html">Health</a>
+      <a href="/shop/">Store</a>
+      <a href="/shortage/">Shortage Watch</a>
       <a class="cta-small" href="#enroll">Enroll</a>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light mode">☾</button>
       <button class="hamburger" onclick="document.getElementById('mobile-nav').classList.add('open')" aria-label="Open menu">☰</button>
@@ -726,6 +735,8 @@
   <a href="finance.html">Finance</a>
   <a href="health.html">Health</a>
   <a href="careers.html" onclick="this.parentElement.classList.remove('open')">Careers</a>
+  <a href="/shop/">Store</a>
+  <a href="/shortage/">Shortage Watch</a>
   <a href="#enroll" onclick="this.parentElement.classList.remove('open')">Enroll</a>
   <button class="mobile-theme" onclick="toggleTheme(); this.textContent = document.documentElement.classList.contains('light') ? '☀ Light Mode' : '☾ Dark Mode';">☾ Dark Mode</button>
 </div>
