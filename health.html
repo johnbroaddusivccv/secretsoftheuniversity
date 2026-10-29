@@ -876,7 +876,7 @@
     <!-- Compound cards -->
     <div class="lib-grid" id="lib-grid">
 
-      <div class="lib-card" data-cat="metabolic" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="metabolic" data-top="1" onclick="this.classList.toggle('open')">
         <div class="lib-cat">Metabolic / GLP-1</div>
         <h4>Semaglutide</h4>
         <div class="lib-aka">GLP-1 receptor agonist</div>
@@ -887,7 +887,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="metabolic" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="metabolic" data-top="1" onclick="this.classList.toggle('open')">
         <div class="lib-cat">Metabolic / GLP-1</div>
         <h4>Retatrutide</h4>
         <div class="lib-aka">Triple agonist: GLP-1 / GIP / glucagon</div>
@@ -931,7 +931,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="recovery" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="recovery" data-top="1" onclick="this.classList.toggle('open')">
         <div class="lib-cat">Recovery / Regenerative</div>
         <h4>BPC-157</h4>
         <div class="lib-aka">Body Protection Compound-157</div>
@@ -942,7 +942,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="recovery" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="recovery" data-top="1" onclick="this.classList.toggle('open')">
         <div class="lib-cat">Recovery / Regenerative</div>
         <h4>TB-500</h4>
         <div class="lib-aka">Thymosin Beta-4 fragment</div>
@@ -963,7 +963,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="growth-hormone" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="growth-hormone" data-top="1" onclick="this.classList.toggle('open')">
         <div class="lib-cat">Growth Hormone</div>
         <h4>CJC-1295 + Ipamorelin</h4>
         <div class="lib-aka">GHRH analog + GH secretagogue</div>
@@ -996,7 +996,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="immune" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="immune" data-top="1" onclick="this.classList.toggle('open')">
         <div class="lib-cat">Immune</div>
         <h4>Thymosin Alpha-1</h4>
         <div class="lib-aka">Tα1 · immune modulator</div>
@@ -1029,7 +1029,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="cognitive" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="cognitive" data-top="1" onclick="this.classList.toggle('open')">
         <div class="lib-cat">Cognitive / Neuroprotective</div>
         <h4>Semax</h4>
         <div class="lib-aka">Synthetic ACTH(4-10) analog</div>
@@ -1040,7 +1040,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="longevity" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="longevity" data-top="1" onclick="this.classList.toggle('open')">
         <div class="lib-cat">Longevity / Cellular</div>
         <h4>NAD+</h4>
         <div class="lib-aka">Nicotinamide adenine dinucleotide</div>
@@ -1073,7 +1073,7 @@
         </div>
       </div>
 
-      <div class="lib-card" data-cat="copper" onclick="this.classList.toggle('open')">
+      <div class="lib-card" data-cat="copper" data-top="1" onclick="this.classList.toggle('open')">
         <div class="lib-cat">Copper Peptides</div>
         <h4>GHK-Cu</h4>
         <div class="lib-aka">Copper tripeptide-1</div>
@@ -1413,19 +1413,17 @@
   })();
 
   /* ── Compound Library filter ──────────────── */
+  // "All" shows nine squares (one or two from each area); a category shows its own peptides
   function filterLib(cat) {
-    const cards = document.querySelectorAll('.lib-card');
-    cards.forEach(c => {
-      if (cat === 'all' || c.dataset.cat === cat) {
-        c.removeAttribute('data-hidden');
-      } else {
-        c.setAttribute('data-hidden', 'true');
-      }
+    document.querySelectorAll('.lib-card').forEach(c => {
+      const show = cat === 'all' ? c.dataset.top === '1' : c.dataset.cat === cat;
+      if (show) c.removeAttribute('data-hidden'); else c.setAttribute('data-hidden', 'true');
     });
     document.querySelectorAll('.lib-filter').forEach(btn => {
-      btn.classList.toggle('active', btn.textContent.toLowerCase().replace(/\s+/g, '-') === cat || (cat === 'all' && btn.textContent.toLowerCase() === 'all'));
+      btn.classList.toggle('active', btn.getAttribute('onclick') === "filterLib('" + cat + "')");
     });
   }
+  filterLib('all');
 
   // ══════════════════════════════════════════════════
 
