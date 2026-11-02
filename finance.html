@@ -177,7 +177,21 @@
   .ct-item .price { font-size:0.78rem; color:var(--gold); margin-top:2px; }
   .ct-item .chg { font-size:0.68rem; margin-top:2px; }
   .chg.up { color:#5fd08a; } .chg.down { color:#e2708a; }
-  @media (max-width:900px) { #crypto-ticker { display:none; } }
+  /* Phones and tablets: the crypto ticker becomes a band along the bottom, drifting left to right,
+     the opposite way to the stock tape at the top */
+  @media (max-width:900px) {
+    #crypto-ticker { top:auto; left:0; right:0; bottom:0; width:auto; height:calc(46px + env(safe-area-inset-bottom, 0px));
+      border-left:0; border-top:1px solid var(--border); z-index:20; background:var(--bg2) !important; box-shadow:0 -6px 14px -8px var(--sd); }
+    #crypto-ticker .ct-label { top:0; bottom:0; right:auto; height:46px; display:flex; align-items:center; padding:0 12px;
+      border-bottom:0; border-right:1px solid var(--border); letter-spacing:0.14em; background:var(--bg); }
+    .ct-scroll { top:0; bottom:auto; left:0; right:auto; height:46px; display:flex; width:max-content; animation:ctScrollX 40s linear infinite; }
+    .ct-item { display:flex; align-items:baseline; gap:8px; padding:0 18px; height:46px; align-items:center; white-space:nowrap;
+      border-bottom:0; border-right:1px solid rgba(148,163,184,0.1); }
+    .ct-item .price, .ct-item .chg { margin-top:0; }
+    body { padding-bottom:calc(46px + env(safe-area-inset-bottom, 0px)); }
+  }
+  @keyframes ctScrollX { from { transform:translateX(-50%); } to { transform:translateX(0); } }
+  @media (prefers-reduced-motion: reduce) { .ct-scroll { animation-duration:120s; } }
 
   /* ── Angel Numbers — full-viewport ambient layer ── */
   .angel-overlay {
